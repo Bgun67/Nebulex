@@ -75,6 +75,7 @@ public class Carrier_Controller : MonoBehaviour {
 
 	}
 	public void Exit(){
+		//exit over the network
 		if (playerNetObj.isLocal && Metwork.peerType != MetworkPeerType.Disconnected) {
 			netObj.netView.RPC ("RPC_Exit", MRPCMode.OthersBuffered, new object[]{  });
 		}

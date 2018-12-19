@@ -212,9 +212,9 @@ public class Player_Controller : MonoBehaviour {
 		primarySelected = !primarySelected;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
-			netView.RPC("RPC_SwitchWeapons",MRPCMode.AllBuffered, new object[]{});
+			netView.RPC("RPC_SwitchWeapons",MRPCMode.AllBuffered, new object[]{primarySelected});
 		} else {
-			RPC_SwitchWeapons();
+			RPC_SwitchWeapons(primarySelected);
 			RPC_ShowNameText ();
 			sceneCam.enabled = false;
 		}
@@ -299,9 +299,9 @@ public class Player_Controller : MonoBehaviour {
 
 		if (MInput.GetButtonDown ("Switch Weapons")) {
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[]{ });
+				netView.RPC ("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[]{primarySelected });
 			} else {
-				RPC_SwitchWeapons ();
+				RPC_SwitchWeapons (primarySelected);
 			}
 			UpdateUI ();
 		}
@@ -1116,7 +1116,7 @@ public class Player_Controller : MonoBehaviour {
 		} else {
 			anim.SetFloat ("Look Speed", 0f);
 		}
-		if (Time.frameCount % 6==0) {
+		if (Time.frameCount % 4==0) {
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
 			}
@@ -1137,9 +1137,9 @@ public class Player_Controller : MonoBehaviour {
 	public IEnumerator AdjustView(float time){
 		float lookTime = anim.GetCurrentAnimatorStateInfo (1).normalizedTime;
 		if (lookTime < time) {
-			anim.SetFloat ("Look Speed", 1f);
+			anim.SetFloat ("Look Speed", 0.5f);
 		} else if(lookTime>time) {
-			anim.SetFloat ("Look Speed", -1f);
+			anim.SetFloat ("Look Speed", -0.5f);
 		}
 		yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - time) < 0.05f);
 		anim.Play ("Aim Up/Down", 1, time);
@@ -1268,7 +1268,7 @@ public class Player_Controller : MonoBehaviour {
 			yield break;
 		}
 		enteringGravity = true;
-		StopCoroutine(ExitGravity());
+		StopCoroutine("ExitGravity()");
 		anim.SetBool ("Float", false);
 		
 		rb.angularVelocity = Vector3.zero;
@@ -1298,13 +1298,13 @@ public class Player_Controller : MonoBehaviour {
 		//}
 	}
 	[MRPC]
-	public void RPC_SwitchWeapons(){
-		StartCoroutine (SwitchWeapons ());
+	public void RPC_SwitchWeapons(bool _primary){
+		StartCoroutine (SwitchWeapons (_primary));
 	}
-	public IEnumerator SwitchWeapons(){
+	public IEnumerator SwitchWeapons(bool _primary){
 		anim.SetBool ("Switch Weapons", true);
 		yield return new WaitForSeconds (0.5f);
-		if (primarySelected) {
+		if (_primary) {
 			primaryWeapon.SetActive (false);
 			secondaryWeapon.SetActive (true);
 			fireScript = secondaryWeapon.GetComponent<Fire> ();
