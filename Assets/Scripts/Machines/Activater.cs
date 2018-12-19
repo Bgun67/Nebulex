@@ -14,40 +14,22 @@ public class Activater : MonoBehaviour {
 		netView = GetComponent<MetworkView> ();
 	}
 
-	public void ActivateScript(GameObject player){
-		if (maxPassengers == 0) {
+	public void ActivateScript(GameObject player)
+	{
+		if (maxPassengers == 0)
+		{
 
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_ActivateScript", MRPCMode.AllBuffered, new object[]{ player.GetComponent<Metwork_Object> ().netID });
-			} else {
-				RPC_ActivateScript (player.GetComponent<Metwork_Object> ().netID);
+			if (Metwork.peerType != MetworkPeerType.Disconnected)
+			{
+				netView.RPC("RPC_ActivateScript", MRPCMode.AllBuffered, new object[] { player.GetComponent<Metwork_Object>().netID });
+			}
+			else
+			{
+				RPC_ActivateScript(player.GetComponent<Metwork_Object>().netID);
 			}
 
 
 		}
-		else if (passengers < maxPassengers) {
-			if (passengers < 1) {
-				foreach (MonoBehaviour scriptToActivate in scriptsToActivate) {
-					
-					scriptToActivate.enabled = true;
-					try {
-						//	scriptToActivate.gameObject.GetComponent<Metwork_Object> ().owner = player.GetComponent<Metwork_Object> ().owner;
-					} catch {
-
-					}
-					scriptToActivate.SendMessage ("Activate", player);
-
-				}
-
-			} else {
-				//foreach (MonoBehaviour scriptToActivate in scriptsToActivate) {
-					
-				//	scriptToActivate.SendMessage ("AddPassenger", player);
-				//}
-			}
-		}
-
-		//functionToRun.Invoke(player);
 	}
 
 	[MRPC]
