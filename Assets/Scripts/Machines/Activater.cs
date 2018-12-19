@@ -8,19 +8,10 @@ public class Activater : MonoBehaviour {
 	public int maxPassengers;
 	public int passengers;
 	public MetworkView netView;
-	//public Metwork_Object netObjectScript;
-
-	//public UnityEvent functionToUse;
-	//public UnityEvent<Object> functionToRun;
+	
 	// Use this for initialization
 	void Start () {
 		netView = GetComponent<MetworkView> ();
-	//	netObjectScript = this.GetComponent<Metwork_Object> ();
-	//	if (netObjectScript == null) {
-	//		netObjectScript = transform.root.GetComponent<Metwork_Object> ();
-
-	//	}
-		//functionToRun = UnityfunctionToUse;
 	}
 
 	public void ActivateScript(GameObject player){
@@ -34,7 +25,7 @@ public class Activater : MonoBehaviour {
 
 
 		}
-		if (passengers < maxPassengers) {
+		else if (passengers < maxPassengers) {
 			if (passengers < 1) {
 				foreach (MonoBehaviour scriptToActivate in scriptsToActivate) {
 					

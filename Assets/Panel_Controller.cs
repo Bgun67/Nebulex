@@ -80,13 +80,20 @@ public class Panel_Controller : MonoBehaviour {
 
 	}
 
-	void Repair(){		
+	void Repair()
+	{
 		redLight.enabled = false;
 
-		anim.SetBool ("Open", false);
-		anim.SetBool ("Repair",false);
+		anim.SetBool("Open", false);
+		try
+		{
+			anim.SetBool("Repair", false);
+		}
+		catch
+		{
+		}
 
-		repairFunction.Invoke ();
+		repairFunction.Invoke();
 		greenLight.enabled = true;
 		currentAutoTime = autoTime;
 

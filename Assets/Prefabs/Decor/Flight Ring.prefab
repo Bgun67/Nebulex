@@ -8,23 +8,22 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1015886732477108}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1015886732477108
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4147968322371916}
   - component: {fileID: 33732887515022862}
   - component: {fileID: 23663589342957904}
   - component: {fileID: 64297211784925744}
   - component: {fileID: 64565656173973930}
-  - component: {fileID: 114073718373949742}
-  - component: {fileID: 148874893424401808}
+  - component: {fileID: 114473439250738304}
   m_Layer: 0
   m_Name: Flight Ring
   m_TagString: Untagged
@@ -35,7 +34,7 @@ GameObject:
 --- !u!4 &4147968322371916
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1015886732477108}
   m_LocalRotation: {x: 0.007918525, y: -0.01782524, z: -0.000030405956, w: 0.99980974}
@@ -48,7 +47,7 @@ Transform:
 --- !u!23 &23663589342957904
 MeshRenderer:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1015886732477108}
   m_Enabled: 1
@@ -58,6 +57,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 4406b31b1508fca41bf15b9e51069547, type: 2}
   m_StaticBatchInfo:
@@ -82,14 +82,14 @@ MeshRenderer:
 --- !u!33 &33732887515022862
 MeshFilter:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1015886732477108}
   m_Mesh: {fileID: 4300040, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
 --- !u!64 &64297211784925744
 MeshCollider:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1015886732477108}
   m_Material: {fileID: 0}
@@ -103,7 +103,7 @@ MeshCollider:
 --- !u!64 &64565656173973930
 MeshCollider:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1015886732477108}
   m_Material: {fileID: 0}
@@ -114,10 +114,10 @@ MeshCollider:
   m_CookingOptions: -1
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300040, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
---- !u!114 &114073718373949742
+--- !u!114 &114473439250738304
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1015886732477108}
   m_Enabled: 1
@@ -126,15 +126,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   netView: {fileID: 0}
---- !u!148 &148874893424401808
-NetworkView:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1015886732477108}
-  m_Enabled: 1
-  m_StateSynchronization: 0
-  m_Observed: {fileID: 4147968322371916}
-  m_ViewID:
-    m_ID: 0
-    m_Type: 0

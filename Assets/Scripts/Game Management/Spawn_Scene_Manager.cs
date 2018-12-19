@@ -52,8 +52,6 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 	public void Spawn(int index){
 		
 		Player_Controller _player = gameController.localPlayer.GetComponent<Player_Controller>();
-
-		print ("Spawning");
 		_player.transform.position = spawnPositions [index].position;
 		_player.damageScript.initialPosition = null;
 		_player.damageScript.Reactivate();

@@ -66,7 +66,6 @@ public class Bomber_Controller : MonoBehaviour
 		netObj = this.GetComponent<Metwork_Object> ();
 		anim = this.GetComponent<Animator> ();
 		engineSound = this.GetComponent<AudioSource> ();
-		InvokeRepeating ("FindDirection", 0f, 2f);
 		InvokeRepeating ("CheckOccupied", 1f, 1f);
 		damageScript = this.GetComponent<Damage> ();
 		this.enabled = false;
@@ -342,10 +341,18 @@ public class Bomber_Controller : MonoBehaviour
 			netObj = this.GetComponent<Metwork_Object> ();
 		}
 		player.SetActive (true);
-		player.GetComponent<Rigidbody> ().useGravity = false;
 		player.GetComponent<Rigidbody> ().velocity = this.rb.velocity;
 		player.transform.position = this.transform.position+FindExitPoint();
-		player.GetComponent<Player_Controller> ().StartCoroutine ("ExitGravity");
+		if (rb.useGravity)
+		{
+			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
+			player.GetComponent<Rigidbody>().useGravity = true;
+		}
+		else
+		{
+			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
+			player.GetComponent<Rigidbody>().useGravity = false;
+		}
 		player.GetComponent<Player_Controller> ().inVehicle = false;
 
 		anim.SetBool ("Should Close", false);

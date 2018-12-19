@@ -390,10 +390,18 @@ public class Ship_Controller : MonoBehaviour {
 			netObj = this.GetComponent<Metwork_Object> ();
 		}
 		player.SetActive (true);
-		player.GetComponent<Rigidbody> ().useGravity = false;
 		player.GetComponent<Rigidbody> ().velocity = this.rb.velocity;
 		player.transform.position = this.transform.position+FindExitPoint();
-		player.GetComponent<Player_Controller> ().StartCoroutine ("ExitGravity");
+		if (rb.useGravity)
+		{
+			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
+			player.GetComponent<Rigidbody>().useGravity = true;
+		}
+		else
+		{
+			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
+			player.GetComponent<Rigidbody>().useGravity = false;
+		}
 		player.GetComponent<Player_Controller> ().inVehicle = false;
 
 		anim.SetBool ("Should Close", false);

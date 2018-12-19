@@ -29,6 +29,7 @@ public class Player_Controller : MonoBehaviour {
 	public float lookFactor = 1f;
 	public float moveFactor = 1f;
 	public float currentStepHeight;
+	public bool enteringGravity = false;
 	public MetworkView netView;
 	public Metwork_Object netObj;
 	public float jetpackFuel = 1f;
@@ -270,7 +271,7 @@ public class Player_Controller : MonoBehaviour {
 
 
 		if (inVehicle) {
-			Look ();
+			MouseLook();
 			TurnHead ();
 			return;
 		} else {
@@ -289,7 +290,7 @@ public class Player_Controller : MonoBehaviour {
 			Pause ();
 		}
 		if (Input.GetButtonDown ("Use Item")) {
-				UseItem ();
+			UseItem ();
 			
 		}
 		if (Input.GetKeyDown ("/")) {
@@ -311,7 +312,7 @@ public class Player_Controller : MonoBehaviour {
 		} 	
 
 		if (rb.useGravity) {
-			Look ();
+			MouseLook();
 
 			if (z > 0f) {
 				Jump ();
@@ -836,52 +837,7 @@ public class Player_Controller : MonoBehaviour {
 
 	}
 	#region Region1
-	/*
-	public  void SwitchBodies(){
-		RaycastHit hit;
-		if (Physics.Raycast (mainCamera.transform.position, mainCamera.transform.forward, out hit)) {
-			//if (hit.transform.root.GetComponent<Com_Controller> () != null) {
-			if(hit.transform.root.GetComponent<Com_Controller>() != null){
-				print ("Most Spectacular body");
-				GameObject otherBody = hit.transform.gameObject;
-				Com_Controller comScript = otherBody.GetComponent<Com_Controller> ();
-				if (comScript.enabled == true) {
-					if (comScript.team == team) {
-						Player_Controller newPlayerScript;
-						Com_Controller newComScript = this.GetComponent<Com_Controller> ();
-						newPlayerScript = otherBody.GetComponent <Player_Controller> ();
-
-
-						#region getPlayer Properties
-						newPlayerScript.team = team;
-						newComScript.team = team;
-
-						#endregion
-
-						//newPlayerScript.StartCoroutine (Setup ());
-						minimapCam.GetComponent<Camera> ().enabled = false;
-
-						mainCamera.GetComponent<Camera> ().enabled = false;
-						mainCamera.GetComponent<AudioListener> ().enabled = false;
-						otherBody.GetComponent<Metwork_Object> ().owner = this.netObjectScript.owner;
-						otherBody.GetComponent<NavMeshAgent> ().enabled = false;
-						this.GetComponent<NavMeshAgent> ().enabled = true;
-						this.netObjectScript.owner = 0;
-						newComScript.enabled = true;
-						newComScript.Setup ();
-						newPlayerScript.enabled = true;
-						comScript.enabled = false;
-						this.enabled = false;
-					}
-				}
-
-			} else {
-				print ("Not a Com");
-			}
-		} else {
-			print ("not hitting");
-		}
-	}*/
+	
 	public virtual void Aim(){
 		if (MInput.GetButton ("Left Trigger")) {
 			anim.SetBool ("Scope", true);
@@ -1047,7 +1003,7 @@ public class Player_Controller : MonoBehaviour {
 
 	public void SpaceMove(){
 		float factor = lookFactor * Time.deltaTime * forceFactor ;
-		rb.AddRelativeTorque (-v2 *factor/2f, h2*factor/2f,-h*factor/3f);
+		rb.AddRelativeTorque (-v2 *factor/3f, h2*factor/3f,-h*factor/4f);
 		rb.AddRelativeForce (0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f);
 
 	}
@@ -1110,17 +1066,39 @@ public class Player_Controller : MonoBehaviour {
 
 
 		rb.AddRelativeForce (h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
-		this.transform.Rotate (0f, h2 * Time.deltaTime*120f, 0f);
-
-			
-
-
-
+		this.transform.Rotate (0f, h2 *lookFactor* Time.deltaTime*360f, 0f);
 	}
 
 
 	public void Look(){
-		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo (1).normalizedTime;
+		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
+			
+
+		if (v2 < 0f) {
+			if (lookUpDownTime > 0f) {
+				anim.SetFloat ("Look Speed", v2*lookFactor);
+			} else {
+				anim.SetFloat ("Look Speed", 0f);
+			}
+		} else if (v2 > 0f) {
+			if (lookUpDownTime <= 1f) {
+				anim.SetFloat ("Look Speed", v2*lookFactor);
+			} else {
+				anim.SetFloat ("Look Speed", 0f);
+			}
+		} else {
+			anim.SetFloat ("Look Speed", 0f);
+		}
+		if (Time.frameCount % 6==0) {
+			if (Metwork.peerType != MetworkPeerType.Disconnected) {
+				netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
+			}
+		}
+
+	
+	}
+	public void MouseLook(){
+		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
 			
 
 		if (v2 < 0f) {
@@ -1278,35 +1256,43 @@ public class Player_Controller : MonoBehaviour {
 		if(netObj.isLocal){
 			breatheSound.Play ();
 		}
+		print("Exited");
 		walkSound.Stop ();
 
 		lookFactor = 0.1f;
 
 	}
 	public IEnumerator EnterGravity(){
+		if (enteringGravity)
+		{
+			yield break;
+		}
+		enteringGravity = true;
 		StopCoroutine(ExitGravity());
 		anim.SetBool ("Float", false);
 		
 		rb.angularVelocity = Vector3.zero;
-		//Vector3 _transformedVector = transform.TransformVector(transform.forward);
-		Vector3 newForwardVector = new Vector3 (transform.forward.x, 0f, transform.forward.z);
 		rb.angularDrag = 20f;
 
 		float _counter = 0f;
-		yield return new WaitForSeconds(0);
-		/* 	while (_counter<1&&Mathf.Abs(transform.forward.y) < 0.1) {
-				transform.forward = Vector3.Lerp (transform.forward, newForwardVector, _counter);
-				yield return new WaitForSeconds(0.01f);
-				_counter += 0.1f;
-		}*/
-		transform.forward = newForwardVector;
-		
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+		/* while (_counter < 1f && Mathf.Abs(transform.forward.y) > 0.1f)
+		{
+			transform.forward = Vector3.Lerp(transform.up, Vector3.up, _counter);
+			yield return new WaitForEndOfFrame();
+			_counter += 0.1f;
+			print("Counter " + _counter);
+		}*/
+		print("Finished Rotation");
+
+		transform.up = Vector3.up;
 
 
 		breatheSound.Stop ();
 		walkSound.Play ();
-		lookFactor = 1f;
+		lookFactor = 3f;
+		enteringGravity = false;
 
 
 		//}

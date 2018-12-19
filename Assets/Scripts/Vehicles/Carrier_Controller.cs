@@ -18,6 +18,7 @@ public class Carrier_Controller : MonoBehaviour {
 	public Plasma_Cannon cannon;
 	public Light fireCannonLight;
 	public Light chargeCannonLight;
+	public Transform pilotPosition;
 
 	public GameObject explosionPrefab;
 	public GameObject subExplosionPrefab;
@@ -66,9 +67,6 @@ public class Carrier_Controller : MonoBehaviour {
 		}
 		pilot = player;
 		playerNetObj = player.GetComponent<Metwork_Object> ();
-		if (playerNetObj.isLocal) {
-			this.GetComponent<ConfigurableJoint> ().connectedBody = player.GetComponent<Rigidbody> ();
-		}
 		player.GetComponent<Player_Controller> ().inVehicle = true;
 		exitWait = Time.time + 2f;
 		if (playerNetObj.isLocal) {
@@ -77,13 +75,22 @@ public class Carrier_Controller : MonoBehaviour {
 
 	}
 	public void Exit(){
+		if (playerNetObj.isLocal && Metwork.peerType != MetworkPeerType.Disconnected) {
+			netObj.netView.RPC ("RPC_Exit", MRPCMode.OthersBuffered, new object[]{  });
+		}
 		lastTime = Time.time;
 		pilot.GetComponent<Player_Controller> ().inVehicle = false;
 		pilot = null;
 		playerNetObj = null;
-		this.GetComponent<ConfigurableJoint> ().connectedBody = null;
 		predictedPath.enabled = false;
-
+		
+	}
+	[MRPC]
+	void RPC_Exit()
+	{
+		pilot.GetComponent<Player_Controller>().inVehicle = false;
+		pilot = null;
+		playerNetObj = null;
 	}
 
 	public void SendControls(){
@@ -102,61 +109,84 @@ public class Carrier_Controller : MonoBehaviour {
 
 	void FixedUpdate(){
 
-		if (pilot != null && playerNetObj.isLocal) {
-
-			if (Input.GetKey (KeyCode.LeftShift)) {
+		if (pilot != null && playerNetObj.isLocal)
+		{
+			pilot.GetComponent<Rigidbody>().velocity = rb.GetPointVelocity(pilotPosition.position);
+			if (Time.frameCount % 3f == 0)
+			{
+				pilot.transform.forward = this.transform.forward;
+			}
+			if (Input.GetKey(KeyCode.LeftShift))
+			{
 				thrust = 1.5E7f;
-			} else {
+			}
+			else
+			{
 				thrust = 0.75E7f;
 			}
 
-			throttle = Mathf.Clamp (throttle + Input.GetAxis ("Move Z") / 10f, -1f, 1f);
-			steering = Mathf.Clamp (steering + Input.GetAxis ("Move X") / 10f, -1f, 1f);
-			if (threeAxis) {
+			throttle = Mathf.Clamp(throttle + Input.GetAxis("Move Z") / 10f, -1f, 1f);
+			steering = Mathf.Clamp(steering + Input.GetAxis("Move X") / 10f, -1f, 1f);
+			if (threeAxis)
+			{
 
-				vertical = Input.GetAxis ("Move Y");
+				vertical = Input.GetAxis("Move Y");
 			}
-			if (Input.GetButtonDown ("Use Item") && Time.time > exitWait) {
-				Exit ();
+			if (Input.GetButtonDown("Use Item") && Time.time > exitWait)
+			{
+				Exit();
 			}
-			if (Input.GetButtonDown ("Fire1")) {
-				if (Metwork.peerType != MetworkPeerType.Disconnected) {
-					netObj.netView.RPC ("RPC_Fire", MRPCMode.AllBuffered, new object[]{ });
-				} else {
-					RPC_Fire ();
+			if (Input.GetButtonDown("Fire1"))
+			{
+				if (Metwork.peerType != MetworkPeerType.Disconnected)
+				{
+					netObj.netView.RPC("RPC_Fire", MRPCMode.AllBuffered, new object[] { });
+				}
+				else
+				{
+					RPC_Fire();
 				}
 			}
-			if (Input.GetButtonDown ("Jump")) {
-				if (Metwork.peerType != MetworkPeerType.Disconnected) {
-					netObj.netView.RPC ("RPC_ChargeCannon", MRPCMode.AllBuffered, new object[]{ });
-				} else {
-					RPC_ChargeCannon ();
+			if (Input.GetButtonDown("Jump"))
+			{
+				if (Metwork.peerType != MetworkPeerType.Disconnected)
+				{
+					netObj.netView.RPC("RPC_ChargeCannon", MRPCMode.AllBuffered, new object[] { });
+				}
+				else
+				{
+					RPC_ChargeCannon();
 				}
 			}
 
 			//try {
-				if (throttle > 0) {
-					if (reverse) {
-						reverse = false;
-						leftGauge.GetComponent<MeshRenderer> ().material.color = new Color(0.286f, 0.49f,1f);
-					centerGauge.GetComponent<MeshRenderer> ().material.color = new Color(0.286f, 0.49f,1f);
-					rightGauge.GetComponent<MeshRenderer> ().material.color = new Color(0.286f, 0.49f,1f);
-					}
-					leftGauge.SetFloat ("Throttle", (steering + throttle) * 0.5f);
-					centerGauge.SetFloat ("Throttle", throttle);
-					rightGauge.SetFloat ("Throttle", (throttle - steering) * 0.5f);
-				} else {
-					if (!reverse) {
-						leftGauge.GetComponent<MeshRenderer> ().material.color = new Color(1f, 0.294f,0.293f);
-					centerGauge.GetComponent<MeshRenderer> ().material.color =new Color(1f, 0.294f,0.293f);
-					rightGauge.GetComponent<MeshRenderer> ().material.color = new Color(1f, 0.294f,0.293f);
+			if (throttle > 0)
+			{
+				if (reverse)
+				{
+					reverse = false;
+					leftGauge.GetComponent<MeshRenderer>().material.color = new Color(0.286f, 0.49f, 1f);
+					centerGauge.GetComponent<MeshRenderer>().material.color = new Color(0.286f, 0.49f, 1f);
+					rightGauge.GetComponent<MeshRenderer>().material.color = new Color(0.286f, 0.49f, 1f);
+				}
+				leftGauge.SetFloat("Throttle", (steering + throttle) * 0.5f);
+				centerGauge.SetFloat("Throttle", throttle);
+				rightGauge.SetFloat("Throttle", (throttle - steering) * 0.5f);
+			}
+			else
+			{
+				if (!reverse)
+				{
+					leftGauge.GetComponent<MeshRenderer>().material.color = new Color(1f, 0.294f, 0.293f);
+					centerGauge.GetComponent<MeshRenderer>().material.color = new Color(1f, 0.294f, 0.293f);
+					rightGauge.GetComponent<MeshRenderer>().material.color = new Color(1f, 0.294f, 0.293f);
 
 					reverse = true;
-					}
-					leftGauge.SetFloat ("Throttle", (steering - throttle) * 0.5f);
-					centerGauge.SetFloat ("Throttle", -throttle);
-					rightGauge.SetFloat ("Throttle", (-throttle - steering) * 0.5f);
 				}
+				leftGauge.SetFloat("Throttle", (steering - throttle) * 0.5f);
+				centerGauge.SetFloat("Throttle", -throttle);
+				rightGauge.SetFloat("Throttle", (-throttle - steering) * 0.5f);
+			}
 			//} catch {
 
 			//}
@@ -285,13 +315,10 @@ public class Carrier_Controller : MonoBehaviour {
 	}
 
 	public void ReactivateGravity(){
-		print ("RPC invokes");
 		this.GetComponentInChildren<Gravity_Controller>().useGravity = true;
 		this.GetComponentInChildren<Gravity_Controller>().ignoreInternalObjects = false;
-		Time.timeScale = 0.5f;
+		//Time.timeScale = 0.5f;
 		Invoke ("IgnoreInternal", 1f);
-		print ("Completed");
-
 	}
 
 	void IgnoreInternal(){
