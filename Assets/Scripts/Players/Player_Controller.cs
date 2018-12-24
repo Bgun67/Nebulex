@@ -361,6 +361,8 @@ public class Player_Controller : MonoBehaviour {
 					} else {
 						RPC_Crouch ();
 					}
+					
+
 				}
 			} else if (Input.GetButton ("Sprint")) {
 				walkState = WalkState.Running;
@@ -394,127 +396,7 @@ public class Player_Controller : MonoBehaviour {
 		else{
 			breatheSound.volume = 0f;
 		}
-		/*
-		#region keypad
-		if (keypadPushed == true) {
-			if (Input.GetAxisRaw ("Keypad Horizontal") < 0.5f && Input.GetAxisRaw ("Keypad Horizontal") > -0.5f) {
-				if (Input.GetAxisRaw ("Keypad Vertical") < 0.5f && Input.GetAxisRaw ("Keypad Vertical") > -0.5f) {
-					keypadPushed = false;
-					HideQuadrants();
-
-					switch (pieNumber) {
-					case 0: 
-						break;
-					case 1: 
-						break;
-					case 2:
-						break;
-					case 3:
-						if (minimapPower >= 6f) {
-							minimapRunning = !minimapRunning;
-							StartCoroutine (ShowMinimap ());
-						}
-						break;
-					case 4:
-						break;
-					case 5:
-						break;
-					case 6:
-						if(grenadesNum>0){
-							grenadesNum--;
-							ThrowGrenade();
-						}
-						break;
-					case 7:
-						break;
-					case 8:
-						break;
-					case 9:
-						break;
-					case 10:
-						break;
-					case 11:
-						break;
-					case 12:
-						CallShip ();
-						print ("Calling");
-						break;
-					}
-				}
-
-			}
-
-		} 
-			if (Input.GetAxisRaw ("Keypad Horizontal") > 0.1f) {
-				//Right pushed on control pad 
-				ShowPieQuadrant(1);
-				if (v2> 0.5f) {
-					pieNumber = 2;
-				} else if (h2> 0.5f) {
-					pieNumber = 3;
-				} else if (v2< -0.5f) {
-					pieNumber = 4;
-				} else {
-					pieNumber = 0;
-				}
-				keypadPushed = true;
-
-			}
-			else if (Input.GetAxisRaw ("Keypad Horizontal") < -0.1f){
-				//Left Pushed on control pad
-				ShowPieQuadrant(3);
-
-				if (v2> 0.5f) {
-					pieNumber = 10;
-				} else if (h2< -0.5f) {
-					pieNumber = 9;
-				} else if (v2< -0.5f) {
-					pieNumber = 8;
-				} else {
-					pieNumber = 0;
-				}
-				keypadPushed = true;
-
-			}
-			else if (Input.GetAxisRaw ("Keypad Vertical") > 0.1f){
-				//Up Pushed on control pad
-				ShowPieQuadrant(0);
-
-				if (h2< -0.5f) {
-					pieNumber = 11;
-				} else if (v2>0.5f) {
-					pieNumber = 12;
-				} else if (h2> 0.5f) {
-					pieNumber = 1;
-				} else {
-					pieNumber = 0;
-				}
-				keypadPushed = true;
-
-			}
-			else if (Input.GetAxisRaw ("Keypad Vertical") < -0.1f){
-				//Up Pushed on control pad
-				ShowPieQuadrant(2);
-
-				if (h2< -0.5f) {
-					pieNumber = 7;
-				} else if (v2<-0.5f) {
-					pieNumber = 6;
-				} else if (h2> 0.5f) {
-					pieNumber = 5;
-				} else {
-					pieNumber = 0;
-				}
-				keypadPushed = true;
-
-			}
-			else {
-				
-				HideQuadrants();
-			}
-
-		#endregion
-		*/
+		
 			if (Input.GetButton ("Fire1")) {
 				Attack ();
 
@@ -844,7 +726,15 @@ public class Player_Controller : MonoBehaviour {
 			//StartCoroutine (Zoom (true));
 			Zoom(true);
 			lookFactor = 0.3f;
-			moveFactor = 0.75f;
+			if (walkState!=WalkState.Crouching)
+			{
+				moveFactor = 0.75f;
+			}
+			else
+			{
+				moveFactor = 0.5f;
+
+			}
 			recoilString = "Recoil" + fireScript.recoilNumber;
 			if (Time.frameCount % 3f == 0) {
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -854,8 +744,16 @@ public class Player_Controller : MonoBehaviour {
 
 		} else {
 			anim.SetBool ("Scope", false);
-			Zoom(false);	
-			moveFactor = 1f;
+			Zoom(false);
+			if (walkState!=WalkState.Crouching)
+			{
+				moveFactor = 1f;
+			}
+			else
+			{
+				moveFactor = 0.75f;
+
+			}
 			lookFactor = 1f;
 			recoilString = "Recoil" + fireScript.recoilNumber+"*";
 			if (Time.frameCount+1 % 3f == 0) {
@@ -1265,10 +1163,10 @@ public class Player_Controller : MonoBehaviour {
 	public IEnumerator EnterGravity(){
 		if (enteringGravity)
 		{
-			yield break;
+			yield return null;
 		}
 		enteringGravity = true;
-		StopCoroutine("ExitGravity()");
+		//StopCoroutine("ExitGravity()");
 		anim.SetBool ("Float", false);
 		
 		rb.angularVelocity = Vector3.zero;
@@ -1276,17 +1174,15 @@ public class Player_Controller : MonoBehaviour {
 
 		float _counter = 0f;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
-
-		/* while (_counter < 1f && Mathf.Abs(transform.forward.y) > 0.1f)
+		Vector3 newForwardVector = new Vector3(transform.forward.x, 0f, transform.forward.z);
+		while (_counter < 1f && Mathf.Abs(transform.forward.y) > 0.1f)
 		{
-			transform.forward = Vector3.Lerp(transform.up, Vector3.up, _counter);
+			transform.forward = Vector3.Lerp(transform.forward, newForwardVector, _counter);
 			yield return new WaitForEndOfFrame();
 			_counter += 0.1f;
-			print("Counter " + _counter);
-		}*/
-		print("Finished Rotation");
+		}
 
-		transform.up = Vector3.up;
+		transform.forward = newForwardVector;
 
 
 		breatheSound.Stop ();
@@ -1468,6 +1364,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 
 		playerName = playerData [0];
+		MInput.useMouse = playerData[4]=="True";
 		if (playerName.StartsWith ("$132435**ADMIN")) {
 			playerName = playerName.Remove (0, 14);
 			gameController.statsArray [netObj.netID].name = playerName;

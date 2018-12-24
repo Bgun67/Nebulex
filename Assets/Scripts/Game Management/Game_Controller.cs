@@ -113,7 +113,9 @@ public class Game_Controller : MonoBehaviour {
 		if (SceneManager.GetActiveScene ().name != "LobbyScene") {
 			InvokeRepeating ("GameUpdate", 1f, 1f);
 			InvokeRepeating ("UpdateUI", 1f, 0.1f);
-		} else {
+		} 
+		if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
+		{
 			SceneManager.LoadScene ("SpawnScene",LoadSceneMode.Additive);
 		}
 
@@ -430,6 +432,8 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			endTimeText.text = "Remaining Time: 0:00"; 
 		}
+		eventSystem.SetActive(true);
+
 
 
 	}
@@ -533,8 +537,11 @@ public class Game_Controller : MonoBehaviour {
 	}
 	public void LoadSpawnScene()
 	{
-		SceneManager.LoadScene("Lobby Scene");
+		print("Loading Spawn Scene");
+		FindObjectOfType<Network_Manager>().minStartingPlayers = 2;
+		SceneManager.LoadScene("LobbyScene");
 	}
+	
 
 
 

@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 public class Match_Scene_Manager : MonoBehaviour {
 	//public Network netView;
 	public InputField gameNameInput;
-
+	public GameObject loadingPanel;
 	/*public class HostData
 	{
 		public int connectedPlayers;
@@ -106,9 +106,20 @@ public class Match_Scene_Manager : MonoBehaviour {
 		}));
 		connection.gameType = hostData [index].gameType;
 		connection.gameName = hostData [index].gameName;
+		//unsecure, but should not fail
+		try { loadingPanel.SetActive(true);
+
+		}catch { }
+
+		Invoke("DeactivateLoadPanel", 5f);
 
 
 
+	}
+	void DeactivateLoadPanel()
+	{
+		//unsecure, but should not fail
+		loadingPanel.SetActive(false);
 	}
 	public void OnMetPlayerConnected(MetworkPlayer _player){
 		//if (Metwork.player == null || _player.connectionID == Metwork.player.connectionID && (SceneManager.GetActiveScene().name == "MatchScene")) {
@@ -144,26 +155,34 @@ public class Match_Scene_Manager : MonoBehaviour {
 			return;
 		}
 
-		if (gameNameInput.text != "") {
+		if (gameNameInput.text != "")
+		{
 			connection.gameName = gameNameInput.text;
-			if (testing) {
+			if (testing)
+			{
 				//Network.InitializeServer (32, int.Parse (portString), false);
-			} else {
+			}
+			else
+			{
 				//Network.InitializeServer (32, int.Parse (portString),
 				//	!Network.HavePublicAddress ());
-				Metwork.InitializeServer (gameNameInput.text);
+
+				Metwork.InitializeServer(gameNameInput.text);
 			}
 			Metwork.onServerInitialized += OnMetServerInitialized;
 
 			//This line is only necessary for local builds
 			//MasterServer.RegisterHost (connection.gameType, gameNameInput.text, "");
-			
-
+			//unsecure, but should not fail
+			try { loadingPanel.SetActive(true); } catch { }
+			Invoke("DeactivateLoadPanel", 5f);
 			//Destroy the script, it no longer belongs
-			print ("Starting Server");
+			print("Starting Server");
 			//Destroy (this);
-		} else {
-			print ("Please input a game name");
+		}
+		else
+		{
+			print("Please input a game name");
 		}
 	}
 

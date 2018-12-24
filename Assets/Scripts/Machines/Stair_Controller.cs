@@ -6,11 +6,7 @@ public class Stair_Controller : MonoBehaviour {
 
 	public float stepHeight;
 
-	// Use this for initialization
-	void Start () {
-		print ("Start");
 
-	}
 
 	// Update is called once per frame
 	void OnTriggerEnter(Collider other) {

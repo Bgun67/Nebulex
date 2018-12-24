@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class Network_Manager : MonoBehaviour {
 
-	[Tooltip("The minimum players required to leave the lobby and begin the match")]
+	[Tooltip("The minimum players required to leave the lobby and begin the match, make sure to changein game controller")]
 	public int minStartingPlayers = 2;
 	public int maxPlayers;
 
@@ -43,18 +43,25 @@ public class Network_Manager : MonoBehaviour {
 	}
 	void Update(){
 		if (Input.GetKeyDown (".")) {
-			minStartingPlayers = 1;
-			//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
-			//must be connected anyway
-			print ("We Starting");
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_LoadScene", MRPCMode.AllBuffered, new object[]{ "TransistionScene" });
-			} else {
-				RPC_LoadScene ("TransistionScene");
-			}
-			sceneMode = SceneMode.Game;
-			print ("Invoked RPC");
+			PrematureStart();
 		}
+	}
+	public void PrematureStart()
+	{
+		minStartingPlayers = 1;
+		//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
+		//must be connected anyway
+		print("We Starting");
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netView.RPC("RPC_LoadScene", MRPCMode.AllBuffered, new object[] { "TransistionScene" });
+		}
+		else
+		{
+			RPC_LoadScene("TransistionScene");
+		}
+		sceneMode = SceneMode.Game;
+		print("Invoked RPC");
 	}
 
 	void OnSceneLoaded(Scene _scene, LoadSceneMode _mode){

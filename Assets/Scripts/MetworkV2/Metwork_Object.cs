@@ -46,7 +46,7 @@ public class Metwork_Object : MonoBehaviour {
 
 		rb = this.GetComponent<Rigidbody> ();
 		actualPosition = this.transform.position;
-		InvokeRepeating("NetUpdate", 0f, Mathf.Clamp(1 / sendRate, 0, 20f));
+		InvokeRepeating("NetUpdate", 0f, Mathf.Clamp(1f / sendRate, 0, 20f));
 		if ((Metwork.peerType == MetworkPeerType.Disconnected && this.owner == 1)){ // || (Metwork.peerType != MetworkPeerType.Disconnected && this.owner == manager.playerNumber)) {
 			isLocal = true;
 		} else {
@@ -170,7 +170,6 @@ public class Metwork_Object : MonoBehaviour {
 			Vector3 deltaRot = (Quaternion.Inverse(transform.rotation) * actualRotation).eulerAngles;
 
 
-
 			if (deltaRot.x > 180f) {
 				deltaRot.x = -360f + deltaRot.x;
 			}
@@ -184,9 +183,14 @@ public class Metwork_Object : MonoBehaviour {
 
 			if (!isTwoPlane) {
 				rb.MoveRotation(Quaternion.LerpUnclamped (transform.rotation, actualRotation, rotationLerp));
-			} else {
+			} else
+			{
+				print("DeltaRot" + deltaRot);
+				print("Angular Velocity" + rb.angularVelocity);
 
-				rb.AddTorque (Mathf.Clamp(deltaRot.y/2f,-6f,6f) * rotationLerp * rb.mass * Time.fixedDeltaTime * rotForceFactor * Vector3.up);
+				rb.angularVelocity = Vector3.up * Mathf.Clamp(deltaRot.y * rotationLerp, -10f, 10f);
+
+				//never gonna giveyou up
 			}
 
 			actualPosition = actualPosition + actualVelocity * Time.fixedDeltaTime;
@@ -204,16 +208,10 @@ public class Metwork_Object : MonoBehaviour {
 		rb.MovePosition(_position);
 		rb.MoveRotation( _rotation);
 		rb.velocity = _velocity;
-		print ("Setting Metwork Object Position");
 	}
 
 	void NetUpdate(){
-
 		if (isLocal && Metwork.peerType != MetworkPeerType.Disconnected) {
-			if(GetComponent<Frag_Grenade>()){
-
-				print("Running Frag Metwork Object");
-			}
 			netView.RPC ("SendLocation", MRPCMode.Others, new object[] {
 				this.transform.position,
 				this.transform.rotation,

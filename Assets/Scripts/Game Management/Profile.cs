@@ -6,27 +6,40 @@ using UnityEngine.SceneManagement;
 
 public class Profile : MonoBehaviour {
 	public InputField nameInput;
+	public Toggle mouseToggle;
 	public string[] playerInfo;
 	public Text playerScore;
 	// Use this for initialization
 	void Start () {
-		playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.streamingAssetsPath+"/Player Data.txt"));
-		print ("Info Length" + playerInfo.Length);
-		playerScore.text = playerInfo [1];
-		nameInput.text = playerInfo [0];
+		try
+		{
+			playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Player Data.txt"));
+			print("Info Length" + playerInfo.Length);
+			playerScore.text = playerInfo[1];
+			nameInput.text = playerInfo[0];
+			mouseToggle.isOn = (playerInfo[4] == "True");
+		}
+		catch
+		{
+			RestoreDataFile();
+		}
+
 	}
 	public void SaveChanges(){
 		playerInfo [0] = nameInput.text;
+		MInput.useMouse = mouseToggle.isOn;
+		playerInfo[4] = mouseToggle.isOn.ToString();
 		print ("Info Length 2:" + playerInfo.Length);
 
 		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Player Data.txt",Util.ThiccWatermelon(playerInfo));
 
 	}
+	
 	public void Back(){
 		SceneManager.LoadScene ("Start Scene");
 	}
 	public static string[] RestoreDataFile(){
-		string[] playerData = new string[]{ "Unnamed Player", "10", "", "192.168.2.40" };
+		string[] playerData = new string[]{ "Unnamed Player", "10", "", "192.168.2.40", "true"};
 		System.IO.File.WriteAllLines (Application.streamingAssetsPath + "/Player Data.txt", Util.ThiccWatermelon (playerData));
 		return playerData;
 	}
