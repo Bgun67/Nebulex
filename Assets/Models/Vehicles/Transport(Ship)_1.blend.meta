@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 2784a1bf15db0e643af23176540722bf
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Cube
     100002: Cube_001
@@ -271,18 +271,43 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: None__Tire_Tread_Texture_Seamless_jpg
+    second: {fileID: 2100000, guid: a1c5841eee718ef4e88bfa0de3e03b55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__Tire_albedo_png
+    second: {fileID: 2100000, guid: a1c5841eee718ef4e88bfa0de3e03b55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__Transport-Gear_png
+    second: {fileID: 2100000, guid: 894ebd152f9200d4c9acc7bc1e1ecc09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__Transport-Gear_png_001
+    second: {fileID: 2100000, guid: 894ebd152f9200d4c9acc7bc1e1ecc09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Skin__Bomber_jpg
     second: {fileID: 2100000, guid: cc57eceee992718468a00d1f2bb36653, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Skin__roller-floor-albedo_jpg
+    second: {fileID: 2100000, guid: c672e05a8b47d7b47b845702fcc9b7a1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: unnamed
-    second: {fileID: 2100000, guid: dce126c0ceb956349b33de58c47d661c, type: 2}
+    second: {fileID: 2100000, guid: a1c5841eee718ef4e88bfa0de3e03b55, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -328,6 +353,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 46
     normalImportMode: 1

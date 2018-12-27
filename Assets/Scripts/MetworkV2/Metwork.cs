@@ -31,6 +31,11 @@ public enum MetworkPeerType
 	Disconnected,
 	Connected
 }
+public enum DisconnectReason{
+	Unexpected,
+	ClientQuit,
+	ServerQuit
+}
 public class MetworkPlayer{
 	
 	int pConnectionID = -1;
@@ -152,6 +157,10 @@ public class Metwork:MonoBehaviour {
 			return pPeerType;
 		}
 	}
+
+	public static DisconnectReason disconnectReason = DisconnectReason.ClientQuit;
+	public static string roomName;
+	public static int replaceServerPriority = 0;
 
 	public delegate void OnMetPlayerConnected(MetworkPlayer _player);
 	/// <summary>
@@ -427,6 +436,7 @@ public class Metwork:MonoBehaviour {
 		if (player == null && _isYou) {
 			//This is the newly connected player
 			player = _player;
+			Metwork.replaceServerPriority = _connID;
 			Debug.Log("Setting player to connectionID: " + _connID);
 			if (onConnectedToServer != null) {
 				onConnectedToServer.Invoke ();
@@ -527,8 +537,17 @@ public class Metwork:MonoBehaviour {
 
 	private void FixedUpdate()
 	{
+		//The connection was broken unexpectedly
+		if(Metwork.peerType == MetworkPeerType.Disconnected && Metwork.disconnectReason == DisconnectReason.Unexpected){
+			if(Time.frameCount % 300 == 0){
+				StartCoroutine(RecoverConnection(Metwork.isServer,roomName));
+			}
+
+		}
 		//check each fixed update if we have got new events
 		HandleMetwork();
+
+		
 	}
 
 
@@ -1213,9 +1232,11 @@ public class Metwork:MonoBehaviour {
 	/// </summary>
 	public static void Connect(string _room)
 	{
+		
 		Setup();
 		mMetwork.Connect(_room);
-		Append("Connecting to " + _room + " ...");
+		print("Connecting to " + _room + " ...");
+		roomName = _room;
 		/*foreach (MetworkView _view in metViews.Values) {
 			try{
 				Debug.Log ("Metwork view: " + _view.viewID);
@@ -1234,6 +1255,7 @@ public class Metwork:MonoBehaviour {
 	/// </summary>
 	public static void Disconnect()
 	{
+
 		Metwork._instance.Reset();
 		SetGuiState(true);
 	}
@@ -1244,55 +1266,54 @@ public class Metwork:MonoBehaviour {
 	/// </summary>
 	public static void InitializeServer(string _room)
 	{
+
 		Setup();
 		mMetwork.StartServer(_room);
 
 		Debug.Log("StartServer " + _room);
+		roomName = _room;
 
 	}
 
-
-	/// <summary>
-	/// This is called if the send button
-	/// </summary>
-	/*public void SendButtonPressed()
-	{
-		//get the message written into the text field
-		string msg = uMessageInput.text;
-
-
-		if (msg.StartsWith("/disconnect"))
-		{
-			string[] slt = msg.Split(' ');
-			if(slt.Length >= 2)
-			{
-				ConnectionId conId;
-				if (short.TryParse(slt[1], out conId.id))
-				{
-					mMetwork.Disconnect(conId);
+	public static IEnumerator RecoverConnection(bool _isServer, string _roomName){
+		
+		yield return new WaitForSeconds(0.1f);
+		for(int i = 0; i<5; i++){
+			print("Attempting Metwork Recovery. Room Name: " + _roomName);
+			if(Metwork.peerType == MetworkPeerType.Disconnected){
+				if(_isServer){
+					print("Attempting Server Recovery");
+					Metwork.InitializeServer(_roomName);
+				}
+				else{
+					print("Attempting Client Recovery");
+					Metwork.Connect(_roomName);
 				}
 			}
+			yield return new WaitForSeconds(0.5f);
 		}
 
-		//if we are the server -> add 0 in front as the server id
-		if(pIsServer)
-		{
-			//the server has the authority thus -> we can print it directly adding the 0 as server id
-			msg = "0:" + msg;
-			Append(msg);
-			SendString(msg);
+		//If we are still not connected, assume the role of server
+		yield return new WaitForSeconds(0.1f);
+		for(int i = 0; i< Metwork.replaceServerPriority; i++){
+			print("Attempting New Server Connection");
+			if(Metwork.peerType == MetworkPeerType.Disconnected){
+				
+				Metwork.Connect(_roomName);
+				
+			}
+			yield return new WaitForSeconds(0.5f);
 		}
-		else
-		{
-			//clients just send it directly to the server. the server will decide what to do with it
-			SendString(msg);
+		
+		if(Metwork.peerType == MetworkPeerType.Disconnected){
+			print("Attempting Server Replacement");
+			Metwork.InitializeServer(_roomName);
 		}
-		uMessageInput.text = "";
+				
+		
+	}
 
-		//make sure the text box is in focus again so the user can continue typing without clicking it again
-		//select another element first. without this the input field is in focus after return pressed
-		uSend.Select();
-		uMessageInput.Select();
-	}*/
+
+	
 	#endregion
 }

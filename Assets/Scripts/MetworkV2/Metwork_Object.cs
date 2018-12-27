@@ -66,7 +66,7 @@ public class Metwork_Object : MonoBehaviour {
 		Metwork_Object otherNetObj = other.transform.root.GetComponent<Metwork_Object> ();
 		if (otherNetObj != null) {
 			if (otherNetObj.isLocal && !isTwoPlane) {
-				isCollision = true;
+				//isCollision = true;
 				Invoke ("ResetCollision",0.3f);
 			}
 		}
@@ -185,8 +185,9 @@ public class Metwork_Object : MonoBehaviour {
 			if (!isTwoPlane) {
 				rb.MoveRotation(Quaternion.LerpUnclamped (transform.rotation, actualRotation, rotationLerp));
 			} else {
-
-				rb.AddTorque (Mathf.Clamp(deltaRot.y/2f,-6f,6f) * rotationLerp * rb.mass * Time.fixedDeltaTime * rotForceFactor * Vector3.up);
+				print(deltaRot.y);
+				rb.angularVelocity = new Vector3(0,deltaRot.y * rotForceFactor,0);
+				//rb.AddTorque (Mathf.Clamp(deltaRot.y/2f,-6f,6f) * rotationLerp * rb.mass * Time.fixedDeltaTime * rotForceFactor * Vector3.up);
 			}
 
 			actualPosition = actualPosition + actualVelocity * Time.fixedDeltaTime;

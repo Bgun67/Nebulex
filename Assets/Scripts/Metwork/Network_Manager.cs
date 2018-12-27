@@ -147,6 +147,10 @@ public class Network_Manager : MonoBehaviour {
 	[MRPC]
 	void RPC_LoadScene(string _sceneName){
 		print("Loading scene " + _sceneName);
+		if(SceneManager.GetActiveScene().name == "Space" && _sceneName == "TransistionScene"){
+			print("Cancelling Load");
+			return;
+		}
 		SceneManager.LoadScene (_sceneName);
 
 	}

@@ -78,7 +78,9 @@ public class Game_Controller : MonoBehaviour {
 	[Header( "UI Objects")]
 	public Text UI_timeText;
 	public Text UI_homeScoreText;
+	public Image UI_homeColour;
 	public Text UI_awayScoreText;
+	public Image UI_awayColour;
 	public Text UI_fpsText;
 	public GameObject eventSystem;
 	public GameObject gameplayUI;
@@ -315,13 +317,19 @@ public class Game_Controller : MonoBehaviour {
 		if (localPlayer != null && localPlayer.GetComponent<Player_Controller> ().team == 0) {
 			UI_homeScoreText.text = scoreA.ToString();
 			UI_awayScoreText.text = scoreB.ToString();
+			UI_homeColour.color = new Color(0,1f,0);
+			UI_awayColour.color = new Color(1f,0f,0);
 		} else if (localPlayer.GetComponent<Player_Controller> ().team == 1){
 			UI_homeScoreText.text = scoreB.ToString();
 			UI_awayScoreText.text = scoreA.ToString();
+			UI_awayColour.color = new Color(0,1f,0);
+			UI_homeColour.color = new Color(1f,0f,0);
 		}
 		else {
 			UI_homeScoreText.text = scoreB.ToString() + "*";
 			UI_awayScoreText.text = scoreA.ToString();
+			UI_awayColour.color = new Color(0,1f,0);
+			UI_homeColour.color = new Color(1f,0f,0);
 		}
 
 		//Update the time
@@ -430,6 +438,7 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			endTimeText.text = "Remaining Time: 0:00"; 
 		}
+		eventSystem.SetActive(true);
 
 
 	}
