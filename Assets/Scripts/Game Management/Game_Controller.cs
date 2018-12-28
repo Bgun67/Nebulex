@@ -599,7 +599,7 @@ public class Game_Controller : MonoBehaviour {
 		dreadNaught.transform.position = shipOneTransform.position + displacement+new Vector3(0f,0f,-600f);
 		dreadNaught.transform.LookAt (shipOneTransform.position + displacement);
 	}
-	public void LoadSpawnScene()
+	public void RestartGame()
 	{
 		print("Loading Spawn Scene");
 		FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
