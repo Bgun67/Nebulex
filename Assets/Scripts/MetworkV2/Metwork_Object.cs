@@ -49,8 +49,10 @@ public class Metwork_Object : MonoBehaviour {
 		InvokeRepeating("NetUpdate", 0f, Mathf.Clamp(1f / sendRate, 0, 20f));
 		if ((Metwork.peerType == MetworkPeerType.Disconnected && this.owner == 1)){ // || (Metwork.peerType != MetworkPeerType.Disconnected && this.owner == manager.playerNumber)) {
 			isLocal = true;
-		} else {
-			isLocal = false;
+		} else
+		{
+
+			CheckLocal();
 		}
 		if (isLocal) {
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -59,6 +61,31 @@ public class Metwork_Object : MonoBehaviour {
 		}
 
 		Invoke ("ResetPhysics", 0.5f);
+	}
+	public void CheckLocal()
+	{
+		try
+			{
+				if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0))
+				{
+					isLocal = true;
+				}
+				else
+				{
+					isLocal = false;
+				}
+			}
+			catch
+			{
+				if (this.owner == 1 || this.owner == 0)
+				{
+					isLocal = true;
+				}
+				else
+				{
+					isLocal = false;
+				}
+			}
 	}
 
 	void OnCollisionEnter(Collision other){
@@ -89,20 +116,7 @@ public class Metwork_Object : MonoBehaviour {
 		//}
 		//Physics.autoSimulation = true;
 
-		try{
-			if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0)) {
-				isLocal = true;
-			} else {
-				isLocal = false;
-			}
-		}
-		catch{
-			if (this.owner == 1 || this.owner == 0) {
-				isLocal = true;
-			} else {
-				isLocal = false;
-			}
-		}
+		CheckLocal();
 
 		if (!isLocal) {
 

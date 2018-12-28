@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class Network_Manager : MonoBehaviour {
 
 	[Tooltip("The minimum players required to leave the lobby and begin the match, make sure to changein game controller")]
-	public int minStartingPlayers = 2;
+	public int minStartingPlayers = 8;
 	public int maxPlayers;
 
 	//public int netID;
@@ -82,6 +82,11 @@ public class Network_Manager : MonoBehaviour {
 
 		} else if (_scene.name == "Space") {
 			sceneMode = SceneMode.Game;
+			//call to server to sync the scores on all clients
+			if (Metwork.peerType != MetworkPeerType.Disconnected)
+			{
+				netView.RPC("RPC_UpdateMatchInfo", MRPCMode.Server, new object[] { });
+			}
 		}
 	}
 

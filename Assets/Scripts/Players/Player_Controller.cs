@@ -172,6 +172,10 @@ public class Player_Controller : MonoBehaviour {
 				);
 			}
 		}
+		else
+		{
+			print("Not Local");
+		}
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
 		} else {
