@@ -16,20 +16,17 @@ public class Activater : MonoBehaviour {
 
 	public void ActivateScript(GameObject player)
 	{
-		if (maxPassengers == 0)
+
+
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
-
-			if (Metwork.peerType != MetworkPeerType.Disconnected)
-			{
-				netView.RPC("RPC_ActivateScript", MRPCMode.AllBuffered, new object[] { player.GetComponent<Metwork_Object>().netID });
-			}
-			else
-			{
-				RPC_ActivateScript(player.GetComponent<Metwork_Object>().netID);
-			}
-
-
+			netView.RPC("RPC_ActivateScript", MRPCMode.AllBuffered, new object[] { player.GetComponent<Metwork_Object>().netID });
 		}
+		else
+		{
+			RPC_ActivateScript(player.GetComponent<Metwork_Object>().netID);
+		}
+
 	}
 
 	[MRPC]

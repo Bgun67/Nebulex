@@ -46,11 +46,13 @@ public class Metwork_Object : MonoBehaviour {
 
 		rb = this.GetComponent<Rigidbody> ();
 		actualPosition = this.transform.position;
-		InvokeRepeating("NetUpdate", 0f, Mathf.Clamp(1 / sendRate, 0, 20f));
+		InvokeRepeating("NetUpdate", 0f, Mathf.Clamp(1f / sendRate, 0, 20f));
 		if ((Metwork.peerType == MetworkPeerType.Disconnected && this.owner == 1)){ // || (Metwork.peerType != MetworkPeerType.Disconnected && this.owner == manager.playerNumber)) {
 			isLocal = true;
-		} else {
-			isLocal = false;
+		} else
+		{
+
+			CheckLocal();
 		}
 		if (isLocal) {
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -59,6 +61,31 @@ public class Metwork_Object : MonoBehaviour {
 		}
 
 		Invoke ("ResetPhysics", 0.5f);
+	}
+	public void CheckLocal()
+	{
+		try
+			{
+				if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0))
+				{
+					isLocal = true;
+				}
+				else
+				{
+					isLocal = false;
+				}
+			}
+			catch
+			{
+				if (this.owner == 1 || this.owner == 0)
+				{
+					isLocal = true;
+				}
+				else
+				{
+					isLocal = false;
+				}
+			}
 	}
 
 	void OnCollisionEnter(Collision other){
@@ -89,20 +116,7 @@ public class Metwork_Object : MonoBehaviour {
 		//}
 		//Physics.autoSimulation = true;
 
-		try{
-			if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0)) {
-				isLocal = true;
-			} else {
-				isLocal = false;
-			}
-		}
-		catch{
-			if (this.owner == 1 || this.owner == 0) {
-				isLocal = true;
-			} else {
-				isLocal = false;
-			}
-		}
+		CheckLocal();
 
 		if (!isLocal) {
 
@@ -170,7 +184,6 @@ public class Metwork_Object : MonoBehaviour {
 			Vector3 deltaRot = (Quaternion.Inverse(transform.rotation) * actualRotation).eulerAngles;
 
 
-
 			if (deltaRot.x > 180f) {
 				deltaRot.x = -360f + deltaRot.x;
 			}
@@ -184,10 +197,14 @@ public class Metwork_Object : MonoBehaviour {
 
 			if (!isTwoPlane) {
 				rb.MoveRotation(Quaternion.LerpUnclamped (transform.rotation, actualRotation, rotationLerp));
-			} else {
-				print(deltaRot.y);
-				rb.angularVelocity = new Vector3(0,deltaRot.y * rotForceFactor,0);
-				//rb.AddTorque (Mathf.Clamp(deltaRot.y/2f,-6f,6f) * rotationLerp * rb.mass * Time.fixedDeltaTime * rotForceFactor * Vector3.up);
+			} else
+			{
+				//print("DeltaRot" + deltaRot);
+				//print("Angular Velocity" + rb.angularVelocity);
+
+				rb.angularVelocity = Vector3.up * Mathf.Clamp(deltaRot.y * rotationLerp, -10f, 10f);
+
+				//never gonna giveyou up
 			}
 
 			actualPosition = actualPosition + actualVelocity * Time.fixedDeltaTime;
@@ -205,16 +222,10 @@ public class Metwork_Object : MonoBehaviour {
 		rb.MovePosition(_position);
 		rb.MoveRotation( _rotation);
 		rb.velocity = _velocity;
-		print ("Setting Metwork Object Position");
 	}
 
 	void NetUpdate(){
-
 		if (isLocal && Metwork.peerType != MetworkPeerType.Disconnected) {
-			if(GetComponent<Frag_Grenade>()){
-
-				print("Running Frag Metwork Object");
-			}
 			netView.RPC ("SendLocation", MRPCMode.Others, new object[] {
 				this.transform.position,
 				this.transform.rotation,

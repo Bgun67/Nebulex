@@ -7,9 +7,16 @@ public class Main_Menu_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//DontDestroyOnLoad (FindObjectOfType<AudioSource> ());
+		DontDestroyOnLoad (this.gameObject);
 	}
-	
+	void Update()
+	{
+		if (SceneManager.GetActiveScene().name == "LobbyScene")
+		{
+			Destroy(this.gameObject);
+		}
+	}
+
 	// Update is called once per frame
 	public void StartMultiplayer () {
 		SceneManager.LoadScene ("Space");

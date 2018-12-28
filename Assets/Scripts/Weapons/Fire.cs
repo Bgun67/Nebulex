@@ -79,7 +79,7 @@ public class Fire : MonoBehaviour {
 			netView = this.GetComponentInParent<MetworkView> ();
 		}
 
-		StartCoroutine("CreateObjectPool", 0.3f);
+		Invoke("CreateObjectPool", 0.3f+Time.deltaTime);
 		//
 	}
 	public void Activate(GameObject player){
@@ -251,7 +251,7 @@ public class Fire : MonoBehaviour {
 		transform.root.SendMessage ("UpdateUI");
 
 	}
-	IEnumerator CreateObjectPool(){
+	void CreateObjectPool(){
 		for (int i = 0; i < magSize; i++) {
 			GameObject _bullet = GameObject.Instantiate (bulletPrefab, new Vector3 (0f, 1000f, 0f), Quaternion.identity);
 			_bullet.SetActive (false);
@@ -260,7 +260,7 @@ public class Fire : MonoBehaviour {
 
 			poolList.Push(_bullet);
 
-			yield return wait;
+			//yield return wait;
 		}
 	}
 	GameObject GetBullet(){
