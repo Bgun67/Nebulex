@@ -470,11 +470,11 @@ public class Game_Controller : MonoBehaviour {
 
 
 		foreach (PlayerStats player in winners) {
-			winnerNamesText.text += player.name.Substring(0,16) + "\r\n";
+			winnerNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16)) + "\r\n";
 			winnerKillsText.text += player.kills.ToString() + "\r\n";
 		}
 		foreach (PlayerStats player in losers) {
-			loserNamesText.text += player.name.Substring(0,16)  + "\r\n";
+			loserNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16))  + "\r\n";
 			loserKillsText.text += player.kills.ToString() + "\r\n";
 
 		}

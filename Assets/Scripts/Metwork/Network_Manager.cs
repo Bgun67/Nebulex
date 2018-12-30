@@ -109,7 +109,11 @@ public class Network_Manager : MonoBehaviour {
 				netView.RPC ("RPC_LoadScene", MRPCMode.AllBuffered, new object[]{ "TransistionScene" });
 				sceneMode = SceneMode.Game;
 
-			} else {
+			} else if(sceneMode == SceneMode.Lobby ){
+				//Load the player into our lobby
+				netView.RPC ("RPC_LoadScene", player, new object[]{ "LobbyScene" });
+				print ("Loading Player into Lobby Scene");
+			}else {
 				//Load the player into our game
 				netView.RPC ("RPC_LoadScene", player, new object[]{ "TransistionScene" });
 				print ("Loading Player into Transistion Scene");
