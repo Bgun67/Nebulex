@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Player_Controller : MonoBehaviour {
 	float v;
-	float v2;
+	public float v2;
 	float h;
-	float h2;
+	public float h2;
 	float z;
 	float down;
 	public Rigidbody rb;
@@ -30,6 +30,7 @@ public class Player_Controller : MonoBehaviour {
 	public float moveFactor = 1f;
 	public float currentStepHeight;
 	public bool enteringGravity = false;
+	float jumpWait;
 	public MetworkView netView;
 	public Metwork_Object netObj;
 	public float jetpackFuel = 1f;
@@ -200,6 +201,10 @@ public class Player_Controller : MonoBehaviour {
 		//gameController = GameObject.FindObjectOfType<Game_Controller> ();
 		//anim.Play("Look Up/Down", 0, 0.5f);
 		pieQuadrants = UI_Manager._instance.pieQuadrants;
+		if (MInput.useMouse)
+		{
+			Cursor.visible = false;
+		}
 
 		mainCam.enabled = true;
 		if (netObj.isLocal) {
@@ -270,8 +275,16 @@ public class Player_Controller : MonoBehaviour {
 		
 
 		mainCamObj.GetComponent<AudioListener> ().enabled = true;
-		h2 = MInput.GetAxis ("Rotate Y")*lookFactor;
-		v2 = -MInput.GetAxis ("Rotate X")*lookFactor;
+		if (MInput.useMouse)
+		{
+			h2 = Mathf.Clamp(MInput.GetMouseDelta("Mouse X")* lookFactor*0.2f,-2f,2f);
+			v2 = Mathf.Clamp(MInput.GetMouseDelta("Mouse Y") * lookFactor*0.2f,-2f,2f);
+		}
+		else
+		{
+			h2 = MInput.GetAxis("Rotate Y") * lookFactor;
+			v2 = -MInput.GetAxis("Rotate X") * lookFactor;
+		}
 
 
 		if (inVehicle) {
@@ -317,7 +330,9 @@ public class Player_Controller : MonoBehaviour {
 
 		if (rb.useGravity) {
 			MouseLook();
-
+			if (Input.GetButton("Jump")){
+				Hop();
+			}
 			if (z > 0f) {
 				Jump ();
 			} else {
@@ -327,7 +342,10 @@ public class Player_Controller : MonoBehaviour {
 				}
 
 			}
+			
 			if (rb.velocity.y > 4f) {
+				h = 0f;
+				v = 0f;
 				anim.SetBool ("Jump", true);
 				if (Time.frameCount % 4 == 0) {
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -338,7 +356,8 @@ public class Player_Controller : MonoBehaviour {
 				}
 
 			} else if (rb.velocity.y < -4f) {
-				
+				h = 0f;
+				v = 0f;
 			} else {
 				anim.SetBool ("Jump", false);
 				if (Time.frameCount % 4 == 0) {
@@ -414,11 +433,6 @@ public class Player_Controller : MonoBehaviour {
 		if (Input.GetButtonDown ("Knife")) {
 			Knife ();
 		}
-				
-			
-		//if(Input.GetKeyDown("r")){
-		//	SwitchBodies ();
-		//}
 		Aim ();
 
 
@@ -689,6 +703,10 @@ public class Player_Controller : MonoBehaviour {
 		this.gameObject.SetActive (true);
 	}
 	public void Pause(){
+		if (MInput.useMouse)
+		{
+			Cursor.visible = true;
+		}
 		pauseMenu.gameObject.SetActive (true);
 		pauseMenu.Pause(this.gameObject);
 	}
@@ -725,6 +743,10 @@ public class Player_Controller : MonoBehaviour {
 	#region Region1
 	
 	public virtual void Aim(){
+		if (fireScript == null)
+		{
+			return;
+		}
 		if (MInput.GetButton ("Left Trigger")) {
 			anim.SetBool ("Scope", true);
 			//StartCoroutine (Zoom (true));
@@ -812,30 +834,45 @@ public class Player_Controller : MonoBehaviour {
 
 	}
 	public void Jump(){
-		if (Physics.Linecast (transform.position, transform.position - Vector3.up * 2f)) {
-			rb.AddRelativeForce (0f, 4f * forceFactor * z, 0f);
-
-		} else if (jetpackFuel > 0.5f&&refueling == true) {
-			refueling = false;
 		
-		} else if(jetpackFuel <= 0f) {
+		if (jetpackFuel > 1.1f && refueling == true)
+		{
+			refueling = false;
+
+		}
+		if (jetpackFuel <= 0f)
+		{
 			refueling = true;
 		}
 		if (refueling == false) {
-			rb.AddRelativeForce (0f, Time.deltaTime * 15f * forceFactor * z * 2f, 0f);
+			rb.AddRelativeForce (0f, Time.deltaTime * 50f * forceFactor * z * 2f, 0f);
+			//rb.velocity = transform.up * z * 20f;
 			foreach (ParticleSystem jet in jetpackJets) {
 				jet.Play ();
 			}
-			jetpackFuel -= Time.deltaTime * 2f;
+			jetpackFuel -= Time.deltaTime * 3f;
 		} else {
 			foreach (ParticleSystem jet in jetpackJets) {
 				jet.Stop ();
 			}
 		}
-		if (jetpackFuel< 1f) {
-			jetpackFuel += Time.deltaTime/12f;
-		} 
+		
 		UpdateUI ();
+	}
+	void Hop()
+	{
+		if (Time.time > jumpWait)
+		{
+			Debug.DrawLine(transform.position+rb.centerOfMass,transform.position- transform.up * 1.2f);
+			if (Physics.Linecast(transform.position+rb.centerOfMass,transform.position- transform.up * 1.2f))
+			{
+				print("Hopping");
+
+				rb.velocity += transform.up*7f;
+				jumpWait = Time.time + 1f;
+			}
+
+		}
 	}
 
 	//basically jumps when there is a step thats under the top ray
@@ -905,7 +942,7 @@ public class Player_Controller : MonoBehaviour {
 
 	public void SpaceMove(){
 		float factor = lookFactor * Time.deltaTime * forceFactor ;
-		rb.AddRelativeTorque (-v2 *factor/3f, h2*factor/3f,-h*factor/4f);
+		rb.AddRelativeTorque (-v2 *factor/3f, h2*factor/3f,-h*factor/3f);
 		rb.AddRelativeForce (0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f);
 
 	}
@@ -968,7 +1005,7 @@ public class Player_Controller : MonoBehaviour {
 
 
 		rb.AddRelativeForce (h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
-		this.transform.Rotate (0f, h2 *lookFactor* Time.deltaTime*360f, 0f);
+		this.transform.Rotate (0f, h2 *lookFactor* Time.deltaTime*180f, 0f);
 	}
 
 
@@ -1028,25 +1065,20 @@ public class Player_Controller : MonoBehaviour {
 	}
 	[MRPC]
 	public void RPC_Look(float time){
-		StartCoroutine (AdjustView(time));
+		AdjustView(time);
 
+	}
+	public void AdjustView(float time)
+	{
+		float lookTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
+		anim.Play("Aim Up/Down", 1, Mathf.Lerp(lookTime, time, 0.5f));
 	}
 	public void TurnHead(){
 		anim.SetFloat ("Head Turn Speed", -h2*0.5f+0.5f);
 		anim.SetBool("Head Turn Enabled", true);
 
 	}
-	public IEnumerator AdjustView(float time){
-		float lookTime = anim.GetCurrentAnimatorStateInfo (1).normalizedTime;
-		if (lookTime < time) {
-			anim.SetFloat ("Look Speed", 0.5f);
-		} else if(lookTime>time) {
-			anim.SetFloat ("Look Speed", -0.5f);
-		}
-		yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - time) < 0.05f);
-		anim.Play ("Aim Up/Down", 1, time);
-		anim.SetFloat ("Look Speed",0f);
-	}
+
 
 	[MRPC]
 	public void RPC_ClimbLadder(){
@@ -1318,19 +1350,18 @@ public class Player_Controller : MonoBehaviour {
 
 		primaryLocalPosition = Loadout_Controller.gunLocalPositions [settings [0]];
 		secondaryLocalPosition = Loadout_Controller.gunLocalPositions [settings [1]];
+
 		primaryLocalRotation = Loadout_Controller.gunLocalRotations [settings [0]];
 		secondaryLocalRotation = Loadout_Controller.gunLocalRotations [settings [1]];
 		//add the primary weapon to the finger
 		primaryWeapon = (GameObject)Instantiate (primaryWeaponPrefab, finger);
-
-
-
 		primaryWeapon.transform.localPosition = primaryLocalPosition;
 		primaryWeapon.transform.localRotation = Quaternion.Euler (primaryLocalRotation);
 		secondaryWeapon = (GameObject)Instantiate (secondaryWeaponPrefab, finger);
 		secondaryWeapon.transform.localPosition = secondaryLocalPosition;
 		secondaryWeapon.transform.localRotation = Quaternion.Euler (secondaryLocalRotation);
 		secondaryWeapon.SetActive (false);
+
 		//scopes now
 		GameObject primaryScope = (GameObject)Resources.Load ("Weapons/Scopes/" + settings [2]);
 		Instantiate (primaryScope, primaryWeapon.GetComponent<Fire> ().scopePosition);

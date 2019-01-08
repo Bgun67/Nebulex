@@ -16,6 +16,8 @@ public class Flag : MonoBehaviour {
 	Game_Controller gameController;
 	public BoxCollider boxCollider;
 	public Player_Controller _player;
+	public float droppedTime;
+	public float maxDropTime;
 	bool vehicleEntered;
 
 
@@ -41,6 +43,7 @@ public class Flag : MonoBehaviour {
 		Invoke ("Register", 2f);
 
 	}
+	
 	void Register(){
 		char flagChar;
 		if (team == 0) {
@@ -54,6 +57,14 @@ public class Flag : MonoBehaviour {
 	}
 	void Update(){
 		if (_player == null) {
+			if (Metwork.isServer)
+			{
+				droppedTime += Time.deltaTime;
+				if (droppedTime > maxDropTime)
+				{
+					ReturnFlag();
+				}
+			}
 			return;
 		}
 		if (joint.connectedBody==null) {
@@ -162,7 +173,6 @@ public class Flag : MonoBehaviour {
 		}
 		_player = null;
 		stand.transform.position = this.transform.position;
-
 		boxCollider.enabled = true;
 	}
 

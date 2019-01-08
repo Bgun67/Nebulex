@@ -8,8 +8,6 @@ public class Damage : MonoBehaviour {
 	public int originalHealth;
 	public int currentHealth;
 	public UnityEvent dieFunction;
-	public float damageThreshold1;
-
 	public Text UI_healthText;
 	public RectTransform UI_healthBar;
 	public RectTransform UI_healthBox;
@@ -20,12 +18,13 @@ public class Damage : MonoBehaviour {
 	int[] assistArray = new int[33];
 	public Game_Controller gameController;
 
-	public float damageThreshold2;
 	public bool regen;
 	 float regenWait;
 	[Tooltip("Time after taking damage when the health starts to regenerate")]
 	public float regenTime;
 	public bool healthShown;
+	public bool indicateLowHealth = false;
+	public GameObject lowHealthEffect;
 	public bool isDead;
 	[Tooltip("Use this to send the damage to a different damage script specified below")]
 	public bool forwarder;
@@ -72,6 +71,7 @@ public class Damage : MonoBehaviour {
 		print ("Respawned");
 
 		this.gameObject.SetActive (false);
+		ShowLowHealthEffect(false);
 
 		Invoke ("Reactivate", resetTime);
 			
@@ -92,83 +92,134 @@ public class Damage : MonoBehaviour {
 	}
 
 
-	public void TakeDamage(int damageAmount, int fromID){
-		if (forwarder) {
-			print ("sendingDamage");
+	public void TakeDamage(int damageAmount, int fromID)
+	{
+		if (forwarder)
+		{
+			print("sendingDamage");
 
-			forwardedDamage.TakeDamage ((int)(damageAmount*forwardedScale), fromID);
+			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID);
 			return;
 		}
-		if (damageAmount >= damageThreshold1) {
-			if (!netObj.isLocal || isDead) {
-				return;
+		if (!netObj.isLocal || isDead)
+		{
+			return;
+		}
+		currentHealth -= damageAmount;
+
+		if (regen)
+		{
+			regenWait = Time.time + regenTime;
+		}
+		if (currentHealth < originalHealth * 0.3f)
+		{
+			ShowLowHealthEffect(true);
+		}
+		
+		if (currentHealth <= 0f)
+		{
+			if (fromID != 0)
+			{
+				if (this.tag == "Player")
+				{
+					gameController.AddKill(fromID);
+					gameController.AddDeath(netObj.owner);
+
+
+				}
+
 			}
-			currentHealth -= damageAmount;
+			for (int i = 1; i < assistArray.Length; i++)
+			{
+				if (i == fromID)
+				{
+					continue;
+				}
+				int assistScore = assistArray[i];
+				assistScore = (int)Mathf.Clamp((assistScore / originalHealth) * 100, 0, 100);
+				if (assistScore >= 85)
+				{
+					gameController.AddKill(i);
 
-			if (regen) {
-				regenWait = Time.time + regenTime;
+				}
+				else if (assistScore > 33)
+				{
+					gameController.AddAssist(i, assistScore);
+
+				}
+
 			}
-			if (currentHealth <= 0f) {
-				if (fromID != 0) {
-					if (this.tag == "Player") {
-						gameController.AddKill (fromID);
-						gameController.AddDeath (netObj.owner);
-
-
-					}
-
-				}
-				for (int i = 1; i < assistArray.Length; i++) {
-					if (i == fromID) {
-						continue;
-					}
-					int assistScore = assistArray [i];
-					assistScore = (int)Mathf.Clamp((assistScore / originalHealth)*100,0,100);
-					if (assistScore >= 85) {
-						gameController.AddKill (i);
-
-					}
-					else if(assistScore>33){
-						gameController.AddAssist (i,assistScore);
-
-					}
-
-				}
-				for (int i = 0; i < assistArray.Length; i++) {
-					assistArray [i] = 0;
-				}
-				if (dieFunction.GetPersistentEventCount () > 0) {
-					isDead = true;
-					dieFunction.Invoke ();
-
-				} else {
-					Destroy (this.gameObject);
-				}
-				int j = 0;
-				foreach (Damage damageScript in this.GetComponentsInChildren<Damage>()) {
-					if (j > 9) {
-						break;
-					}
-					print (damageScript.gameObject.name);
-					damageScript.TakeDamage (damageScript.originalHealth + 1, fromID);
-
-				}
-					
-
-
-				
-			} else {
-				if (fromID != 0) {
-					assistArray [fromID] += damageAmount;
-				}
+			for (int i = 0; i < assistArray.Length; i++)
+			{
+				assistArray[i] = 0;
 			}
-			if (healthShown) {
-				UpdateUI ();
+			if (dieFunction.GetPersistentEventCount() > 0)
+			{
+				isDead = true;
+				dieFunction.Invoke();
+
 			}
+			else
+			{
+				Destroy(this.gameObject);
+			}
+			int j = 0;
+			foreach (Damage damageScript in this.GetComponentsInChildren<Damage>())
+			{
+				if (j > 9)
+				{
+					break;
+				}
+				print(damageScript.gameObject.name);
+				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID);
+
+			}
+
+
+
+
+		}
+		else
+		{
+			if (fromID != 0)
+			{
+				assistArray[fromID] += damageAmount;
+			}
+		}
+		if (healthShown)
+		{
+			UpdateUI();
 		}
 
 
 
+
+	}
+	public void ShowLowHealthEffect(bool _show)
+	{
+		if (indicateLowHealth)
+		{
+			if (lowHealthEffect != null)
+			{
+				if (netObj != null)
+				{
+					if (Metwork.peerType != MetworkPeerType.Disconnected)
+					{
+						netObj.netView.RPC("RPC_ShowLowHealthEffect", MRPCMode.All, new object[] { _show });
+					}
+					else
+					{
+						RPC_ShowLowHealthEffect(_show);
+					}
+				}
+
+			}
+		}
+	}
+	[MRPC]
+	public void RPC_ShowLowHealthEffect(bool _show)
+	{
+		lowHealthEffect.SetActive(_show);
 	}
 	public void RegenHealth(){
 		if (currentHealth < originalHealth) {
@@ -180,6 +231,10 @@ public class Damage : MonoBehaviour {
 			for (int i = 0; i < assistArray.Length; i++) {
 				assistArray [i] = 0;
 			}
+		}
+		if (currentHealth >= originalHealth * 0.3f)
+		{
+			ShowLowHealthEffect(false);
 		}
 	}
 

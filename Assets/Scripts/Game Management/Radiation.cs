@@ -18,6 +18,7 @@ public class Radiation : MonoBehaviour {
 		this.transform.position = carrier.transform.position;
 		this.transform.SetParent (carrier.transform);
 		carrier.GetComponent<Rigidbody> ().isKinematic = true;
+		stormSystem = GetComponent<ParticleSystem>();
 		netView = this.GetComponent<MetworkView> ();
 		StartCoroutine (StartStorm());
 
@@ -57,10 +58,11 @@ public class Radiation : MonoBehaviour {
 					if (Physics.Raycast (randPosition, Vector3.down, out hit, 400f,layerMask, QueryTriggerInteraction.Ignore)) {
 						if (hit.transform.GetComponent<Carrier_Controller> () != null) {
 							if (Metwork.peerType != MetworkPeerType.Disconnected) {
-								netView.RPC ("RPC_InstantiateHole", MRPCMode.AllBuffered, new object[]{ hit.point, hit.normal });
+								int _viewID = Metwork.AllocateMetworkView (Metwork.player.connectionID);
+								netView.RPC ("RPC_InstantiateHole", MRPCMode.AllBuffered, new object[]{ hit.point, hit.normal ,_viewID});
 
 							} else {
-								RPC_InstantiateHole (hit.point, hit.normal);
+								RPC_InstantiateHole (hit.point, hit.normal, -1);
 							}
 
 						}
@@ -77,12 +79,22 @@ public class Radiation : MonoBehaviour {
 		StartCoroutine (StartStorm());
 	}
 	[MRPC]
-	public void RPC_InstantiateHole(Vector3 position, Vector3 normal){
+	public void RPC_InstantiateHole(Vector3 position, Vector3 normal, int _ID){
 		GameObject shipHole = Instantiate (shipHolePrefab, position, Quaternion.identity);
 		shipHole.transform.rotation = Quaternion.LookRotation (normal);
 		shipHole.transform.parent = carrier.transform;
 		shipHole.GetComponentInChildren<Ship_Hole> ().attachedCarrier = carrier;
 		shipHole.GetComponentInChildren<Panel_Controller> ().Activate (carrier);
+		if (_ID == -1)
+		{
+			return;
+		}
+		shipHole.GetComponent<MetworkView>().viewID = _ID;
+		if (!Metwork.metViews.ContainsKey (_ID)) {
+			Metwork.metViews.Add (_ID, shipHole.GetComponent<MetworkView> ());
+		} else {
+			Metwork.metViews[_ID] = shipHole.GetComponent<MetworkView> ();
+		}
 
 	}
 	

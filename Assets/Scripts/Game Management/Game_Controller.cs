@@ -196,12 +196,12 @@ public class Game_Controller : MonoBehaviour {
 		if (gameMode == GameType.Meltdown)
 		{
 			Instantiate(radiationField).GetComponent<Radiation>().carrier = shipOneTransform.gameObject;
-			foreach (GameObject position in GameObject.FindGameObjectsWithTag("Spawn Point"))
+			foreach (GameObject position in GameObject.FindGameObjectsWithTag("Spawn Point 1"))
 			{
 				position.tag = "Untagged";
 
 			}
-			GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag("Spawn Point 1");
+			GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag("Spawn Point 0");
 			for (int i = 0; i < spawnPositions.Length; i++)
 			{
 				if (i % 2 == 0)
@@ -210,7 +210,7 @@ public class Game_Controller : MonoBehaviour {
 				}
 				else
 				{
-					spawnPositions[i].tag = "Spawn Point";
+					spawnPositions[i].tag = "Spawn Point 0";
 
 				}
 
@@ -470,11 +470,11 @@ public class Game_Controller : MonoBehaviour {
 
 
 		foreach (PlayerStats player in winners) {
-			winnerNamesText.text += player.name.Substring(0,16) + "\r\n";
+			winnerNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16)) + "\r\n";
 			winnerKillsText.text += player.kills.ToString() + "\r\n";
 		}
 		foreach (PlayerStats player in losers) {
-			loserNamesText.text += player.name.Substring(0,16)  + "\r\n";
+			loserNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16))  + "\r\n";
 			loserKillsText.text += player.kills.ToString() + "\r\n";
 
 		}

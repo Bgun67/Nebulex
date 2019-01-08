@@ -82,11 +82,7 @@ public class Network_Manager : MonoBehaviour {
 
 		} else if (_scene.name == "Space") {
 			sceneMode = SceneMode.Game;
-			//call to server to sync the scores on all clients
-			if (Metwork.peerType != MetworkPeerType.Disconnected)
-			{
-				netView.RPC("RPC_UpdateMatchInfo", MRPCMode.Server, new object[] { });
-			}
+			
 		}
 	}
 
@@ -109,10 +105,17 @@ public class Network_Manager : MonoBehaviour {
 				netView.RPC ("RPC_LoadScene", MRPCMode.AllBuffered, new object[]{ "TransistionScene" });
 				sceneMode = SceneMode.Game;
 
-			} else {
+			} else if (sceneMode == SceneMode.Lobby)
+			{
 				//Load the player into our game
-				netView.RPC ("RPC_LoadScene", player, new object[]{ "TransistionScene" });
-				print ("Loading Player into Transistion Scene");
+				netView.RPC("RPC_LoadScene", player, new object[] { "LobbyScene" });
+				print("Loading Player into Lobby Scene");
+			}
+			else
+			{
+				//Load the player into our game
+				netView.RPC("RPC_LoadScene", player, new object[] { "TransistionScene" });
+				print("Loading Player into Transistion Scene");
 			}
 
 			foreach (Metwork_Object _netObj in GameObject.FindObjectsOfType<Metwork_Object>()) {
@@ -159,10 +162,6 @@ public class Network_Manager : MonoBehaviour {
 	[MRPC]
 	void RPC_LoadScene(string _sceneName){
 		print("Loading scene " + _sceneName);
-		if(SceneManager.GetActiveScene().name == "Space" && _sceneName == "TransistionScene"){
-			print("Cancelling Load");
-			return;
-		}
 		SceneManager.LoadScene (_sceneName);
 
 	}

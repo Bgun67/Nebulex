@@ -15,6 +15,7 @@ public class Turret_Controller : MonoBehaviour {
 	public MetworkView netView;
 	public GameObject explosionEffect;
 	public GameObject destroyedPrefab;
+	public bool auto;
 
 	public virtual void Activate(GameObject pilot){
 		//Switch to the internal camera
@@ -129,6 +130,10 @@ public class Turret_Controller : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+		if (auto && Metwork.isServer)
+		{
+			AutoAim();
+		}
 		if (player.GetComponent<Metwork_Object> ().isLocal) {
 			h = -MInput.GetAxis ("Rotate Y");
 			v = -MInput.GetAxis ("Rotate X");
@@ -145,10 +150,19 @@ public class Turret_Controller : MonoBehaviour {
 	}
 	[MRPC]
 	public void RPC_Turn(float turn, float currentTime){
-		StartCoroutine (AdjustView (turn,currentTime));
-
+		//StartCoroutine (AdjustView (turn,currentTime));
+		AdjustView(turn, currentTime);
 	}
-	public IEnumerator AdjustView(float hTime, float time){
+	public void AdjustView(float hTime, float time)
+	{
+		float lookTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+		anim.Play("Aim Up/Down", 0, Mathf.Lerp(lookTime, time, 0.5f));
+
+
+		float turnTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
+		anim.Play("Turn", 1, Mathf.Lerp(turnTime, hTime, 0.5f));
+	}
+	/* public IEnumerator AdjustView(float hTime, float time){
 		float lookTime = anim.GetCurrentAnimatorStateInfo (0).normalizedTime;
 		if (lookTime < time) {
 			anim.SetFloat ("Look Speed", 1f);
@@ -170,8 +184,12 @@ public class Turret_Controller : MonoBehaviour {
 		yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - hTime) < 0.05f);
 		anim.Play ("Turn", 1, hTime);
 		anim.SetFloat ("Turn Speed",0f);
-	}
+	}*/
 	void Look(){
+		if (anim == null)
+		{
+			return;
+		}
 		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo (0).normalizedTime;
 
 
@@ -199,5 +217,9 @@ public class Turret_Controller : MonoBehaviour {
 				turnTime,
 				lookUpDownTime});
 		} 
+	}
+	void AutoAim()
+	{
+		
 	}
 }

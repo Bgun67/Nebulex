@@ -23,6 +23,10 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			eventSystem = GameObject.Find ("EventSystem");
 
 		}
+		if (MInput.useMouse)
+		{
+			Cursor.visible = true;
+		}
 		eventSystem.SetActive (true);
 	}
 	
@@ -50,7 +54,10 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 	}
 
 	public void Spawn(int index){
-		
+		if (MInput.useMouse)
+		{
+			Cursor.visible = false;
+		}
 		Player_Controller _player = gameController.localPlayer.GetComponent<Player_Controller>();
 		_player.transform.position = spawnPositions [index].position;
 		_player.damageScript.initialPosition = null;

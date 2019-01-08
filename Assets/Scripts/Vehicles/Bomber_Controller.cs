@@ -71,7 +71,7 @@ public class Bomber_Controller : MonoBehaviour
 		this.enabled = false;
 	}
 	void CheckOccupied(){
-		if (!Metwork.isServer && Metwork.peerType != MetworkPeerType.Disconnected) {
+		if (!(Metwork.isServer || Metwork.peerType == MetworkPeerType.Disconnected)) {
 			return;
 		}
 
