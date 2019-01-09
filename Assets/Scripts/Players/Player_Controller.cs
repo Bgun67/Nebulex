@@ -845,7 +845,7 @@ public class Player_Controller : MonoBehaviour {
 			refueling = true;
 		}
 		if (refueling == false) {
-			rb.AddRelativeForce (0f, Time.deltaTime * 50f * forceFactor * z * 2f, 0f);
+			rb.AddRelativeForce (0f, Time.deltaTime * 60f * forceFactor * z * 2f, 0f);
 			//rb.velocity = transform.up * z * 20f;
 			foreach (ParticleSystem jet in jetpackJets) {
 				jet.Play ();
@@ -864,7 +864,7 @@ public class Player_Controller : MonoBehaviour {
 		if (Time.time > jumpWait)
 		{
 			Debug.DrawLine(transform.position+rb.centerOfMass,transform.position- transform.up * 1.2f);
-			if (Physics.Linecast(transform.position+rb.centerOfMass,transform.position- transform.up * 1.2f))
+			if (Physics.Linecast(transform.position+rb.centerOfMass,transform.position- transform.up * 1.4f))
 			{
 				print("Hopping");
 
@@ -942,15 +942,23 @@ public class Player_Controller : MonoBehaviour {
 
 	public void SpaceMove(){
 		float factor = lookFactor * Time.deltaTime * forceFactor ;
-		rb.AddRelativeTorque (-v2 *factor/3f, h2*factor/3f,-h*factor/3f);
-		rb.AddRelativeForce (0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f);
+		if (Input.GetButtonDown("Sprint")&&(Time.time >jumpWait))
+		{
+			jumpWait = Time.time + 5f;
+			rb.AddRelativeForce (new Vector3(0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f)*60f);
 
+		}
+		else
+		{
+			rb.AddRelativeTorque(-v2 * factor / 3f, h2 * factor / 3f, -h * factor / 3f);
+			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 20f);
+		}
 	}
 	public void AnimateMovement(){
 		anim.SetFloat ("H Movement", h);
 		anim.SetFloat ("V Movement", v);
 		anim.SetInteger ("Walk State", (int)walkState);
-
+		
 		float forwardSpeed = v+Mathf.Abs(h2)/2f;//Mathf.Clamp(transform.InverseTransformVector (rb.velocity).z, -5f, 5f);
 
 		anim.SetFloat ("Move Speed", forwardSpeed);
@@ -1001,10 +1009,16 @@ public class Player_Controller : MonoBehaviour {
 		walkState = WalkState.Walking;
 	}
 	public void MovePlayer(){
-		
 
 
-		rb.AddRelativeForce (h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
+		if (walkState == WalkState.Running)
+		{
+			rb.AddRelativeForce(h*Time.deltaTime * forceFactor * 40f, 0f,Time.deltaTime * forceFactor * 33f);
+		}
+		else
+		{
+			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
+		}
 		this.transform.Rotate (0f, h2 *lookFactor* Time.deltaTime*180f, 0f);
 	}
 

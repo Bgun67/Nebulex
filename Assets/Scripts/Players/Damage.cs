@@ -225,7 +225,10 @@ public class Damage : MonoBehaviour {
 		if (currentHealth < originalHealth) {
 			if (Time.time >= regenWait) {
 				currentHealth++;
-				UpdateUI ();
+				if (healthShown)
+				{
+					UpdateUI();
+				}
 			}
 		} else {
 			for (int i = 0; i < assistArray.Length; i++) {
