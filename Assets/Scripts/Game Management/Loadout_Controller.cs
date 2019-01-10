@@ -8,9 +8,9 @@ using UnityEngine.Serialization;
 public class Loadout_Controller : MonoBehaviour {
 	public static Dictionary<string, Vector3> gunLocalPositions = new Dictionary<string,Vector3>()
 	{
-		{"SRR-3", new Vector3(-0.08f,0.08f,-0.33f)},
+		{"SRR-3", new Vector3(-0.067f,0.241f,-0.22f)},
 		{"Oynix-93", new Vector3(-0.207f,0.222f,0.417f)},
-		{"Ratpak", new Vector3(-0.15f,0f,0.25f)},
+		{"Ratpak", new Vector3(-0.145f,0.063f,0.27f)},
 		{"NTO-MSQ0", new Vector3(-0.13f,0.4f,0.16f)},
 		{"Biron", new Vector3(-0.13f,0.4f,0.16f)},
 
@@ -28,9 +28,9 @@ public class Loadout_Controller : MonoBehaviour {
 	};
 	public static Dictionary<string, Vector3> gunLocalRotations = new Dictionary<string,Vector3>()
 	{
-		{"SRR-3", new Vector3(168.05f,262.4f,198.69f)},
+		{"SRR-3", new Vector3(168.4f,263.9f,196.296f)},
 		{"Oynix-93", new Vector3(20.133f,-13.94f,-7.824f)},
-		{"Ratpak", new Vector3(6.212f,81.495f,16.55f)},
+		{"Ratpak", new Vector3(6.5f,80.526f,16.276f)},
 		{"NTO-MSQ0", new Vector3(18.69f,-12.46f,-8.8f)},
 		{"Biron", new Vector3(18.69f,-12.46f,-8.8f)},
 

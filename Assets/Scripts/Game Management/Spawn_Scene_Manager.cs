@@ -53,6 +53,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		
 		Player_Controller _player = gameController.localPlayer.GetComponent<Player_Controller>();
 		_player.transform.position = spawnPositions [index].position;
+		_player.transform.rotation = spawnPositions [index].rotation;
 		_player.damageScript.initialPosition = null;
 		_player.damageScript.Reactivate();
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -61,6 +62,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 				_player.sceneCam.enabled = false;
 			}
 		} else {
+			//Enables the player
 			gameController.RPC_ActivatePlayer (_player.netObj.owner);
 			_player.sceneCam.enabled = false;
 

@@ -273,6 +273,10 @@ public class Player_Controller : MonoBehaviour {
 		h2 = MInput.GetAxis ("Rotate Y")*lookFactor;
 		v2 = -MInput.GetAxis ("Rotate X")*lookFactor;
 
+		if(UI_Manager._instance.selectedSegment != -1){
+			OnPieEvent(UI_Manager._instance.selectedSegment);
+		}
+
 
 		if (inVehicle) {
 			MouseLook();
@@ -1075,7 +1079,7 @@ public class Player_Controller : MonoBehaviour {
 	#endregion
 	#region Region2
 	public void Die(){
-		sceneCam.enabled = true;
+		//sceneCam.enabled = true;
 		if(Metwork.peerType  != MetworkPeerType.Disconnected){
 			netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{ });
 		}
@@ -1086,15 +1090,29 @@ public class Player_Controller : MonoBehaviour {
 		if (netObj == null) {
 			netObj = GetComponent<Metwork_Object> ();
 		}
+		//if (netObj.isLocal) {
+		//	if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
+		//	{
+		//		SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
+		//	}
+		//}
+
+		Invoke("CoDie", 4f);
+
+
+	}
+
+	public void CoDie(){
+		
+		sceneCam.enabled = true;
 		if (netObj.isLocal) {
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
 			{
 				SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
 			}
 		}
-
-
 	}
+
 	[MRPC]
 	public void RPC_Die(){
 		Vector3 position = this.transform.position;
@@ -1107,7 +1125,13 @@ public class Player_Controller : MonoBehaviour {
 				joint.connectedBody = null;
 			}
 		}
-		Destroy (Instantiate (ragdoll, position, rotation), 5f);
+		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
+		Destroy (_ragdollGO, 5f);
+		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
+
+			_rb.velocity = Vector3.ClampMagnitude(rb.velocity, 20f);
+			_rb.useGravity = rb.useGravity;
+		}
 		try{
 		GameObject droppedWeapon = (GameObject)Instantiate (fireScript.gameObject, position, rotation);
 		droppedWeapon.AddComponent<Rigidbody> ().useGravity = rb.useGravity;
@@ -1123,6 +1147,9 @@ public class Player_Controller : MonoBehaviour {
         this.transform.position = Vector3.up * 10000f;
         this.gameObject.SetActive (false);
 
+		if(!netObj.isLocal){
+			_ragdollGO.GetComponentInChildren<Camera>().gameObject.SetActive(false);
+		}
 
 
 	}
@@ -1131,6 +1158,7 @@ public class Player_Controller : MonoBehaviour {
 
 	//Called by grav controller when entering / exiting gravity;
 	public IEnumerator ExitGravity(){
+		//print("Exiting Gravity");
 		rb.angularDrag = 1f;
 		rb.constraints = RigidbodyConstraints.None;
 		anim.SetBool ("Float", true);
@@ -1158,13 +1186,14 @@ public class Player_Controller : MonoBehaviour {
 		if(netObj.isLocal){
 			breatheSound.Play ();
 		}
-		print("Exited");
+		//print("Exited");
 		walkSound.Stop ();
 
 		lookFactor = 0.1f;
 
 	}
 	public IEnumerator EnterGravity(){
+		//print("Entering Gravity");
 		if (enteringGravity)
 		{
 			yield return null;
@@ -1193,7 +1222,7 @@ public class Player_Controller : MonoBehaviour {
 		walkSound.Play ();
 		lookFactor = 3f;
 		enteringGravity = false;
-
+		//print("Entered");
 
 		//}
 	}

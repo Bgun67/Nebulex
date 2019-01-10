@@ -32,6 +32,7 @@ public class PrefabLightmapData : MonoBehaviour
 
     void OnGUI ()
 	{
+		
 		#if UNITY_EDITOR
 		if(UnityEditor.Lightmapping.isRunning){
 			lightmapProgress = Lightmapping.buildProgress;
@@ -41,9 +42,9 @@ public class PrefabLightmapData : MonoBehaviour
 			}
 			return;
 		}
-		if (m_RendererInfo == null || m_RendererInfo.Length == 0)
+		if (m_RendererInfo == null || m_RendererInfo.Length == 0)//|| Application.isPlaying)
 			return;
-
+		
 		var lightmaps = LightmapSettings.lightmaps;
         int[] offsetsindexes = new int[m_Lightmaps.Length];
         int counttotal = lightmaps.Length;        
@@ -84,6 +85,7 @@ public class PrefabLightmapData : MonoBehaviour
         LightmapSettings.lightmapsMode = LightmapsMode.NonDirectional;
         ApplyRendererInfo(m_RendererInfo, offsetsindexes);
 		LightmapSettings.lightmaps = combinedLightmaps2;
+		
 		#endif
 	}
 
@@ -136,12 +138,12 @@ public class PrefabLightmapData : MonoBehaviour
 			instance.m_RendererInfo = rendererInfos.ToArray();
 			instance.m_Lightmaps = lightmaps.ToArray();
 
-			var targetPrefab = UnityEditor.PrefabUtility.GetCorrespondingObjectFromSource(gameObject) as GameObject;
-			if (targetPrefab != null)
-			{
+			//var targetPrefab = UnityEditor.PrefabUtility.GetCorrespondingObjectFromSource(gameObject) as GameObject;
+			//if (targetPrefab != null)
+			//{
 				//UnityEditor.Prefab
-				UnityEditor.PrefabUtility.ReplacePrefab(gameObject, targetPrefab);
-			}
+			//	UnityEditor.PrefabUtility.ReplacePrefab(gameObject, targetPrefab);
+			//}
 			
 		}
 	}
