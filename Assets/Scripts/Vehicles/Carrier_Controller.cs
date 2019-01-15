@@ -106,7 +106,14 @@ public class Carrier_Controller : MonoBehaviour {
 		steering = _steering;
 	}
 
+	void Update(){
+		
+		if (pilot != null && playerNetObj.isLocal)
+		{
 
+			DrawPredictedPath ();
+		}
+	}
 
 	void FixedUpdate(){
 
@@ -232,7 +239,7 @@ public class Carrier_Controller : MonoBehaviour {
 		rb.AddRelativeForce (thrust * throttle * numEngines * Time.smoothDeltaTime * 30f * Vector3.forward);
 		rb.AddRelativeTorque (thrust * (rotEngines * throttle + steering) * 200f * Time.smoothDeltaTime * 30f * Vector3.up);
 
-		DrawPredictedPath ();
+
 
 
 	}

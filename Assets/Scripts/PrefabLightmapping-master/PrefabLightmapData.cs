@@ -30,8 +30,11 @@ public class PrefabLightmapData : MonoBehaviour
 
     
 
-    void OnGUI ()
+    void Start ()
 	{
+		Invoke("CreateLightmaps", Random.Range(0f,1f));
+	}
+	void CreateLightmaps(){
 		
 		#if UNITY_EDITOR
 		if(UnityEditor.Lightmapping.isRunning){
@@ -42,7 +45,9 @@ public class PrefabLightmapData : MonoBehaviour
 			}
 			return;
 		}
-		if (m_RendererInfo == null || m_RendererInfo.Length == 0)//|| Application.isPlaying)
+		#endif
+		
+		if (m_RendererInfo == null || m_RendererInfo.Length == 0)
 			return;
 		
 		var lightmaps = LightmapSettings.lightmaps;
@@ -86,7 +91,7 @@ public class PrefabLightmapData : MonoBehaviour
         ApplyRendererInfo(m_RendererInfo, offsetsindexes);
 		LightmapSettings.lightmaps = combinedLightmaps2;
 		
-		#endif
+		
 	}
 
 	

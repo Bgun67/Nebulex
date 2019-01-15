@@ -10,26 +10,32 @@ public class Optimization_Manager : MonoBehaviour {
 	public bool checkTriangles = false;
 	public int[] triCount;
 
+	public bool _lights = true;
+	public Light[] lights;
+
 	// Use this for initialization
 	void Start () {
 		
-		Light[] lights = GameObject.FindObjectsOfType<Light> ();
-		#if UNITY_EDITOR || UNITY_EDITOR_64
-		if(!Application.isPlaying){
-			return;
-		}
-		for (int i = 0; i < lights.Length; i++) {
-			
-			if (lights [i].lightmapBakeType == LightmapBakeType.Baked) {
-				lights [i].enabled = false;
-				lights [i].gameObject.SetActive (false);
-				
-			}
-		}
-		#endif
+		
+		
 	}
 
 	void OnGUI(){
+		#if UNITY_EDITOR || UNITY_EDITOR_64
+		if(Time.frameCount % 20 == 0){
+			lights = GameObject.FindObjectsOfType<Light> ();
+			for (int i = 0; i < lights.Length; i++) {
+				
+				if (lights [i].lightmapBakeType == LightmapBakeType.Baked) {
+					lights [i].enabled = _lights;
+					lights [i].gameObject.SetActive (_lights);
+					
+				}
+			}
+		}
+		#endif
+		
+
 		if(checkTriangles){
 			List<MeshFilter> meshList = new List<MeshFilter>(GameObject.FindObjectsOfType<MeshFilter>());
 			for(int i = 0; i< meshList.Count; i++){
