@@ -32,12 +32,12 @@ public class PrefabLightmapData : MonoBehaviour
 
     void Start ()
 	{
-		Invoke("CreateLightmaps", Random.Range(0f,1f));
+		Invoke("CreateLightmaps", Random.Range(1f,1f));
 	}
 	void CreateLightmaps(){
 		
 		#if UNITY_EDITOR
-		if(UnityEditor.Lightmapping.isRunning){
+		if(UnityEditor.Lightmapping.isRunning && !Application.isPlaying){
 			lightmapProgress = Lightmapping.buildProgress;
 			if(cancelBake){
 				cancelBake = false;
@@ -167,7 +167,8 @@ public class PrefabLightmapData : MonoBehaviour
 				print("renderindex");
 				print(renderer.lightmapIndex);
 				Texture2D lightmap = LightmapSettings.lightmaps[renderer.lightmapIndex].lightmapColor;
-				
+				print(LightmapSettings.lightmaps.Length);
+
 				info.lightmapIndex = tempLightMaps.IndexOf(lightmap);
 				if (info.lightmapIndex == -1)
 				{
