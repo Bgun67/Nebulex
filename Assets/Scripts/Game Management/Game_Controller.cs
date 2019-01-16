@@ -195,7 +195,8 @@ public class Game_Controller : MonoBehaviour {
 		}
 		if (gameMode == GameType.Meltdown)
 		{
-			Instantiate(radiationField).GetComponent<Radiation>().carrier = shipOneTransform.gameObject;
+			radiationField.SetActive(true);
+			FindObjectOfType<Radiation>().carrier = shipOneTransform.gameObject;
 			foreach (GameObject position in GameObject.FindGameObjectsWithTag("Spawn Point 1"))
 			{
 				position.tag = "Untagged";

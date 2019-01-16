@@ -7,76 +7,81 @@ public class Radiation : MonoBehaviour {
 	public int radiationPower = 10;
 	int fromID = 0;
 	public GameObject shipHolePrefab;
-	public ParticleSystem stormSystem;
+	public GameObject asteroidPrefab; 
 	public float initialTimeBetweenStorms = 40f;
 	int stormNumber;
 	public GameObject carrier;
 	public LayerMask layerMask;
 	public MetworkView netView;
+	public int maxInitialAsteroids;
 
 	void Start(){
-		this.transform.position = carrier.transform.position;
-		this.transform.SetParent (carrier.transform);
 		carrier.GetComponent<Rigidbody> ().isKinematic = true;
-		stormSystem = GetComponent<ParticleSystem>();
 		netView = this.GetComponent<MetworkView> ();
 		StartCoroutine (StartStorm());
 
 	}
 	// Use this for initialization
-	IEnumerator StartStorm () {
-		print ("Starting Radiaition storm");
-		yield return new WaitForSeconds (initialTimeBetweenStorms-stormNumber);
-		ParticleSystem.MainModule main = stormSystem.main;
-		main.duration = (10+20+stormNumber*0.5f);
-		stormSystem.Play ();
+	IEnumerator StartStorm()
+	{
+		print("Starting Radiaition storm");
+		GetComponent<AudioSource>().Play();
+		yield return new WaitForSeconds(10f);
 
+		for (int i = 0; i < 40 + stormNumber;)
+		{
 
-		yield return new WaitForSeconds (10f);
+			if (!Metwork.isServer && Metwork.peerType != MetworkPeerType.Disconnected)
+			{
+				yield return null;
+			}
 
-		for (int i = 0; i < 40+stormNumber; i++) {
-			Player_Controller[] allPlayers = FindObjectsOfType<Player_Controller> ();
-			foreach (Player_Controller player in allPlayers) {
-				if (Random.Range (0, 3) == 0) {
-					if (Physics.Linecast (player.transform.position + Vector3.up * 200f, player.transform.position, layerMask,QueryTriggerInteraction.Ignore) == false) {
-						Debug.DrawLine (player.transform.position + Vector3.up * 200f, player.transform.position,Color.blue,5f);
-						player.damageScript.TakeDamage ((int)Random.Range(0.9f*radiationPower+i*0.5f, 1.1f*radiationPower+i*0.5f), 0);
-					}
+			foreach (Ship_Hole hole in FindObjectsOfType<Ship_Hole>())
+			{
+				hole.attachedCarrier.GetComponent<Damage>().TakeDamage((radiationPower + 40), 0);
+			}
+			Player_Controller[] allPlayers = FindObjectsOfType<Player_Controller>();
+			foreach (Player_Controller player in allPlayers)
+			{
+				if (Random.Range(0, Mathf.Max(0, 10 - stormNumber)) != 0)
+				{
+					yield return null;
+				}
+				yield return new WaitForSeconds(0.1f);
 
-				} 
+				if (Physics.Linecast(player.transform.position + Vector3.up * 100f, player.transform.position, layerMask, QueryTriggerInteraction.Ignore) == false)
+				{
+					InstantiateAsteroid(player.transform.position + Vector3.up * 100f);
+					i++;
+				}
 
 			}
-			if (Metwork.isServer||Metwork.peerType == MetworkPeerType.Disconnected) {
-				foreach (Ship_Hole hole in FindObjectsOfType<Ship_Hole>()) {
-					hole.attachedCarrier.GetComponent<Damage> ().TakeDamage ((radiationPower+40), 0);
-				}
-				if (Random.Range (0, Mathf.Max(0,10 - stormNumber)) == 0) {
-					RaycastHit hit;
-					Vector2 randCircle = Random.insideUnitCircle * 300f;
-					Vector3 randPosition = carrier.transform.position + new Vector3 (randCircle.x, 200f, randCircle.y);
-					Debug.DrawLine (randPosition, randPosition+Vector3.down*100f, Color.red, 5f);
-					if (Physics.Raycast (randPosition, Vector3.down, out hit, 400f,layerMask, QueryTriggerInteraction.Ignore)) {
-						if (hit.transform.GetComponent<Carrier_Controller> () != null) {
-							if (Metwork.peerType != MetworkPeerType.Disconnected) {
-								int _viewID = Metwork.AllocateMetworkView (Metwork.player.connectionID);
-								netView.RPC ("RPC_InstantiateHole", MRPCMode.AllBuffered, new object[]{ hit.point, hit.normal ,_viewID});
+			int j = 0;
+			while (j < stormNumber +7)
+			{
+				Vector2 randCircle = Random.insideUnitCircle * 300f;
+				Vector3 randPosition = carrier.transform.position + new Vector3(randCircle.x, 200f, randCircle.y);
 
-							} else {
-								RPC_InstantiateHole (hit.point, hit.normal, -1);
-							}
-
-						}
-					}
+				if (Physics.Raycast(randPosition, Vector3.down, 200f, layerMask, QueryTriggerInteraction.Ignore))
+				{
+					InstantiateAsteroid(randPosition);
+					i++;
 				}
+				j++;
 			}
-			yield return new WaitForSeconds (0.5f);
+
+			yield return new WaitForSeconds(0.5f);
 		}
-
-
-
 		stormNumber++;
+		maxInitialAsteroids += stormNumber * 3;
 		radiationPower = (int)(radiationPower * 1.1f);
-		StartCoroutine (StartStorm());
+		yield return new WaitForSeconds(5f);
+
+		GetComponent<AudioSource>().Stop();
+
+		yield return new WaitForSeconds(initialTimeBetweenStorms - stormNumber);
+
+		StartCoroutine(StartStorm());
 	}
 	[MRPC]
 	public void RPC_InstantiateHole(Vector3 position, Vector3 normal, int _ID){
@@ -89,7 +94,7 @@ public class Radiation : MonoBehaviour {
 		{
 			return;
 		}
-		shipHole.GetComponent<MetworkView>().viewID = _ID;
+		shipHole.GetComponentInChildren<MetworkView>().viewID = _ID;
 		if (!Metwork.metViews.ContainsKey (_ID)) {
 			Metwork.metViews.Add (_ID, shipHole.GetComponent<MetworkView> ());
 		} else {
@@ -97,13 +102,47 @@ public class Radiation : MonoBehaviour {
 		}
 
 	}
-	
+	public void InstantiateHole(Vector3 _position, Vector3 _normal)
+	{
+		if (Random.Range(0, 5) == 0)
+		{
+			int _id;
+			if (Metwork.peerType != MetworkPeerType.Disconnected)
+			{
+				if (Metwork.isServer)
+				{
+					_id = Metwork.AllocateMetworkView(Metwork.player.connectionID);
+					netView.RPC("RPC_InstantiateHole", MRPCMode.AllBuffered, new object[] { _position, _normal, _id });
+
+				}
+			}
+			else
+			{
+				_id = Metwork.AllocateMetworkView(1);
+				RPC_InstantiateHole(_position, _normal, _id);
+			}
+		}
+	}
+	void InstantiateAsteroid(Vector3 _position)
+	{
+		Debug.DrawLine(_position, _position + Vector3.down * 200f);
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netView.RPC("RPC_InstantiateAsteroid", MRPCMode.AllBuffered, new object[] { _position});
+
+		}
+		else
+		{
+			RPC_InstantiateAsteroid(_position);
+		}
+	}
+	[MRPC]
+	public void RPC_InstantiateAsteroid(Vector3 position){
+		GameObject _asteroid = Instantiate (asteroidPrefab, position, Quaternion.identity);
+
+	}
 	
 
-		//if (other.transform.root.GetComponent<Carrier_Controller> () != null) {
-			//GameObject shipHole = (GameObject)Instantiate (shipHolePrefab);
-			//shipHole.GetComponent<Damage> ().forwardedDamage = other.transform.root.GetComponent<Damage> ();
-		//}
 
 
 }

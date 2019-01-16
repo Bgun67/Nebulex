@@ -5,35 +5,53 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Unity Editor",
-			"type": "unity",
-			"path": "/c:/Users/frisk/Documents/Nebulex/Library/EditorInstance.json",
-			"request": "launch"
+			"name": ".NET Core Launch (console)",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/bin/Debug/<insert-target-framework-here>/<insert-project-name-here>.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}",
+			"console": "internalConsole",
+			"stopAtEntry": false,
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
-			"name": "Windows Player",
-			"type": "unity",
-			"request": "launch"
+			"name": ".NET Core Launch (web)",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/bin/Debug/<insert-target-framework-here>/<insert-project-name-here>.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}",
+			"stopAtEntry": false,
+			"internalConsoleOptions": "openOnSessionStart",
+			"launchBrowser": {
+				"enabled": true,
+				"args": "${auto-detect-url}",
+				"windows": {
+					"command": "cmd.exe",
+					"args": "/C start ${auto-detect-url}"
+				},
+				"osx": {
+					"command": "open"
+				},
+				"linux": {
+					"command": "xdg-open"
+				}
+			},
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"sourceFileMap": {
+				"/Views": "${workspaceFolder}/Views"
+			}
 		},
 		{
-			"name": "OSX Player",
-			"type": "unity",
-			"request": "launch"
-		},
-		{
-			"name": "Linux Player",
-			"type": "unity",
-			"request": "launch"
-		},
-		{
-			"name": "iOS Player",
-			"type": "unity",
-			"request": "launch"
-		},
-		{
-			"name": "Android Player",
-			"type": "unity",
-			"request": "launch"
+			"name": ".NET Core Attach",
+			"type": "coreclr",
+			"request": "attach",
+			"processId": "${command:pickProcess}"
 		}
 	]
 }

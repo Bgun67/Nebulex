@@ -1020,6 +1020,24 @@ public class Player_Controller : MonoBehaviour {
 			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
 		}
 		this.transform.Rotate (0f, h2 *lookFactor* Time.deltaTime*180f, 0f);
+		if (Time.frameCount % 5 == 0)
+		{
+			CheckStep();
+		}
+	}
+	void CheckStep()
+	{
+		if (v > 0.1f)
+		{
+			Vector3 footPos = footRaycast.transform.position;
+			if (Physics.Raycast(footPos, transform.forward, 0.5f))
+			{
+				if (!Physics.Raycast(footPos + transform.up * 0.5f, transform.forward, 0.6f))
+				{
+					rb.AddRelativeForce(0f, 7 * rb.mass * 9.81f, 0f);
+				}
+			}
+		}
 	}
 
 
