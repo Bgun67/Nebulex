@@ -33,12 +33,14 @@ public class Gravity_Controller : MonoBehaviour {
 				{
 					if (!other.GetComponent<Player_Controller>().enteringGravity)
 					{
+						other.GetComponent<Player_Controller>().StopCoroutine("ExitGravity");
 						other.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
 
 					}
 				}
 				else
 				{
+					other.GetComponent<Player_Controller>().StopCoroutine("EnterGravity");
 					other.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
 
 				}
@@ -60,6 +62,7 @@ public class Gravity_Controller : MonoBehaviour {
 				if (useGravity) {
 					if (!other.GetComponent<Player_Controller>().enteringGravity)
 					{
+						other.GetComponent<Player_Controller>().StopCoroutine("ExitGravity");
 						other.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
 
 					}

@@ -106,7 +106,14 @@ public class Carrier_Controller : MonoBehaviour {
 		steering = _steering;
 	}
 
+	void Update(){
+		
+		if (pilot != null && playerNetObj.isLocal)
+		{
 
+			DrawPredictedPath ();
+		}
+	}
 
 	void FixedUpdate(){
 
@@ -232,7 +239,7 @@ public class Carrier_Controller : MonoBehaviour {
 		rb.AddRelativeForce (thrust * throttle * numEngines * Time.smoothDeltaTime * 30f * Vector3.forward);
 		rb.AddRelativeTorque (thrust * (rotEngines * throttle + steering) * 200f * Time.smoothDeltaTime * 30f * Vector3.up);
 
-		DrawPredictedPath ();
+
 
 
 	}
@@ -296,13 +303,14 @@ public class Carrier_Controller : MonoBehaviour {
 
         for (int i = 1; i < timeSteps; i++)
         {
-            float sine = Mathf.Sin(rotVelocity.y * i * stepWidth);
-            float cosine = Mathf.Cos(rotVelocity.y * i * stepWidth);
+			
+            float sine = Mathf.Sin(i * stepWidth * rotVelocity.y);
+            float cosine = Mathf.Cos(i * stepWidth * rotVelocity.y);
 
             //Rotate the forward vector
             currentForward = new Vector3(currentForward.x * cosine - currentForward.z * sine, 0, (currentForward.x * sine + currentForward.z * cosine));
 
-            predictedPath.SetPosition(i, predictedPath.GetPosition(i - 1) + (currentForward * i * stepWidth * velocity));
+            predictedPath.SetPosition(i, predictedPath.GetPosition(i - 1) + (i * stepWidth * velocity * currentForward));
         }
     }
 	public void ShutdownGravity(){
