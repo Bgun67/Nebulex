@@ -266,7 +266,7 @@ public class Game_Controller : MonoBehaviour {
 	public void RPC_SetTeam(){
 		for(int i = 1; i<statsArray.Length; i++) {
 			int _id = i;
-			int team = i % 2;
+			int team = (i+1) % 2;
 			statsArray [_id].team = team;
 			if (playerObjects.Count > i) {
 				GetPlayerFromNetID (_id).GetComponent<Player_Controller> ().team = team;
