@@ -6,7 +6,7 @@ public class Minimap_Controller : MonoBehaviour {
 	public Material mat;
 	public int team;
 	public GameObject[] icons;
-
+	public bool Hide = true;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +21,10 @@ public class Minimap_Controller : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+		if (Hide)
+		{
+			return;
+		}
 		foreach (GameObject icon in icons)
 		{
 			Material mat = icon.GetComponent<MeshRenderer>().material;

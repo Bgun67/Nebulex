@@ -160,9 +160,18 @@ public class Bomber_Controller : MonoBehaviour
 		engineSound.pitch = Mathf.Clamp (Mathf.Abs (moveZ + moveY), 0, 0.3f) + 1f;
 
 
-		rb.AddRelativeTorque( MInput.GetAxis("Rotate X") *deltaThrustForce* torqueFactor,
-			MInput.GetAxis("Rotate Y") *deltaThrustForce* torqueFactor,
-			Input.GetAxis("Move X") *deltaThrustForce* -torqueFactor);
+		if (MInput.useMouse)
+		{
+			rb.AddRelativeTorque(MInput.GetMouseDelta("Mouse Y") * -0.2f * deltaThrustForce * torqueFactor,
+				MInput.GetMouseDelta("Mouse X") * 0.2f  * deltaThrustForce * torqueFactor,
+				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
+		else
+		{
+			rb.AddRelativeTorque(MInput.GetAxis("Rotate X") * deltaThrustForce * torqueFactor,
+				MInput.GetAxis("Rotate Y")  * deltaThrustForce * torqueFactor,
+				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
 	}
 
 

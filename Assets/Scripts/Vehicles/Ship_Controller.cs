@@ -147,10 +147,18 @@ public class Ship_Controller : MonoBehaviour {
 		
 		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.95f, 0.3f);
 		previousEnginePitch = engineSound.pitch;
-
-		rb.AddRelativeTorque( MInput.GetAxis("Rotate X") *deltaThrustForce* torqueFactor,
-			MInput.GetAxis("Rotate Y") *deltaThrustForce* torqueFactor,
-			Input.GetAxis("Move X") *deltaThrustForce* -torqueFactor);
+		if (MInput.useMouse)
+		{
+			rb.AddRelativeTorque(MInput.GetMouseDelta("Mouse Y") * -0.2f * deltaThrustForce * torqueFactor,
+				MInput.GetMouseDelta("Mouse X") * 0.2f  * deltaThrustForce * torqueFactor,
+				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
+		else
+		{
+			rb.AddRelativeTorque(MInput.GetAxis("Rotate X") * deltaThrustForce * torqueFactor,
+				MInput.GetAxis("Rotate Y")  * deltaThrustForce * torqueFactor,
+				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
 	}
 
 

@@ -17,7 +17,6 @@ public class Profile : MonoBehaviour {
 			print("Info Length" + playerInfo.Length);
 			playerScore.text = playerInfo[1];
 			nameInput.text = playerInfo[0];
-			mouseToggle.isOn = (playerInfo[4] == "True");
 		}
 		catch
 		{
@@ -27,14 +26,15 @@ public class Profile : MonoBehaviour {
 	}
 	public void SaveChanges(){
 		playerInfo [0] = nameInput.text;
-		MInput.useMouse = mouseToggle.isOn;
-		playerInfo[4] = mouseToggle.isOn.ToString();
 		print ("Info Length 2:" + playerInfo.Length);
 
 		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Player Data.txt",Util.ThiccWatermelon(playerInfo));
 
 	}
-	
+	public void OpenOptions()
+	{
+		SceneManager.LoadScene("Options", LoadSceneMode.Additive);
+	}
 	public void Back(){
 		SceneManager.LoadScene ("Start Scene");
 	}
@@ -56,6 +56,12 @@ public class Profile : MonoBehaviour {
 		return loadoutSettings;
 
 	}
-	
+	public static string[] RestoreOptionsFile()
+	{
+		string[] optionsSettings = new string[]{ "1", "True", "1", "2"};
+		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsSettings) );
+		return optionsSettings;
+	}
+
 
 }

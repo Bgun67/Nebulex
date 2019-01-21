@@ -203,7 +203,8 @@ public class Player_Controller : MonoBehaviour {
 		pieQuadrants = UI_Manager._instance.pieQuadrants;
 		if (MInput.useMouse)
 		{
-			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
+
 		}
 
 		mainCam.enabled = true;
@@ -709,7 +710,7 @@ public class Player_Controller : MonoBehaviour {
 	public void Pause(){
 		if (MInput.useMouse)
 		{
-			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
 		}
 		pauseMenu.gameObject.SetActive (true);
 		pauseMenu.Pause(this.gameObject);
@@ -1460,7 +1461,6 @@ public class Player_Controller : MonoBehaviour {
 		}
 
 		playerName = playerData [0];
-		MInput.useMouse = playerData[4]=="True";
 		if (playerName.StartsWith ("$132435**ADMIN")) {
 			playerName = playerName.Remove (0, 14);
 			gameController.statsArray [netObj.netID].name = playerName;

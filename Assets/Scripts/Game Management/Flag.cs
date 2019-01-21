@@ -75,6 +75,14 @@ public class Flag : MonoBehaviour {
 			joint.connectedBody = stand;
 			return;
 		}
+		if (!joint.connectedBody.gameObject.activeInHierarchy) {
+			_player = null;
+			stand.transform.position = this.transform.position;
+			boxCollider.enabled = true;
+
+			joint.connectedBody = stand;
+			return;
+		}
 		if (_player.inVehicle) {
 			print ("Invehicle");
 			if (!vehicleEntered) {
@@ -104,13 +112,7 @@ public class Flag : MonoBehaviour {
 			}
 
 		}
-		if (!joint.connectedBody.gameObject.activeInHierarchy) {
-			_player = null;
-			stand.transform.position = this.transform.position;
-			boxCollider.enabled = true;
-
-			joint.connectedBody = stand;
-		}
+		
 	}
 
 	public void OnTriggerEnter(Collider other){

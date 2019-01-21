@@ -25,7 +25,8 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		}
 		if (MInput.useMouse)
 		{
-			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
+
 		}
 		eventSystem.SetActive (true);
 	}
@@ -56,7 +57,8 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 	public void Spawn(int index){
 		if (MInput.useMouse)
 		{
-			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
+
 		}
 		Player_Controller _player = gameController.localPlayer.GetComponent<Player_Controller>();
 		_player.transform.position = spawnPositions [index].position;

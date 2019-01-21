@@ -69,13 +69,14 @@ MonoBehaviour:
   radiationPower: 10
   shipHolePrefab: {fileID: 1520643935371924, guid: 13d7cba591fb7984588ce68a31f2721c,
     type: 2}
-  stormSystem: {fileID: 0}
+  asteroidPrefab: {fileID: 0}
   initialTimeBetweenStorms: 40
   carrier: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 1
   netView: {fileID: 114084927370613286}
+  maxInitialAsteroids: 0
 --- !u!198 &198085702029158616
 ParticleSystem:
   m_ObjectHideFlags: 1
