@@ -20,8 +20,6 @@ public class Player_Controller : MonoBehaviour {
 	public bool inVehicle = false;
 	public Transform footRaycast;
 	public float maxStepHeight;
-	public bool onStairs;
-	public LayerMask stairLayer;
 	public Game_Controller gameController;
 	WalkState walkState = WalkState.Walking;
 	//to be used for running crouching and walking
@@ -93,6 +91,8 @@ public class Player_Controller : MonoBehaviour {
 	#region cameras
 	public GameObject mainCamObj;
 	Camera mainCam;
+	Vector3 originalCamPosition;
+	Quaternion originalCamRotation;
 	public GameObject minimapCam;
 	public GameObject iconCamera;
 	#endregion
@@ -152,6 +152,8 @@ public class Player_Controller : MonoBehaviour {
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> (); 
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
+		originalCamPosition = mainCamObj.transform.localPosition;
+		originalCamRotation = mainCamObj.transform.localRotation;
 		if (gameController.localPlayer == null) {
 			gameController.GetLocalPlayer ();
 		}
@@ -195,11 +197,9 @@ public class Player_Controller : MonoBehaviour {
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> (); 
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
-		//anim.SetBool ("Running", true);
-		anim.Play ("Aim Up/Down", 1, 0.5f);
+		anim.SetFloat ("Look Speed", 0.5f);
+
 		airTime = suffocationTime;
-		//gameController = GameObject.FindObjectOfType<Game_Controller> ();
-		//anim.Play("Look Up/Down", 0, 0.5f);
 		pieQuadrants = UI_Manager._instance.pieQuadrants;
 		if (MInput.useMouse)
 		{
@@ -278,8 +278,8 @@ public class Player_Controller : MonoBehaviour {
 		mainCamObj.GetComponent<AudioListener> ().enabled = true;
 		if (MInput.useMouse)
 		{
-			h2 = Mathf.Clamp(MInput.GetMouseDelta("Mouse X")* lookFactor*0.2f,-2f,2f);
-			v2 = Mathf.Clamp(MInput.GetMouseDelta("Mouse Y") * lookFactor*0.2f,-2f,2f);
+			h2 = Mathf.Clamp(MInput.GetMouseDelta("Mouse X")* lookFactor*0.1f,-2f,2f);
+			v2 = Mathf.Clamp(MInput.GetMouseDelta("Mouse Y") * lookFactor*0.1f,-2f,2f);
 		}
 		else
 		{
@@ -349,8 +349,7 @@ public class Player_Controller : MonoBehaviour {
 			}
 			
 			if (rb.velocity.y > 4f) {
-				h = 0f;
-				v = 0f;
+				moveFactor = 0.3f;
 				anim.SetBool ("Jump", true);
 				if (Time.frameCount % 4 == 0) {
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -361,8 +360,7 @@ public class Player_Controller : MonoBehaviour {
 				}
 
 			} else if (rb.velocity.y < -4f) {
-				h = 0f;
-				v = 0f;
+				moveFactor = 0.3f;
 			} else {
 				anim.SetBool ("Jump", false);
 				if (Time.frameCount % 4 == 0) {
@@ -398,11 +396,7 @@ public class Player_Controller : MonoBehaviour {
 				walkState = WalkState.Walking;
 			}
 
-			if (onStairs) {
-				if (Time.frameCount % 2 == 0) {
-					ClimbStairs ();
-				}
-			}
+			
 			MovePlayer ();
 			AnimateMovement ();
 
@@ -707,12 +701,10 @@ public class Player_Controller : MonoBehaviour {
 		print ("Reactivating player");
 		this.gameObject.SetActive (true);
 	}
-	public void Pause(){
-		if (MInput.useMouse)
-		{
-			Cursor.lockState = CursorLockMode.None;
-		}
-		pauseMenu.gameObject.SetActive (true);
+	public void Pause()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		pauseMenu.gameObject.SetActive(true);
 		pauseMenu.Pause(this.gameObject);
 	}
 	[MRPC]
@@ -753,6 +745,9 @@ public class Player_Controller : MonoBehaviour {
 			return;
 		}
 		if (MInput.GetButton ("Left Trigger")) {
+			mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,fireScript.scopePosition.position-fireScript.scopePosition.transform.forward*0.35f+fireScript.transform.up*0.01f,0.2f);
+			mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation, fireScript.scopePosition.rotation, 0.1f);
+
 			anim.SetBool ("Scope", true);
 			//StartCoroutine (Zoom (true));
 			Zoom(true);
@@ -774,6 +769,9 @@ public class Player_Controller : MonoBehaviour {
 			}
 
 		} else {
+			mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition,originalCamPosition,0.3f);
+			mainCam.transform.localRotation = Quaternion.Lerp(mainCam.transform.localRotation, originalCamRotation, 0.1f);
+
 			anim.SetBool ("Scope", false);
 			Zoom(false);
 			if (walkState!=WalkState.Crouching)
@@ -808,18 +806,10 @@ public class Player_Controller : MonoBehaviour {
 
 
 		if (zoomIn == true) {
-
-			if (i > 10) {
-				i -= 5 * (Time.deltaTime * 20f);
-
-				mainCam.fieldOfView = i;
-			}
-		} else {
-			if (i < 60) {
-				i += 5 * (Time.deltaTime * 20f);
-
-				mainCam.fieldOfView = i;
-			}
+			mainCam.fieldOfView = Mathf.Lerp(i,10f,0.5f);
+		}else
+		{
+			mainCam.fieldOfView = Mathf.Lerp(i, 60f, 0.5f);
 		}
 	}
 	[MRPC]
@@ -840,7 +830,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 	public void Jump(){
 		
-		if (jetpackFuel > 1.1f && refueling == true)
+		if (jetpackFuel > 0.7f && refueling == true)
 		{
 			refueling = false;
 
@@ -880,35 +870,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 	}
 
-	//basically jumps when there is a step thats under the top ray
-	public void ClimbStairs(){
-		RaycastHit hit;
-		Vector3 normal;
-		if (Physics.Raycast (footRaycast.transform.position, -transform.up, out hit, 3f, stairLayer)) {
-			normal = hit.normal;
-			rb.AddForce (Vector3.Cross (Vector3.Cross (normal, transform.forward), normal) * v * Time.deltaTime * forceFactor * 30f);
-			rb.AddForce (Vector3.Cross (Vector3.Cross (normal, transform.right), normal) * h * Time.deltaTime * forceFactor * 30f);
-
-			//Debug.DrawRay (this.transform.position, Vector3.Cross (Vector3.Cross (normal, transform.forward), normal));
-			//rb.AddRelativeForce (h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
-		} else {
-		}
-
-		this.transform.Rotate (0f, h2 * 2f, 0f);
-		/*
-			if (Physics.Raycast (footRaycast.transform.position, transform.forward, 1f, stairLayer)) {
-				if (Physics.Raycast (footRaycast.transform.position + transform.up * maxStepHeight, transform.forward, 0.2f)) {
-					print ("Failed, returning");
-					return;
-				} else {
-					print ("forcing up");
-
-					rb.AddRelativeForce (0f, currentStepHeight*10000f, 0f);
-				}
-			} else {
-			}*/
-
-	}
+	
 
 	public void UseItem(){
 		RaycastHit hit;
@@ -946,7 +908,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 
 	public void SpaceMove(){
-		float factor = lookFactor * Time.deltaTime * forceFactor ;
+		float factor = Time.deltaTime * forceFactor ;
 		if (Input.GetButtonDown("Sprint")&&(Time.time >jumpWait))
 		{
 			jumpWait = Time.time + 5f;
@@ -1024,7 +986,7 @@ public class Player_Controller : MonoBehaviour {
 		{
 			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
 		}
-		this.transform.Rotate (0f, h2 *lookFactor* Time.deltaTime*180f, 0f);
+		this.transform.Rotate (0f, h2 * Time.deltaTime*180f, 0f);
 		if (Time.frameCount % 5 == 0)
 		{
 			CheckStep();
@@ -1035,63 +997,24 @@ public class Player_Controller : MonoBehaviour {
 		if (v > 0.1f)
 		{
 			Vector3 footPos = footRaycast.transform.position;
-			if (Physics.Raycast(footPos, transform.forward, 0.5f))
+			RaycastHit _hit;
+			if (Physics.SphereCast(footPos,0.1f, transform.forward,out _hit,0.3f))
 			{
-				if (!Physics.Raycast(footPos + transform.up * 0.5f, transform.forward, 0.6f))
+
+				if (!Physics.Raycast(footPos + transform.up * 0.4f, transform.forward, 0.35f))
 				{
-					rb.AddRelativeForce(0f, 7 * rb.mass * 9.81f, 0f);
+					Debug.DrawRay(footPos + transform.up * 0.3f, transform.forward);
+
+					rb.AddRelativeForce(0f, 10f * rb.mass * 9.81f, 0f);
 				}
 			}
 		}
 	}
 
-
-	public void Look(){
-		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
-			
-
-		if (v2 < 0f) {
-			if (lookUpDownTime > 0f) {
-				anim.SetFloat ("Look Speed", v2*lookFactor);
-			} else {
-				anim.SetFloat ("Look Speed", 0f);
-			}
-		} else if (v2 > 0f) {
-			if (lookUpDownTime <= 1f) {
-				anim.SetFloat ("Look Speed", v2*lookFactor);
-			} else {
-				anim.SetFloat ("Look Speed", 0f);
-			}
-		} else {
-			anim.SetFloat ("Look Speed", 0f);
-		}
-		if (Time.frameCount % 6==0) {
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
-			}
-		}
-
-	
-	}
 	public void MouseLook(){
-		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
-			
-
-		if (v2 < 0f) {
-			if (lookUpDownTime > 0f) {
-				anim.SetFloat ("Look Speed", v2*lookFactor);
-			} else {
-				anim.SetFloat ("Look Speed", 0f);
-			}
-		} else if (v2 > 0f) {
-			if (lookUpDownTime <= 1f) {
-				anim.SetFloat ("Look Speed", v2*lookFactor);
-			} else {
-				anim.SetFloat ("Look Speed", 0f);
-			}
-		} else {
-			anim.SetFloat ("Look Speed", 0f);
-		}
+		float lookUpDownTime = anim.GetFloat("Look Speed");		
+		anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 0.1f, -1f, 1f));
+		
 		if (Time.frameCount % 4==0) {
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
@@ -1107,8 +1030,8 @@ public class Player_Controller : MonoBehaviour {
 	}
 	public void AdjustView(float time)
 	{
-		float lookTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
-		anim.Play("Aim Up/Down", 1, Mathf.Lerp(lookTime, time, 0.5f));
+		float lookTime = anim.GetFloat("Look Speed");
+		anim.SetFloat("Look Speed", Mathf.Lerp(lookTime, time, 0.5f));
 	}
 	public void TurnHead(){
 		anim.SetFloat ("Head Turn Speed", -h2*0.5f+0.5f);
@@ -1139,7 +1062,7 @@ public class Player_Controller : MonoBehaviour {
 		UpdateUI ();
 	}
 	public void Recoil(){
-		anim.Play (recoilString, 2, 1-Random.Range(recoilAmount/2f,recoilAmount));
+		anim.Play (recoilString, 2, 1-Random.Range(recoilAmount*0.7f,recoilAmount));
 	}
 	#endregion
 	#region Region2
@@ -1170,6 +1093,7 @@ public class Player_Controller : MonoBehaviour {
 	public void CoDie(){
 		
 		sceneCam.enabled = true;
+		
 		if (netObj.isLocal) {
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
 			{
@@ -1228,26 +1152,20 @@ public class Player_Controller : MonoBehaviour {
 		rb.constraints = RigidbodyConstraints.None;
 		anim.SetBool ("Float", true);
 		anim.SetBool ("Jump", false);
-		float lookTime = anim.GetCurrentAnimatorStateInfo (1).normalizedTime;
-		if (lookTime < 0.5f) {
-			anim.SetFloat ("Look Speed", 0.75f);
-		} else if(lookTime>0.5f) {
-			anim.SetFloat ("Look Speed", -0.75f);
-		}
+		
 		//yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - 0.5f) < 0.05f);
 		Vector3 _aimDirection = mainCam.transform.forward;
 		Vector3 _originalForward = transform.forward;
 
-		while (Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - 0.5f) >= 0.05f) {
-			transform.forward = Vector3.Slerp (_originalForward, _aimDirection, 1f - Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - 0.5f) * 2f);
+		while (Mathf.Abs (anim.GetFloat("Look Speed") - 0.5f) >= 0.05f) {
+			transform.forward = Vector3.Slerp (_originalForward, _aimDirection, Mathf.Abs (anim.GetFloat("Look Speed")));
+			anim.SetFloat ("Look Speed", Mathf.Lerp(anim.GetFloat("Look Speed"),0.5f,0.5f));
+
 			yield return new WaitForSeconds (0.01f);
 		}
 		transform.forward = _aimDirection;
-		anim.Play ("Aim Up/Down", 1, 0.5f);
-		anim.SetFloat ("Look Speed",0f);
+		anim.SetFloat ("Look Speed",0.5f);
 
-
-		anim.SetFloat ("Look Speed", 0f);
 		if(netObj.isLocal){
 			breatheSound.Play ();
 		}

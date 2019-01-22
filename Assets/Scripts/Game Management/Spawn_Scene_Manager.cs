@@ -76,6 +76,9 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			_player.sceneCam.enabled = false;
 
 		}
+		//zoom down effect
+		_player.mainCamObj.transform.position = _player.sceneCam.transform.position;
+		_player.mainCamObj.transform.rotation = _player.sceneCam.transform.rotation;
 		SceneManager.UnloadSceneAsync ("SpawnScene");
 			
 		

@@ -57,7 +57,7 @@ public class Damage : MonoBehaviour {
 		}
 
 		if (regen) {
-			InvokeRepeating ("RegenHealth", 1f, 0.5f);
+			InvokeRepeating ("RegenHealth", 100f/originalHealth, 0.5f);
 		}
 		if (netObj == null) {
 			netObj = this.GetComponent<Metwork_Object> ();
