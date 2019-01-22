@@ -93,7 +93,7 @@ public class Metwork:MonoBehaviour {
 	public static Metwork _instance;
 
 	//Our fancy matching server (On OpenShift remember?) //wss://because-why-not.com:12777/chatapp
-	public static string uSignalingUrl = "ws://nebulex-nebulex.193b.starter-ca-central-1.openshiftapps.com/chatapp";//wss://because-why-not.com:12777/chatapp";
+	public static string uSignalingUrl = "ws://sample-bean.herokuapp.com";//"ws://nebulex-nebulex.193b.starter-ca-central-1.openshiftapps.com/chatapp";//wss://because-why-not.com:12777/chatapp";
 
 	public static string uIceServer = "stun:stun.l.google.com:19302";
 	public static string uIceServerUser = "testuser13";

@@ -103,7 +103,14 @@ public class Metwork_Object : MonoBehaviour {
 		isCollision = false;
 	}
 
+	void Update(){
+		if(Time.frameCount % 10 == 0){
+			CheckLocal();
+		}
+	}
+
 	void FixedUpdate(){
+		
 		//if (manager == null && this.owner == 1) {
 		//	isLocal = true;
 		//	return;
@@ -116,7 +123,7 @@ public class Metwork_Object : MonoBehaviour {
 		//}
 		//Physics.autoSimulation = true;
 
-		CheckLocal();
+		
 
 		if (!isLocal) {
 

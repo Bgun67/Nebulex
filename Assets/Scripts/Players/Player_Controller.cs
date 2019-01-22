@@ -157,7 +157,7 @@ public class Player_Controller : MonoBehaviour {
 		if (gameController.localPlayer == null) {
 			gameController.GetLocalPlayer ();
 		}
-		UI_Manager.onPieEvent += this.OnPieEvent;
+		//UI_Manager.onPieEvent += this.OnPieEvent;
 		if (netObj.isLocal) {
 			LoadPlayerData ();
 
@@ -287,9 +287,9 @@ public class Player_Controller : MonoBehaviour {
 			v2 = -MInput.GetAxis("Rotate X") * lookFactor;
 		}
 
-		if(UI_Manager._instance.selectedSegment != -1){
-			OnPieEvent(UI_Manager._instance.selectedSegment);
-		}
+		
+		OnPieEvent(UI_Manager.GetPieChoice());
+		
 
 
 		if (inVehicle) {
@@ -438,7 +438,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 
 	public void OnPieEvent(int _segmentNumber){
-		if (!netObj.isLocal || !this.enabled) {
+		if (_segmentNumber == -1 || !netObj.isLocal || !this.enabled) {
 			return;
 		}
 		switch (_segmentNumber) {

@@ -55,6 +55,10 @@ public class UI_Manager : MonoBehaviour {
 		UI_Manager._instance = this;	
 	}
 
+	public static int GetPieChoice(){
+		return pieChoice;
+	}
+
 	void LateUpdate(){
 		pieChoice = -1;
 		if (Input.GetKeyDown (KeyCode.LeftControl)) {
@@ -67,15 +71,11 @@ public class UI_Manager : MonoBehaviour {
 				_isShown = true;
 			}
 		}
-		if (!_isShown) {
-			//isPieShown = false;
-			pieChoice = selectedSegment;
-			//if (selectedSegment != -1 && onPieEvent != null) {
-			//	onPieEvent.Invoke (selectedSegment);
-			//}
-		}
+		
 		if (Input.GetKeyUp(KeyCode.LeftControl)) {
 			isPieShown = false;
+
+			pieChoice = selectedSegment;
 			//pieChoice = selectedSegment;
 			//if (selectedSegment != -1 && onPieEvent != null) {
 			//	onPieEvent.Invoke (selectedSegment);
