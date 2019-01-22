@@ -20,12 +20,15 @@ public class Transistion : MonoBehaviour {
 		loadOperation.priority = 0;
 		SceneManager.sceneLoaded += SceneManager_sceneLoaded;
 		netManager = FindObjectOfType<Network_Manager>();
-		Invoke("ContingencyLoad", 20f);
+		Invoke("ContingencyLoad", 10f);
 	}
 
 	//Checks to see if the load has gone horribley wrong
 	void ContingencyLoad(){
 		if(this.enabled){
+			SceneManager.UnloadSceneAsync ("TransistionScene");
+			loadOperation.allowSceneActivation = true;
+
 			if(Metwork.peerType == MetworkPeerType.Connected && Metwork.player != null){
 				//SceneManager.LoadSceneAsync ("SpawnScene", LoadSceneMode.Additive);
 				SceneManager.UnloadSceneAsync ("TransistionScene");
