@@ -93,7 +93,7 @@ public class Metwork:MonoBehaviour {
 	public static Metwork _instance;
 
 	//Our fancy matching server (On OpenShift remember?) //wss://because-why-not.com:12777/chatapp
-	public static string uSignalingUrl = "ws://sample-bean.herokuapp.com";//"ws://nebulex-nebulex.193b.starter-ca-central-1.openshiftapps.com/chatapp";//wss://because-why-not.com:12777/chatapp";
+	public static string uSignalingUrl = "ws://nebulex-server.herokuapp.com/chatapp";//"ws://sample-bean.herokuapp.com";//"ws://nebulex-nebulex.193b.starter-ca-central-1.openshiftapps.com/chatapp";//wss://because-why-not.com:12777/chatapp";
 
 	public static string uIceServer = "stun:stun.l.google.com:19302";
 	public static string uIceServerUser = "testuser13";
@@ -602,6 +602,7 @@ public class Metwork:MonoBehaviour {
 				case NetEventType.ServerClosed:
 					{
 						pPeerType = MetworkPeerType.Disconnected;
+						Debug.Log("Server Closed");
 						//server shut down. reaction to "Shutdown" call or
 						//StopServer or the connection broke down
 						pIsServer = false;
@@ -684,6 +685,12 @@ public class Metwork:MonoBehaviour {
 					} break;
 				case NetEventType.ConnectionFailed:
 					{
+						if(Metwork.peerType == MetworkPeerType.Connected){
+							Debug.Log("Connection Failed");
+							Debug.Log(evt.ConnectionId);
+							Debug.Log(evt.MessageData);
+							break;
+						}
 						pPeerType = MetworkPeerType.Disconnected;
 						//Outgoing connection failed. Inform the user.
 						Append("Connection failed");
