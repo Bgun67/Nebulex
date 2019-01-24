@@ -264,7 +264,15 @@ public class Fire : MonoBehaviour {
 	}
 	GameObject GetBullet(){
 		if (poolList.Count == 0) {
-			ReturnBullets ();
+			if (destroyedStack.Count > 0)
+			{
+				ReturnBullets();
+			}
+			else
+			{
+				return null;
+			}
+
 		}
 		GameObject bullet = poolList.Pop ();
 		destroyedStack.Push (bullet);
@@ -273,10 +281,7 @@ public class Fire : MonoBehaviour {
 
 	}
 	void ReturnBullets(){
-		if (destroyedStack.Count == 0)
-		{
-			return;
-		}
+		
 		foreach (GameObject _bullet in destroyedStack) {
 			poolList.Push (_bullet);
 		}

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.04861197, g: 0.10267513, b: 0.19488473, a: 1}
+  m_IndirectSpecularColor: {r: 0.008979876, g: 0.02202542, b: 0.051011074, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -119,6 +119,44 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1500021049238046, guid: b9f1228e890c95646bb37da2c7c813c7,
     type: 2}
   m_PrefabInternal: {fileID: 1312444432}
+--- !u!114 &15490813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 15490803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewID: 1001
+--- !u!114 &15490814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 15490803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcf06763714ae049b53c3a709b19882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actualPosition: {x: 0, y: 0, z: 0}
+  isLocal: 0
+  netID: 1
+  owner: 1
+  rb: {fileID: 0}
+  netView: {fileID: 15490813}
+  rotationLerp: 0.2
+  snapLerp: 0.2
+  lerpRate: 20
+  snapDistance: 0
+  velocitySnapDist: 0.5
+  rotForceFactor: 30
+  velocityLerp: 0.2
+  sendRate: 15
+  isTwoPlane: 0
 --- !u!1 &26081915 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1844531578879706, guid: 6874c8884960c9348994830e6fb1e7ad,
@@ -1901,7 +1939,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1758748269}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.33559906
+  m_Size: 0.3355967
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9255,6 +9293,10 @@ Prefab:
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 1293881334}
+    - target: {fileID: 1500021049238046, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
   m_IsPrefabAsset: 0
@@ -10262,7 +10304,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000012142799, y: 199.31999}
+  m_AnchoredPosition: {x: 0.000012142799, y: 199.32071}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1492577384
@@ -10644,8 +10686,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1293881332}
-        m_MethodName: 
+      - m_Target: {fileID: 1293881334}
+        m_MethodName: Options
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

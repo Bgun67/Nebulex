@@ -135,8 +135,16 @@ public class Turret_Controller : MonoBehaviour {
 			AutoAim();
 		}
 		if (player.GetComponent<Metwork_Object> ().isLocal) {
-			h = -MInput.GetAxis ("Rotate Y");
-			v = -MInput.GetAxis ("Rotate X");
+			if (MInput.useMouse)
+			{
+				h = -MInput.GetMouseDelta("Mouse X");
+				v = MInput.GetMouseDelta("Mouse Y");
+			}
+			else
+			{
+				h = -MInput.GetAxis("Rotate Y");
+				v = -MInput.GetAxis("Rotate X");
+			}
 			Look ();
 			if (Input.GetButton ("Fire1")) {
 				primary1.FireWeapon ();

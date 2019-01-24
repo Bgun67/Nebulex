@@ -276,6 +276,12 @@ public class Game_Controller : MonoBehaviour {
 
 
 	public void GameUpdate(){
+		//unlock cursor
+		if (Input.GetKey(KeyCode.Escape))
+		{
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+		}
 		Vector3 shipDisplacement = (shipTwoTransform.position-shipOneTransform.position  )/2f;
 		if (Vector3.SqrMagnitude(shipDisplacement) == 0) {
 			sceneCam.transform.position = shipOneTransform.position + new Vector3 (0f, 700f, 0);
