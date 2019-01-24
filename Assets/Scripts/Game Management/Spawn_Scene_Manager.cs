@@ -23,11 +23,6 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			eventSystem = GameObject.Find ("EventSystem");
 
 		}
-		if (MInput.useMouse)
-		{
-			Cursor.lockState = CursorLockMode.None;
-
-		}
 		eventSystem.SetActive (true);
 	}
 	
@@ -39,6 +34,9 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		if (spawnPoints.Length < 1) {
 			spawnPoints = GameObject.FindGameObjectsWithTag ("Spawn Point 1");
 		}
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+
 		
 		for (int i = 0; i< spawnButtons.Length; i++) {
 			if (i >= spawnPoints.Length) {
@@ -58,29 +56,33 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		if (MInput.useMouse)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
-
+			Cursor.visible = false;
 		}
 		Player_Controller _player = gameController.localPlayer.GetComponent<Player_Controller>();
 		_player.transform.position = spawnPositions [index].position;
-		_player.transform.rotation = spawnPositions [index].rotation;
+		_player.transform.rotation = Quaternion.LookRotation(spawnPositions [index].forward,Vector3.up);
 		_player.damageScript.initialPosition = null;
 		_player.damageScript.Reactivate();
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			gameController.netView.RPC ("RPC_ActivatePlayer", MRPCMode.AllBuffered, new object[]{ _player.netObj.owner});
 			if (_player.netObj.isLocal) {
 				_player.sceneCam.enabled = false;
+				_player.sceneCam.GetComponent<AudioListener>().enabled = false;
+
 			}
 		} else {
 			//Enables the player
 			gameController.RPC_ActivatePlayer (_player.netObj.owner);
 			_player.sceneCam.enabled = false;
+			_player.sceneCam.GetComponent<AudioListener>().enabled = false;
 
 		}
 		//zoom down effect
 		_player.mainCamObj.transform.position = _player.sceneCam.transform.position;
 		_player.mainCamObj.transform.rotation = _player.sceneCam.transform.rotation;
 		SceneManager.UnloadSceneAsync ("SpawnScene");
-			
-		
+		this.enabled = (false);
+
+
 	}
 }

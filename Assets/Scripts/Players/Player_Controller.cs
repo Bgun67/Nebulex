@@ -1013,7 +1013,7 @@ public class Player_Controller : MonoBehaviour {
 
 	public void MouseLook(){
 		float lookUpDownTime = anim.GetFloat("Look Speed");		
-		anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 0.1f, -1f, 1f));
+		anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 2f*Time.deltaTime, -1f, 1f));
 		
 		if (Time.frameCount % 4==0) {
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
