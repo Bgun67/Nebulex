@@ -65,27 +65,31 @@ public class Metwork_Object : MonoBehaviour {
 	public void CheckLocal()
 	{
 		try
+		{
+			if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0))
 			{
-				if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0))
-				{
-					isLocal = true;
-				}
-				else
-				{
-					isLocal = false;
-				}
+				isLocal = true;
 			}
-			catch
+			else
 			{
-				if (this.owner == 1 || this.owner == 0)
-				{
-					isLocal = true;
-				}
-				else
-				{
-					isLocal = false;
-				}
+				isLocal = false;
 			}
+		}
+		catch
+		{
+			if (this.owner == 1 || this.owner == 0)
+			{
+				isLocal = true;
+			}
+			else
+			{
+				isLocal = false;
+			}
+		}
+		if (isTwoPlane)
+		{
+			print("Local =" + isLocal);
+		}
 	}
 
 	void OnCollisionEnter(Collision other){
@@ -164,7 +168,6 @@ public class Metwork_Object : MonoBehaviour {
 			}
 
 
-
 			if (isCollision) {
 				//rb.AddForce (transformVelocity);
 
@@ -208,10 +211,9 @@ public class Metwork_Object : MonoBehaviour {
 			{
 				//print("DeltaRot" + deltaRot);
 				//print("Angular Velocity" + rb.angularVelocity);
+				rb.MoveRotation(Quaternion.LerpUnclamped (transform.rotation, actualRotation, rotationLerp));
 
-				rb.angularVelocity = Vector3.up * Mathf.Clamp(deltaRot.y * rotationLerp, -10f, 10f);
-
-				//never gonna giveyou up
+				//rb.angularVelocity = Vector3.up * Mathf.Clamp(deltaRot.y * rotationLerp, -10f, 10f);
 			}
 
 			actualPosition = actualPosition + actualVelocity * Time.fixedDeltaTime;
@@ -229,6 +231,10 @@ public class Metwork_Object : MonoBehaviour {
 		rb.MovePosition(_position);
 		rb.MoveRotation( _rotation);
 		rb.velocity = _velocity;
+		
+
+		//	rb.angularVelocity = _angularVelocity;
+
 	}
 
 	void NetUpdate(){
@@ -239,6 +245,10 @@ public class Metwork_Object : MonoBehaviour {
 				this.rb.velocity,
 				this.netID
 			});
+			if (isTwoPlane)
+			{
+				print("Sent" + transform.rotation.eulerAngles);
+			}
 		}
 
 
@@ -263,10 +273,16 @@ public class Metwork_Object : MonoBehaviour {
 
 	[MRPC]
 	public void SendLocation(Vector3 objectPosition, Quaternion objectRotation,Vector3 objectVelocity, int id){
-		if (!isLocal){
+		if (!isLocal)
+		{
 			actualPosition = objectPosition;
 			actualRotation = objectRotation;
 			actualVelocity = objectVelocity;
+			if (isTwoPlane)
+			{
+				print("Received" + objectRotation.eulerAngles);
+				//
+			}
 		}
 
 	}
