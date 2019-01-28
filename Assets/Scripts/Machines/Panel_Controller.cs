@@ -51,7 +51,7 @@ public class Panel_Controller : MonoBehaviour {
 				greenLight.enabled = true;
 				redLight.enabled = true;
 				currentRepairTime += Time.deltaTime;
-				if (!sparkEffect.isPlaying) {
+				if (sparkEffect!=null&&!sparkEffect.isPlaying) {
 					sparkEffect.Play ();
 				}
 				player.GetComponent<Rigidbody> ().velocity = this.transform.root.GetComponent<Rigidbody> ().velocity;
@@ -59,7 +59,10 @@ public class Panel_Controller : MonoBehaviour {
 				repairing = false;
 				greenLight.enabled = false;
 				currentRepairTime = 0f;
-				sparkEffect.Stop ();
+				if (sparkEffect != null)
+				{
+					sparkEffect.Stop();
+				}
 				anim.SetBool ("Repair",false);
 
 
