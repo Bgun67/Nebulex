@@ -318,6 +318,7 @@ public class Carrier_Controller : MonoBehaviour {
 		this.GetComponentInChildren<Gravity_Controller>().useGravity = false;
 		this.GetComponentInChildren<Gravity_Controller>().ignoreInternalObjects = false;
 		Time.timeScale = 0.5f;
+		hasPower = false;
 		Invoke ("IgnoreInternal", 1f);
 		print ("Completed");
 
@@ -327,6 +328,8 @@ public class Carrier_Controller : MonoBehaviour {
 		this.GetComponentInChildren<Gravity_Controller>().useGravity = true;
 		this.GetComponentInChildren<Gravity_Controller>().ignoreInternalObjects = false;
 		//Time.timeScale = 0.5f;
+		hasPower = true;
+
 		Invoke ("IgnoreInternal", 1f);
 	}
 

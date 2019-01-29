@@ -65,9 +65,6 @@ public class Com_Controller : MonoBehaviour {
 	{
 		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
 		{
-			agent.enabled = true;
-			GetComponent<Rigidbody>().isKinematic = true;
-			GetComponent<Rigidbody>().detectCollisions = false;
 			InvokeRepeating("CheckState", Random.Range(0.1f, 0.5f), 0.2f);
 			GameObject[] _spawnPoints = GameObject.FindGameObjectsWithTag("Spawn Point " + carrierNum);
 			patrolPositions = new Transform[_spawnPoints.Length];
@@ -101,6 +98,10 @@ public class Com_Controller : MonoBehaviour {
 			{
 				Fight();
 			}
+			if (Metwork.peerType != MetworkPeerType.Disconnected)
+			{
+				netView.RPC("RPC_SyncTransform", MRPCMode.Others, new object[] { transform.position, transform.rotation, agent.destination, agent.speed });
+			}
 		}
 	}
 	void FootstepAnim()
@@ -113,7 +114,7 @@ public class Com_Controller : MonoBehaviour {
 		anim.SetFloat("V Movement", agent.speed);
 		if (botState == BotState.Patrol)
 		{
-			anim.SetFloat("Head Turn Speed", Mathf.Lerp(anim.GetFloat("Head Turn Speed"),(Mathf.Sin(Time.time)+0.5f)*Random.Range(0f, 1f),0.5f));
+			anim.SetFloat("Head Turn Speed", Mathf.Lerp(anim.GetFloat("Head Turn Speed"),(Mathf.Sin(Time.time*0.1f)+0.5f),0.5f));
 			anim.SetFloat("Look Speed", 0.5f);
 		}
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
@@ -128,6 +129,17 @@ public class Com_Controller : MonoBehaviour {
 		anim.SetFloat("Head Turn Speed", _headTurn);
 		anim.SetFloat("V Movement", _agentSpeed);
 		anim.SetFloat("Look Speed", _lookSpeed);
+	}
+	[MRPC]
+	void RPC_SyncTransform(Vector3 _position, Quaternion _rotation, Vector3 _destination, float _speed)
+	{
+		agent.destination = _destination;
+		agent.speed = _speed;
+		if (Vector3.Distance(_position, transform.position) > 0.1f)
+		{
+			agent.Warp(_position);
+		}
+		transform.rotation = _rotation;
 	}
 
 	//Checks which state the bot should be in
