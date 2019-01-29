@@ -245,10 +245,6 @@ public class Metwork_Object : MonoBehaviour {
 				this.rb.velocity,
 				this.netID
 			});
-			if (isTwoPlane)
-			{
-				print("Sent" + transform.rotation.eulerAngles);
-			}
 		}
 
 
@@ -278,11 +274,7 @@ public class Metwork_Object : MonoBehaviour {
 			actualPosition = objectPosition;
 			actualRotation = objectRotation;
 			actualVelocity = objectVelocity;
-			if (isTwoPlane)
-			{
-				print("Received" + objectRotation.eulerAngles);
-				//
-			}
+			
 		}
 
 	}

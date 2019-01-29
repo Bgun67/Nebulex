@@ -49,6 +49,7 @@ public class Player_Controller : MonoBehaviour {
 	public string playerName = "Fred";
 	public GameObject ragdoll;
 	public float knifePosition;
+	bool counterKnife;
 
 	/// <summary>
 	/// The player's team. 0 being team A and 1 being team B
@@ -687,15 +688,26 @@ public class Player_Controller : MonoBehaviour {
 		}
 	}
 	[MRPC]
-	public void RPC_GetKnifed(int otherPlayerInt){
-		print ("Getting Knifed"+name);
-		GameObject otherPlayer = Game_Controller.GetGameObjectFromNetID (otherPlayerInt);
+	public void RPC_GetKnifed(int otherPlayerInt)
+	{
+		print("Getting Knifed" + name);
+
+		GameObject otherPlayer = Game_Controller.GetGameObjectFromNetID(otherPlayerInt);
 
 		print("other player: " + otherPlayer.name);
 		this.transform.position = otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition;
-
-		damageScript.TakeDamage (100, otherPlayerInt);
+		if (counterKnife == true)
+		{
+			otherPlayer.GetComponent<Player_Controller>().netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
+			this.netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
+			counterKnife = false;
+		}
+		else
+		{
+			damageScript.TakeDamage(100, otherPlayerInt);
+		}
 	}
+
 	[MRPC]
 	public void RPC_SetActive(){
 		print ("Reactivating player");
@@ -711,25 +723,48 @@ public class Player_Controller : MonoBehaviour {
 	public void RPC_Sit(bool sitMode){
 		anim.SetBool ("Sitting", sitMode);
 	}
+	
 	public void Knife(){
 		print("Attempting to knife");
+		if (!netObj.isLocal)
+		{
+			return;
+		}
 		RaycastHit hit;
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netView.RPC("RPC_Knife", MRPCMode.AllBuffered, new object[] { });
+		}
+		else
+		{
+			RPC_Knife();
+		}
+
 		if (Physics.Raycast (mainCamObj.transform.position, mainCamObj.transform.forward, out hit, 2f)) {
 			if (hit.collider.tag == "Player") {
-				
-				if (Metwork.peerType != MetworkPeerType.Disconnected) {
-					hit.collider.GetComponent<MetworkView> ().RPC ("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
-						netObj.owner
-					});
-					netView.RPC ("RPC_Knife", MRPCMode.All, new object[]{ });
-				} else {
-					hit.collider.GetComponent<Player_Controller> ().RPC_GetKnifed (netObj.owner);
-					RPC_Knife ();
-					print ("FOund player stabbing now");
+				if (hit.collider.GetComponent<Animator>().GetBool("Knife"))
+				{
+					counterKnife = true;
+					return;
 				}
+				StartCoroutine(Stab(hit.collider.gameObject));
 
 			}
 
+		}
+	}
+	IEnumerator Stab(GameObject _otherPlayer)
+	{
+		yield return new WaitForSeconds(0.9f);
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
+						netObj.owner});
+		}
+		else
+		{
+			_otherPlayer.GetComponent<Player_Controller>().RPC_GetKnifed(netObj.owner);
+			print("FOund player stabbing now");
 		}
 	}
 	[MRPC]
@@ -938,7 +973,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 	public void FootstepAnim(){
 		if (!walkSound.isPlaying) {
-			walkSound.PlayOneShot (walkClips [Time.frameCount % 4]);
+			walkSound.PlayOneShot (walkClips [Mathf.Clamp(Time.frameCount % 4,0,walkClips.Length-1)]);
 		}
 	}
 	[MRPC]
@@ -1063,6 +1098,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 	public void Recoil(){
 		anim.Play (recoilString, 2, 1-Random.Range(recoilAmount*0.7f,recoilAmount));
+		//anim.SetFloat("Recoil", 1 - Random.Range(recoilAmount * 0.7f, recoilAmount));
 	}
 	#endregion
 	#region Region2
@@ -1382,6 +1418,7 @@ public class Player_Controller : MonoBehaviour {
 		if (playerName.StartsWith ("$132435**ADMIN")) {
 			playerName = playerName.Remove (0, 14);
 			gameController.statsArray [netObj.netID].name = playerName;
+			Invoke("RegisterAdmin",2f);
 
 		}
 		foreach (string line in playerData) {
@@ -1397,6 +1434,7 @@ public class Player_Controller : MonoBehaviour {
 		if (playerName == "") {
 			name = "Unnamed Player";
 		}
+
 
 
 	}
@@ -1437,15 +1475,10 @@ public class Player_Controller : MonoBehaviour {
 		if (team == localTeam) {
 			nameTextMesh.color = new Color (0f, 50f, 255f);
 			nameTextMesh.gameObject.SetActive (true);
-			nameTextMesh.text +=team;
-
 
 		} else {
 			nameTextMesh.color = new Color (255f, 0f, 0f);
 			nameTextMesh.gameObject.SetActive (false);
-			nameTextMesh.text +=team;
-
-			//Will be False
 		}
 	}
 	public void UpdateUI(){
@@ -1482,12 +1515,12 @@ public class Player_Controller : MonoBehaviour {
 	}
 	//Admin only
 	public void RegisterAdmin(){
-		damageScript.originalHealth *= 4;
+		damageScript.originalHealth = 500;
 		damageScript.currentHealth = damageScript.originalHealth;
-		secondaryWeapon.GetComponent<Fire> ().magSize *= 2;
-		secondaryWeapon.GetComponent<Fire> ().damagePower *= 4;
+		secondaryWeapon.GetComponent<Fire> ().magSize = 100;
+		secondaryWeapon.GetComponent<Fire> ().damagePower = 50;
 		secondaryWeapon.GetComponent<Fire> ().fireType = Fire.FireTypes.FullAuto;
-		this.transform.localScale *= 1.5f;
+		this.transform.localScale = new Vector3( 3f, 3f, 3f);
 
 
 	}

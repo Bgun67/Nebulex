@@ -35,4 +35,12 @@ public class Main_Menu_Controller : MonoBehaviour {
 		SceneManager.LoadScene ("Profile Scene");
 
 	}
+	public void ShowCredits()
+	{
+		GameObject.Find("Credits Panel").SetActive(true);
+	}
+	public void HideCredits()
+	{
+		GameObject.Find("Credits Panel").SetActive(false);
+	}
 }

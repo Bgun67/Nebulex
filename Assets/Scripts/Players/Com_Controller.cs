@@ -41,9 +41,11 @@ public class Com_Controller : MonoBehaviour {
 	public BotState botState;
     NavMeshAgent agent;
 
+	public MetworkView netView;
 
-    // Use this for initialization
-    void Start () {
+
+	// Use this for initialization
+	void Start () {
         agent = GetComponent<NavMeshAgent>();
 		anim = GetComponent<Animator>();
 		fireScript = GetComponentInChildren<Fire>();
@@ -55,35 +57,77 @@ public class Com_Controller : MonoBehaviour {
 
 		anim.SetFloat("Look Speed", 0.5f);
 		anim.SetBool("Head Turn Enabled", true);
-		GameObject[] _spawnPoints = GameObject.FindGameObjectsWithTag("Spawn Point "+carrierNum);
-		patrolPositions = new Transform[_spawnPoints.Length];
-		for (int i = 0; i < patrolPositions.Length; i++)
-		{
-			patrolPositions[i] = _spawnPoints[i].transform;
-		}
-		damageScript.initialPosition = patrolPositions[0];
-
-		agent.destination = patrolPositions[0].position;
-
-		InvokeRepeating ("CheckState", Random.Range(0.1f,0.5f), 0.2f);
-	}
 		
+		ServerStart();
+
+	}
+	void ServerStart()
+	{
+		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
+		{
+			agent.enabled = true;
+			GetComponent<Rigidbody>().isKinematic = true;
+			GetComponent<Rigidbody>().detectCollisions = false;
+			InvokeRepeating("CheckState", Random.Range(0.1f, 0.5f), 0.2f);
+			GameObject[] _spawnPoints = GameObject.FindGameObjectsWithTag("Spawn Point " + carrierNum);
+			patrolPositions = new Transform[_spawnPoints.Length];
+			for (int i = 0; i < patrolPositions.Length; i++)
+			{
+				patrolPositions[i] = _spawnPoints[i].transform;
+			}
+			damageScript.initialPosition = patrolPositions[0];
+
+			agent.destination = patrolPositions[0].position;
+
+		}
+	}
+
 
 	void Update(){
+		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
+		{
+			agent.isStopped = false;
+			AnimateMovement();
+			if (botState == BotState.Patrol)
+			{
+				Patrol();
+			}
+			if (botState == BotState.Alert)
+			{
 
-		agent.isStopped = false;
+			}
+
+			if (botState == BotState.Fighting)
+			{
+				Fight();
+			}
+		}
+	}
+	void FootstepAnim()
+	{
+
+	}
+
+	void AnimateMovement()
+	{
 		anim.SetFloat("V Movement", agent.speed);
-
-		if (botState == BotState.Patrol) {
-			Patrol ();
+		if (botState == BotState.Patrol)
+		{
+			anim.SetFloat("Head Turn Speed", Mathf.Lerp(anim.GetFloat("Head Turn Speed"),(Mathf.Sin(Time.time)+0.5f)*Random.Range(0f, 1f),0.5f));
+			anim.SetFloat("Look Speed", 0.5f);
 		}
-		if (botState == BotState.Alert) {
-
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netView.RPC("RPC_Animate",MRPCMode.All, new object[]{agent.speed, anim.GetFloat("Head Turn Speed"), anim.GetFloat("Look Speed")});
 		}
 
-		if (botState == BotState.Fighting) {
-			Fight ();
-		}
+	}
+	[MRPC]
+	void RPC_Animate( float _agentSpeed,float _headTurn,float _lookSpeed)
+	{
+		anim.SetFloat("Head Turn Speed", _headTurn);
+		anim.SetFloat("V Movement", _agentSpeed);
+		anim.SetFloat("Look Speed", _lookSpeed);
 	}
 
 	//Checks which state the bot should be in
@@ -145,11 +189,7 @@ public class Com_Controller : MonoBehaviour {
 	//Patrols the ship
 	void Patrol(){
 		Debug.DrawLine(agent.transform.position,agent.destination);
-		
-		
-		
-		anim.SetFloat("Head Turn Speed", Mathf.Lerp(anim.GetFloat("Head Turn Speed"),Random.Range(0f, 1f),0.05f));
-		
+				
 		//This will keep the position in sync with the transforms position
 		if (Vector3.Distance (agent.destination, patrolPositions [patrolIndex].position) >= 1f) {
 			//Reset the patrol target
