@@ -43,10 +43,6 @@ public class MetworkView : MonoBehaviour {
 				}
 			}
 		}
-
-		print("Quaternion: " + ((Quaternion)(ConvertFromString(new Quaternion(0.35f,0.54f,0.12f,0.3f).ToString(true),"5"))).ToString(true));
-		print(float.Parse("0.35"));
-
 	}
 
 		
