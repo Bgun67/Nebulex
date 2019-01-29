@@ -64,6 +64,8 @@ public class Metwork_Object : MonoBehaviour {
 	}
 	public void CheckLocal()
 	{
+		
+		
 		try
 		{
 			if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0))
@@ -88,7 +90,7 @@ public class Metwork_Object : MonoBehaviour {
 		}
 		if (isTwoPlane)
 		{
-			print("Local =" + isLocal);
+			
 		}
 	}
 

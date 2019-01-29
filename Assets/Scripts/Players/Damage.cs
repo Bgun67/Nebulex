@@ -38,6 +38,7 @@ public class Damage : MonoBehaviour {
 
 	[Tooltip("Set this to -1 to disable impact damage")]
 	public float impactDamageFactor = -1f;
+	public float damageThreshold = 0f;
 
 	public Metwork_Object netObj;
 
@@ -94,6 +95,7 @@ public class Damage : MonoBehaviour {
 
 	public void TakeDamage(int damageAmount, int fromID)
 	{
+		
 		if (forwarder)
 		{
 			print("sendingDamage");
@@ -105,7 +107,9 @@ public class Damage : MonoBehaviour {
 		{
 			return;
 		}
-		currentHealth -= damageAmount;
+		if(damageAmount >= damageThreshold){
+			currentHealth -= damageAmount;
+		}
 
 		if (regen)
 		{

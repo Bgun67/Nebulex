@@ -148,6 +148,7 @@ public class Collider_Creator : MonoBehaviour {
 
 
 			MeshCollider meshCollider = output.AddComponent<MeshCollider> ();
+			meshCollider.cookingOptions = MeshColliderCookingOptions.CookForFasterSimulation | MeshColliderCookingOptions.EnableMeshCleaning | MeshColliderCookingOptions.WeldColocatedVertices;
 
 			meshCollider.sharedMesh = tmpMesh;
 
@@ -157,7 +158,14 @@ public class Collider_Creator : MonoBehaviour {
 
 			//Hide the component so it doesn't bog down the inspector
 			meshCollider.hideFlags = HideFlags.HideInInspector;
+
+			
 		}
+		int _numMeshColliders = 0;
+		foreach(MeshCollider _mc in output.GetComponents<MeshCollider>()){
+			_numMeshColliders ++;
+		}
+		print(_numMeshColliders);
 
 
 

@@ -18,6 +18,7 @@ public class Pause_Menu : MonoBehaviour {
 		//eventSystem.SetActive (true);
 
 		MInput.inputLock = MInput.InputLock.LockAll;
+		Cursor.visible = true;
 	}
 	public void Recall(){
 		confirmRecallPanel.SetActive (true);
@@ -53,6 +54,8 @@ public class Pause_Menu : MonoBehaviour {
 		this.gameObject.SetActive(false);
 		MInput.inputLock = MInput.InputLock.None;
 		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
 		//eventSystem.SetActive (false);
 	}
 }

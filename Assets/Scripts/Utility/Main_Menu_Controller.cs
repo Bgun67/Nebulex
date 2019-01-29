@@ -5,7 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class Main_Menu_Controller : MonoBehaviour {
 
+	public GameObject creditsPanel;
 	// Use this for initialization
+	void Reset(){
+		creditsPanel = GameObject.Find("Credits Panel");
+	}
 	void Start () {
 		DontDestroyOnLoad (this.gameObject);
 	}
@@ -37,10 +41,10 @@ public class Main_Menu_Controller : MonoBehaviour {
 	}
 	public void ShowCredits()
 	{
-		GameObject.Find("Credits Panel").SetActive(true);
+		creditsPanel.SetActive(true);
 	}
 	public void HideCredits()
 	{
-		GameObject.Find("Credits Panel").SetActive(false);
+		creditsPanel.SetActive(false);
 	}
 }
