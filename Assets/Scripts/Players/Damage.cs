@@ -119,21 +119,26 @@ public class Damage : MonoBehaviour {
 		{
 			ShowLowHealthEffect(true);
 		}
-		
+
 		if (currentHealth <= 0f)
 		{
-			if (fromID != 0)
+
+			if (this.tag == "Player")
 			{
-				if (this.tag == "Player")
+				if (fromID != 0)
 				{
 					gameController.AddKill(fromID);
 					gameController.AddDeath(netObj.owner);
 
-
 				}
-
+				else
+				{
+					gameController.AddDeath(netObj.owner);
+				}
 			}
-			for (int i = 1; i < assistArray.Length; i++)
+
+		}
+		for (int i = 1; i < assistArray.Length; i++)
 			{
 				if (i == fromID)
 				{
