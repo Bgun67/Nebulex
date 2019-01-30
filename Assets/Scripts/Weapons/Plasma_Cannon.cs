@@ -11,7 +11,7 @@ public class Plasma_Cannon : MonoBehaviour {
 	public GameObject plasmaBall;
 
 	//The largest size the ball gets(in meters)
-	float maxSize = 10;
+	float maxSize = 6;
 
 	public enum PlasmaCannonChargeState
 	{

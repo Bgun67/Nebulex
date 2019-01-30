@@ -124,18 +124,18 @@ public class Com_Controller : MonoBehaviour {
 
 	}
 	[MRPC]
-	void RPC_Animate( float _agentSpeed,float _headTurn,float _lookSpeed)
+	public void RPC_Animate( float _agentSpeed,float _headTurn,float _lookSpeed)
 	{
 		anim.SetFloat("Head Turn Speed", _headTurn);
 		anim.SetFloat("V Movement", _agentSpeed);
 		anim.SetFloat("Look Speed", _lookSpeed);
 	}
 	[MRPC]
-	void RPC_SyncTransform(Vector3 _position, Quaternion _rotation, Vector3 _destination, float _speed)
+	public void RPC_SyncTransform(Vector3 _position, Quaternion _rotation, Vector3 _destination, float _speed)
 	{
 		agent.destination = _destination;
 		agent.speed = _speed;
-		if (Vector3.Distance(_position, transform.position) > 0.1f)
+		if (Vector3.Distance(_position, transform.position) > 1f)
 		{
 			agent.Warp(_position);
 		}

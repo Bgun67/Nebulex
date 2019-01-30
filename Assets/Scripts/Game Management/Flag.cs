@@ -75,14 +75,7 @@ public class Flag : MonoBehaviour {
 			joint.connectedBody = stand;
 			return;
 		}
-		if (!joint.connectedBody.gameObject.activeInHierarchy) {
-			_player = null;
-			stand.transform.position = this.transform.position;
-			boxCollider.enabled = true;
-
-			joint.connectedBody = stand;
-			return;
-		}
+		
 		if (_player.inVehicle) {
 			print ("Invehicle");
 			if (!vehicleEntered) {
@@ -103,16 +96,29 @@ public class Flag : MonoBehaviour {
 					}
 				}
 			}
-		} else {
-			if (vehicleEntered) {
+		} else
+		{
+			if (!joint.connectedBody.gameObject.activeInHierarchy)
+			{
+				_player = null;
+				stand.transform.position = this.transform.position;
+				boxCollider.enabled = true;
+
+				joint.connectedBody = stand;
+				return;
+			}
+			if (vehicleEntered)
+			{
 				vehicleEntered = false;
-				this.transform.position = _player.jetpackJets[0].transform.position + new Vector3(0,-1,0);
 				this.transform.forward = _player.transform.forward;
 				joint.connectedBody = _player.rb;
+				this.transform.position = _player.jetpackJets[0].transform.position + _player.jetpackJets[0].transform.forward;
+
 			}
 
 		}
-		
+
+
 	}
 
 	public void OnTriggerEnter(Collider other){

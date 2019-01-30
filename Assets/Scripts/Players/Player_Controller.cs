@@ -731,6 +731,19 @@ public class Player_Controller : MonoBehaviour {
 			return;
 		}
 		RaycastHit hit;
+		if (Physics.Raycast (mainCamObj.transform.position, mainCamObj.transform.forward, out hit, 2f)) {
+			if (hit.transform.root.tag == "Player") {
+				if (hit.transform.root.GetComponent<Animator>().GetBool("Knife"))
+				{
+					counterKnife = true;
+					return;
+				}
+				StartCoroutine(Stab(hit.collider.gameObject));
+				
+
+			}
+
+		}
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			netView.RPC("RPC_Knife", MRPCMode.AllBuffered, new object[] { });
@@ -739,23 +752,10 @@ public class Player_Controller : MonoBehaviour {
 		{
 			RPC_Knife();
 		}
-
-		if (Physics.Raycast (mainCamObj.transform.position, mainCamObj.transform.forward, out hit, 2f)) {
-			if (hit.collider.tag == "Player") {
-				if (hit.collider.GetComponent<Animator>().GetBool("Knife"))
-				{
-					counterKnife = true;
-					return;
-				}
-				StartCoroutine(Stab(hit.collider.gameObject));
-
-			}
-
-		}
 	}
 	IEnumerator Stab(GameObject _otherPlayer)
 	{
-		yield return new WaitForSeconds(0.9f);
+		yield return new WaitForSeconds(1.5f);
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
@@ -1040,7 +1040,7 @@ public class Player_Controller : MonoBehaviour {
 				{
 					Debug.DrawRay(footPos + transform.up * 0.3f, transform.forward);
 
-					rb.AddRelativeForce(0f, 10f * rb.mass * 9.81f, 0f);
+					rb.AddRelativeForce(0f, 240f * rb.mass * 9.81f*Time.deltaTime, 0f);
 				}
 			}
 		}

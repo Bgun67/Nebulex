@@ -213,9 +213,9 @@ public class Metwork_Object : MonoBehaviour {
 			{
 				//print("DeltaRot" + deltaRot);
 				//print("Angular Velocity" + rb.angularVelocity);
-				rb.MoveRotation(Quaternion.LerpUnclamped (transform.rotation, actualRotation, rotationLerp));
+				//rb.MoveRotation(Quaternion.LerpUnclamped (transform.rotation, actualRotation, rotationLerp));
 
-				//rb.angularVelocity = Vector3.up * Mathf.Clamp(deltaRot.y * rotationLerp, -10f, 10f);
+				rb.angularVelocity = Vector3.up * Mathf.Clamp(deltaRot.y * rotationLerp, -10f, 10f);
 			}
 
 			actualPosition = actualPosition + actualVelocity * Time.fixedDeltaTime;

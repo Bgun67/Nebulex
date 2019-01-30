@@ -1743,7 +1743,6 @@ GameObject:
   - component: {fileID: 95908176488769826}
   - component: {fileID: 114293370105356228}
   - component: {fileID: 82043467871660032}
-  - component: {fileID: 114928081185400588}
   - component: {fileID: 136680962335942858}
   - component: {fileID: 114465518375813522}
   m_Layer: 0
@@ -2023,7 +2022,6 @@ GameObject:
   - component: {fileID: 114397463589562802}
   - component: {fileID: 114925027983257300}
   - component: {fileID: 114822949305685234}
-  - component: {fileID: 114338406727418904}
   m_Layer: 15
   m_Name: Com
   m_TagString: Untagged
@@ -4929,7 +4927,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -5128,7 +5126,8 @@ MonoBehaviour:
   impactPrefab: {fileID: 1000010191825552, guid: 83e55d3418297934fab882559d009285,
     type: 2}
   impactDamageFactor: 2
-  netObj: {fileID: 114338406727418904}
+  damageThreshold: 0
+  netObj: {fileID: 0}
 --- !u!114 &114293370105356228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5177,32 +5176,6 @@ MonoBehaviour:
   playerID: 0
   reloading: 0
   magGO: {fileID: 0}
---- !u!114 &114338406727418904
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1886734306972210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bcf06763714ae049b53c3a709b19882, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actualPosition: {x: 0, y: 0, z: 0}
-  isLocal: 0
-  netID: 1
-  owner: 1
-  rb: {fileID: 0}
-  netView: {fileID: 114822949305685234}
-  rotationLerp: 0.2
-  snapLerp: 0.2
-  lerpRate: 20
-  snapDistance: 0
-  velocitySnapDist: 0.5
-  rotForceFactor: 30
-  velocityLerp: 0.2
-  sendRate: 20
-  isTwoPlane: 0
 --- !u!114 &114397463589562802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5228,6 +5201,7 @@ MonoBehaviour:
   lockOnRate: 0.4
   head: {fileID: 4968377748890698}
   botState: 0
+  netView: {fileID: 0}
 --- !u!114 &114397833910783752
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5263,6 +5237,7 @@ MonoBehaviour:
   forwardedScale: 100
   impactPrefab: {fileID: 0}
   impactDamageFactor: -1
+  damageThreshold: 0
   netObj: {fileID: 0}
 --- !u!114 &114465518375813522
 MonoBehaviour:
@@ -5275,7 +5250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewID: -1
+  viewID: 701
 --- !u!114 &114822949305685234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5287,7 +5262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewID: 8000
+  viewID: 700
 --- !u!114 &114925027983257300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5320,22 +5295,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: b803eb28211c54942869608bd5013d33, type: 2}
   lightmapProgress: 0.555944
   cancelBake: 0
---- !u!114 &114928081185400588
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1715674388096250}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b12d5102dcbabd469735dd868cdc148, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptsToActivate:
-  - {fileID: 114293370105356228}
-  maxPassengers: 0
-  passengers: 0
-  netView: {fileID: 0}
 --- !u!135 &135537873171200276
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -5460,7 +5419,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1886734306972210}
   m_Material: {fileID: 13400000, guid: 2a4be7a73cbc10c42b1a3271354715f1, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.06
   m_Height: 0.34
   m_Direction: 1
