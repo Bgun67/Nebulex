@@ -111,7 +111,7 @@ public class Match_Scene_Manager : MonoBehaviour {
 
 		}catch { }
 
-		Invoke("DeactivateLoadPanel", 5f);
+		Invoke("DeactivateLoadPanel", 8f);
 
 
 

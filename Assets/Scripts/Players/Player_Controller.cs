@@ -780,9 +780,10 @@ public class Player_Controller : MonoBehaviour {
 			return;
 		}
 		if (MInput.GetButton ("Left Trigger")) {
-			Transform _camTransform = fireScript.scopePosition;
-			float _sqrDistance = Vector3.Distance(mainCam.transform.position, _camTransform.position);
-			mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_camTransform.position-_camTransform.forward*0.35f+_camTransform.up*0.01f,0.05f*Time.deltaTime/(_sqrDistance));
+			Transform _scopeTransform = fireScript.scopePosition;
+			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.35f + _scopeTransform.up * 0.01f;
+			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
+			mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,Mathf.Clamp(0.01f/(_distance),0f,0.5f));
 			mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation, fireScript.scopePosition.rotation, 0.1f);
 
 			anim.SetBool ("Scope", true);
