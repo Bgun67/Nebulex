@@ -25,6 +25,7 @@ public class PrefabLightmapData : MonoBehaviour
 
 	public float lightmapProgress = 0;
 	public bool cancelBake = false;
+	public bool overrideClustering = false;
 	
 
 
@@ -34,6 +35,26 @@ public class PrefabLightmapData : MonoBehaviour
 	{
 		Invoke("CreateLightmaps", Random.Range(1f,1f));
 	}
+
+	#if UnityEditor || UNITY_EDITOR
+	void OnGUI(){
+		if(overrideClustering){
+			overrideClustering = false;
+			OnLightmapCompletion();
+			CreateLightmaps();
+			print("Lightmapping Complete");
+		}
+		if(UnityEditor.Lightmapping.isRunning && !Application.isPlaying){
+			lightmapProgress = Lightmapping.buildProgress;
+			if(cancelBake){
+				cancelBake = false;
+				UnityEditor.Lightmapping.Cancel();
+			}
+			return;
+		}
+	}
+	#endif
+
 	void CreateLightmaps(){
 		
 		#if UNITY_EDITOR
