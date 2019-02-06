@@ -91,7 +91,25 @@ public class Damage : MonoBehaviour {
 
 
 	}
-
+	bool CheckLocal()
+	{
+		if (netObj != null)
+		{
+			return (netObj.isLocal);
+		}
+		else if(Metwork.isServer)
+		{
+			return true;
+		}
+		else if(Metwork.peerType == MetworkPeerType.Disconnected)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	public void TakeDamage(int damageAmount, int fromID)
 	{
@@ -103,7 +121,7 @@ public class Damage : MonoBehaviour {
 			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID);
 			return;
 		}
-		if (!netObj.isLocal || isDead)
+		if (!CheckLocal() || isDead)
 		{
 			return;
 		}

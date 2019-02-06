@@ -57,7 +57,6 @@ public class Fire : MonoBehaviour {
 	[SerializeField]
 	public Stack<GameObject> poolList = new Stack<GameObject> ();
 	public Stack<GameObject> destroyedStack = new Stack<GameObject> ();
-	WaitForEndOfFrame wait = new WaitForEndOfFrame();
 
 
 	// Use this for initialization
@@ -79,7 +78,7 @@ public class Fire : MonoBehaviour {
 			netView = this.GetComponentInParent<MetworkView> ();
 		}
 
-		Invoke("CreateObjectPool", Random.Range(0,0.1f));
+		Invoke("CreateObjectPool", Random.Range(0,0.01f));
 		//
 	}
 	public void Activate(GameObject player){
@@ -145,7 +144,7 @@ public class Fire : MonoBehaviour {
 					if (ignoreParentVelocity) {
 						bullet.GetComponent<Rigidbody> ().velocity = shotSpawn.transform.forward * bulletVelocity;
 					} else {
-						bullet.GetComponent<Rigidbody> ().velocity = rootRB.velocity + shotSpawn.transform.forward * bulletVelocity;
+						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + shotSpawn.transform.forward * bulletVelocity;
 					}
 					bullet.GetComponent<Bullet_Controller> ().damagePower = damagePower;
 
