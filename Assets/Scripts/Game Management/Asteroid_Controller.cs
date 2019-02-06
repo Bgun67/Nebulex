@@ -21,6 +21,7 @@ public class Asteroid_Controller : MonoBehaviour {
 		boundingSphereThickness = fieldManager.boundingSphereThickness;
 		carrierOne = fieldManager.carrierOne;
 		carrierTwo = fieldManager.carrierTwo;
+	
 	}
 	
 	void CheckDistance(){

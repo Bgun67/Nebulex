@@ -66,13 +66,12 @@ public class Bomber_Controller : MonoBehaviour
 		netObj = this.GetComponent<Metwork_Object> ();
 		anim = this.GetComponent<Animator> ();
 		engineSound = this.GetComponent<AudioSource> ();
-		InvokeRepeating ("FindDirection", 0f, 2f);
 		InvokeRepeating ("CheckOccupied", 1f, 1f);
 		damageScript = this.GetComponent<Damage> ();
 		this.enabled = false;
 	}
 	void CheckOccupied(){
-		if (!Metwork.isServer && Metwork.peerType != MetworkPeerType.Disconnected) {
+		if (!(Metwork.isServer || Metwork.peerType == MetworkPeerType.Disconnected)) {
 			return;
 		}
 
@@ -161,9 +160,18 @@ public class Bomber_Controller : MonoBehaviour
 		engineSound.pitch = Mathf.Clamp (Mathf.Abs (moveZ + moveY), 0, 0.3f) + 1f;
 
 
-		rb.AddRelativeTorque( MInput.GetAxis("Rotate X") *deltaThrustForce* torqueFactor,
-			MInput.GetAxis("Rotate Y") *deltaThrustForce* torqueFactor,
-			Input.GetAxis("Move X") *deltaThrustForce* -torqueFactor);
+		if (MInput.useMouse)
+		{
+			rb.AddRelativeTorque(MInput.GetMouseDelta("Mouse Y") * -0.2f * deltaThrustForce * torqueFactor,
+				MInput.GetMouseDelta("Mouse X") * 0.2f  * deltaThrustForce * torqueFactor,
+				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
+		else
+		{
+			rb.AddRelativeTorque(MInput.GetAxis("Rotate X") * deltaThrustForce * torqueFactor,
+				MInput.GetAxis("Rotate Y")  * deltaThrustForce * torqueFactor,
+				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
 	}
 
 
@@ -342,10 +350,18 @@ public class Bomber_Controller : MonoBehaviour
 			netObj = this.GetComponent<Metwork_Object> ();
 		}
 		player.SetActive (true);
-		player.GetComponent<Rigidbody> ().useGravity = false;
 		player.GetComponent<Rigidbody> ().velocity = this.rb.velocity;
 		player.transform.position = this.transform.position+FindExitPoint();
-		player.GetComponent<Player_Controller> ().StartCoroutine ("ExitGravity");
+		if (rb.useGravity)
+		{
+			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
+			player.GetComponent<Rigidbody>().useGravity = true;
+		}
+		else
+		{
+			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
+			player.GetComponent<Rigidbody>().useGravity = false;
+		}
 		player.GetComponent<Player_Controller> ().inVehicle = false;
 
 		anim.SetBool ("Should Close", false);

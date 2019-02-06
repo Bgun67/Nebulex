@@ -67,6 +67,9 @@ public class PHPMasterServerConnect : MonoBehaviour
 	
 	public MHostData[] PollHostList()
 	{
+		if(hostData == null){
+			return new MHostData[]{};
+		}
 		//Pick out only the appropriate game types
 		List<MHostData> _hostList = new List<MHostData>();
 		foreach (MHostData _host in hostData){
@@ -278,6 +281,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 		}
 
 		RegisterHost (this.gameName, this.comment);
+		Metwork.disconnectReason = DisconnectReason.Unexpected;
 	}
 
 	void OnMetPlayerConnected(MetworkPlayer _player){
@@ -303,6 +307,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 	    if ((www.error != null || www.text != "succeeded")) {
 	        SendMessage ("OnUpdatePlayersFailed");
 	    }
+		Metwork.disconnectReason = DisconnectReason.Unexpected;
 	}
 
 	void OnMetPlayerDisconnected(MetworkPlayer _player){

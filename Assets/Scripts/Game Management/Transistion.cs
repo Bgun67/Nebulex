@@ -9,6 +9,7 @@ public class Transistion : MonoBehaviour {
 	public Camera cam;
 	AsyncOperation loadOperation;
 	public MetworkView metView;
+	Network_Manager netManager;
 
 	// Use this for initialization
 	void Start () {
@@ -18,15 +19,18 @@ public class Transistion : MonoBehaviour {
 		loadOperation.allowSceneActivation = false;
 		loadOperation.priority = 0;
 		SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-
-		Invoke("ContingencyLoad", 20f);
+		netManager = FindObjectOfType<Network_Manager>();
+		Invoke("ContingencyLoad", 10f);
 	}
 
 	//Checks to see if the load has gone horribley wrong
 	void ContingencyLoad(){
 		if(this.enabled){
+			SceneManager.UnloadSceneAsync ("TransistionScene");
+			loadOperation.allowSceneActivation = true;
+
 			if(Metwork.peerType == MetworkPeerType.Connected && Metwork.player != null){
-				SceneManager.LoadSceneAsync ("SpawnScene", LoadSceneMode.Additive);
+				//SceneManager.LoadSceneAsync ("SpawnScene", LoadSceneMode.Additive);
 				SceneManager.UnloadSceneAsync ("TransistionScene");
 				loadOperation.allowSceneActivation = true;
 			}
@@ -39,7 +43,7 @@ public class Transistion : MonoBehaviour {
 
 		if (_scene.name == "Space") {
 			
-			SceneManager.LoadSceneAsync ("SpawnScene", LoadSceneMode.Additive);
+			//SceneManager.LoadSceneAsync ("SpawnScene", LoadSceneMode.Additive);
 			
 
 
@@ -67,8 +71,8 @@ public class Transistion : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		print (loadOperation.progress);
-		cam.farClipPlane = 300 + (1000 - 300) * loadOperation.progress;
-		if (loadOperation.progress > 0.8f && (Metwork.isServer||Metwork.players.Count > GameObject.FindObjectOfType<Network_Manager>().minStartingPlayers)) {
+		cam.farClipPlane = 300 + (700) * loadOperation.progress;
+		if (loadOperation.progress > 0.8f && (Metwork.isServer||Metwork.players.Count >netManager.minStartingPlayers)) {
 			loadOperation.allowSceneActivation = true;
 		}
 	}

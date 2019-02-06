@@ -17,6 +17,7 @@ public class Bot : MonoBehaviour {
 		public Transform _transform;
 		public Player_Controller _controller;
 		public float _lastSpottedTime;
+		public float _distance;
 		public bool _hasDied;
 	}
 
@@ -29,7 +30,9 @@ public class Bot : MonoBehaviour {
 	public TargetPlayer targetPlayer;
 
 	public int patrolIndex = 0;
-
+	public float maxSpeed = 7f;
+	[Range(0f,1f)]
+	public float lockOnRate = 0.4f;
 	public BotState botState;
     NavMeshAgent agent;
 
@@ -37,6 +40,13 @@ public class Bot : MonoBehaviour {
     // Use this for initialization
     void Start () {
         agent = GetComponent<NavMeshAgent>();
+		GameObject[] _spawnPoints = GameObject.FindGameObjectsWithTag("Spawn Point 1");
+		patrolPositions = new Transform[_spawnPoints.Length];
+		for (int i = 0; i < patrolPositions.Length; i++)
+		{
+			patrolPositions[i] = _spawnPoints[i].transform;
+		}
+		
 		agent.destination = patrolPositions[0].position;
 
 		InvokeRepeating ("CheckState", Random.Range(0.1f,0.5f), 0.2f);
@@ -45,12 +55,15 @@ public class Bot : MonoBehaviour {
 
 	void Update(){
 
+		agent.isStopped = false;
+
 		if (botState == BotState.Patrol) {
 			Patrol ();
 		}
 		if (botState == BotState.Alert) {
 
 		}
+
 		if (botState == BotState.Fighting) {
 			Fight ();
 		}
@@ -63,27 +76,44 @@ public class Bot : MonoBehaviour {
 		RaycastHit _hit;
 
 		//Check if our currently targetted player is still visible
-		if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 5f) {
-			if (Vector3.Dot (this.transform.position.normalized, transform.forward) > 0.2f) {
+		if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 5f&&Vector3.Distance(transform.position, targetPlayer._transform.position)<50f) {
+			if (Vector3.Dot ((targetPlayer._transform.position-this.transform.position).normalized, transform.forward) > 0.2f) {
 				if (!Physics.Linecast (this.transform.position, targetPlayer._transform.position, out _hit, physicsMask) || _hit.transform.root.GetComponent<Player_Controller> () != null) {
+										
 					targetPlayer._lastSpottedTime = Time.time;
 				}
 			}
 		} else {
 			targetPlayer = null;
 		}
+		if (targetPlayer == null)
+		{
+			for (int i = 0; i < players.Length; i++)
+			{
+				if (Vector3.Dot((players[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
+				{
+					if (!Physics.Linecast(this.transform.position, players[i].transform.position, out _hit, physicsMask) || _hit.transform.root.GetComponent<Player_Controller>() != null)
+					{
+						if (_hit.distance < 50f)
+						{
+							//Check if the player is HALF of the distance of the previous player
+							if (targetPlayer != null)
+							{
+								if (_hit.distance > targetPlayer._distance - 5f)
+								{
+									continue;
+								}
+							}
+							targetPlayer = new TargetPlayer();
+							targetPlayer._transform = players[i].transform;
+							targetPlayer._controller = players[i];
+							targetPlayer._lastSpottedTime = Time.time;
+							targetPlayer._hasDied = false;
 
-		for (int i = 0; targetPlayer == null && i < players.Length; i++) {
-			if (Vector3.Dot (this.transform.position.normalized, transform.forward) > 0.2f) {
-				if (!Physics.Linecast (this.transform.position, players [i].transform.position, out _hit, physicsMask) || _hit.transform.root.GetComponent<Player_Controller> () != null) {
-					//Check if the player is HALF of the distance of the previous player
-					targetPlayer = new TargetPlayer ();
-					targetPlayer._transform = players [i].transform;
-					targetPlayer._controller = players [i];
-					targetPlayer._lastSpottedTime = Time.time;
-					targetPlayer._hasDied = false;
+						}
 
 
+					}
 				}
 			}
 		}
@@ -97,7 +127,7 @@ public class Bot : MonoBehaviour {
 
 	//Patrols the ship
 	void Patrol(){
-
+		Debug.DrawLine(agent.transform.position,agent.destination);
 		//This will keep the position in sync with the transforms position
 		if (Vector3.Distance (agent.destination, patrolPositions [patrolIndex].position) >= 1f) {
 			//Reset the patrol target
@@ -117,9 +147,25 @@ public class Bot : MonoBehaviour {
 	}
 
 	//Fights the player
-	void Fight(){
-		agent.destination = targetPlayer._transform.position;
-		fireScript.FireWeapon ();
+	void Fight()
+	{
+		if (Vector3.Magnitude(targetPlayer._transform.position - transform.position) > 20f)
+		{
+			agent.destination = targetPlayer._transform.position;
+			Debug.DrawLine(transform.position, agent.destination, Color.red);
+		}
+		else 
+		{
+			//stop agent
+			agent.Stop();
+			//use relative position
+			Vector3 _relativePosition = targetPlayer._transform.position - transform.position;
+			//Lerp towards player
+			transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(_relativePosition, transform.up),lockOnRate);
+			//fire
+			fireScript.FireWeapon();
+		}
+
 	}
 
 	public void Die(){

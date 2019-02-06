@@ -12,7 +12,7 @@ public class Doormat_Activater : MonoBehaviour {
 	public GameObject enteringPlayer;
 	public MonoBehaviour[] scriptsToActivate;
 	public Text displayTxt;
-
+	public bool localNetworkOnly;
 	public MetworkView netView;
 	// Use this for initialization
 	void Start () {
@@ -55,7 +55,7 @@ public class Doormat_Activater : MonoBehaviour {
 		}
 	}
 	public void ActivateScript(GameObject player){
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
+		if (Metwork.peerType != MetworkPeerType.Disconnected&&!localNetworkOnly) {
 			netView.RPC ("RPC_ActivateScript", MRPCMode.AllBuffered, new object[]{ player.GetComponent<Metwork_Object> ().netID });
 		} else {
 			RPC_ActivateScript (player.GetComponent<Metwork_Object> ().netID);
@@ -77,11 +77,19 @@ public class Doormat_Activater : MonoBehaviour {
 		return;
 	}
 
-	public void DisplayText(){
-		displayTxt.gameObject.SetActive (true);
-		displayTxt.text = displayedText;
+	public void DisplayText()
+	{
+		if (displayedText != "")
+		{
+			displayTxt.gameObject.SetActive(true);
+			displayTxt.text = displayedText;
+		}
 	}
-	public void HideText(){
-		displayTxt.gameObject.SetActive (false);
+	public void HideText()
+	{
+		if (displayedText != "")
+		{
+			displayTxt.gameObject.SetActive(false);
+		}
 	}
 }

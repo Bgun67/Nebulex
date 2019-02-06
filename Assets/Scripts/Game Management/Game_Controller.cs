@@ -78,7 +78,9 @@ public class Game_Controller : MonoBehaviour {
 	[Header( "UI Objects")]
 	public Text UI_timeText;
 	public Text UI_homeScoreText;
+	public Image UI_homeColour;
 	public Text UI_awayScoreText;
+	public Image UI_awayColour;
 	public Text UI_fpsText;
 	public GameObject eventSystem;
 	public GameObject gameplayUI;
@@ -97,83 +99,141 @@ public class Game_Controller : MonoBehaviour {
 
 	#endregion
 
+	[MRPC]
+	public void RPC_UpdateMatchInfo()
+	{
+		if (!Metwork.isServer)
+		{
+			return;
+		}
+		netView.RPC("RPC_UpdateMatchScore", MRPCMode.OthersBuffered, new object[] { scoreA, scoreB });
+		for (int i = 0; i < statsArray.Length; i++)
+		{
+			PlayerStats stat = statsArray[i];
+			if (stat.name == "")
+			{
+				continue;
+			}
+			netView.RPC("RPC_UpdateStatsArrayEntry", MRPCMode.OthersBuffered, new object[] { i, stat.name, stat.kills, stat.deaths, stat.assists, stat.score });
+		}
+	}
+	[MRPC]
+	public void RPC_UpdateMatchScore(int _scoreA, int _scoreB)
+	{
+		scoreA = _scoreA;
+		scoreB = _scoreB;
+	}
+	[MRPC]
+	public void RPC_UpdateStatsArrayEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
+	{
+		PlayerStats _stat = new PlayerStats();
+		_stat.name = _name;
+		_stat.kills = _kills;
+		_stat.deaths = _deaths;
+		_stat.assists = _assists;
+		_stat.score = _score;
 
+		statsArray[_index] = _stat;
+	}
 
-	public void Start(){
-		_instance = GameObject.FindObjectOfType<Game_Controller> ();
-		netView = this.GetComponent<MetworkView> ();
-		GetLocalPlayer ();
+	public void Start()
+	{
+		_instance = GameObject.FindObjectOfType<Game_Controller>();
+		netView = this.GetComponent<MetworkView>();
+		GetLocalPlayer();
 		Physics.autoSimulation = false;
-	
+
 		nextDreadnaughtTime = dreadNaughtSpawnWait;
 		//eventSystem.SetActive (false);
 		RPC_SetTeam();
 
 
-		if (SceneManager.GetActiveScene ().name != "LobbyScene") {
-			InvokeRepeating ("GameUpdate", 1f, 1f);
-			InvokeRepeating ("UpdateUI", 1f, 0.1f);
-		} else {
-			SceneManager.LoadScene ("SpawnScene",LoadSceneMode.Additive);
+		if (SceneManager.GetActiveScene().name != "LobbyScene")
+		{
+			InvokeRepeating("GameUpdate", 1f, 1f);
+			InvokeRepeating("UpdateUI", 1f, 0.1f);
+		}
+		if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
+		{
+			SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
 		}
 
 
 
 
-		try {
-			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.streamingAssetsPath + "/Match Settings.txt"));
-			this.matchLength = int.Parse (matchSettings [0]);
+		try
+		{
+			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Match Settings.txt"));
+			this.matchLength = int.Parse(matchSettings[0]);
 			initialTime = Time.time;//Network.time;
-			this.gameMode = matchSettings [1];
-		} catch {
-			print ("Failed");
+			this.gameMode = matchSettings[1];
+		}
+		catch
+		{
+			print("Failed");
 
-			string[] matchSettings = Profile.RestoreMatchFile ();
-			this.matchLength = int.Parse (matchSettings [0]);
+			string[] matchSettings = Profile.RestoreMatchFile();
+			this.matchLength = int.Parse(matchSettings[0]);
 			//TODO: Update
 			initialTime = Time.time;//Network.time;
-			this.gameMode = matchSettings [1];
+			this.gameMode = matchSettings[1];
 		}
 		currentTime = matchLength;
 
-		if (gameMode == GameType.TeamDeathmatch) {
-			
+		if (gameMode == GameType.TeamDeathmatch)
+		{
+
 		}
 
-		if (gameMode == GameType.CTF) {
-			flagA.gameObject.SetActive (true);
-			flagA.StartGame ();
-			flagB.gameObject.SetActive (true);
-			flagB.StartGame ();
-			print ("LEt's PlAy");
+		if (gameMode == GameType.CTF)
+		{
+			flagA.gameObject.SetActive(true);
+			flagA.StartGame();
+			flagB.gameObject.SetActive(true);
+			flagB.StartGame();
+			print("LEt's PlAy");
 		}
-		if (gameMode == GameType.Meltdown) {
-			Instantiate (radiationField).GetComponent<Radiation> ().carrier = shipOneTransform.gameObject;
-			foreach (GameObject position in GameObject.FindGameObjectsWithTag("Spawn Point")) {
+		if (gameMode == GameType.Meltdown)
+		{
+			radiationField.SetActive(true);
+			radiationField.GetComponent<Radiation>().carrier = shipOneTransform.gameObject;
+			foreach (GameObject position in GameObject.FindGameObjectsWithTag("Spawn Point 1"))
+			{
 				position.tag = "Untagged";
 
 			}
-			GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag ("Spawn Point 1");
-			for (int i = 0; i < spawnPositions.Length; i++) {
-				if (i % 2 == 0) {
-					spawnPositions [i].tag = "Spawn Point 1";
-				} else {
-					spawnPositions [i].tag = "Spawn Point";
+			GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag("Spawn Point 0");
+			for (int i = 0; i < spawnPositions.Length; i++)
+			{
+				if (i % 2 == 0)
+				{
+					spawnPositions[i].tag = "Spawn Point 1";
+				}
+				else
+				{
+					spawnPositions[i].tag = "Spawn Point 0";
 
 				}
-			
+
 
 			}
-			shipTwoTransform.gameObject.SetActive (false);
+			shipTwoTransform.gameObject.SetActive(false);
 			shipTwoTransform = shipOneTransform;
 
 		}
-		if (gameMode == GameType.Soccer) {
-			if (soccerField != null) {
-				soccerField.SetActive (true);
+		if (gameMode == GameType.Soccer)
+		{
+			if (soccerField != null)
+			{
+				soccerField.SetActive(true);
 			}
 		}
-		Invoke ("PhysicsUpdate", 1f);
+		//call to server to sync the scores on all clients
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netView.RPC("RPC_UpdateMatchInfo", MRPCMode.Server, new object[] { });
+		}
+		Invoke("PhysicsUpdate", 1f);
 
 	}
 	public void GetLocalPlayer(){
@@ -206,7 +266,7 @@ public class Game_Controller : MonoBehaviour {
 	public void RPC_SetTeam(){
 		for(int i = 1; i<statsArray.Length; i++) {
 			int _id = i;
-			int team = i % 2;
+			int team = (i+1) % 2;
 			statsArray [_id].team = team;
 			if (playerObjects.Count > i) {
 				GetPlayerFromNetID (_id).GetComponent<Player_Controller> ().team = team;
@@ -216,6 +276,12 @@ public class Game_Controller : MonoBehaviour {
 
 
 	public void GameUpdate(){
+		//unlock cursor
+		if (Input.GetKey(KeyCode.Escape))
+		{
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+		}
 		Vector3 shipDisplacement = (shipTwoTransform.position-shipOneTransform.position  )/2f;
 		if (Vector3.SqrMagnitude(shipDisplacement) == 0) {
 			sceneCam.transform.position = shipOneTransform.position + new Vector3 (0f, 700f, 0);
@@ -315,13 +381,19 @@ public class Game_Controller : MonoBehaviour {
 		if (localPlayer != null && localPlayer.GetComponent<Player_Controller> ().team == 0) {
 			UI_homeScoreText.text = scoreA.ToString();
 			UI_awayScoreText.text = scoreB.ToString();
+			UI_homeColour.color = new Color(0,1f,0);
+			UI_awayColour.color = new Color(1f,0f,0);
 		} else if (localPlayer.GetComponent<Player_Controller> ().team == 1){
 			UI_homeScoreText.text = scoreB.ToString();
 			UI_awayScoreText.text = scoreA.ToString();
+			UI_awayColour.color = new Color(0,1f,0);
+			UI_homeColour.color = new Color(1f,0f,0);
 		}
 		else {
 			UI_homeScoreText.text = scoreB.ToString() + "*";
 			UI_awayScoreText.text = scoreA.ToString();
+			UI_awayColour.color = new Color(0,1f,0);
+			UI_homeColour.color = new Color(1f,0f,0);
 		}
 
 		//Update the time
@@ -387,6 +459,7 @@ public class Game_Controller : MonoBehaviour {
 				continue;
 			}
 			if (player.team == winningTeam) {
+				player.score += 50;
 				winners.Add (player);
 				print ("We have a winner");
 			} else {
@@ -404,12 +477,12 @@ public class Game_Controller : MonoBehaviour {
 
 
 		foreach (PlayerStats player in winners) {
-			winnerNamesText.text += player.name + "\r\n";
-			winnerKillsText.text += player.kills + "\r\n";
+			winnerNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16)) + "\r\n";
+			winnerKillsText.text += player.kills.ToString() + "\r\n";
 		}
 		foreach (PlayerStats player in losers) {
-			loserNamesText.text += player.name + "\r\n";
-			loserKillsText.text += player.kills + "\r\n";
+			loserNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16))  + "\r\n";
+			loserKillsText.text += player.kills.ToString() + "\r\n";
 
 		}
 		endOfGameUI.SetActive (true);
@@ -430,6 +503,8 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			endTimeText.text = "Remaining Time: 0:00"; 
 		}
+		eventSystem.SetActive(true);
+		SavePlayerScore();
 
 
 	}
@@ -531,10 +606,13 @@ public class Game_Controller : MonoBehaviour {
 		dreadNaught.transform.position = shipOneTransform.position + displacement+new Vector3(0f,0f,-600f);
 		dreadNaught.transform.LookAt (shipOneTransform.position + displacement);
 	}
-	public void LoadSpawnScene()
+	public void RestartGame()
 	{
-		SceneManager.LoadScene("Lobby Scene");
+		print("Loading Spawn Scene");
+		FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
+		SceneManager.LoadScene("LobbyScene");
 	}
+	
 
 
 

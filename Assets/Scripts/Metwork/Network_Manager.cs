@@ -6,8 +6,8 @@ using UnityEngine.Networking;
 
 public class Network_Manager : MonoBehaviour {
 
-	[Tooltip("The minimum players required to leave the lobby and begin the match")]
-	public int minStartingPlayers = 2;
+	[Tooltip("The minimum players required to leave the lobby and begin the match, make sure to changein game controller")]
+	public int minStartingPlayers = 8;
 	public int maxPlayers;
 
 	//public int netID;
@@ -43,18 +43,25 @@ public class Network_Manager : MonoBehaviour {
 	}
 	void Update(){
 		if (Input.GetKeyDown (".")) {
-			minStartingPlayers = 1;
-			//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
-			//must be connected anyway
-			print ("We Starting");
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_LoadScene", MRPCMode.AllBuffered, new object[]{ "TransistionScene" });
-			} else {
-				RPC_LoadScene ("TransistionScene");
-			}
-			sceneMode = SceneMode.Game;
-			print ("Invoked RPC");
+			PrematureStart();
 		}
+	}
+	public void PrematureStart()
+	{
+		minStartingPlayers = 1;
+		//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
+		//must be connected anyway
+		print("We Starting");
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netView.RPC("RPC_LoadScene", MRPCMode.AllBuffered, new object[] { "TransistionScene" });
+		}
+		else
+		{
+			RPC_LoadScene("TransistionScene");
+		}
+		sceneMode = SceneMode.Game;
+		print("Invoked RPC");
 	}
 
 	void OnSceneLoaded(Scene _scene, LoadSceneMode _mode){
@@ -75,6 +82,7 @@ public class Network_Manager : MonoBehaviour {
 
 		} else if (_scene.name == "Space") {
 			sceneMode = SceneMode.Game;
+			
 		}
 	}
 
@@ -97,10 +105,16 @@ public class Network_Manager : MonoBehaviour {
 				netView.RPC ("RPC_LoadScene", MRPCMode.AllBuffered, new object[]{ "TransistionScene" });
 				sceneMode = SceneMode.Game;
 
-			} else {
+			} else if(sceneMode == SceneMode.Lobby ){
+				//Load the player into our lobby
+				netView.RPC ("RPC_LoadScene", player, new object[]{ "LobbyScene" });
+				print ("Loading Player into Lobby Scene");
+			}
+			else
+			{
 				//Load the player into our game
-				netView.RPC ("RPC_LoadScene", player, new object[]{ "TransistionScene" });
-				print ("Loading Player into Transistion Scene");
+				netView.RPC("RPC_LoadScene", player, new object[] { "TransistionScene" });
+				print("Loading Player into Transistion Scene");
 			}
 
 			foreach (Metwork_Object _netObj in GameObject.FindObjectsOfType<Metwork_Object>()) {

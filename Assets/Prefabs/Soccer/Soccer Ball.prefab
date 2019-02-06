@@ -8,23 +8,21 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1721936529132976}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1721936529132976
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4144243989441732}
   - component: {fileID: 33512480727832850}
   - component: {fileID: 23537685594946264}
   - component: {fileID: 135380937286973924}
   - component: {fileID: 54921166786406622}
-  - component: {fileID: 148317712796944124}
-  - component: {fileID: 114468371864499966}
   - component: {fileID: 114168665737547780}
   m_Layer: 0
   m_Name: Soccer Ball
@@ -36,7 +34,7 @@ GameObject:
 --- !u!4 &4144243989441732
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721936529132976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -49,7 +47,7 @@ Transform:
 --- !u!23 &23537685594946264
 MeshRenderer:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721936529132976}
   m_Enabled: 1
@@ -84,14 +82,14 @@ MeshRenderer:
 --- !u!33 &33512480727832850
 MeshFilter:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721936529132976}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &54921166786406622
 Rigidbody:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721936529132976}
   serializedVersion: 2
@@ -106,7 +104,7 @@ Rigidbody:
 --- !u!114 &114168665737547780
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721936529132976}
   m_Enabled: 1
@@ -114,36 +112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5261ad820f242f4458e6d3653adcaddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114468371864499966
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1721936529132976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7aad356d9617594297e5e9a3a6e531b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actualPosition: {x: 0, y: 0, z: 0}
-  isLocal: 0
-  netID: 0
-  owner: 0
-  rb: {fileID: 0}
-  netView: {fileID: 0}
-  rotationLerp: 0.2
-  snapLerp: 0.2
-  lerpRate: 20
-  snapDistance: 2
-  velocitySnapDist: 2
-  rotForceFactor: 30
-  velocityLerp: 0.2
-  sendRate: 15
-  isTwoPlane: 0
 --- !u!135 &135380937286973924
 SphereCollider:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721936529132976}
   m_Material: {fileID: 0}
@@ -152,15 +124,3 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!148 &148317712796944124
-NetworkView:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1721936529132976}
-  m_Enabled: 1
-  m_StateSynchronization: 0
-  m_Observed: {fileID: 0}
-  m_ViewID:
-    m_ID: 0
-    m_Type: 0

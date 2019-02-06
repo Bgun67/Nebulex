@@ -17,11 +17,15 @@ public class Pause_Menu : MonoBehaviour {
 		player = _player;
 		//eventSystem.SetActive (true);
 
-		//edit to remove all looking later
-		player.GetComponent<Player_Controller> ().enabled = false;
+		MInput.inputLock = MInput.InputLock.LockAll;
+		Cursor.visible = true;
 	}
 	public void Recall(){
 		confirmRecallPanel.SetActive (true);
+	}
+	public void Options()
+	{
+		SceneManager.LoadScene("Options", LoadSceneMode.Additive);
 	}
 	public void Quit(){
 		confirmQuitPanel.SetActive (true);
@@ -48,7 +52,9 @@ public class Pause_Menu : MonoBehaviour {
 	}
 	public void Resume(){
 		this.gameObject.SetActive(false);
-		player.GetComponent<Player_Controller> ().enabled = true;
+		MInput.inputLock = MInput.InputLock.None;
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 
 		//eventSystem.SetActive (false);
 	}

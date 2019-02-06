@@ -146,6 +146,7 @@ public class Soccer_Net : MonoBehaviour {
 			if(_mesh != null){
 				_mesh.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 				_mesh.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+				
 			}
 			
 		}

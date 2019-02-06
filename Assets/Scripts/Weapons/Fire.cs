@@ -79,7 +79,7 @@ public class Fire : MonoBehaviour {
 			netView = this.GetComponentInParent<MetworkView> ();
 		}
 
-		StartCoroutine("CreateObjectPool", 0.3f);
+		Invoke("CreateObjectPool", Random.Range(0,0.1f));
 		//
 	}
 	public void Activate(GameObject player){
@@ -112,6 +112,7 @@ public class Fire : MonoBehaviour {
 		if (!Input.GetButton ("Fire1")) {
 			fired = 0;
 		}
+		
 
 	}
 	public void FireWeapon(){
@@ -159,8 +160,6 @@ public class Fire : MonoBehaviour {
 					}
 					if (shootSound != null) {
 						shootSound.PlayOneShot (sound, 1f);
-						//shootSound.Play ();
-
 					}
 					if (muzzleFlash != null) {
 						muzzleFlash.Play ();
@@ -251,7 +250,7 @@ public class Fire : MonoBehaviour {
 		transform.root.SendMessage ("UpdateUI");
 
 	}
-	IEnumerator CreateObjectPool(){
+	void CreateObjectPool(){
 		for (int i = 0; i < magSize; i++) {
 			GameObject _bullet = GameObject.Instantiate (bulletPrefab, new Vector3 (0f, 1000f, 0f), Quaternion.identity);
 			_bullet.SetActive (false);
@@ -260,12 +259,20 @@ public class Fire : MonoBehaviour {
 
 			poolList.Push(_bullet);
 
-			yield return wait;
+			//yield return wait;
 		}
 	}
 	GameObject GetBullet(){
-		if (poolList.Count <= 0) {
-			ReturnBullets ();
+		if (poolList.Count == 0) {
+			if (destroyedStack.Count > 0)
+			{
+				ReturnBullets();
+			}
+			else
+			{
+				return null;
+			}
+
 		}
 		GameObject bullet = poolList.Pop ();
 		destroyedStack.Push (bullet);
@@ -274,6 +281,7 @@ public class Fire : MonoBehaviour {
 
 	}
 	void ReturnBullets(){
+		
 		foreach (GameObject _bullet in destroyedStack) {
 			poolList.Push (_bullet);
 		}

@@ -43,8 +43,6 @@ public class MetworkView : MonoBehaviour {
 				}
 			}
 		}
-			
-
 	}
 
 		
@@ -125,9 +123,14 @@ public class MetworkView : MonoBehaviour {
 		_data.Append (_args.Length);
 		_data.Append ("%");
 		for(int i = 0; i< _args.Length; i++){
-			_data.Append (GetTypeNum(_args[i]).ToString());
+			int _typeNum = GetTypeNum(_args[i]);
+			_data.Append (_typeNum.ToString());
 			_data.Append ("%");
-			_data.Append (_args[i].ToString());
+			if(_typeNum == QUATERNION){
+				_data.Append(_args[i].ToString(true));
+			}else{
+				_data.Append (_args[i].ToString());
+			}
 			_data.Append ("%");
 		}
 		_data.Append ("&&");
@@ -177,9 +180,15 @@ public class MetworkView : MonoBehaviour {
 		_data.Append (_args.Length);
 		_data.Append ("%");
 		for(int i = 0; i< _args.Length; i++){
-			_data.Append (GetTypeNum(_args[i]).ToString());
+			int _typeNum = GetTypeNum(_args[i]);
+			_data.Append (_typeNum.ToString());
 			_data.Append ("%");
+			if(_typeNum == QUATERNION){
+				_data.Append(_args[i].ToString(true));
+			}
+			else{
 			_data.Append (_args[i].ToString());
+			}
 			_data.Append ("%");
 		}
 		_data.Append ("&&");
@@ -236,6 +245,7 @@ public class MetworkView : MonoBehaviour {
 			for (int j = 0; j < _numArgs; j++) {
 				_arguments [j] = ConvertFromString (_data [7 + j * 2], _data [6 + j * 2]);
 			}
+
 			methods[i].Invoke (scripts[i], _arguments);
 			_hasInvoked = true;
 		}
@@ -267,6 +277,8 @@ public class MetworkView : MonoBehaviour {
 		return -1;
 
 	}
+
+	
 
 	object ConvertFromString(string _string, string _typeNum){
 		//print (_typeNum);

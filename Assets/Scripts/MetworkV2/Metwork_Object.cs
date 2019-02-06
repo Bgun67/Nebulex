@@ -46,11 +46,13 @@ public class Metwork_Object : MonoBehaviour {
 
 		rb = this.GetComponent<Rigidbody> ();
 		actualPosition = this.transform.position;
-		InvokeRepeating("NetUpdate", 0f, Mathf.Clamp(1 / sendRate, 0, 20f));
+		InvokeRepeating("NetUpdate", 0f, Mathf.Clamp(1f / sendRate, 0, 20f));
 		if ((Metwork.peerType == MetworkPeerType.Disconnected && this.owner == 1)){ // || (Metwork.peerType != MetworkPeerType.Disconnected && this.owner == manager.playerNumber)) {
 			isLocal = true;
-		} else {
-			isLocal = false;
+		} else
+		{
+
+			CheckLocal();
 		}
 		if (isLocal) {
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -60,13 +62,44 @@ public class Metwork_Object : MonoBehaviour {
 
 		Invoke ("ResetPhysics", 0.5f);
 	}
+	public void CheckLocal()
+	{
+		
+		
+		try
+		{
+			if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0))
+			{
+				isLocal = true;
+			}
+			else
+			{
+				isLocal = false;
+			}
+		}
+		catch
+		{
+			if (this.owner == 1 || this.owner == 0)
+			{
+				isLocal = true;
+			}
+			else
+			{
+				isLocal = false;
+			}
+		}
+		if (isTwoPlane)
+		{
+			
+		}
+	}
 
 	void OnCollisionEnter(Collision other){
 
 		Metwork_Object otherNetObj = other.transform.root.GetComponent<Metwork_Object> ();
 		if (otherNetObj != null) {
 			if (otherNetObj.isLocal && !isTwoPlane) {
-				isCollision = true;
+				//isCollision = true;
 				Invoke ("ResetCollision",0.3f);
 			}
 		}
@@ -76,7 +109,14 @@ public class Metwork_Object : MonoBehaviour {
 		isCollision = false;
 	}
 
+	void Update(){
+		if(Time.frameCount % 10 == 0){
+			CheckLocal();
+		}
+	}
+
 	void FixedUpdate(){
+		
 		//if (manager == null && this.owner == 1) {
 		//	isLocal = true;
 		//	return;
@@ -89,20 +129,7 @@ public class Metwork_Object : MonoBehaviour {
 		//}
 		//Physics.autoSimulation = true;
 
-		try{
-			if (this.owner == Metwork.player.connectionID || (Metwork.isServer && this.owner == 0)) {
-				isLocal = true;
-			} else {
-				isLocal = false;
-			}
-		}
-		catch{
-			if (this.owner == 1 || this.owner == 0) {
-				isLocal = true;
-			} else {
-				isLocal = false;
-			}
-		}
+		
 
 		if (!isLocal) {
 
@@ -143,7 +170,6 @@ public class Metwork_Object : MonoBehaviour {
 			}
 
 
-
 			if (isCollision) {
 				//rb.AddForce (transformVelocity);
 
@@ -170,7 +196,6 @@ public class Metwork_Object : MonoBehaviour {
 			Vector3 deltaRot = (Quaternion.Inverse(transform.rotation) * actualRotation).eulerAngles;
 
 
-
 			if (deltaRot.x > 180f) {
 				deltaRot.x = -360f + deltaRot.x;
 			}
@@ -184,9 +209,13 @@ public class Metwork_Object : MonoBehaviour {
 
 			if (!isTwoPlane) {
 				rb.MoveRotation(Quaternion.LerpUnclamped (transform.rotation, actualRotation, rotationLerp));
-			} else {
+			} else
+			{
+				//print("DeltaRot" + deltaRot);
+				//print("Angular Velocity" + rb.angularVelocity);
+				//rb.MoveRotation(Quaternion.LerpUnclamped (transform.rotation, actualRotation, rotationLerp));
 
-				rb.AddTorque (Mathf.Clamp(deltaRot.y/2f,-6f,6f) * rotationLerp * rb.mass * Time.fixedDeltaTime * rotForceFactor * Vector3.up);
+				rb.angularVelocity = Vector3.up * Mathf.Clamp(deltaRot.y * rotationLerp, -10f, 10f);
 			}
 
 			actualPosition = actualPosition + actualVelocity * Time.fixedDeltaTime;
@@ -204,16 +233,14 @@ public class Metwork_Object : MonoBehaviour {
 		rb.MovePosition(_position);
 		rb.MoveRotation( _rotation);
 		rb.velocity = _velocity;
-		print ("Setting Metwork Object Position");
+		
+
+		//	rb.angularVelocity = _angularVelocity;
+
 	}
 
 	void NetUpdate(){
-
 		if (isLocal && Metwork.peerType != MetworkPeerType.Disconnected) {
-			if(GetComponent<Frag_Grenade>()){
-
-				print("Running Frag Metwork Object");
-			}
 			netView.RPC ("SendLocation", MRPCMode.Others, new object[] {
 				this.transform.position,
 				this.transform.rotation,
@@ -244,10 +271,12 @@ public class Metwork_Object : MonoBehaviour {
 
 	[MRPC]
 	public void SendLocation(Vector3 objectPosition, Quaternion objectRotation,Vector3 objectVelocity, int id){
-		if (!isLocal){
+		if (!isLocal)
+		{
 			actualPosition = objectPosition;
 			actualRotation = objectRotation;
 			actualVelocity = objectVelocity;
+			
 		}
 
 	}

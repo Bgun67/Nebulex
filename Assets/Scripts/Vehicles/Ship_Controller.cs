@@ -44,7 +44,7 @@ public class Ship_Controller : MonoBehaviour {
 	public ParticleSystem[] rearThrusters;
 	public Transform[] passengerSeats;
 
-	Coroutine addDamage;
+	 float emptyTime; 
 	Damage damageScript;
 
 
@@ -61,27 +61,25 @@ public class Ship_Controller : MonoBehaviour {
 	}
 
 	void CheckOccupied(){
-		if (!Metwork.isServer || Metwork.peerType != MetworkPeerType.Disconnected) {
+		if (!(Metwork.isServer || Metwork.peerType == MetworkPeerType.Disconnected)) {
 			return;
 		}
-
-		if (this.player == null && Vector3.SqrMagnitude (damageScript.initialPosition.position - transform.position) > 500f) {
-			if (addDamage == null) {
-				addDamage = StartCoroutine (AddDamage ());
+		if (this.player == null && Vector3.SqrMagnitude (damageScript.initialPosition.position - transform.position) > 200f) {
+			emptyTime += 1f;
+			if (emptyTime > 120f)
+			{
+				AddDamage();
 			}
+		}
+		else
+		{
+			emptyTime = 0f;
 		}
 	}
 
-	IEnumerator AddDamage(){
-		yield return new WaitForSeconds (60f);
-		while (damageScript.currentHealth > 0) {
-			if (this.player == null && Vector3.SqrMagnitude (damageScript.initialPosition.position - transform.position) > 500f) {
-				damageScript.TakeDamage (100, 0);
-			} else {
-				addDamage = null;
-				break;
-			}
-			yield return new WaitForSeconds (5f);
+	void AddDamage(){
+		if (damageScript.currentHealth > 0) {
+			damageScript.TakeDamage (100, 0);
 		}
 
 	}
@@ -114,9 +112,33 @@ public class Ship_Controller : MonoBehaviour {
 		if(Input.GetButtonDown("Use Item")){
 			Exit ();
 		}
+		if (Input.GetButtonDown("Jump"))
+		{
+			if (isTransport)
+			{
+				LowerRamp();
+			}
+			else
+			{
+				EnableNightVision();
+			}
+		}
 
 
 
+	}
+	void EnableNightVision()
+	{
+		Night_Vision_Effects nightVision = mainCamera.GetComponent<Night_Vision_Effects>();
+		if (nightVision != null)
+		{
+			nightVision.enabled = !nightVision.enabled;
+
+		}
+	}
+	void LowerRamp()
+	{
+		transform.GetComponentInChildren<Door_Controller>().GetComponent<Activater>().ActivateScript(player);
 	}
 
 	void Fly(){
@@ -125,10 +147,18 @@ public class Ship_Controller : MonoBehaviour {
 		
 		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.95f, 0.3f);
 		previousEnginePitch = engineSound.pitch;
-
-		rb.AddRelativeTorque( MInput.GetAxis("Rotate X") *deltaThrustForce* torqueFactor,
-			MInput.GetAxis("Rotate Y") *deltaThrustForce* torqueFactor,
-			Input.GetAxis("Move X") *deltaThrustForce* -torqueFactor);
+		if (MInput.useMouse)
+		{
+			rb.AddRelativeTorque(MInput.GetMouseDelta("Mouse Y") * -0.2f * deltaThrustForce * torqueFactor,
+				MInput.GetMouseDelta("Mouse X") * 0.2f  * deltaThrustForce * torqueFactor,
+				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
+		else
+		{
+			rb.AddRelativeTorque(MInput.GetAxis("Rotate X") * deltaThrustForce * torqueFactor,
+				MInput.GetAxis("Rotate Y")  * deltaThrustForce * torqueFactor,
+				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
 	}
 
 
@@ -282,10 +312,6 @@ public class Ship_Controller : MonoBehaviour {
 	}
 
 	public void Activate(GameObject pilot){
-		
-
-
-
 		//Ensure that the gameobject has the netObj set (Due to start() not being called yet)
 		if (netObj == null) {
 			netObj = this.GetComponent<Metwork_Object> ();
@@ -390,10 +416,18 @@ public class Ship_Controller : MonoBehaviour {
 			netObj = this.GetComponent<Metwork_Object> ();
 		}
 		player.SetActive (true);
-		player.GetComponent<Rigidbody> ().useGravity = false;
 		player.GetComponent<Rigidbody> ().velocity = this.rb.velocity;
 		player.transform.position = this.transform.position+FindExitPoint();
-		player.GetComponent<Player_Controller> ().StartCoroutine ("ExitGravity");
+		if (rb.useGravity)
+		{
+			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
+			player.GetComponent<Rigidbody>().useGravity = true;
+		}
+		else
+		{
+			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
+			player.GetComponent<Rigidbody>().useGravity = false;
+		}
 		player.GetComponent<Player_Controller> ().inVehicle = false;
 
 		anim.SetBool ("Should Close", false);
@@ -462,16 +496,12 @@ public class Ship_Controller : MonoBehaviour {
 		print ("Running ship controller die");
 		Navigation.DeregisterTarget (this.transform);
 		isAI = false;
-		addDamage = null;
 		Destroy(Instantiate (explosionEffect, this.transform.position, transform.rotation),5f);
 		Destroy(Instantiate (destroyedPrefabs [Random.Range (0, destroyedPrefabs.Length)], this.transform.position, transform.rotation),5f);
 		if (player != null) {
 			Exit ();
 			player = FindObjectOfType<Game_Controller> ().GetPlayerFromNetID (id);
 			player.GetComponent<Damage> ().TakeDamage(1000,0);
-
-
-
 		}
 
 

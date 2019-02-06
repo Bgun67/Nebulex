@@ -8,55 +8,25 @@ public class Activater : MonoBehaviour {
 	public int maxPassengers;
 	public int passengers;
 	public MetworkView netView;
-	//public Metwork_Object netObjectScript;
-
-	//public UnityEvent functionToUse;
-	//public UnityEvent<Object> functionToRun;
+	
 	// Use this for initialization
 	void Start () {
 		netView = GetComponent<MetworkView> ();
-	//	netObjectScript = this.GetComponent<Metwork_Object> ();
-	//	if (netObjectScript == null) {
-	//		netObjectScript = transform.root.GetComponent<Metwork_Object> ();
-
-	//	}
-		//functionToRun = UnityfunctionToUse;
 	}
 
-	public void ActivateScript(GameObject player){
-		if (maxPassengers == 0) {
-
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_ActivateScript", MRPCMode.AllBuffered, new object[]{ player.GetComponent<Metwork_Object> ().netID });
-			} else {
-				RPC_ActivateScript (player.GetComponent<Metwork_Object> ().netID);
-			}
+	public void ActivateScript(GameObject player)
+	{
 
 
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netView.RPC("RPC_ActivateScript", MRPCMode.AllBuffered, new object[] { player.GetComponent<Metwork_Object>().netID });
 		}
-		if (passengers < maxPassengers) {
-			if (passengers < 1) {
-				foreach (MonoBehaviour scriptToActivate in scriptsToActivate) {
-					
-					scriptToActivate.enabled = true;
-					try {
-						//	scriptToActivate.gameObject.GetComponent<Metwork_Object> ().owner = player.GetComponent<Metwork_Object> ().owner;
-					} catch {
-
-					}
-					scriptToActivate.SendMessage ("Activate", player);
-
-				}
-
-			} else {
-				//foreach (MonoBehaviour scriptToActivate in scriptsToActivate) {
-					
-				//	scriptToActivate.SendMessage ("AddPassenger", player);
-				//}
-			}
+		else
+		{
+			RPC_ActivateScript(player.GetComponent<Metwork_Object>().netID);
 		}
 
-		//functionToRun.Invoke(player);
 	}
 
 	[MRPC]

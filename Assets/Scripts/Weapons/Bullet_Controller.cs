@@ -42,7 +42,6 @@ public class Bullet_Controller : MonoBehaviour {
 				}
 			}
 		} catch {
-			print("COuld not find");
 
 		}
 

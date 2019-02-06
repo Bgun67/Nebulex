@@ -13,12 +13,21 @@ public class Ship_Hole : MonoBehaviour {
 	
 	// Update is called once per frame
 	public void DestroyHole () {
-		GetComponent<MetworkView> ().RPC ("RPC_DestroyHole", MRPCMode.AllBuffered, new object[]{ });
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			GetComponent<MetworkView>().RPC("RPC_DestroyHole", MRPCMode.AllBuffered, new object[] { });
+		}
+		else
+		{
+			RPC_DestroyHole();
+		}
 	}
 	[MRPC]
 	public void RPC_DestroyHole(){
-		Navigation.DeregisterTarget (this.transform);
 		Destroy (this.gameObject);
-
+	}
+	void OnDestroy()
+	{
+		Navigation.DeregisterTarget (this.transform);
 	}
 }

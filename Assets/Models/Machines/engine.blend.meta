@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: a4bdd2ee0fe5c094990209afa36075c0
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: BezierCircle
     100002: BezierCircle_001
@@ -63,6 +63,16 @@ ModelImporter:
     100114: Cube_014
     100116: Cube_015
     100118: Cylinder_017
+    100120: Cube_000
+    100122: Cylinder_018
+    100124: Cylinder_019
+    100126: Cylinder_020
+    100128: Cylinder_021
+    100130: Cylinder_022
+    100132: Cylinder_023
+    100134: Cylinder_024
+    100136: Torus_000
+    100138: Torus_001
     400000: BezierCircle
     400002: BezierCircle_001
     400004: BezierCircle_002
@@ -123,6 +133,16 @@ ModelImporter:
     400114: Cube_014
     400116: Cube_015
     400118: Cylinder_017
+    400120: Cube_000
+    400122: Cylinder_018
+    400124: Cylinder_019
+    400126: Cylinder_020
+    400128: Cylinder_021
+    400130: Cylinder_022
+    400132: Cylinder_023
+    400134: Cylinder_024
+    400136: Torus_000
+    400138: Torus_001
     2300000: BezierCircle
     2300002: BezierCircle_001
     2300004: BezierCircle_002
@@ -178,6 +198,16 @@ ModelImporter:
     2300104: Cube_014
     2300106: Cube_015
     2300108: Cylinder_017
+    2300110: Cube_000
+    2300112: Cylinder_018
+    2300114: Cylinder_019
+    2300116: Cylinder_020
+    2300118: Cylinder_021
+    2300120: Cylinder_022
+    2300122: Cylinder_023
+    2300124: Cylinder_024
+    2300126: Torus_000
+    2300128: Torus_001
     3300000: BezierCircle
     3300002: BezierCircle_001
     3300004: BezierCircle_002
@@ -233,6 +263,16 @@ ModelImporter:
     3300104: Cube_014
     3300106: Cube_015
     3300108: Cylinder_017
+    3300110: Cube_000
+    3300112: Cylinder_018
+    3300114: Cylinder_019
+    3300116: Cylinder_020
+    3300118: Cylinder_021
+    3300120: Cylinder_022
+    3300122: Cylinder_023
+    3300124: Cylinder_024
+    3300126: Torus_000
+    3300128: Torus_001
     4300000: Cube_008
     4300002: BezierCircle_001
     4300004: BezierCircle
@@ -288,6 +328,16 @@ ModelImporter:
     4300104: Cube_014
     4300106: Cube_015
     4300108: Cylinder_017
+    4300110: Cube_000
+    4300112: Torus_000
+    4300114: Torus_001
+    4300116: Cylinder_024
+    4300118: Cylinder_023
+    4300120: Cylinder_022
+    4300122: Cylinder_021
+    4300124: Cylinder_020
+    4300126: Cylinder_019
+    4300128: Cylinder_018
     7400000: Default Take
     9500000: //RootNode
     2186277476908879412: ImportLogs
@@ -296,12 +346,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Engine_Turbomachinery__ssme_small_jpg
-    second: {fileID: 2100000, guid: 3ea141ef28e2f10488511bb40c8f01d6, type: 2}
+    second: {fileID: 2100000, guid: bffb608d445793e41a9a29b63f0c63b9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Grey
     second: {fileID: 2100000, guid: bffb608d445793e41a9a29b63f0c63b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grey__Untitled
+    second: {fileID: 2100000, guid: bbc81b6c83670fa40a54b343d50722cf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -382,6 +437,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 30
     normalImportMode: 1
@@ -401,7 +458,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 0

@@ -8,14 +8,14 @@ using UnityEngine.Serialization;
 public class Loadout_Controller : MonoBehaviour {
 	public static Dictionary<string, Vector3> gunLocalPositions = new Dictionary<string,Vector3>()
 	{
-		{"SRR-3", new Vector3(-0.08f,0.08f,-0.33f)},
+		{"SRR-3", new Vector3(-0.067f,0.241f,-0.22f)},
 		{"Oynix-93", new Vector3(-0.207f,0.222f,0.417f)},
-		{"Ratpak", new Vector3(-0.15f,0f,0.25f)},
+		{"Ratpak", new Vector3(-0.149f,0.161f,0.301f)},
 		{"NTO-MSQ0", new Vector3(-0.13f,0.4f,0.16f)},
 		{"Biron", new Vector3(-0.13f,0.4f,0.16f)},
 
 
-		{"FN-227", new Vector3(-0.12f,-0.23f,-0.05f)},
+		{"FN-227", new Vector3(-0.125f,-0.168f,0.07f)},
 		{"Q-338", new Vector3(0f,0.11f,-0.09f)},
 
 		{"Thunderstroke", new Vector3(-0.24f,-0.27f,1.36f)},
@@ -28,15 +28,15 @@ public class Loadout_Controller : MonoBehaviour {
 	};
 	public static Dictionary<string, Vector3> gunLocalRotations = new Dictionary<string,Vector3>()
 	{
-		{"SRR-3", new Vector3(168.05f,262.4f,198.69f)},
+		{"SRR-3", new Vector3(168.4f,263.9f,196.296f)},
 		{"Oynix-93", new Vector3(20.133f,-13.94f,-7.824f)},
-		{"Ratpak", new Vector3(6.212f,81.495f,16.55f)},
+		{"Ratpak", new Vector3(6.4f,79.98f,15.4f)},
 		{"NTO-MSQ0", new Vector3(18.69f,-12.46f,-8.8f)},
 		{"Biron", new Vector3(18.69f,-12.46f,-8.8f)},
 
 
 
-		{"FN-227", new Vector3(14.13f,-13.1f,-8.2f)},
+		{"FN-227", new Vector3(14.4f,-13.2f,-8.2f)},
 		{"Q-338", new Vector3(9.92f,77.481f,59.078f)},
 
 		{"Thunderstroke", new Vector3(-67.67f,12.501f,-19.18f)},

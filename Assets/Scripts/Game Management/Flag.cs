@@ -16,6 +16,8 @@ public class Flag : MonoBehaviour {
 	Game_Controller gameController;
 	public BoxCollider boxCollider;
 	public Player_Controller _player;
+	public float droppedTime;
+	public float maxDropTime;
 	bool vehicleEntered;
 
 
@@ -41,6 +43,7 @@ public class Flag : MonoBehaviour {
 		Invoke ("Register", 2f);
 
 	}
+	
 	void Register(){
 		char flagChar;
 		if (team == 0) {
@@ -54,6 +57,14 @@ public class Flag : MonoBehaviour {
 	}
 	void Update(){
 		if (_player == null) {
+			if (Metwork.isServer)
+			{
+				droppedTime += Time.deltaTime;
+				if (droppedTime > maxDropTime)
+				{
+					ReturnFlag();
+				}
+			}
 			return;
 		}
 		if (joint.connectedBody==null) {
@@ -64,6 +75,7 @@ public class Flag : MonoBehaviour {
 			joint.connectedBody = stand;
 			return;
 		}
+		
 		if (_player.inVehicle) {
 			print ("Invehicle");
 			if (!vehicleEntered) {
@@ -84,22 +96,29 @@ public class Flag : MonoBehaviour {
 					}
 				}
 			}
-		} else {
-			if (vehicleEntered) {
+		} else
+		{
+			if (!joint.connectedBody.gameObject.activeInHierarchy)
+			{
+				_player = null;
+				stand.transform.position = this.transform.position;
+				boxCollider.enabled = true;
+
+				joint.connectedBody = stand;
+				return;
+			}
+			if (vehicleEntered)
+			{
 				vehicleEntered = false;
-				this.transform.position = _player.jetpackJets[0].transform.position + new Vector3(0,-1,0);
 				this.transform.forward = _player.transform.forward;
 				joint.connectedBody = _player.rb;
+				this.transform.position = _player.jetpackJets[0].transform.position + _player.jetpackJets[0].transform.forward;
+
 			}
 
 		}
-		if (!joint.connectedBody.gameObject.activeInHierarchy) {
-			_player = null;
-			stand.transform.position = this.transform.position;
-			boxCollider.enabled = true;
 
-			joint.connectedBody = stand;
-		}
+
 	}
 
 	public void OnTriggerEnter(Collider other){
@@ -162,7 +181,6 @@ public class Flag : MonoBehaviour {
 		}
 		_player = null;
 		stand.transform.position = this.transform.position;
-
 		boxCollider.enabled = true;
 	}
 

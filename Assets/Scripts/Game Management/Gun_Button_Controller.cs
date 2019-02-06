@@ -33,6 +33,7 @@ public class Gun_Button_Controller : MonoBehaviour {
 	}
 	public void OnMouseEnter(){
 		loadoutScript.MouseOver (buttonText.text, buttonType);
+		
 
 	}
 	public void OnMouseExit(){
