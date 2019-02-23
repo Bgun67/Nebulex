@@ -10,10 +10,8 @@ public class Splash_Scene_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//FindObjectOfType<ParticleSystem> ().Play ();
-		//FindObjectOfType<Animator> ().SetTrigger("Play");
 
-		InvokeRepeating ("DisplayStartText", 3f, 0.5f);
+		StartCoroutine (DisplayStartText());
 	}
 	
 	// Update is called once per frame
@@ -23,8 +21,12 @@ public class Splash_Scene_Controller : MonoBehaviour {
 				SceneManager.LoadScene ("Start Scene");
 		}
 	}
-	void DisplayStartText(){
+	IEnumerator DisplayStartText(){
 		
-		startText.enabled = !startText.enabled;
+		yield return new WaitForSeconds(0.1f);
+		while (true){
+			yield return new WaitForSeconds(0.5f);
+			startText.enabled = !startText.enabled;
+		}
 	}
 }

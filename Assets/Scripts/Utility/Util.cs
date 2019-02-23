@@ -47,55 +47,24 @@ public class Util {
 	{
 		float _destroyTime = GameObject.FindGameObjectsWithTag("Message").Length*3;
 
-		GameObject messageObj = new GameObject();
+		GameObject messageObj = GameObject.Instantiate((GameObject)Resources.Load("Notification"));
 		//Set the newer bg to be rendered lowest
 		messageObj.name = "Message";
 		messageObj.tag = "Message";
-		messageObj.AddComponent<CanvasRenderer>();
-		RectTransform _transform = messageObj.AddComponent<RectTransform>();
-		_transform.SetParent(GameObject.FindObjectOfType<Canvas>().transform);
+		messageObj.transform.SetParent(GameObject.FindObjectOfType<Canvas>().transform);
+		RectTransform rt = messageObj.GetComponent<RectTransform>();
+		rt.anchoredPosition = Vector3.zero;
+		rt.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, rt.rect.height);
 		messageObj.transform.SetSiblingIndex(0);
-
-		SetAnchor(_transform);
-		CreateMessageBG(messageObj);
-		CreateMessageText(messageObj, message);
+		messageObj.GetComponentInChildren<Text>().text = message;
 		GameObject.Destroy(messageObj, _destroyTime+3f);
 
 	}
-	static void SetAnchor(RectTransform _transform)
+	static void SetAnchor()
 	{
-		_transform.anchorMin = new Vector2(0.5f, 1f);
-		_transform.anchorMax = new Vector2(0.5f, 1f);
-		_transform.pivot = new Vector2(0.5f, 1f);
-		_transform.anchoredPosition = Vector2.zero;
-	}
-	static void CreateMessageText(GameObject _messageObj,string _message)
-	{
-		
-		GameObject textObj = new GameObject();
-		textObj.name = "Text";
-		textObj.transform.SetParent(_messageObj.transform);
-		RectTransform _transform = textObj.AddComponent<RectTransform>();
-		_transform.sizeDelta = new Vector2(400f, 30f);
-		Text _text = textObj.AddComponent<Text>();
-		_text.text = "Message: " + _message;
-		_text.alignment = TextAnchor.UpperCenter;
-		_text.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
-		SetAnchor(_transform);
-	}
-	static void CreateMessageBG(GameObject _messageObj)
-	{
-		GameObject bgObj = new GameObject();
-		bgObj.name = "Message BG";
-		bgObj.transform.SetParent(_messageObj.transform);
-		RectTransform _transform = bgObj.AddComponent<RectTransform>();
-		_transform.sizeDelta = new Vector2(400f, 30f);
 
-		Image _image = bgObj.AddComponent<Image>();
-		//_image.sprite = Resources.GetBuiltinResource(typeof(Sprite), "InputFieldBackground") as Sprite;
-		_image.color = new Color(0f,0f,65f,1f);
-		SetAnchor(_transform);
 	}
+
 	public static Vector3 ParseToVector3(string inputString){
 		string[] tmpArray = inputString.Split (new char[]{','}, 3);
 		Vector3 returnVector = new Vector3 (float.Parse(tmpArray [0]), float.Parse(tmpArray [1]),float.Parse( tmpArray [2]));

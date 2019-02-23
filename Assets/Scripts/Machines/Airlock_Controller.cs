@@ -70,7 +70,6 @@ public class Airlock_Controller : MonoBehaviour {
 	}
 
 	IEnumerator Pressurize(int doorToOpen){
-		print ("Running");
 		pressurizing = true;
 		yield return new WaitUntil (()=>(!door1Controller.open && !door2Controller.open));
 		if (warningLight.GetComponent<Animator> () != null) {

@@ -10,15 +10,14 @@ public class UI_Manager : MonoBehaviour {
 	public RectTransform healthBox;
 	public RectTransform healthBar;
 
-	//Ammo fields: private because Braden doesn't need to put his grubby
-	//little hands all over them
+	//first
 	[SerializeField]
 	private Animator ammoAnim;
 	[SerializeField]
 	private Text magAmmoText;
 	[SerializeField]
 	private Text totalAmmoText;
-
+	
 	//Pie Menu
 	[SerializeField]
 	private Image primaryPanel;
@@ -216,5 +215,6 @@ public class UI_Manager : MonoBehaviour {
 			secondaryPanel.enabled = true;
 		}
 	}
+	
 
 }

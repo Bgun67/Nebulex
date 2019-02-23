@@ -362,7 +362,7 @@ public class Ship_Controller : MonoBehaviour {
 		player.GetComponent<Player_Controller> ().inVehicle = true;
 		player.SetActive (false);
 
-		if (anim != null) {
+		if (anim != null&&!isTransport) {
 			anim.SetBool ("Should Close", true);
 		} 
 
@@ -430,7 +430,10 @@ public class Ship_Controller : MonoBehaviour {
 		}
 		player.GetComponent<Player_Controller> ().inVehicle = false;
 
-		anim.SetBool ("Should Close", false);
+		if (!isTransport)
+		{
+			anim.SetBool("Should Close", false);
+		}
 		player = null;
 
 

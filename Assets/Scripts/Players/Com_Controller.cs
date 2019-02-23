@@ -117,8 +117,7 @@ public class Com_Controller : MonoBehaviour {
 	}
 	void Recoil()
 	{
-		anim.Play ("Recoil 1*", 2, 0.3f);
-
+		anim.Play ("Recoil1*", 2, 0.3f);
 	}
 
 	void AnimateMovement()
@@ -320,7 +319,7 @@ public class Com_Controller : MonoBehaviour {
 	void Hide()
 	{
 		Vector3 _coverPosition;
-		if (Time.frameCount % 3 == 0)
+		if (Time.frameCount % 10 == 0)
 		{
 			currentCover = FindCover();
 		}

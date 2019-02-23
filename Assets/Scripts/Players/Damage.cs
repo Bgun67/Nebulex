@@ -58,7 +58,7 @@ public class Damage : MonoBehaviour {
 		}
 
 		if (regen) {
-			InvokeRepeating ("RegenHealth", 100f/originalHealth, 0.5f);
+			InvokeRepeating ("RegenHealth",regenTime, 100f/originalHealth);
 		}
 		if (netObj == null) {
 			netObj = this.GetComponent<Metwork_Object> ();
@@ -140,6 +140,7 @@ public class Damage : MonoBehaviour {
 		
 		if (currentHealth <= 0f)
 		{
+			currentHealth = 0;
 			if (fromID != 0)
 			{
 				if (this.tag == "Player")
@@ -192,9 +193,8 @@ public class Damage : MonoBehaviour {
 				{
 					break;
 				}
-				print(damageScript.gameObject.name);
 				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID);
-
+				j++;
 			}
 
 
@@ -212,9 +212,6 @@ public class Damage : MonoBehaviour {
 		{
 			UpdateUI();
 		}
-
-
-
 
 	}
 	public void ShowLowHealthEffect(bool _show)
@@ -281,8 +278,12 @@ public class Damage : MonoBehaviour {
 
 		if (impactDamageFactor > 0f) {
 			
-			float damage = collision.impulse.sqrMagnitude * impactDamageFactor * 1E-6f;
-			if (damage > 1f) {
+			
+			float damage = Mathf.Abs(Vector3.Dot(collision.relativeVelocity, collision.contacts[0].normal));
+			damage *= damage;
+			damage *= originalHealth/1000f*impactDamageFactor;
+
+			if (damage > 0.01f*originalHealth) {
 				TakeDamage ((int)damage, 0);
 			}
 		}

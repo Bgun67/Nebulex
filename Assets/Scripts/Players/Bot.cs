@@ -49,7 +49,7 @@ public class Bot : MonoBehaviour {
 		
 		agent.destination = patrolPositions[0].position;
 
-		InvokeRepeating ("CheckState", Random.Range(0.1f,0.5f), 0.2f);
+		StartCoroutine (CheckState());
 	}
 		
 
@@ -70,58 +70,71 @@ public class Bot : MonoBehaviour {
 	}
 
 	//Checks which state the bot should be in
-	void CheckState(){
-		//Raycast to check visibility to each player
-		players = GameObject.FindObjectsOfType<Player_Controller>();
-		RaycastHit _hit;
-
-		//Check if our currently targetted player is still visible
-		if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 5f&&Vector3.Distance(transform.position, targetPlayer._transform.position)<50f) {
-			if (Vector3.Dot ((targetPlayer._transform.position-this.transform.position).normalized, transform.forward) > 0.2f) {
-				if (!Physics.Linecast (this.transform.position, targetPlayer._transform.position, out _hit, physicsMask) || _hit.transform.root.GetComponent<Player_Controller> () != null) {
-										
-					targetPlayer._lastSpottedTime = Time.time;
-				}
-			}
-		} else {
-			targetPlayer = null;
-		}
-		if (targetPlayer == null)
+	IEnumerator CheckState(){
+		yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+		while (true)
 		{
-			for (int i = 0; i < players.Length; i++)
+			yield return new WaitForSeconds(0.2f);
+			//Raycast to check visibility to each player
+			players = GameObject.FindObjectsOfType<Player_Controller>();
+			RaycastHit _hit;
+
+			//Check if our currently targetted player is still visible
+			if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 5f && Vector3.Distance(transform.position, targetPlayer._transform.position) < 50f)
 			{
-				if (Vector3.Dot((players[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
+				if (Vector3.Dot((targetPlayer._transform.position - this.transform.position).normalized, transform.forward) > 0.2f)
 				{
-					if (!Physics.Linecast(this.transform.position, players[i].transform.position, out _hit, physicsMask) || _hit.transform.root.GetComponent<Player_Controller>() != null)
+					if (!Physics.Linecast(this.transform.position, targetPlayer._transform.position, out _hit, physicsMask) || _hit.transform.root.GetComponent<Player_Controller>() != null)
 					{
-						if (_hit.distance < 50f)
-						{
-							//Check if the player is HALF of the distance of the previous player
-							if (targetPlayer != null)
-							{
-								if (_hit.distance > targetPlayer._distance - 5f)
-								{
-									continue;
-								}
-							}
-							targetPlayer = new TargetPlayer();
-							targetPlayer._transform = players[i].transform;
-							targetPlayer._controller = players[i];
-							targetPlayer._lastSpottedTime = Time.time;
-							targetPlayer._hasDied = false;
 
-						}
-
-
+						targetPlayer._lastSpottedTime = Time.time;
 					}
 				}
 			}
-		}
+			else
+			{
+				targetPlayer = null;
+			}
+			if (targetPlayer == null)
+			{
+				for (int i = 0; i < players.Length; i++)
+				{
+					if (Vector3.Dot((players[i].transform.position - this.transform.position).normalized, transform.forward) > 0.2f)
+					{
+						if (!Physics.Linecast(this.transform.position, players[i].transform.position, out _hit, physicsMask) || _hit.transform.root.GetComponent<Player_Controller>() != null)
+						{
+							if (_hit.distance < 50f)
+							{
+								//Check if the player is HALF of the distance of the previous player
+								if (targetPlayer != null)
+								{
+									if (_hit.distance > targetPlayer._distance - 5f)
+									{
+										continue;
+									}
+								}
+								targetPlayer = new TargetPlayer();
+								targetPlayer._transform = players[i].transform;
+								targetPlayer._controller = players[i];
+								targetPlayer._lastSpottedTime = Time.time;
+								targetPlayer._hasDied = false;
 
-		if (targetPlayer != null) {
-			botState = BotState.Fighting;
-		} else {
-			botState = BotState.Patrol;
+							}
+
+
+						}
+					}
+				}
+			}
+
+			if (targetPlayer != null)
+			{
+				botState = BotState.Fighting;
+			}
+			else
+			{
+				botState = BotState.Patrol;
+			}
 		}
 	}
 

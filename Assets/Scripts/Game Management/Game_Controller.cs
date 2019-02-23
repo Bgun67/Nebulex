@@ -16,7 +16,7 @@ public class Game_Controller : MonoBehaviour {
 		public int team = -1;
 	}
 
-
+	[System.Serializable]
 	public struct GameType{
 		public const string Destruction = "Destruction";
 		public const string TeamDeathmatch = "Team Deathmatch";
@@ -96,6 +96,12 @@ public class Game_Controller : MonoBehaviour {
 	public GameObject winPanel;
 	public double initialTime;
 
+	public bool GameClipMode = false;
+	public GameObject GameClipCameraPrefab;
+	public Camera GameClipCamera;
+	public float GameClipCameraOffset = 5f;
+	public Transform GameClipTarget;
+
 
 	#endregion
 
@@ -141,6 +147,7 @@ public class Game_Controller : MonoBehaviour {
 		_instance = GameObject.FindObjectOfType<Game_Controller>();
 		netView = this.GetComponent<MetworkView>();
 		GetLocalPlayer();
+		
 		Physics.autoSimulation = false;
 
 		nextDreadnaughtTime = dreadNaughtSpawnWait;
@@ -245,6 +252,7 @@ public class Game_Controller : MonoBehaviour {
 	}
 	void PhysicsUpdate(){
 		Physics.autoSimulation = true;
+		
 	}
 
 	[MRPC]
@@ -612,7 +620,81 @@ public class Game_Controller : MonoBehaviour {
 		FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
 		SceneManager.LoadScene("LobbyScene");
 	}
-	
+	void Update()
+	{
+		if (Input.GetKeyDown("0"))
+		{
+			GameClipMode = !GameClipMode;
+			if (GameClipMode)
+			{
+				localPlayer.GetComponent<Player_Controller>().mainCamObj.SetActive(false);
+
+				foreach (TextMesh textMesh in FindObjectsOfType<TextMesh>())
+				{
+					textMesh.text = "";
+				}
+				GameClipCamera = Instantiate(GameClipCameraPrefab, localPlayer.transform.position, localPlayer.transform.rotation).GetComponent<Camera>();
+			}
+			else
+			{
+				localPlayer.GetComponent<Player_Controller>().mainCamObj.SetActive(true);
+				localPlayer.GetComponent<Player_Controller>().mainCamObj.transform.position = GameClipCamera.transform.position;
+				localPlayer.GetComponent<Player_Controller>().helmet.SetActive(false);
+				Destroy(GameClipCamera.gameObject);
+			}
+		}
+		if (GameClipMode)
+		{
+			if (GameClipTarget == null)
+			{
+				GameClipTarget = localPlayer.transform;
+			}
+			localPlayer.GetComponent<Player_Controller>().helmet.SetActive(true);
+			GameClipCamera.transform.LookAt(GameClipTarget.position);
+			Vector3 targetPosition = GameClipTarget.position - GameClipCamera.transform.forward * GameClipCameraOffset;
+			GameClipCamera.transform.position = Vector3.Lerp(GameClipCamera.transform.position, targetPosition, 0.5f);
+			GameClipCamera.transform.RotateAround(GameClipTarget.transform.position, Vector3.up, Input.GetAxis("Rotate Y")*5f);
+			GameClipCamera.transform.RotateAround(GameClipTarget.transform.position, Vector3.right, Input.GetAxis("Rotate X")*5f);
+			if (Input.GetKey(KeyCode.PageUp))
+			{
+				GameClipCameraOffset++;
+			}
+			else if (Input.GetKey(KeyCode.PageDown)){
+				GameClipCameraOffset--;
+			}
+			if (Input.GetKeyDown(KeyCode.I)){
+				GameClipCamera.enabled = !GameClipCamera.enabled;
+			}
+			if (Input.GetKeyDown("j"))
+			{
+				if (GameClipTarget != localPlayer.transform)
+				{
+					GameClipTarget = localPlayer.transform;
+				}
+				else
+				{
+					foreach (Ship_Controller ship in FindObjectsOfType<Ship_Controller>())
+					{
+						if (ship.player == localPlayer.gameObject)
+						{
+							GameClipTarget = ship.transform;
+							break;
+						}
+					}
+					foreach (Turret_Controller turret in FindObjectsOfType<Turret_Controller>())
+					{
+						if (turret.player == localPlayer.gameObject)
+						{
+							GameClipTarget = turret.transform;
+							break;
+						}
+					}
+				}
+			}
+			GameClipCamera.depth = 3;
+		}
+	}
+
 
 
 

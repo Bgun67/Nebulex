@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 public class Options_Menu : MonoBehaviour {
 	public Button controlsButton;
 	public Button qualityButton;
+	public Button fullScreenButton;
+
 	public Slider volumeSlider;
 	public Slider sensitivitySlider;
 	static string[] optionsInfo;
@@ -18,20 +20,32 @@ public class Options_Menu : MonoBehaviour {
 		try
 		{
 			optionsInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Options Settings.txt"));
+			LoadSettings();
 		}
 		catch
 		{
 			optionsInfo = Profile.RestoreOptionsFile();
+			LoadSettings();
+
 		}
+
+
+	}
+	static void LoadSettings()
+	{
+
+
 		AudioListener.volume = float.Parse(optionsInfo[0]);
 		MInput.useMouse = (optionsInfo[1] == "True");
 		MInput.sensitivity = float.Parse(optionsInfo[2]);
-		QualitySettings.SetQualityLevel( int.Parse(optionsInfo[3]));
-
+		QualitySettings.SetQualityLevel(int.Parse(optionsInfo[3]));
+		Screen.fullScreen = (optionsInfo[4] == "True");
 	}
 	void Reset () {
 		controlsButton = GameObject.Find("Controls Button").GetComponent<Button>();
 		qualityButton = GameObject.Find("Quality Button").GetComponent<Button>();
+		fullScreenButton = GameObject.Find("Full Screen Button").GetComponent<Button>();
+
 
 		volumeSlider = GameObject.Find("Volume Slider").GetComponent<Slider>();
 		sensitivitySlider = GameObject.Find("Sensitivity Slider").GetComponent<Slider>();
@@ -50,6 +64,11 @@ public class Options_Menu : MonoBehaviour {
 		UpdateControlText();
 		SaveData();
 	}
+	public void FullScreenClicked() {
+		Screen.fullScreen = !Screen.fullScreen;
+		UpdateFullScreenText();
+		SaveData();
+	}
 	void UpdateControlText()
 	{
 		Text _text = controlsButton.GetComponentInChildren<Text>();
@@ -60,6 +79,18 @@ public class Options_Menu : MonoBehaviour {
 		else
 		{
 			_text.text = "Joystick";
+		}
+	}
+	void UpdateFullScreenText()
+	{
+		Text _text = fullScreenButton.GetComponentInChildren<Text>();
+		if (Screen.fullScreen)
+		{
+			_text.text = "Off";
+		}
+		else
+		{
+			_text.text = "On";
 		}
 	}
 	public void UpdateVolume()
@@ -113,6 +144,8 @@ public class Options_Menu : MonoBehaviour {
 		optionsInfo[1] = MInput.useMouse.ToString();
 		optionsInfo[2] = MInput.sensitivity.ToString();
 		optionsInfo[3] = QualitySettings.GetQualityLevel().ToString();
+		optionsInfo[4] = Screen.fullScreen.ToString();
+
 		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsInfo) );
 
 	}

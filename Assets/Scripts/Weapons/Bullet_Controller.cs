@@ -17,9 +17,13 @@ public class Bullet_Controller : MonoBehaviour {
 			Invoke ("DisableBullet", range);
 
 	}
-	
+
 	// Update is called once per frame
-	void OnCollisionEnter (Collision other) {
+	 void OnCollisionEnter(Collision other)
+	{
+		BulletHit(other);
+	}
+	public void BulletHit(Collision other){
 		if (isExplosive) {
 			Blast_Controller blastScript = Instantiate (blastSystem, other.contacts[0].point, Quaternion.identity).GetComponent<Blast_Controller> ();
 			blastScript.transform.localScale = Vector3.one * 10f;
@@ -47,7 +51,7 @@ public class Bullet_Controller : MonoBehaviour {
 
 		this.enabled = false;
 
-		Invoke ("DisableBullet", 0.5f);
+		Invoke ("DisableBullet", 0.1f);
 		/*
 		if (other.collider.tag == checkTag1) {
 			RaycastHit hit;
@@ -85,7 +89,7 @@ public class Bullet_Controller : MonoBehaviour {
 
 
 	}
-	void DisableBullet(){
+	public void DisableBullet(){
 		this.gameObject.SetActive (false);
 	}
 

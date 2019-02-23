@@ -1,195 +1,128 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Threading;
 
-public class Asteroid_Field_Manager : MonoBehaviour {
+#if UNITY_EDITOR || UNITY_EDITOR_64
+[ExecuteInEditMode]
+public class Asteroid_Field_Manager : ScriptableWizard {
 	
 
-	public float worldSize;
-	public float maxAsteroidSize;
-	public float maxMass;
-	public float maxAngularVelocity;
-	public float maxVelocity;
-	public float launchTime = 2.5f;
+	public float worldSize = 10000f;
+	public float minYDistance = 50f;
+	public float maxYDistance = 100f;
+	public float minAsteroidSize = 2f;
+	public float maxAsteroidSize=12f;
+	float asteroids;
+	[Range(0,900)]
+	public float maxAsteroids = 900;
+	[Range(0,10)]
+	public int asteroidToJunkRatio = 0;
+	public GameObject[] asteroidPrefabs;
+	public GameObject[] junkPrefabs;
+	public bool destroyField = false;
+	public bool showFlags = false;
+	public bool hideFlags = false;
 
+	public float progress = 0f;
+	
 
-	//Move ui to GameController
-	public GameObject warningUI;
-	public Image warningPanel;
-	public bool warningActive;
-	public bool AIncreasing;
-	public float exitTime;
-	public Transform carrierOne;
-	public Transform carrierTwo;
-	public float boundingSphereThickness;
-
-
+	[MenuItem("GameObject/Asteroid Field Manager")]
 	// Use this for initialization
-	void Start () {
-		
-
+	static void CreateWizard(){
+		ScriptableWizard.DisplayWizard<Asteroid_Field_Manager> ("Generate Field", "Create");
+	
 	}
-
-	// Update is called once per frame
-	void Update () {
-
-	}
-	/*public void OnTriggerExit(Collider other){
-		if (other.tag == "Asteroid") {
-			Relaunch (other.gameObject);
-		} else if (other.tag=="Player"){
-			warningUI.SetActive (true);
-			warningActive = true;
-			StartCoroutine(FlashWarning ());
+		void OnWizardCreate () {
+			if(destroyField){
+				DestroyField();
+			}
+			else if(showFlags){
+				foreach (GameObject go in GameObject.FindObjectsOfType<GameObject>())
+				{
+					if(go.name == "Space Junk"){
+						go.hideFlags = HideFlags.None;
+					}
+				}
+			}
+			else if(hideFlags){
+				foreach (GameObject go in GameObject.FindObjectsOfType<GameObject>())
+				{
+					if(go.name == "Space Junk"){
+					go.hideFlags = HideFlags.HideInHierarchy;
+					}
+				}
+			}
+			else{
+				GenerateAsteroids();
+			}
 		}
+		void ShowFlags(){
 
-	}
-	public void OnTriggerEnter(Collider other){
-		 if (other.tag=="Player"){
-			warningUI.SetActive (false);
-			warningActive = false;
-			exitTime = 0;
 		}
+	public void GenerateAsteroids(){
+		GameObject sector1 = new GameObject();
+		GameObject prefab = new GameObject();
 
-	}*/
-/*	public void LaunchAsteroids(){
-		if (asteroids <= maxInnerAsteroids) {
-			GameObject prefab = asteroidPrefabs[Random.Range(0,asteroidPrefabs.Length-1)];
-			Vector3 center = carrierOne.position + carrierTwo.position / 2f;
+		sector1.name = "Asteroid Sector";
+		sector1.SetActive(false);
+
+		while (asteroids <= maxAsteroids) {
+			
+			bool _isAsteroid = Random.Range(0f,10f)>asteroidToJunkRatio;
+			if(_isAsteroid){
+			 prefab = asteroidPrefabs[Random.Range(0,junkPrefabs.Length-1)];
+			}
+			else{
+			prefab = junkPrefabs[Random.Range(0,asteroidPrefabs.Length-1)];
+			}
+			Vector3 center = Vector3.zero;
 			Vector3 position = new Vector3(0f,0f,0f);
-			float worldSize = Vector3.Distance (carrierOne.position, center) + boundingSphereThickness;
+
+			float _scale = 1;
+			if(_isAsteroid){
+				_scale = Random.Range (minAsteroidSize, maxAsteroidSize);
+			}
+
+			if(asteroids%2 == 0){
+					center+=Vector3.up *Random.Range(minYDistance+_scale/2f, maxYDistance);
+				}
+				else{
+					center+=Vector3.up *-Random.Range(minYDistance+_scale/2f, maxYDistance);
+
+				}
 
 			for (int i = 0; i<5; i++) {
-				position = center+Random.insideUnitSphere * worldSize;
-				if (Physics.OverlapBox (position, Vector3.one * maxAsteroidSize / 2f).Length==0) {
-					break;
+				position = center+new Vector3(Random.Range(-worldSize,worldSize),0f, Random.Range(-worldSize, worldSize));
+				if (!Physics.CheckBox (position, prefab.transform.lossyScale * _scale / 2f)) {
+			
+					GameObject asteroid = GameObject.Instantiate (prefab, position, Quaternion.identity);
+			asteroid.transform.localScale = Vector3.one*_scale;
+			asteroid.transform.rotation = Random.rotation;
+			asteroid.name = "Space Junk";
+			asteroid.isStatic = true;
+			asteroid.hideFlags = HideFlags.HideInHierarchy;
+			asteroid.transform.parent = sector1.transform;
+			break;
 				}
 
 			}
-			GameObject asteroid = GameObject.Instantiate (prefab, position, Quaternion.identity);
-			asteroid.transform.localScale = Vector3.one*Random.Range (minAsteroidSize, maxAsteroidSize);
-			Rigidbody rb = asteroid.GetComponent<Rigidbody> ();
-			rb.angularVelocity =  Random.insideUnitSphere * maxAngularVelocity;
-			rb.velocity =  Random.insideUnitSphere * maxVelocity;
-			rb.mass = Random.Range (minMass, maxMass);
-			Asteroid_Controller controller =asteroid.GetComponent<Asteroid_Controller> ();
-			controller.boundingSphereThickness = boundingSphereThickness;
-			controller.carrierOne = carrierOne;
-			controller.carrierTwo = carrierTwo;
-
-
 			asteroids++;
-
-		}
-
-	}
-	[MRPC]
-	public void RPC_InstantiateAsteroid(){
-
-	}
-	public IEnumerator FillOuterSurface(){
-		
-		while (outerAsteroids < maxOuterAsteroids) {
-			GameObject prefab = asteroidPrefabs[Random.Range(0,asteroidPrefabs.Length-1)];
-			Vector3 position;
-			position = Random.onUnitSphere * worldSize;
-			GameObject asteroid = GameObject.Instantiate (prefab, position, Quaternion.identity);
-			asteroid.transform.localScale = Vector3.one*Random.Range (minAsteroidSize, maxAsteroidSize);
-			Rigidbody rb = asteroid.GetComponent<Rigidbody> ();
-			rb.angularVelocity =  Random.insideUnitSphere * maxAngularVelocity;
-			rb.mass = Random.Range (minMass, maxMass);
-
-			outerAsteroids++;
-			yield return new WaitForSeconds (launchTime);
-
-		}
-
-	}*/
-	public void Relaunch(GameObject asteroid){
-		Vector3 center = carrierOne.position + carrierTwo.position / 2f;
-		Vector3 position = new Vector3 (1000f, 1000f, 1000f);
-		float worldSize = Vector3.Distance (carrierOne.position, center) + boundingSphereThickness;
-
-		for (int i = 0; i < 5; i++) {
-		position = center + Random.onUnitSphere * worldSize;
-			position.y = 0f;
-			if (Physics.CheckSphere (position, maxAsteroidSize / 2f)) {
-				break;
+			if(asteroids%50 == 0){
+				progress = asteroids/maxAsteroids;
 			}
 
+			
 		}
-		asteroid.transform.position = position;
-		Rigidbody rb = asteroid.GetComponent<Rigidbody> ();
-		float sizeSeed = Random.Range (0.1f, 1f);
-		float size = sizeSeed*maxAsteroidSize;
-		asteroid.transform.localScale = Vector3.one * size;
-		
-		float mass = sizeSeed*maxMass;
-		rb.mass = mass;
-	rb.AddForce (Random.insideUnitSphere * maxVelocity + (center - position)*maxVelocity);
-		rb.AddRelativeTorque (Random.insideUnitSphere * maxAngularVelocity);
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			asteroid.GetComponent<MetworkView> ().RPC ("RPC_Relaunch", MRPCMode.Others, new object[]{ size,  mass });
-		} else {
-
-		}
-
+				sector1.SetActive(true);
 	}
-public void RelaunchJunk(GameObject piece){
-		float carrierNum = Random.value;
-		Vector3 center;
-		if (carrierNum <= 0.5f) {
-			center = carrierOne.transform.forward * boundingSphereThickness;
-		} else {
-			center = carrierTwo.transform.forward * boundingSphereThickness;
-
-		}
-		Vector3 position = new Vector3 (1000f, 1000f, 1000f);
-
-	for (int i = 0; i < 5; i++) {
-		position = center + (Random.insideUnitSphere * 100f);
-			position.y = 0f;
-
-		if (Physics.CheckSphere (position, maxAsteroidSize / 2f)) {
-			break;
-		}
-
-	}
-	piece.transform.position = position;
-	Rigidbody rb = piece.GetComponent<Rigidbody> ();
-
-	rb.AddForce (Random.insideUnitSphere  + (center - position));
-	rb.AddRelativeTorque (Random.insideUnitSphere * maxAngularVelocity);
-	if (Metwork.peerType != MetworkPeerType.Disconnected) {
-		piece.GetComponent<MetworkView> ().RPC ("RPC_Relaunch", MRPCMode.Others, new object[]{piece.transform.localScale,   piece.GetComponent<Rigidbody>().mass });
-	} else {
-
-	}
-
-}
-	
-	//move to game controller
-	public IEnumerator FlashWarning(){
-		while (warningActive == true) {
-			float alpha = warningPanel.canvasRenderer.GetAlpha ();
-			if (alpha <= 0f) {
-				AIncreasing = true;
-			} else if (alpha >= 1f) {
-				AIncreasing = false;
-			}
-			if (AIncreasing == false) {
-				warningPanel.canvasRenderer.SetAlpha( alpha- 0.05f);
-			} else {
-				warningPanel.canvasRenderer.SetAlpha( alpha+ 0.05f);
-			}
-
-
-
-
-			yield return new WaitForSecondsRealtime (0.01f);
-			exitTime += Time.deltaTime;
-
-		}
+	void DestroyField(){
+		DestroyImmediate(GameObject.Find("Asteroid Sector"));
 	}
 }
+#endif
+
+

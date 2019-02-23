@@ -31,6 +31,7 @@ public class Carrier_Controller : MonoBehaviour {
 	public float vertical;
 	public float exitWait;
 
+	public bool shieldActive;
 	//Carrier Bridge Systems
 	public LineRenderer predictedPath;
 
@@ -107,7 +108,6 @@ public class Carrier_Controller : MonoBehaviour {
 	}
 
 	void Update(){
-		
 		if (pilot != null && playerNetObj.isLocal)
 		{
 
@@ -332,7 +332,41 @@ public class Carrier_Controller : MonoBehaviour {
 
 		Invoke ("IgnoreInternal", 1f);
 	}
+	#region shield
+	public void ShutdownShield()
+	{
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netObj.netView.RPC("RPC_ShutdownShield", MRPCMode.AllBuffered, new object[] { });
+		}
+		else
+		{
+			RPC_ShutdownShield();
+		}
+	}
+	[MRPC]
+	public void RPC_ShutdownShield()
+	{
+		GetComponentInChildren<Poynting_Shield>().StartCoroutine("ShutdownShield");
+	}
 
+	public void ReactivateShield()
+	{
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netObj.netView.RPC("RPC_ReactivateShield", MRPCMode.AllBuffered, new object[] { });
+		}
+		else
+		{
+			RPC_ReactivateShield();
+		}
+	}
+	[MRPC]
+	public void RPC_ReactivateShield()
+	{
+		GetComponentInChildren<Poynting_Shield>().StartCoroutine("ReactivateShield");
+	}
+	#endregion
 	void IgnoreInternal(){
 		Time.timeScale = 1f;
 

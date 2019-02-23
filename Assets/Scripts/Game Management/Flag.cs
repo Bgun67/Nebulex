@@ -160,7 +160,6 @@ public class Flag : MonoBehaviour {
 
 
 	void ReturnFlag(){
-		print ("Returning flag");
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netObj.netView.RPC ("RPC_ReturnFlag", MRPCMode.AllBuffered, new object[]{ });
 		} else {

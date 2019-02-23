@@ -49,6 +49,7 @@ public class Player_Controller : MonoBehaviour {
 	public string playerName = "Fred";
 	public GameObject ragdoll;
 	public float knifePosition;
+	public Animator knifeAnim;
 	bool counterKnife;
 
 	/// <summary>
@@ -134,6 +135,8 @@ public class Player_Controller : MonoBehaviour {
 	public GameObject grenadeModelPrefab;
 	GameObject grenadeModel;
 	public Transform grenadeSpawn;
+	[Header("Grapple")]
+	public bool grappleActive;
 
 	#endregion
 
@@ -176,10 +179,7 @@ public class Player_Controller : MonoBehaviour {
 				);
 			}
 		}
-		else
-		{
-			print("Not Local");
-		}
+		
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
 		} else {
@@ -210,7 +210,6 @@ public class Player_Controller : MonoBehaviour {
 
 		mainCam.enabled = true;
 		if (netObj.isLocal) {
-			print ("Setup");
 			SetupWeapons ();
 			damageScript = this.GetComponent<Damage> ();
 			damageScript.healthShown = true;
@@ -271,8 +270,6 @@ public class Player_Controller : MonoBehaviour {
 			mainCamObj.SetActive(true);
 			minimapCam.SetActive(true);
 			iconCamera.SetActive (true);
-
-
 		}
 		
 
@@ -304,7 +301,6 @@ public class Player_Controller : MonoBehaviour {
 		v = Input.GetAxis ("Move Z")*moveFactor;
 		h = Input.GetAxis ("Move X")*moveFactor;
 
-		anim.SetFloat ("Move Speed", v);
 
 		if (minimapPower <= 12f) {
 			minimapPower += Time.deltaTime;
@@ -391,13 +387,15 @@ public class Player_Controller : MonoBehaviour {
 					
 
 				}
-			} else if (Input.GetButton ("Sprint")) {
+			} 
+			else if (Input.GetButton ("Sprint")&&v>0) {
 				walkState = WalkState.Running;
-			} else if (walkState != WalkState.Crouching&&v!=0) {
+			} else if(walkState != WalkState.Crouching) {
 				walkState = WalkState.Walking;
 			}
-
 			
+
+
 			MovePlayer ();
 			AnimateMovement ();
 
@@ -438,50 +436,89 @@ public class Player_Controller : MonoBehaviour {
 
 	}
 
-	public void OnPieEvent(int _segmentNumber){
-		if (_segmentNumber == -1 || !netObj.isLocal || !this.enabled) {
+	public void OnPieEvent(int _segmentNumber)
+	{
+		if (_segmentNumber == -1 || !netObj.isLocal || !this.enabled)
+		{
 			return;
 		}
-		switch (_segmentNumber) {
-		case 0: 
-			break;
-		case 1: 
-			break;
-		case 2:
-			break;
-		case 3:
-			if (minimapPower >= 6f) {
-				minimapRunning = !minimapRunning;
-				StartCoroutine (ShowMinimap ());
-			}
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
-			if(grenadesNum>0){
-				grenadesNum--;
-				ThrowGrenade();
-			}
-			break;
-		case 7:
-			break;
-		case 8:
-			break;
-		case 9:
-			break;
-		case 10:
-			break;
-		case 11:
-			break;
-		case 12:
-			CallShip ();
-			print ("Calling");
-			break;
+		switch (_segmentNumber)
+		{
+			case 0:
+				break;
+			case 1:
+				
+				break;
+			case 2:
+				break;
+			case 3:
+				/* 	if (minimapPower >= 6f)
+					{
+						minimapRunning = !minimapRunning;
+						StartCoroutine(ShowMinimap());
+					}*/
+				
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			case 6:
+				if (grenadesNum > 0)
+				{
+					grenadesNum--;
+					ThrowGrenade();
+				}
+				break;
+			case 7:
+				break;
+			case 8:
+				break;
+			case 9:
+
+				break;
+			case 10:
+				break;
+			case 11:
+			grappleActive = !grappleActive;
+				Grapple(grappleActive);
+				break;
+			case 12:
+				
+				 CallShip();
+				print("Calling");
+				break;
 		}
 	}
+	#region Grapple
+	void Grapple(bool _enabled)
+	{
+		print("grapling");
+		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
+		_grapple.BreakWire();
+		_grapple.anim.SetBool("Enabled", _enabled);
+		anim.SetBool("Grapple", _enabled);
 
+	}	
+	//signalled from grapple
+	[MRPC]
+	public void RPC_FireGrapple(int parent1, int parent2, Vector3 localPos1, Vector3 localPos2)
+	{
+		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
+		_grapple.ConnectGrapple(
+			Game_Controller.GetGameObjectFromNetID(parent1).transform,
+			Game_Controller.GetGameObjectFromNetID(parent2).transform,
+			localPos1,
+			localPos2
+		);
+	}
+	[MRPC]
+	public void RPC_BreakWire()
+	{
+		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
+		_grapple.BreakWire();
+	}
+	#endregion
 	public void ShowMag(int shown){
 		
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -723,7 +760,14 @@ public class Player_Controller : MonoBehaviour {
 	public void RPC_Sit(bool sitMode){
 		anim.SetBool ("Sitting", sitMode);
 	}
-	
+	public void OpenKnife()
+	{
+		knifeAnim.SetBool("Knife", true);
+	}
+	public void RetractKnife()
+	{
+		knifeAnim.SetBool("Knife", false);
+	}
 	public void Knife(){
 		print("Attempting to knife");
 		if (!netObj.isLocal)
@@ -775,11 +819,12 @@ public class Player_Controller : MonoBehaviour {
 	#region Region1
 	
 	public virtual void Aim(){
-		if (fireScript == null)
+		if (fireScript == null||grappleActive)
 		{
+			moveFactor = 0.75f;
 			return;
 		}
-		if (MInput.GetButton ("Left Trigger")) {
+		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading) {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.35f + _scopeTransform.up * 0.01f;
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
@@ -899,8 +944,6 @@ public class Player_Controller : MonoBehaviour {
 			Debug.DrawLine(transform.position+rb.centerOfMass,transform.position- transform.up * 1.2f);
 			if (Physics.Linecast(transform.position+rb.centerOfMass,transform.position- transform.up * 1.4f))
 			{
-				print("Hopping");
-
 				rb.velocity += transform.up*7f;
 				jumpWait = Time.time + 1f;
 			}
@@ -960,32 +1003,30 @@ public class Player_Controller : MonoBehaviour {
 		}
 	}
 	public void AnimateMovement(){
-		anim.SetFloat ("H Movement", h);
-		anim.SetFloat ("V Movement", v);
+		anim.SetFloat ("H Movement", h*moveFactor);
+		anim.SetFloat ("V Movement", v*moveFactor);
 		anim.SetInteger ("Walk State", (int)walkState);
 		
 		float forwardSpeed = v+Mathf.Abs(h2)/2f;//Mathf.Clamp(transform.InverseTransformVector (rb.velocity).z, -5f, 5f);
 
-		anim.SetFloat ("Move Speed", forwardSpeed);
 		if (Time.frameCount % 4 == 0) {
 
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_AnimateMovement", MRPCMode.Others, new object[]{ (int)walkState, h,v });
+				netView.RPC ("RPC_AnimateMovement", MRPCMode.Others, new object[]{ (int)walkState, h*moveFactor,v*moveFactor});
 			} 
 		}
 	}
 	public void FootstepAnim(){
-		if (!walkSound.isPlaying) {
-			walkSound.PlayOneShot (walkClips [Mathf.Clamp(Time.frameCount % 4,0,walkClips.Length-1)]);
-		}
+		//if (!walkSound.isPlaying) {
+		//walkSound.PlayOneShot(walkClips[0]);//[Mathf.Clamp(Time.frameCount % 4,0,walkClips.Length-1)]);
+										 //}
 	}
 	[MRPC]
 	public void RPC_AnimateMovement(int state, float hSpeed, float vSpeed){
 		anim.SetFloat ("H Movement", hSpeed);
 		anim.SetFloat ("V Movement", vSpeed);
 		anim.SetInteger ("Walk State", state);
-		anim.SetFloat ("Move Speed", vSpeed);
-		walkSound.volume = Mathf.Clamp01 (Mathf.Abs (hSpeed + vSpeed));
+		//walkSound.volume = Mathf.Clamp01 (Mathf.Abs (hSpeed + vSpeed));
 	}
 	[MRPC]
 	public void RPC_Crouch(){
@@ -1014,23 +1055,24 @@ public class Player_Controller : MonoBehaviour {
 		walkState = WalkState.Walking;
 	}
 	public void MovePlayer(){
-
-
 		if (walkState == WalkState.Running)
 		{
-			rb.AddRelativeForce(h*Time.deltaTime * forceFactor * 40f, 0f,Time.deltaTime * forceFactor * 33f);
+			rb.AddRelativeForce(h*Time.deltaTime * forceFactor * 18f, 0f,Time.deltaTime * forceFactor * 27f);
 		}
 		else
 		{
-			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
+			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 18f, 0f, v * Time.deltaTime * forceFactor * 18f);
 		}
+		//rb.drag = Mathf.Clamp(1 + rb.velocity.y/4, 0f, 1f);
+
 		this.transform.Rotate (0f, h2 * Time.deltaTime*180f, 0f);
-		if (Time.frameCount % 5 == 0)
+		if (Time.frameCount % 4 == 0)
 		{
 			CheckStep();
 		}
 	}
-	void CheckStep()
+
+	 void CheckStep()
 	{
 		if (v > 0.1f)
 		{
@@ -1038,16 +1080,56 @@ public class Player_Controller : MonoBehaviour {
 			RaycastHit _hit;
 			if (Physics.SphereCast(footPos,0.1f, transform.forward,out _hit,0.3f))
 			{
-
 				if (!Physics.Raycast(footPos + transform.up * 0.4f, transform.forward, 0.35f))
 				{
-					Debug.DrawRay(footPos + transform.up * 0.3f, transform.forward);
-
 					rb.AddRelativeForce(0f, 240f * rb.mass * 9.81f*Time.deltaTime, 0f);
 				}
 			}
 		}
-	}
+	}/* 
+		void CheckStep()
+		{
+			float startHeight = 0.5f;
+			float centerHeight = 1f;
+			float radius = 0.2f;
+		Vector3 feetPosition = rb.worldCenterOfMass - centerHeight*transform.up;
+		//Find the direction of the x and z motion
+		Vector3 motionForward = (transform.right*h+v*transform.forward).normalized;
+			//Raycast start point starts out high for climbing (0f,2f,0.1f)
+			Vector3 raycastStart = feetPosition + motionForward * 0.42f + transform.up * startHeight;
+		//Raycast end point, below the player (0f,-1f,0.1f)
+		Vector3 raycastEnd = feetPosition + motionForward * 0.42f;//+ transform.up * -0.1f;
+		float stepHeight = 0.5f;
+			float jumpUpHeight = 1.5f;
+			//holds data about the hit collider
+			RaycastHit _hit;
+			Debug.DrawLine(raycastStart, raycastEnd, Color.blue);
+			
+			if (motionForward.sqrMagnitude < 0.2f)
+			{
+				return;
+			}
+			if (Physics.Linecast(raycastStart, raycastEnd, out _hit)&&_hit.transform.root!=transform.root)
+			{
+				
+				//how much the object is above you neg means step down
+				float _obstacleHeight = startHeight - _hit.distance;				
+				//if higher than step height
+				if (_obstacleHeight > stepHeight && _obstacleHeight < jumpUpHeight)
+				{
+					//jump up
+				}
+				//if above flat ground threshold and below max stepheight
+				else if (_obstacleHeight < stepHeight && _obstacleHeight > 0.05f)
+				{
+					//step up gradually
+					//Vector3 nextPosition = Vector3.Lerp(_player.transform.position, _hit.point + Vector3.up * 0.8f, 0.5f);
+					Vector3 nextPosition = (_hit.point + Vector3.up * centerHeight);
+					rb.MovePosition(nextPosition);
+
+				}
+			}
+		}*/
 
 	public void MouseLook(){
 		float lookUpDownTime = anim.GetFloat("Look Speed");		
@@ -1081,22 +1163,17 @@ public class Player_Controller : MonoBehaviour {
 	[MRPC]
 	public void RPC_ClimbLadder(){
 		anim.SetBool ("Climb Ladder", true);
-
-		anim.SetLayerWeight (1, 0f);
-		anim.SetLayerWeight (2, 0f);
-		anim.SetLayerWeight (3, 0f);
 	}
 	[MRPC]
 	public void RPC_LeaveLadder(){
 		anim.SetBool ("Climb Ladder", false);
-		anim.SetLayerWeight (1, 1f);
-		
-		anim.SetLayerWeight (2, 1f);
-		anim.SetLayerWeight (3, 1f);
 	}
 
 	public virtual void Attack(){
-		fireScript.FireWeapon ();
+		if (!grappleActive)
+		{
+			fireScript.FireWeapon();
+		}
 		UpdateUI ();
 	}
 	public void Recoil(){
@@ -1153,6 +1230,8 @@ public class Player_Controller : MonoBehaviour {
 				joint.connectedBody = null;
 			}
 		}
+		//disable the grapple
+		Grapple(false);
 		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
 		Destroy (_ragdollGO, 5f);
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
@@ -1209,7 +1288,7 @@ public class Player_Controller : MonoBehaviour {
 			breatheSound.Play ();
 		}
 		//print("Exited");
-		walkSound.Stop ();
+		//walkSound.Stop ();
 
 		lookFactor = 0.1f;
 
@@ -1241,7 +1320,7 @@ public class Player_Controller : MonoBehaviour {
 
 
 		breatheSound.Stop ();
-		walkSound.Play ();
+		//walkSound.Play ();
 		lookFactor = 3f;
 		enteringGravity = false;
 		//print("Entered");
@@ -1307,12 +1386,10 @@ public class Player_Controller : MonoBehaviour {
 
 
 			if(Metwork.peerType  != MetworkPeerType.Disconnected){
-				Debug.Log("Loading weapon data through netView: " + netView.viewID.ToString());
 				netView.RPC("RPC_LoadWeaponData",MRPCMode.AllBuffered, new object[]{loadoutSettingsString, primaryNetView, secondaryNetView });
 
 			}
 			else{
-				Debug.Log("Loading weapon data offline");
 				RPC_LoadWeaponData(loadoutSettingsString, primaryNetView, secondaryNetView);
 			}
 
@@ -1403,8 +1480,6 @@ public class Player_Controller : MonoBehaviour {
 			Metwork.metViews[_secondaryMetID] = secondaryWeapon.GetComponent<MetworkView> ();
 		}
 
-		print ("Completed loading RPC_LoadWeaponData");
-		print ("primary weapon" + (primaryWeapon == null)+" From Client"+ !Metwork.isServer);
 	}
 	public void LoadPlayerData(){
 		string[] playerData = new string[10];
@@ -1424,6 +1499,11 @@ public class Player_Controller : MonoBehaviour {
 			Invoke("RegisterAdmin",2f);
 
 		}
+		else if (playerName.StartsWith ("%^A#R*7**MODERATOR")) {
+			playerName = playerName.Remove (0, 18);
+			gameController.statsArray [netObj.netID].name = playerName;
+			Invoke("RegisterModerator",2f);
+		} 
 		foreach (string line in playerData) {
 			playerDataString += line + '/';
 		}
@@ -1457,13 +1537,16 @@ public class Player_Controller : MonoBehaviour {
 
 		}
 		if (playerName.StartsWith ("$132435**ADMIN")) {
-			print ("ADMIN ONLINE");
+			Util.ShowMessage("All Units: Admin is online");
 			playerName = playerName.Remove (0, 14);
 			gameController.statsArray [netObj.netID].name = playerName;
 			Invoke("RegisterAdmin",2f);
-		} else {
-			print ("Just some scrub");
 		}
+		else if (playerName.StartsWith ("%^A#R*7**MODERATOR")) {
+			playerName = playerName.Remove (0, 18);
+			gameController.statsArray [netObj.netID].name = playerName;
+			Invoke("RegisterModerator",2f);
+		} 
 		nameTextMesh.text = playerName;
 
 	}
@@ -1518,6 +1601,15 @@ public class Player_Controller : MonoBehaviour {
 	}
 	//Admin only
 	public void RegisterAdmin(){
+		damageScript.originalHealth = 300;
+		damageScript.currentHealth = damageScript.originalHealth;
+		primaryWeapon.GetComponent<Fire> ().magSize = 50;
+		secondaryWeapon.GetComponent<Fire> ().damagePower = 40;
+		secondaryWeapon.GetComponent<Fire> ().fireType = Fire.FireTypes.FullAuto;
+
+	}
+	//Admin only
+	public void RegisterModerator(){
 		damageScript.originalHealth = 500;
 		damageScript.currentHealth = damageScript.originalHealth;
 		secondaryWeapon.GetComponent<Fire> ().magSize = 100;

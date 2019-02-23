@@ -117,7 +117,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4096632021951756}
-  - component: {fileID: 95810264340168338}
   - component: {fileID: 114433205365915618}
   - component: {fileID: 82018286723155346}
   - component: {fileID: 114590177341100166}
@@ -404,24 +403,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &95810264340168338
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1753736548575916}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 1aacbda0d2430a146938fbc80062a117, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!108 &108027197419511634
 Light:
   m_ObjectHideFlags: 1
@@ -473,9 +454,9 @@ MonoBehaviour:
   fireDelay: 0
   shotSpawn: {fileID: 4300407192444788}
   reloadTime: 2
-  fireRate: 720
-  magSize: 15
-  magAmmo: 15
+  fireRate: 900
+  magSize: 21
+  magAmmo: 21
   maxAmmo: 1000
   totalAmmo: 1000
   bulletPrefab: {fileID: 1235886279165106, guid: 863d85dea78005742b365e53583a6a6a,
@@ -487,7 +468,7 @@ MonoBehaviour:
   unavailableScopes: []
   shootSound: {fileID: 82018286723155346}
   sound: {fileID: 8300000, guid: 0846601c78386494bb98bf1529862725, type: 3}
-  weaponAnim: {fileID: 95810264340168338}
+  weaponAnim: {fileID: 0}
   isRecoil: 1
   recoil:
     m_PersistentCalls:
