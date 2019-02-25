@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Player_Controller : MonoBehaviour {
 	float v;
-	public float v2;
+	float v2;
 	float h;
-	public float h2;
+	float h2;
 	float z;
 	float down;
 	public Rigidbody rb;
@@ -24,8 +24,8 @@ public class Player_Controller : MonoBehaviour {
 	WalkState walkState = WalkState.Walking;
 	//to be used for running crouching and walking
 	public float moveSpeed = 20f;
-	public float lookFactor = 1f;
-	public float moveFactor = 1f;
+	float lookFactor = 1f;
+	float moveFactor = 1f;
 	public float currentStepHeight;
 	public bool enteringGravity = false;
 	float jumpWait;
@@ -213,10 +213,8 @@ public class Player_Controller : MonoBehaviour {
 			SetupWeapons ();
 			damageScript = this.GetComponent<Damage> ();
 			damageScript.healthShown = true;
+			helmet.SetActive(false);
 			InvokeRepeating ("UpdateUI", 1f, 1f);
-
-		}
-		if (netObj.isLocal) {
 			LoadPlayerData ();
 		}
 		primarySelected = !primarySelected;
@@ -258,7 +256,6 @@ public class Player_Controller : MonoBehaviour {
 	//was update
 	void Update () {
 		if (!netObj.isLocal) {
-			helmet.SetActive (true);
 			mainCamObj.SetActive(false);
 			minimapCam.SetActive(false);
 			iconCamera.SetActive (false);
@@ -266,7 +263,6 @@ public class Player_Controller : MonoBehaviour {
 			nameTextMesh.transform.LookAt (gameController.localPlayer.transform);
 			return;
 		} else {
-			helmet.SetActive (false);
 			mainCamObj.SetActive(true);
 			minimapCam.SetActive(true);
 			iconCamera.SetActive (true);

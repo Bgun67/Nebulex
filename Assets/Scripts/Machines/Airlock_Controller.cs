@@ -72,10 +72,10 @@ public class Airlock_Controller : MonoBehaviour {
 	IEnumerator Pressurize(int doorToOpen){
 		pressurizing = true;
 		yield return new WaitUntil (()=>(!door1Controller.open && !door2Controller.open));
-		if (warningLight.GetComponent<Animator> () != null) {
+		if (warningLight!=null&&warningLight.GetComponent<Animator> () != null) {
 			warningLight.GetComponent<Animator> ().SetBool ("Is Flashing", true);
 		} else {
-			Debug.LogWarning ("No animator attached to warning light: " + warningLight.transform.root.name + "/" + warningLight.name); 
+			//Debug.LogWarning ("No animator attached to warning light: " + warningLight.transform.root.name + "/" + warningLight.name); 
 		}
 		pressureSound.Play ();
 		print ("Doors Closed");
