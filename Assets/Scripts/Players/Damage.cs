@@ -280,8 +280,13 @@ public class Damage : MonoBehaviour {
 			
 			
 			float damage = Mathf.Abs(Vector3.Dot(collision.relativeVelocity, collision.contacts[0].normal));
+			damage *= impactDamageFactor;
+			if (damage < 10f)
+			{
+				return;
+			}
 			damage *= damage;
-			damage *= originalHealth/1000f*impactDamageFactor;
+			damage *= originalHealth/1000f;
 
 			if (damage > 0.01f*originalHealth) {
 				TakeDamage ((int)damage, 0);

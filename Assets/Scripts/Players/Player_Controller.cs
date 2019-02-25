@@ -1227,7 +1227,10 @@ public class Player_Controller : MonoBehaviour {
 			}
 		}
 		//disable the grapple
-		Grapple(false);
+		if (GetComponentInChildren<Harpoon_Gun>() != null)
+		{
+			Grapple(false);
+		}
 		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
 		Destroy (_ragdollGO, 5f);
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
