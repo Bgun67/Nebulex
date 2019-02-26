@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 68bfb636fbd84d54ba4d212fa71773cb
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Cube_000
     100002: Cube_003
@@ -232,6 +232,7 @@ ModelImporter:
     100452: Assault_Bay_Floor
     100454: Command_Platform
     100456: Hangar_Bay
+    100458: Cube_131
     400000: Cube_000
     400002: Cube_003
     400004: Cube_004
@@ -461,6 +462,7 @@ ModelImporter:
     400452: Assault_Bay_Floor
     400454: Command_Platform
     400456: Hangar_Bay
+    400458: Cube_131
     2300000: Cube_000
     2300002: Cube_003
     2300004: Cube_004
@@ -688,6 +690,7 @@ ModelImporter:
     2300448: Assault_Bay_Floor
     2300450: Command_Platform
     2300452: Hangar_Bay
+    2300454: Cube_131
     3300000: Cube_000
     3300002: Cube_003
     3300004: Cube_004
@@ -915,6 +918,7 @@ ModelImporter:
     3300448: Assault_Bay_Floor
     3300450: Command_Platform
     3300452: Hangar_Bay
+    3300454: Cube_131
     4300000: Cube_011
     4300002: Cube_006
     4300004: Cube_005
@@ -1142,6 +1146,7 @@ ModelImporter:
     4300448: Assault_Bay_Floor
     4300450: Command_Platform
     4300452: Hangar_Bay
+    4300454: Cube_131
     6400000: BezierCircle
     6400002: BezierCircle_001
     6400004: BezierCurve_000
@@ -1334,7 +1339,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Armour
-    second: {fileID: 2100000, guid: f5c77e819151d0c4eb957aa2e73f8bbe, type: 2}
+    second: {fileID: 2100000, guid: fd6de4216e5f52643a4863b8786b88da, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -1498,6 +1503,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Glass__Ball--Better-Albedo_png
+    second: {fileID: 2100000, guid: f5c77e819151d0c4eb957aa2e73f8bbe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass__Tileable_Metal_Close_Tex_jpg
+    second: {fileID: 2100000, guid: 9a8de0374e8f79544b1c271ea2717043, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Green_Tile_Floor__Tile_Green_jpg
     second: {fileID: 2100000, guid: 9a8de0374e8f79544b1c271ea2717043, type: 2}
   - first:
@@ -1533,6 +1548,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Metal-Inside__Tileable_Metal_Close_Tex_jpg
+    second: {fileID: 2100000, guid: 1e79a86b11098b24ab85581057462664, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: None__Carrier_Runway_png
     second: {fileID: 2100000, guid: f5c77e819151d0c4eb957aa2e73f8bbe, type: 2}
   - first:
@@ -1555,6 +1575,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: None__Concrete_Grill_Albedo_png
     second: {fileID: 2100000, guid: 4705aa988ecd1aa499c2c7a2ed6ff6d6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__Corrugated-Metal-Albedo_tif
+    second: {fileID: 2100000, guid: a344d70d5c38f6c4fa2684906f580872, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -1613,6 +1638,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Pavement__Tileable_Metal_Close_Tex_jpg
+    second: {fileID: 2100000, guid: 1e79a86b11098b24ab85581057462664, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pavement__hangar-wall-cropped_jpg
+    second: {fileID: 2100000, guid: 8ea4dc43de8dc924db3e7521aaa1da06, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: unnamed
     second: {fileID: 2100000, guid: dce126c0ceb956349b33de58c47d661c, type: 2}
   materials:
@@ -1665,6 +1700,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 8
     useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0

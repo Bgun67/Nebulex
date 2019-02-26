@@ -1,9 +1,7 @@
 fileFormatVersion: 2
 guid: c5b206e1b15449b469d185402c059811
-timeCreated: 1525292229
-licenseType: Free
 ModelImporter:
-  serializedVersion: 21
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Cube
     100002: Cylinder
@@ -13,6 +11,7 @@ ModelImporter:
     100010: Cylinder_004
     100012: Cylinder_005
     100014: //RootNode
+    100016: Cylinder_006
     400000: Cube
     400002: Cylinder
     400004: Cylinder_001
@@ -21,6 +20,7 @@ ModelImporter:
     400010: Cylinder_004
     400012: Cylinder_005
     400014: //RootNode
+    400016: Cylinder_006
     2300000: Cube
     2300002: Cylinder
     2300004: Cylinder_001
@@ -28,6 +28,7 @@ ModelImporter:
     2300008: Cylinder_003
     2300010: Cylinder_004
     2300012: Cylinder_005
+    2300014: Cylinder_006
     3300000: Cube
     3300002: Cylinder
     3300004: Cylinder_001
@@ -35,6 +36,7 @@ ModelImporter:
     3300008: Cylinder_003
     3300010: Cylinder_004
     3300012: Cylinder_005
+    3300014: Cylinder_006
     4300000: Cylinder_002
     4300002: Cube
     4300004: Cylinder_001
@@ -42,12 +44,30 @@ ModelImporter:
     4300008: Cylinder_003
     4300010: Cylinder_004
     4300012: Cylinder_005
+    4300014: Cylinder_006
     7400000: Default Take
     9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Solar-Cells__Solar-Cells-Albedo_tif
+    second: {fileID: 2100000, guid: a96cb7342c888444196c254bfb16c137, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Space-Blanket__Space-Blanket-Folds-Albedo_tif
+    second: {fileID: 2100000, guid: 74fcd712af666f843a590cfe874d88e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: unnamed
+    second: {fileID: 2100000, guid: 9420024ba609fb142891bcea32094fbc, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -60,6 +80,8 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -84,14 +106,18 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
   importAnimation: 1

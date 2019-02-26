@@ -64,6 +64,7 @@ public class Soccer_Net : MonoBehaviour {
 			for (int i = 0; i < meshes.Length; i++) {
 				meshes [i].reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 				meshes [i].lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+				
 			}
 
 			//Hide all the reflection probes blend modes
@@ -141,12 +142,13 @@ public class Soccer_Net : MonoBehaviour {
 		//Hide all the reflection probes blend modes
 		Fire[] meshes = GameObject.FindObjectsOfType<Fire>();
 		for (int i = 0; i < meshes.Length; i++) {
+			foreach(MeshRenderer _mesh in meshes[i].GetComponentsInChildren<MeshRenderer>()){
 			
-			MeshRenderer _mesh = meshes[i].GetComponent<MeshRenderer> ();
-			if(_mesh != null){
-				_mesh.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
-				_mesh.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-				
+				if(_mesh != null){
+					_mesh.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+					_mesh.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+					
+				}
 			}
 			
 		}
@@ -168,6 +170,11 @@ public class Soccer_Net : MonoBehaviour {
 		for (int i = 0; i < _lights.Length; i++) {
 			_lights [i].enabled = false;
 		}
+
+		LightmapData _lightM = new LightmapData();
+		_lightM.lightmapColor = Texture2D.blackTexture; 
+		//Clear Lightmaps
+		LightmapSettings.lightmaps = new LightmapData[40]{_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM};
 	}
 	// Update is called once per frame
 	void OnTriggerEnter (Collider other) {

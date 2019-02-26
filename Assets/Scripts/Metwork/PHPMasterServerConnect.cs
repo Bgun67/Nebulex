@@ -169,6 +169,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 	}
 
     private IEnumerator RegisterHostCR () {
+		Debug.Log("Attempting to register host: Try: " + retries.ToString());
 	    string url = masterServerURL+"RegisterHost.php";
 	    url += "?gameType="+WWW.EscapeURL (gameType);
 	    url += "&gameName="+WWW.EscapeURL (gameName);
@@ -199,6 +200,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 			Debug.LogError (www.error);
 	        SendMessage ("OnRegisterHostFailed");
 		}
+		Debug.Log("Recieved transmision: " + www.text);
     }
 
 	public void UnregisterHost ()
@@ -206,6 +208,10 @@ public class PHPMasterServerConnect : MonoBehaviour
 		float initialTime = Time.time;
 		Debug.Log ("Unregistering host");
 		StartCoroutine (UnregisterHostCR ());
+	}
+
+	void OnRegisterHostFailed(){
+		Debug.Log("Failed to register host");
 	}
 	
 	private IEnumerator UnregisterHostCR ()
@@ -254,7 +260,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 		url += "?gameType="+WWW.EscapeURL (gameType);
 		url += "&gameName="+WWW.EscapeURL (gameName);
 		url += "&comment="+WWW.EscapeURL (comment);
-		url += "&useNat=" + true;//!Network.HavePublicAddress();
+		//url += "&useNat=" + true;//!Network.HavePublicAddress();
 		url += "&connectedPlayers="+Metwork.players.Count;//(Network.connections.Length + 1);
 		url += "&playerLimit="+32;//Network.maxConnections;
 		url += "&internalIp="+"192.168.2.30";//Network.player.ipAddress;
@@ -266,6 +272,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 		Debug.Log (url);
 		var www = new WWW (url);
 		yield return www;
+		Debug.Log("Returned from url: " + www.text);
 
 		retries = 0;
 		while ((www.error != null || www.text != "succeeded") && retries < maxRetries) {
@@ -273,12 +280,17 @@ public class PHPMasterServerConnect : MonoBehaviour
 			retries ++;
 			www = new WWW (url);
 			yield return www;
+			Debug.Log("Returned from url: " + www.text);
 		}
 		if ((www.error != null || www.text != "succeeded")) {
+			Debug.Log("Returned from url with error: " + www.text);
 			SendMessage ("OnRegisterHostFailed");
 			print(www.text);
 			yield break;
 		}
+
+		Debug.Log("Returned from url: " + www.text);
+
 
 		RegisterHost (this.gameName, this.comment);
 		Metwork.disconnectReason = DisconnectReason.Unexpected;

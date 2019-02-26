@@ -33,7 +33,7 @@ public class PrefabLightmapData : MonoBehaviour
 
     void Start ()
 	{
-		Invoke("CreateLightmaps", Random.Range(1f,1f));
+		Invoke("CreateLightmaps", Random.Range(0f,0.5f));
 	}
 
 	#if UnityEditor || UNITY_EDITOR
@@ -213,7 +213,7 @@ public class PrefabLightmapData : MonoBehaviour
 					img2.ReadPixels(new Rect(0, 0, lightmap.width, lightmap.height), 0, 0);
 					img2.Apply();
 					RenderTexture.active = null;
-					string fileName = "Assets/Lighting/" + SceneManager.GetActiveScene().name + "/" + root.GetComponent<PrefabLightmapData>().filePath + info.lightmapIndex.ToString() + ".asset";
+					string fileName = "Assets/Lighting/" + SceneManager.GetActiveScene().name + "/" + root.gameObject.name + "-" + root.GetComponent<PrefabLightmapData>().filePath + info.lightmapIndex.ToString() + ".asset";
 					AssetDatabase.CreateAsset(img2, fileName);
 					//System.IO.File.WriteAllBytes(fileName,img2.EncodeToJPG());
 					print("loading from: " + fileName);

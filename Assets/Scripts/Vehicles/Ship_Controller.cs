@@ -145,6 +145,11 @@ public class Ship_Controller : MonoBehaviour {
 		rb.AddRelativeForce (0f,moveY *deltaThrustForce* 2f,
 			moveZ *deltaThrustForce);
 		
+		if(rb.useGravity){
+			rb.AddForce(rb.mass * 9.81f * Vector3.up * 45f * Time.deltaTime);
+		}
+		//rb.useGravity = false;
+
 		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.95f, 0.3f);
 		previousEnginePitch = engineSound.pitch;
 		if (MInput.useMouse)
