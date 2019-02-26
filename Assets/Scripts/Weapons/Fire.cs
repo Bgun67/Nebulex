@@ -12,12 +12,13 @@ public class Fire : MonoBehaviour {
 	}
 	#region GunInfo
 	[Header("Gun Info")]
-	public float fireDelay;
+	float fireDelay;
 	public Transform shotSpawn;
 	public float reloadTime;
 	[Tooltip("Rounds Per Minute")]
 	public float fireRate;
 	public int magSize;
+	[HideInInspector]
 	public int magAmmo;
 	public int maxAmmo;
 	public int totalAmmo;
@@ -60,25 +61,34 @@ public class Fire : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
-		reloadWait = new WaitForSeconds (reloadTime);
-		shootSound = this.GetComponent<AudioSource> ();
+	void Start()
+	{
+		Invoke("Setup", Random.Range(0.1f, 0.2f));
+	}
+	void Setup()
+	{
+		reloadWait = new WaitForSeconds(reloadTime);
+		shootSound = this.GetComponent<AudioSource>();
 		sound = shootSound.clip;
-		weaponAnim = this.GetComponent<Animator> ();
+		weaponAnim = this.GetComponent<Animator>();
 		fireRate = 1 / (fireRate / 60f);
 
-		if (!ignoreParentVelocity) {
-			rootRB = transform.root.GetComponent<Rigidbody> ();
+		if (!ignoreParentVelocity)
+		{
+			rootRB = transform.root.GetComponent<Rigidbody>();
 		}
 
-		if (netView == null) {
-			netView = this.GetComponent<MetworkView> ();
+		if (netView == null)
+		{
+			netView = this.GetComponent<MetworkView>();
 		}
-		if (netView == null) {
-			netView = this.GetComponentInParent<MetworkView> ();
+		if (netView == null)
+		{
+			netView = this.GetComponentInParent<MetworkView>();
 		}
+		magAmmo = magSize;
 
-		Invoke("CreateObjectPool", Random.Range(0,0.01f));
+		Invoke("CreateObjectPool", Random.Range(0, 0.01f));
 		//
 	}
 	public void Activate(GameObject player){

@@ -9,7 +9,6 @@ public class Airlock_Controller : MonoBehaviour {
 	Door_Controller door1Controller;
 	Door_Controller door2Controller;
 	public GameObject warningLight;
-	Light bulb;
 	public bool pressurizing;
 	public bool turnUp = false;
 	public float openTime;
@@ -20,7 +19,6 @@ public class Airlock_Controller : MonoBehaviour {
 		door1Controller = door1.GetComponent<Door_Controller> ();
 		door2Controller = door2.GetComponent<Door_Controller> ();
 		pressureSound = this.GetComponent<AudioSource> ();
-		bulb = warningLight.GetComponent<Light> ();
 	}
 
 	void Activate(){

@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEngine.Networking;
+using System.Net;
+using System.Collections.Specialized;
+using System;
 
 
 public class Match_Scene_Manager : MonoBehaviour
@@ -262,13 +265,57 @@ public class MapClass
 			//Destroy the script, it no longer belongs
 			print("Starting Server");
 			//Destroy (this);
+			//send server notifications
+			SendDiscordNotification(gameNameInput.text);
 		}
 		else
 		{
 			print("Please input a game name");
 		}
 	}
+	void SendDiscordNotification(string matchName)
+	{
+		string[] sassyNotificationArray = new string[]
+		{
+			"...Super",
+			"Join it now! You have no choice",
+			"Please join, you're my only hope",
+			"Join it... you know... if you want I don't care",
+			"Looks like everybody gets a server",
+			"They're just giving these out to everyone",
+			"**Sigh**, why do I always have to tell them?",
+			"..And it's already more interesting than you",
+			"My date's arrived!",
+			"Snape, Snape, Serverus Snape",
+			"I want YOU to join this server - Abraham Lincoln",
+			"Get to the lifeboats Cap'n",
+			"This does please the bot",
+			"It's over, I have the high ground",
+			"**Shouting from behind: DID YOU TELL THEM ABOUT THE SERVER?** YES MA I TOLD THEM ABOUT THE SERVER!"
+		};
+		if (!matchName.ToLower().Contains("test"))
+		{
+			using (WebClient webClient = new WebClient())
+			{
+				string url = "https://discordapp.com/api/webhooks/549738720337723394/tHDrL0mYrR-bt0IS6FeP2t2ukrGtxt5XyYwqv0BpmBVu0IBHJXQXp3s6gFxywRGPBS9S";
+				NameValueCollection pairs = new NameValueCollection()
+				{
+					{
+						"username",
+						"Disappointed Server Bot"
+					},
+					{
+						"content",
+						"Server"+ matchName +" has been created at "+DateTime.Now.ToString()+"\r\n"+sassyNotificationArray[UnityEngine.Random.Range(0,sassyNotificationArray.Length)]
+					}
+				};
+				webClient.UploadValues(url, pairs);
+			}
 
+		}
+	
+		
+	}
 	public void OnMetServerInitialized()
 	{
 		SceneManager.LoadScene("LobbyScene");
