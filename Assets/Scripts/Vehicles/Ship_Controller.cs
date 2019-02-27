@@ -146,7 +146,15 @@ public class Ship_Controller : MonoBehaviour {
 			moveZ *deltaThrustForce);
 		
 		if(rb.useGravity){
-			rb.AddForce(rb.mass * 9.81f * Vector3.up * 45f * Time.deltaTime);
+			rb.AddForce(rb.mass * 9.81f * Mathf.Clamp01(1f/Vector3.Dot(Vector3.up, transform.up))*transform.up * 50f * Time.deltaTime);
+			rb.AddTorque(Vector3.Cross(-transform.up,(transform.up - Vector3.up)*Vector3.Magnitude(transform.up - Vector3.up)*rb.mass*10f)*rb.mass/1000f);
+			rb.angularDrag = 1f;
+			rb.drag = 0.2f;
+		}
+		else
+		{
+			rb.angularDrag = 0.5f;
+			rb.drag = 0.1f;
 		}
 		//rb.useGravity = false;
 

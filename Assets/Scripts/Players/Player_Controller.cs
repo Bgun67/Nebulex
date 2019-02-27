@@ -1269,16 +1269,21 @@ public class Player_Controller : MonoBehaviour {
 		rb.constraints = RigidbodyConstraints.None;
 		anim.SetBool ("Float", true);
 		anim.SetBool ("Jump", false);
-		
+		anim.SetInteger("Walk State", 0);
+
 		//yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - 0.5f) < 0.05f);
 		Vector3 _aimDirection = mainCam.transform.forward;
+		float _originalLookTime = anim.GetFloat("Look Speed");
 		Vector3 _originalForward = transform.forward;
-
-		while (Mathf.Abs (anim.GetFloat("Look Speed") - 0.5f) >= 0.05f) {
-			transform.forward = Vector3.Slerp (_originalForward, _aimDirection, Mathf.Abs (anim.GetFloat("Look Speed")));
-			anim.SetFloat ("Look Speed", Mathf.Lerp(anim.GetFloat("Look Speed"),0.5f,0.5f));
-
-			yield return new WaitForSeconds (0.01f);
+	
+		float _counter = 0;
+		while (_counter < 1f)
+		{
+			transform.forward = Vector3.Slerp (_originalForward, _aimDirection,_counter);
+			anim.SetFloat ("Look Speed",Mathf.Lerp(_originalLookTime ,0.5f,_counter));
+			rb.AddForce(Vector3.Lerp(Vector3.zero,Vector3.up * 9.81f,  _counter), ForceMode.Acceleration);
+			yield return new WaitForEndOfFrame();
+			_counter+= 0.1f;
 		}
 		transform.forward = _aimDirection;
 		anim.SetFloat ("Look Speed",0.5f);
@@ -1308,9 +1313,15 @@ public class Player_Controller : MonoBehaviour {
 		float _counter = 0f;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		Vector3 newForwardVector = new Vector3(transform.forward.x, 0f, transform.forward.z);
-		while (_counter < 1f && Mathf.Abs(transform.forward.y) > 0.1f)
+		Vector3 _originalForward = mainCam.transform.forward;
+		float _aimDirection = 0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/125f;
+		print(_aimDirection);
+		print(Vector3.SignedAngle(newForwardVector, mainCam.transform.forward, transform.right) / 125f);
+		while (_counter < 1f)
 		{
-			transform.forward = Vector3.Lerp(transform.forward, newForwardVector, _counter);
+			transform.forward = Vector3.Lerp(_originalForward, newForwardVector, _counter);
+			anim.SetFloat ("Look Speed",Mathf.Lerp(_aimDirection ,0.5f,_counter));
+			rb.AddForce(Vector3.Lerp(Vector3.up * 9.81f, Vector3.zero, _counter), ForceMode.Acceleration);
 			yield return new WaitForEndOfFrame();
 			_counter += 0.1f;
 		}
