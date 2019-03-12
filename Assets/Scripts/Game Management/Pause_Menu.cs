@@ -43,11 +43,12 @@ public class Pause_Menu : MonoBehaviour {
 		try{
 			//Cleanup Metwork
 			Metwork.Disconnect();
-			Destroy(GameObject.FindObjectOfType<Metwork>().gameObject);
-			
+			//Destroy(GameObject.FindObjectOfType<Metwork>().gameObject);
 			//Destroy(GameObject.Find("WebRtcNetworkFactory").gameObject);
 		}
-		catch{}
+		catch{
+			Debug.LogError("Failed to find one or more network components when quitting");
+		}
 		SceneManager.LoadScene ("Start Scene");
 	}
 	public void Resume(){

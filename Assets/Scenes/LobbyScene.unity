@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 4.5419345, g: 5.510176, b: 7.4642644, a: 1}
+  m_AmbientSkyColor: {r: 5.7954626, g: 2.15963, b: 2.499345, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: e9fff030abfa1314f96b3fdc34d562d5, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 5d5e75a9cd326a840869721d9ed0ba72, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.009238841, g: 0.022165727, b: 0.051281024, a: 1}
+  m_IndirectSpecularColor: {r: 0.08576269, g: 0.0028583915, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -53,7 +53,7 @@ LightmapSettings:
     m_TemporalCoherenceThreshold: 1
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 0
-    m_EnableRealtimeLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 10
     m_Resolution: 2
@@ -896,6 +896,11 @@ MonoBehaviour:
   endScoreText: {fileID: 0}
   winPanel: {fileID: 0}
   initialTime: 0
+  GameClipMode: 0
+  GameClipCameraPrefab: {fileID: 0}
+  GameClipCamera: {fileID: 0}
+  GameClipCameraOffset: 5
+  GameClipTarget: {fileID: 0}
 --- !u!4 &80048112
 Transform:
   m_ObjectHideFlags: 0
@@ -2274,6 +2279,31 @@ Prefab:
       value: 
       objectReference: {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965,
         type: 2}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: overdrawShader
+      value: 
+      objectReference: {fileID: 4800000, guid: dc7e2c45426fc7140a63d5ded03cde69, type: 3}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: mat
+      value: 
+      objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: impactDamageFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
   m_IsPrefabAsset: 0
@@ -2645,7 +2675,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1758748269}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.33559993
+  m_Size: 0.3355993
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3421,7 +3451,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -397.7, y: -397.7}
+  m_SizeDelta: {x: -596.49, y: -596.2}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &356056648
 MonoBehaviour:
@@ -6147,31 +6177,31 @@ Prefab:
     - target: {fileID: 2300038, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4406b31b1508fca41bf15b9e51069547, type: 2}
+      objectReference: {fileID: 2100000, guid: 9a6c76b0735af6041b0dd82028dd07aa, type: 2}
     - target: {fileID: 2300040, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4406b31b1508fca41bf15b9e51069547, type: 2}
+      objectReference: {fileID: 2100000, guid: 9a6c76b0735af6041b0dd82028dd07aa, type: 2}
     - target: {fileID: 2300034, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4406b31b1508fca41bf15b9e51069547, type: 2}
+      objectReference: {fileID: 2100000, guid: 9a6c76b0735af6041b0dd82028dd07aa, type: 2}
     - target: {fileID: 2300030, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4406b31b1508fca41bf15b9e51069547, type: 2}
+      objectReference: {fileID: 2100000, guid: 9a6c76b0735af6041b0dd82028dd07aa, type: 2}
     - target: {fileID: 2300036, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4406b31b1508fca41bf15b9e51069547, type: 2}
+      objectReference: {fileID: 2100000, guid: 9a6c76b0735af6041b0dd82028dd07aa, type: 2}
     - target: {fileID: 2300032, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4406b31b1508fca41bf15b9e51069547, type: 2}
+      objectReference: {fileID: 2100000, guid: 9a6c76b0735af6041b0dd82028dd07aa, type: 2}
     - target: {fileID: 2300050, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4406b31b1508fca41bf15b9e51069547, type: 2}
+      objectReference: {fileID: 2100000, guid: 9a6c76b0735af6041b0dd82028dd07aa, type: 2}
     - target: {fileID: 2300048, guid: eba585be11196b24d8dbdb129566ba37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -7038,6 +7068,31 @@ Prefab:
       value: 
       objectReference: {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965,
         type: 2}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: overdrawShader
+      value: 
+      objectReference: {fileID: 4800000, guid: dc7e2c45426fc7140a63d5ded03cde69, type: 3}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: mat
+      value: 
+      objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: impactDamageFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
     - {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
@@ -10266,6 +10321,31 @@ Prefab:
       propertyPath: m_Name
       value: Player (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: overdrawShader
+      value: 
+      objectReference: {fileID: 4800000, guid: dc7e2c45426fc7140a63d5ded03cde69, type: 3}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: mat
+      value: 
+      objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: impactDamageFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
   m_IsPrefabAsset: 0
@@ -11869,6 +11949,31 @@ Prefab:
       value: 
       objectReference: {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965,
         type: 2}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: overdrawShader
+      value: 
+      objectReference: {fileID: 4800000, guid: dc7e2c45426fc7140a63d5ded03cde69, type: 3}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: mat
+      value: 
+      objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: impactDamageFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
   m_IsPrefabAsset: 0
@@ -12919,7 +13024,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000012142799, y: 199.32002}
+  m_AnchoredPosition: {x: 0.000012142799, y: 199.31999}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1492577384
@@ -13252,6 +13357,31 @@ Prefab:
       value: 
       objectReference: {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965,
         type: 2}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: overdrawShader
+      value: 
+      objectReference: {fileID: 4800000, guid: dc7e2c45426fc7140a63d5ded03cde69, type: 3}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: mat
+      value: 
+      objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: impactDamageFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
     - {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
@@ -14369,6 +14499,31 @@ Prefab:
       value: 
       objectReference: {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965,
         type: 2}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: overdrawShader
+      value: 
+      objectReference: {fileID: 4800000, guid: dc7e2c45426fc7140a63d5ded03cde69, type: 3}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: mat
+      value: 
+      objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: impactDamageFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
     - {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
@@ -20396,6 +20551,31 @@ Prefab:
       value: 
       objectReference: {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965,
         type: 2}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: overdrawShader
+      value: 
+      objectReference: {fileID: 4800000, guid: dc7e2c45426fc7140a63d5ded03cde69, type: 3}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: mat
+      value: 
+      objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: impactDamageFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
   m_IsPrefabAsset: 0
@@ -21132,6 +21312,31 @@ Prefab:
       value: 
       objectReference: {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965,
         type: 2}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: overdrawShader
+      value: 
+      objectReference: {fileID: 4800000, guid: dc7e2c45426fc7140a63d5ded03cde69, type: 3}
+    - target: {fileID: 114949454861470758, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: mat
+      value: 
+      objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 2}
+      propertyPath: impactDamageFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}
     - {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7, type: 2}

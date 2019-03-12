@@ -33,13 +33,20 @@ public class Options_Menu : MonoBehaviour {
 	}
 	static void LoadSettings()
 	{
-
-
 		AudioListener.volume = float.Parse(optionsInfo[0]);
 		MInput.useMouse = (optionsInfo[1] == "True");
 		MInput.sensitivity = float.Parse(optionsInfo[2]);
 		QualitySettings.SetQualityLevel(int.Parse(optionsInfo[3]));
-		Screen.fullScreen = (optionsInfo[4] == "True");
+		if (optionsInfo[4] == "True")
+		{
+			Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+			Screen.fullScreen = true;
+		}
+		else
+		{
+			Screen.fullScreen = false;
+			Screen.fullScreenMode = FullScreenMode.Windowed;
+		}
 	}
 	void Reset () {
 		controlsButton = GameObject.Find("Controls Button").GetComponent<Button>();
@@ -65,7 +72,17 @@ public class Options_Menu : MonoBehaviour {
 		SaveData();
 	}
 	public void FullScreenClicked() {
-		Screen.fullScreen = !Screen.fullScreen;
+		if (!Screen.fullScreen)
+		{
+			Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+			Screen.fullScreen = true;
+
+		}
+		else
+		{
+			Screen.fullScreen = false;
+			Screen.fullScreenMode = FullScreenMode.Windowed;
+		}
 		UpdateFullScreenText();
 		SaveData();
 	}

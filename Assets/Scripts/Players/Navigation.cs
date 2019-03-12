@@ -103,6 +103,10 @@ public class Navigation : MonoBehaviour {
 		Vector3 distVect;
 
 		for (int i = 0; i < targets.Count; i++) {
+			if (targets[i]._transform == null)
+			{
+				return;
+			}
 			//Check if we are far enough away from the target
 			distVect = targets [i]._transform.position - cam.transform.position;
 			if (distVect.sqrMagnitude < targets[i]._distance * targets[i]._distance) {

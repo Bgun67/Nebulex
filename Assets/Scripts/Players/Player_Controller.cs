@@ -1082,50 +1082,7 @@ public class Player_Controller : MonoBehaviour {
 				}
 			}
 		}
-	}/* 
-		void CheckStep()
-		{
-			float startHeight = 0.5f;
-			float centerHeight = 1f;
-			float radius = 0.2f;
-		Vector3 feetPosition = rb.worldCenterOfMass - centerHeight*transform.up;
-		//Find the direction of the x and z motion
-		Vector3 motionForward = (transform.right*h+v*transform.forward).normalized;
-			//Raycast start point starts out high for climbing (0f,2f,0.1f)
-			Vector3 raycastStart = feetPosition + motionForward * 0.42f + transform.up * startHeight;
-		//Raycast end point, below the player (0f,-1f,0.1f)
-		Vector3 raycastEnd = feetPosition + motionForward * 0.42f;//+ transform.up * -0.1f;
-		float stepHeight = 0.5f;
-			float jumpUpHeight = 1.5f;
-			//holds data about the hit collider
-			RaycastHit _hit;
-			Debug.DrawLine(raycastStart, raycastEnd, Color.blue);
-			
-			if (motionForward.sqrMagnitude < 0.2f)
-			{
-				return;
-			}
-			if (Physics.Linecast(raycastStart, raycastEnd, out _hit)&&_hit.transform.root!=transform.root)
-			{
-				
-				//how much the object is above you neg means step down
-				float _obstacleHeight = startHeight - _hit.distance;				
-				//if higher than step height
-				if (_obstacleHeight > stepHeight && _obstacleHeight < jumpUpHeight)
-				{
-					//jump up
-				}
-				//if above flat ground threshold and below max stepheight
-				else if (_obstacleHeight < stepHeight && _obstacleHeight > 0.05f)
-				{
-					//step up gradually
-					//Vector3 nextPosition = Vector3.Lerp(_player.transform.position, _hit.point + Vector3.up * 0.8f, 0.5f);
-					Vector3 nextPosition = (_hit.point + Vector3.up * centerHeight);
-					rb.MovePosition(nextPosition);
-
-				}
-			}
-		}*/
+	}
 
 	public void MouseLook(){
 		float lookUpDownTime = anim.GetFloat("Look Speed");		
@@ -1314,13 +1271,13 @@ public class Player_Controller : MonoBehaviour {
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		Vector3 newForwardVector = new Vector3(transform.forward.x, 0f, transform.forward.z);
 		Vector3 _originalForward = mainCam.transform.forward;
-		float _aimDirection = 0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/125f;
+		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/250f);
 		print(_aimDirection);
 		print(Vector3.SignedAngle(newForwardVector, mainCam.transform.forward, transform.right) / 125f);
 		while (_counter < 1f)
 		{
 			transform.forward = Vector3.Lerp(_originalForward, newForwardVector, _counter);
-			anim.SetFloat ("Look Speed",Mathf.Lerp(_aimDirection ,0.5f,_counter));
+			anim.SetFloat ("Look Speed",Mathf.Lerp(0.5f,_aimDirection,_counter));
 			rb.AddForce(Vector3.Lerp(Vector3.up * 9.81f, Vector3.zero, _counter), ForceMode.Acceleration);
 			yield return new WaitForEndOfFrame();
 			_counter += 0.1f;
@@ -1330,12 +1287,8 @@ public class Player_Controller : MonoBehaviour {
 
 
 		breatheSound.Stop ();
-		//walkSound.Play ();
 		lookFactor = 3f;
 		enteringGravity = false;
-		//print("Entered");
-
-		//}
 	}
 	[MRPC]
 	public void RPC_SwitchWeapons(bool _primary){

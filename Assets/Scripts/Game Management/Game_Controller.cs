@@ -495,7 +495,14 @@ public class Game_Controller : MonoBehaviour {
 		}
 		endOfGameUI.SetActive (true);
 		gameplayUI.SetActive (false);
-		winningTeamText.text = "Team " + winningTeam + " Wins!";
+		if (statsArray[localPlayer.GetComponent<Metwork_Object>().netID].team == winningTeam)
+		{
+			winningTeamText.text = "Your Team Wins!";
+		}
+		else
+		{
+			winningTeamText.text = "Your Team Lost!";
+		}
 		if (scoreA < 0) {
 			scoreA = 0;
 		}

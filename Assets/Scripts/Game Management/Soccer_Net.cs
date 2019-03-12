@@ -216,26 +216,30 @@ public class Soccer_Net : MonoBehaviour {
 		scored = false;
 
 	}
-	IEnumerator CheckForSwitch(){
-		yield return new WaitForSeconds (60f);
-		while (true) {
-				
-			yield return new WaitForSeconds (Random.Range (25f, 35f));
-				
-			if (!gravOn) {
-				yield return new WaitForSeconds (50f);
+	IEnumerator CheckForSwitch()
+	{
+		yield return new WaitUntil(()=>(gameController.currentTime == 600));
 
-			} 
-			if (Metwork.isServer) {
-				netView.RPC ("RPC_SwitchGravity", MRPCMode.AllBuffered, new object[]{ gravOn });
-			} else if (Metwork.peerType == MetworkPeerType.Disconnected) {
-				RPC_SwitchGravity (gravOn);
-			}
-			gravOn = !gravOn;
-			
 
+		if (Metwork.isServer)
+		{
+			netView.RPC("RPC_SwitchGravity", MRPCMode.AllBuffered, new object[] { true });
 		}
-		
+		else if (Metwork.peerType == MetworkPeerType.Disconnected)
+		{
+			RPC_SwitchGravity(true);
+		}
+		yield return new WaitForSeconds(60);
+
+		if (Metwork.isServer)
+		{
+			netView.RPC("RPC_SwitchGravity", MRPCMode.AllBuffered, new object[] { false });
+		}
+		else if (Metwork.peerType == MetworkPeerType.Disconnected)
+		{
+			RPC_SwitchGravity(false);
+		}
+
 
 	}
 	[MRPC]
