@@ -30,7 +30,7 @@ public class Optimization_Manager : MonoBehaviour {
 
 	void OnGUI(){
 		#if UNITY_EDITOR || UNITY_EDITOR_64
-		if(Time.frameCount % 5 == 0){
+		if(Time.frameCount % 2 == 0){
 			
 			foreach(Light _light in GameObject.FindObjectsOfType<Light> ()) {
 				if(lights.Contains(_light)) continue;
@@ -41,7 +41,10 @@ public class Optimization_Manager : MonoBehaviour {
 				}
 			}
 			for (int i = 0; i < lights.Count; i++) {
-				
+				if(lights[i] == null){
+					lights.RemoveAt(i);
+					//break;
+				}
 				if (lights [i].lightmapBakeType == LightmapBakeType.Baked) {
 
 					lights [i].enabled = _lights;

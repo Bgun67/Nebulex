@@ -21,7 +21,7 @@ public class RemoveCapsule : MonoBehaviour {
 	void OnGUI(){
 		if (start) {
 			start = false;
-			OffsetMetViews (100);
+			//OffsetMetViews (200);
 			//FixNetViews ();
 			//foreach(MeshFilter meshF in GameObject.FindObjectsOfType<MeshFilter>()){
 			//	if(meshF.GetInstanceID() == 227858){

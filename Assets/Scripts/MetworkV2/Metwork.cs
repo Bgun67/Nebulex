@@ -224,8 +224,11 @@ public class Metwork:MonoBehaviour {
 
 		Append("Setting up WebRtcMetworkFactory");
 		WebRtcNetworkFactory factory = WebRtcNetworkFactory.Instance;
-		if(factory != null)
+		if(factory != null){
 			Append("WebRtcMetworkFactory created");
+		}
+		else{Debug.Log("Failed to set up WebRtcNetworkFactory");
+		}
 
 
 		Metwork._instance = GameObject.FindObjectOfType<Metwork> ();
@@ -520,11 +523,14 @@ public class Metwork:MonoBehaviour {
 		if (mMetwork != null) {
 			Metwork.pIsServer = false;
 			Metwork.pPeerType = MetworkPeerType.Disconnected;
+			
 			Metwork.reliableQueue.Clear();
 			Metwork.players.Clear();
 			mMetwork.Dispose ();
 			mMetwork = null;
 		}
+
+		
 	}
 
 	private void OnDestroy()
@@ -533,6 +539,25 @@ public class Metwork:MonoBehaviour {
 		{
 			Cleanup();
 		}
+
+		Metwork._instance = null;
+		//Metwork.disconnectReason = DisconnectReason.ServerQuit;
+
+		Metwork.mConnections.Clear();
+		Metwork.metViews.Clear();
+		Metwork.mMetwork = null;
+		Metwork.onConnectedToServer = null;
+		Metwork.onPlayerConnected = null;
+		Metwork.onPlayerDisconnected = null;
+		Metwork.onServerInitialized = null;
+		Metwork.pIsServer = false;
+		Metwork.player = null;
+		Metwork.players.Clear();
+		Metwork.pPeerType = MetworkPeerType.Disconnected;
+		Metwork.reliableQueue.Clear();
+		Metwork.replaceServerPriority = 0;
+		Metwork.roomName = "";
+		
 	}
 
 	private void FixedUpdate()

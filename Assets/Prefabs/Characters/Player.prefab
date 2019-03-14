@@ -5117,17 +5117,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  damageThreshold1: 0
   UI_healthText: {fileID: 0}
   UI_healthBar: {fileID: 0}
   UI_healthBox: {fileID: 0}
   initialPosition: {fileID: 0}
   resetTime: 1
   gameController: {fileID: 0}
-  damageThreshold2: 0
   regen: 1
   regenTime: 5
   healthShown: 1
+  indicateLowHealth: 0
+  lowHealthEffect: {fileID: 0}
   isDead: 0
   forwarder: 0
   forwardedDamage: {fileID: 0}
@@ -5135,6 +5135,7 @@ MonoBehaviour:
   impactPrefab: {fileID: 1000013169864706, guid: e5a3d6da48298a0458c1990f58c27069,
     type: 2}
   impactDamageFactor: 2
+  damageThreshold: 0
   netObj: {fileID: 0}
 --- !u!114 &114518945735932212
 MonoBehaviour:
@@ -5166,15 +5167,10 @@ MonoBehaviour:
   inVehicle: 0
   footRaycast: {fileID: 4682091218351686}
   maxStepHeight: 2
-  onStairs: 0
-  stairLayer:
-    serializedVersion: 2
-    m_Bits: 256
   gameController: {fileID: 0}
   moveSpeed: 0
-  lookFactor: 1
-  moveFactor: 1
   currentStepHeight: 0
+  enteringGravity: 0
   netView: {fileID: 0}
   netObj: {fileID: 0}
   jetpackFuel: 1
@@ -5193,6 +5189,7 @@ MonoBehaviour:
   playerName: Fred
   ragdoll: {fileID: 1333036756815864, guid: b30042f9b29c8ab498091d0074f93a31, type: 2}
   knifePosition: 1
+  knifeAnim: {fileID: 0}
   team: 0
   pieQuadrants:
   - {fileID: 0}
@@ -5236,6 +5233,7 @@ MonoBehaviour:
   grenadePrefab: {fileID: 0}
   grenadeModelPrefab: {fileID: 0}
   grenadeSpawn: {fileID: 0}
+  grappleActive: 0
 --- !u!114 &114949454861470758
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5250,6 +5248,8 @@ MonoBehaviour:
   mat: {fileID: 0}
   team: 0
   icons: []
+  Hide: 1
+  overdrawShader: {fileID: 0}
 --- !u!124 &124300072504171358
 Behaviour:
   m_ObjectHideFlags: 1

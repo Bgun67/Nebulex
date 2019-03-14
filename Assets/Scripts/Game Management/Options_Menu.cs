@@ -39,7 +39,7 @@ public class Options_Menu : MonoBehaviour {
 		QualitySettings.SetQualityLevel(int.Parse(optionsInfo[3]));
 		if (optionsInfo[4] == "True")
 		{
-			Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+			Screen.fullScreenMode = FullScreenMode.FullScreenWindow;//ExclusiveFullScreen;
 			Screen.fullScreen = true;
 		}
 		else
@@ -74,7 +74,7 @@ public class Options_Menu : MonoBehaviour {
 	public void FullScreenClicked() {
 		if (!Screen.fullScreen)
 		{
-			Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+			Screen.fullScreenMode = FullScreenMode.FullScreenWindow;//ExclusiveFullScreen;
 			Screen.fullScreen = true;
 
 		}

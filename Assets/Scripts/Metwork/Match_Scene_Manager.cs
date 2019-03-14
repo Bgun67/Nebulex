@@ -219,6 +219,14 @@ public class MapClass
 
 	public void QuitToMainMenu()
 	{
+		Metwork.Disconnect();
+		//if (mMetwork != null)
+		//{
+		//	Cleanup();
+		//}
+		//try{
+		//Byn.Net.WebRtcNetworkFactory.Instance = null;
+		//Destroy(GameObject.FindObjectOfType<Byn.Net.WebRtcNetworkFactory>().gameObject);
 		Destroy(this.gameObject);
 		SceneManager.LoadScene("Start Scene");
 	}
