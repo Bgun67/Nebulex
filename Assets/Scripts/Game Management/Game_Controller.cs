@@ -382,7 +382,7 @@ public class Game_Controller : MonoBehaviour {
 		int minutes = Mathf.FloorToInt(currentTime / 60f );
 		int seconds =Mathf.FloorToInt( currentTime % 60);
 
-		UI_fpsText.text = "fps:"+fps;
+		//UI_fpsText.text = "fps:"+fps;
 
 		//Update the scores of the teams, the local team being on the
 		//left side and the opposing team being on the right
