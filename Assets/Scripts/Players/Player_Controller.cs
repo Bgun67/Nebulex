@@ -186,9 +186,7 @@ public class Player_Controller : MonoBehaviour {
 			RPC_ShowNameText ();
 			sceneCam.enabled = false;
 		}
-
-
-
+		anim.SetFloat ("Look Speed", 0.5f);
 	}
 	// runs after start basically the same
 	public void Setup(){
@@ -198,7 +196,6 @@ public class Player_Controller : MonoBehaviour {
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> (); 
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
-		anim.SetFloat ("Look Speed", 0.5f);
 
 		airTime = suffocationTime;
 		pieQuadrants = UI_Manager._instance.pieQuadrants;
@@ -213,9 +210,9 @@ public class Player_Controller : MonoBehaviour {
 			SetupWeapons ();
 			damageScript = this.GetComponent<Damage> ();
 			damageScript.healthShown = true;
-			helmet.SetActive(false);
 			InvokeRepeating ("UpdateUI", 1f, 1f);
 			LoadPlayerData ();
+			helmet.SetActive(false);
 		}
 		primarySelected = !primarySelected;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -238,6 +235,8 @@ public class Player_Controller : MonoBehaviour {
 			}
 
 		}
+		anim.SetFloat ("Look Speed", 0.5f);
+
 		Invoke ("Setup", 0.2f);
 	}
 	void OnDisable(){
@@ -1521,7 +1520,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 		int localTeam = gameController.statsArray 
 			[gameController.localPlayer.GetComponent<Metwork_Object> ().netID].team;
-		if (team == localTeam) {
+		if (team == localTeam && this.gameObject!=gameController.localPlayer) {
 			nameTextMesh.color = new Color (0f, 50f, 255f);
 			nameTextMesh.gameObject.SetActive (true);
 

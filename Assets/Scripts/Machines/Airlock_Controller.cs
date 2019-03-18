@@ -49,7 +49,7 @@ public class Airlock_Controller : MonoBehaviour {
 		else if (door2Controller.closing&&!pressurizing) {
 			StartCoroutine (Pressurize(1));
 		}
-		if (openTime > 30f) {
+		if (openTime > 6f) {
 			openTime = 0;
 
 

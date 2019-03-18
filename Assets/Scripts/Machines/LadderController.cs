@@ -39,7 +39,7 @@ public class LadderController : MonoBehaviour {
 	}*/
 	void Update(){
 		if (player != null) {
-			if (Input.GetAxis ("Move Y") > 0.1f) {
+			if (Input.GetAxis ("Move Y") > 0.1f||Input.GetButton("Jump")) {
 				LeaveLadder ();
 
 

@@ -405,6 +405,21 @@ public class Carrier_Controller : MonoBehaviour {
 		print ("Completed");
 
 	}
+	public static void FlashWarningLights(bool _active, Transform carrier)
+	{
+		GameObject[] _lights = GameObject.FindGameObjectsWithTag("Warning Light");
+		foreach (GameObject go in _lights)
+		{
+			if (carrier == null || go.transform.root == carrier)
+			{
+				Animator _anim = go.GetComponentInChildren<Animator>();
+				if (_anim != null)
+				{
+					_anim.SetBool("Is Flashing", _active);
+				}
+			}
+		}
+	}
 
 
 }

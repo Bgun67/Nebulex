@@ -141,8 +141,7 @@ public class Damage : MonoBehaviour {
 		if (currentHealth <= 0f)
 		{
 			currentHealth = 0;
-			if (fromID != 0)
-			{
+			
 				if (this.tag == "Player")
 				{
 					gameController.AddKill(fromID);
@@ -150,8 +149,6 @@ public class Damage : MonoBehaviour {
 
 
 				}
-
-			}
 			for (int i = 1; i < assistArray.Length; i++)
 			{
 				if (i == fromID)

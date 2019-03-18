@@ -165,6 +165,7 @@ public class Ship_Controller : MonoBehaviour {
 				rb.drag = 0.1f;
 				landMode = false;
 			}
+			rb.AddRelativeForce(0f, 0f, deltaThrustForce);
 		}
 		//rb.useGravity = false;
 

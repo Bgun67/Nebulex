@@ -44,6 +44,7 @@ public class Bomber_Controller : MonoBehaviour
 
 	public bool isPilot;
 	public bool isAI = false;
+	public bool landMode;
 	public Transform target;
 	public AudioSource engineSound;
 	public Animator anim;
@@ -158,7 +159,28 @@ public class Bomber_Controller : MonoBehaviour
 		rb.AddRelativeForce (0f, moveY * deltaThrustForce * 2f,
 			moveZ * deltaThrustForce);
 		engineSound.pitch = Mathf.Clamp (Mathf.Abs (moveZ + moveY), 0, 0.3f) + 1f;
+		if (rb.useGravity)
+		{
+			if (!landMode)
+			{
+				rb.angularDrag = 1f;
+				rb.drag = 0.2f;
+				landMode = true;
+			}
+			rb.AddForce(rb.mass * 9.81f * Mathf.Clamp01(1f / Vector3.Dot(Vector3.up, transform.up)) * transform.up * 50f * Time.deltaTime);
+			rb.AddTorque(Vector3.Cross(-transform.up, (transform.up - Vector3.up) * Vector3.Magnitude(transform.up - Vector3.up) * rb.mass * 10f) * rb.mass / 1000f);
 
+		}
+		else
+		{
+			if (landMode)
+			{
+				rb.angularDrag = 0.5f;
+				rb.drag = 0.1f;
+				landMode = false;
+			}
+			rb.AddRelativeForce(0f, 0f, deltaThrustForce);
+		}
 
 		if (MInput.useMouse)
 		{

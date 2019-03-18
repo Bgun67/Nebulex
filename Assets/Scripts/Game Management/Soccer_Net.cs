@@ -218,8 +218,9 @@ public class Soccer_Net : MonoBehaviour {
 	}
 	IEnumerator CheckForSwitch()
 	{
-		yield return new WaitUntil(()=>(gameController.currentTime == 600));
-
+		yield return new WaitUntil(()=>(gameController.currentTime >= gameController.matchLength/2f-10f));
+		Carrier_Controller.FlashWarningLights(true, transform.root);
+		yield return new WaitForSeconds(10f);
 
 		if (Metwork.isServer)
 		{
@@ -229,7 +230,8 @@ public class Soccer_Net : MonoBehaviour {
 		{
 			RPC_SwitchGravity(true);
 		}
-		yield return new WaitForSeconds(60);
+		yield return new WaitForSeconds(60f);
+		Carrier_Controller.FlashWarningLights(false, transform.root);
 
 		if (Metwork.isServer)
 		{
