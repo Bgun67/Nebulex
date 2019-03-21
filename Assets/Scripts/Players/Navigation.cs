@@ -180,4 +180,9 @@ public class Navigation : MonoBehaviour {
 
 
 	}
+
+	void OnDestroy(){
+		Navigation.targets.Clear();
+		Navigation.baseImage = null;
+	}
 }

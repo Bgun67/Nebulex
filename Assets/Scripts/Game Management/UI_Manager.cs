@@ -215,6 +215,11 @@ public class UI_Manager : MonoBehaviour {
 			secondaryPanel.enabled = true;
 		}
 	}
+
+	void OnDestroy(){
+		UI_Manager._instance = null;
+		UI_Manager.onPieEvent = null;
+	}
 	
 
 }

@@ -71,6 +71,8 @@ public class Network_Manager : MonoBehaviour {
 			print ("# of players: " + Metwork.players.Count);
 			//The server is not counted in connections so a +1 is required to include them
 			if (Metwork.players.Count >= minStartingPlayers && Metwork.isServer) {
+				print("Min Starting Players " + minStartingPlayers);
+				print("Metwork Players amount " + Metwork.players.Count);
 				//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
 				//must be connected anyway
 				print ("We Starting");
@@ -288,6 +290,10 @@ public class Network_Manager : MonoBehaviour {
 		Metwork.Disconnect();
 		print ("Completed break");
 
+	}
+
+	void OnDestroy(){
+		SceneManager.sceneLoaded -= this.OnSceneLoaded;
 	}
 
 

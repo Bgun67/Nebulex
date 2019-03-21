@@ -524,6 +524,7 @@ public class Metwork:MonoBehaviour {
 			Metwork.pIsServer = false;
 			Metwork.pPeerType = MetworkPeerType.Disconnected;
 			
+			Destroy(Metwork._instance.gameObject);
 			Metwork.reliableQueue.Clear();
 			Metwork.players.Clear();
 			mMetwork.Dispose ();
@@ -555,8 +556,10 @@ public class Metwork:MonoBehaviour {
 		Metwork.players.Clear();
 		Metwork.pPeerType = MetworkPeerType.Disconnected;
 		Metwork.reliableQueue.Clear();
+		
 		Metwork.replaceServerPriority = 0;
 		Metwork.roomName = "";
+		Metwork.disconnectReason = DisconnectReason.ClientQuit;
 		
 	}
 

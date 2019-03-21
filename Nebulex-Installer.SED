@@ -27,7 +27,7 @@ FinishMessage=
 TargetName=C:\Users\Michael\Documents\GitHub\Nebulex\Builds\Nebulex-Installer.exe
 FriendlyName=Nebulex
 AppLaunched=Nebulex-Installer.exe
-PostInstallCmd=<None>
+PostInstallCmd=Nebulex-Installer.exe
 AdminQuietInstCmd=
 UserQuietInstCmd=
 FILE0="Microsoft.WindowsAPICodePack.dll"
@@ -35,10 +35,9 @@ FILE1="Microsoft.WindowsAPICodePack.ExtendedLinguisticServices.dll"
 FILE2="Microsoft.WindowsAPICodePack.Sensors.dll"
 FILE3="Microsoft.WindowsAPICodePack.Shell.dll"
 FILE4="Microsoft.WindowsAPICodePack.ShellExtensions.dll"
-FILE5="Nebulex.zip"
-FILE6="Nebulex-Installer.exe"
-FILE7="Nebulex-Installer.exe.config"
-FILE8="Nebulex-Installer.pdb"
+FILE5="Nebulex-Installer.exe"
+FILE6="Nebulex-Installer.exe.config"
+FILE7="Nebulex-Installer.pdb"
 [SourceFiles]
 SourceFiles0=C:\Users\Michael\source\repos\Nebulex-Installer\Nebulex-Installer\bin\Release\
 [SourceFiles0]
@@ -50,4 +49,3 @@ SourceFiles0=C:\Users\Michael\source\repos\Nebulex-Installer\Nebulex-Installer\b
 %FILE5%=
 %FILE6%=
 %FILE7%=
-%FILE8%=

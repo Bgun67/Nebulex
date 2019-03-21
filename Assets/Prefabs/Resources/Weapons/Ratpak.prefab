@@ -451,7 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc2220db84957642b7291d69569069b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireDelay: 0
   shotSpawn: {fileID: 4300407192444788}
   reloadTime: 2
   fireRate: 900
@@ -698,8 +697,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.9890467, g: 1, b: 0.8014706, a: 1}
-      maxColor: {r: 1, g: 0.7241379, b: 0, a: 1}
+      minColor: {r: 1, g: 0.8952098, b: 0.8, a: 0.4117647}
+      maxColor: {r: 1, g: 0.6351265, b: 0, a: 0.38431373}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1781,8 +1780,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 0}
+        key0: {r: 1, g: 0.6462264, b: 0.6462264, a: 0.80784315}
+        key1: {r: 1, g: 0.8499308, b: 0.5707547, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4179,7 +4178,7 @@ ParticleSystem:
   LightsModule:
     enabled: 1
     ratio: 0.5
-    light: {fileID: 108027197419511634}
+    light: {fileID: 0}
     randomDistribution: 1
     color: 1
     range: 1
