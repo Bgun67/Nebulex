@@ -189,7 +189,8 @@ public class MapClass
 		}
 		catch { }
 
-		Invoke("DeactivateLoadPanel", 8f);
+		//Moved from 8 to 12 seconds to increase likelyhood of properly connecting
+		Invoke("DeactivateLoadPanel", 12f);
 
 
 
