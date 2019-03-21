@@ -130,7 +130,7 @@ public class Player_Controller : MonoBehaviour {
 	public Vector3 secondaryLocalRotation;
 	int secondaryNetView = -1;
 	[Header("Grenades")]
-	int grenadesNum = 200;
+	int grenadesNum = 4;
 	public GameObject grenadePrefab;
 	public GameObject grenadeModelPrefab;
 	GameObject grenadeModel;
@@ -198,6 +198,7 @@ public class Player_Controller : MonoBehaviour {
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
 
 		airTime = suffocationTime;
+		grenadesNum = 4;
 		pieQuadrants = UI_Manager._instance.pieQuadrants;
 		if (MInput.useMouse)
 		{
@@ -212,7 +213,6 @@ public class Player_Controller : MonoBehaviour {
 			damageScript.healthShown = true;
 			InvokeRepeating ("UpdateUI", 1f, 1f);
 			LoadPlayerData ();
-			helmet.SetActive(false);
 		}
 		primarySelected = !primarySelected;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -223,6 +223,7 @@ public class Player_Controller : MonoBehaviour {
 			RPC_ShowNameText ();
 			sceneCam.enabled = false;
 		}
+		
 		UpdateUI ();
 
 	}
@@ -993,7 +994,8 @@ public class Player_Controller : MonoBehaviour {
 		}
 		else
 		{
-			rb.AddRelativeTorque(-v2 * factor / 3f, h2 * factor / 3f, -h * factor / 3f);
+			rb.AddRelativeTorque(-v2 * factor/3f, h2*factor/3f, -h * factor/3f);
+			//transform.Rotate(Vector3.Lerp(Vector3.zero, new Vector3(-v2 * Time.deltaTime, h2 * Time.deltaTime, -h * Time.deltaTime),0.1f));
 			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 20f);
 		}
 	}
@@ -1242,7 +1244,6 @@ public class Player_Controller : MonoBehaviour {
 			_counter+= 0.1f;
 		}
 		transform.forward = _aimDirection;
-		anim.SetFloat ("Look Speed",0.5f);
 
 		if(netObj.isLocal){
 			breatheSound.Play ();
@@ -1527,6 +1528,10 @@ public class Player_Controller : MonoBehaviour {
 		} else {
 			nameTextMesh.color = new Color (255f, 0f, 0f);
 			nameTextMesh.gameObject.SetActive (false);
+		}
+		if (this.gameObject == gameController.localPlayer)
+		{
+			helmet.SetActive(false);
 		}
 	}
 	public void UpdateUI(){

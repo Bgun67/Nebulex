@@ -102,7 +102,7 @@ public class Ship_Controller : MonoBehaviour {
 		try{ SimulateParticles (); } catch{}
 		moveY = Input.GetAxis ("Move Y");
 		moveZ = Input.GetAxis ("Move Z");
-		deltaThrustForce = Time.deltaTime * 45f * thrust;
+		deltaThrustForce = Time.deltaTime * 35f * thrust;
 		rb.velocity = Vector3.ClampMagnitude (rb.velocity, 1000f);
 		rb.angularVelocity = Vector3.ClampMagnitude (rb.angularVelocity, 10f);
 
@@ -147,11 +147,19 @@ public class Ship_Controller : MonoBehaviour {
 			moveZ *deltaThrustForce);
 		
 		if(rb.useGravity){
+			//entering gravity, activate landing
 			if (!landMode)
 			{
-				rb.angularDrag = 1f;
-				rb.drag = 0.2f;
+				if (Metwork.peerType != MetworkPeerType.Disconnected)
+				{
+					netObj.netView.RPC("RPC_LandMode", MRPCMode.All, new object[] { true });
+				}
+				else
+				{
+					RPC_LandMode(true);
+				}
 				landMode = true;
+
 			}
 			rb.AddForce(rb.mass * 9.81f * Mathf.Clamp01(1f/Vector3.Dot(Vector3.up, transform.up))*transform.up * 50f * Time.deltaTime);
 			rb.AddTorque(Vector3.Cross(-transform.up,(transform.up - Vector3.up)*Vector3.Magnitude(transform.up - Vector3.up)*rb.mass*10f)*rb.mass/1000f);
@@ -159,13 +167,20 @@ public class Ship_Controller : MonoBehaviour {
 		}
 		else
 		{
+			//exiting gravity, deactivate landing
 			if (landMode)
 			{
-				rb.angularDrag = 0.5f;
-				rb.drag = 0.1f;
+				if (Metwork.peerType != MetworkPeerType.Disconnected)
+				{
+					netObj.netView.RPC("RPC_LandMode", MRPCMode.All, new object[] { false });
+				}
+				else
+				{
+					RPC_LandMode(false);
+				}
 				landMode = false;
 			}
-			rb.AddRelativeForce(0f, 0f, deltaThrustForce);
+			rb.AddRelativeForce(0f, 0f, deltaThrustForce*0.4f);
 		}
 		//rb.useGravity = false;
 
@@ -182,6 +197,21 @@ public class Ship_Controller : MonoBehaviour {
 			rb.AddRelativeTorque(MInput.GetAxis("Rotate X") * deltaThrustForce * torqueFactor,
 				MInput.GetAxis("Rotate Y")  * deltaThrustForce * torqueFactor,
 				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+		}
+	}
+	public void RPC_LandMode(bool on)
+	{
+		if (on)
+		{
+			anim.SetBool("Land Mode", true);
+			rb.angularDrag = 1f;
+			rb.drag = 0.2f;
+		}
+		else
+		{
+			anim.SetBool("Land Mode", false);
+			rb.angularDrag = 0.5f;
+			rb.drag = 0.1f;
 		}
 	}
 

@@ -175,13 +175,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1274497311065008}
-  m_LocalRotation: {x: -0.0024155453, y: -0.7218766, z: -0.0025197873, w: 0.692013}
+  m_LocalRotation: {x: -0.01834765, y: -0.71300596, z: -0.0186707, w: 0.70066917}
   m_LocalPosition: {x: -0.972, y: 0.099, z: -0.046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4555555215612494}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -0.4, y: -92.42, z: 0}
+  m_LocalEulerAnglesHint: {x: -3, y: -91, z: 0}
 --- !u!4 &4893021308517778
 Transform:
   m_ObjectHideFlags: 1
@@ -398,7 +398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc2220db84957642b7291d69569069b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireDelay: 0
   shotSpawn: {fileID: 4886952805170746}
   reloadTime: 3
   fireRate: 700
@@ -451,6 +450,7 @@ MonoBehaviour:
   maxPassengers: 0
   passengers: 0
   netView: {fileID: 0}
+  text: 
 --- !u!114 &114343764164266812
 MonoBehaviour:
   m_ObjectHideFlags: 1

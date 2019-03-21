@@ -218,20 +218,9 @@ public class Soccer_Net : MonoBehaviour {
 	}
 	IEnumerator CheckForSwitch()
 	{
-		yield return new WaitUntil(()=>(gameController.currentTime >= gameController.matchLength/2f-10f));
+		yield return new WaitUntil(()=>(gameController.currentTime+10 <= gameController.matchLength/2f));
 		Carrier_Controller.FlashWarningLights(true, transform.root);
 		yield return new WaitForSeconds(10f);
-
-		if (Metwork.isServer)
-		{
-			netView.RPC("RPC_SwitchGravity", MRPCMode.AllBuffered, new object[] { true });
-		}
-		else if (Metwork.peerType == MetworkPeerType.Disconnected)
-		{
-			RPC_SwitchGravity(true);
-		}
-		yield return new WaitForSeconds(60f);
-		Carrier_Controller.FlashWarningLights(false, transform.root);
 
 		if (Metwork.isServer)
 		{
@@ -240,6 +229,17 @@ public class Soccer_Net : MonoBehaviour {
 		else if (Metwork.peerType == MetworkPeerType.Disconnected)
 		{
 			RPC_SwitchGravity(false);
+		}
+		yield return new WaitForSeconds(60f);
+		Carrier_Controller.FlashWarningLights(false, transform.root);
+
+		if (Metwork.isServer)
+		{
+			netView.RPC("RPC_SwitchGravity", MRPCMode.AllBuffered, new object[] { true });
+		}
+		else if (Metwork.peerType == MetworkPeerType.Disconnected)
+		{
+			RPC_SwitchGravity(true);
 		}
 
 

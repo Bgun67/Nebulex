@@ -47,6 +47,7 @@ ModelImporter:
     4300010: Cube_003
     4300012: Cube_004
     7400000: Default Take
+    7400002: Open_Lift_Fan
     9500000: //RootNode
     13700000: Cube_004
   externalObjects:
@@ -69,7 +70,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: HUD__F-20_cockpit_mock-up_png
-    second: {fileID: 2100000, guid: 5614d8d18b941ec41b54810f65bfcd75, type: 2}
+    second: {fileID: 2100000, guid: 8dbc3dfc55414394caed801f30bc54d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HUD__Polymer-Gun-Grip-Albedo_tif
+    second: {fileID: 2100000, guid: 1aa1831672c92254480bf79f1fecf0f2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -142,7 +148,7 @@ ModelImporter:
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
