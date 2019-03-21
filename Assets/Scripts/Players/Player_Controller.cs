@@ -489,11 +489,11 @@ public class Player_Controller : MonoBehaviour {
 	#region Grapple
 	void Grapple(bool _enabled)
 	{
-		print("grapling");
+		/*print("grapling");
 		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
 		_grapple.BreakWire();
 		_grapple.anim.SetBool("Enabled", _enabled);
-		anim.SetBool("Grapple", _enabled);
+		anim.SetBool("Grapple", _enabled);*/
 
 	}	
 	//signalled from grapple
@@ -1272,8 +1272,8 @@ public class Player_Controller : MonoBehaviour {
 		Vector3 newForwardVector = new Vector3(transform.forward.x, 0f, transform.forward.z);
 		Vector3 _originalForward = mainCam.transform.forward;
 		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/250f);
-		print(_aimDirection);
-		print(Vector3.SignedAngle(newForwardVector, mainCam.transform.forward, transform.right) / 125f);
+		//print(_aimDirection);
+		//print(Vector3.SignedAngle(newForwardVector, mainCam.transform.forward, transform.right) / 125f);
 		while (_counter < 1f)
 		{
 			transform.forward = Vector3.Lerp(_originalForward, newForwardVector, _counter);
