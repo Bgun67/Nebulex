@@ -14,11 +14,10 @@ public class Transistion : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//unlock cursor
-		if (Input.GetKey(KeyCode.Escape))
-		{
-			Cursor.lockState = CursorLockMode.None;
-			Cursor.visible = true;
-		}
+		
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+		
 		//This could go horribly wrong, if it does change it back to loadscenemode.single
 		loadOperation = SceneManager.LoadSceneAsync ("Space", LoadSceneMode.Single);
 		Application.backgroundLoadingPriority = ThreadPriority.Low;
