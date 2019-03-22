@@ -158,14 +158,23 @@ public class Loadout_Controller : MonoBehaviour {
 	}
 	void DisplayGunInfo(){
 		Fire tmpFire = weapon.GetComponent<Fire> ();
-		weaponDataText.text = 
-			("<b><size=16>" + weapon.name.Replace ("(Clone)", "") + "</size></b>\n" +
+		weaponDataText.text =
+			("<b><size=16>" + weapon.name.Replace("(Clone)", "") + "</size></b>\n" +
 		"Fire Rate: " + tmpFire.fireRate + "\n" +
 		"Reload Time: " + tmpFire.reloadTime + "\n" +
 		"Damage: " + tmpFire.damagePower + "\n" +
 		"Bullet Velocity: " + tmpFire.bulletVelocity + "\n" +
-		"Fire Type: " + tmpFire.fireType.ToString () + "\n" +
-		"Mag Size: " + tmpFire.magSize+"\n");
+		"Fire Type: " + tmpFire.fireType.ToString() + "\n" +
+		"Mag Size: " + tmpFire.magSize + "\n");
+		if (skillLevel < tmpFire.skillLevel)
+		{
+			weaponDataText.text+="<color=red>SKill Level: " +tmpFire.skillLevel+"</color>\n";
+		}
+		else
+		{
+					weaponDataText.text+="SKill Level: " +tmpFire.skillLevel+"\n";
+
+		}
 		if (tmpFire.bulletPrefab.GetComponent<Bullet_Controller> ().isExplosive) {
 			weaponDataText.text += "Explosive Rounds\n";
 		}

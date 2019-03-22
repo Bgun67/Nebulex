@@ -286,15 +286,16 @@ MonoBehaviour:
   fireRate: 30
   magSize: 12
   magAmmo: 12
-  maxAmmo: 1000
-  totalAmmo: 1000
+  maxAmmo: 100
+  totalAmmo: 100
   bulletPrefab: {fileID: 1558813795523864, guid: 09a93c10fb4ff0b42a8fe74c942e3e1e,
     type: 2}
   damagePower: 100
   bulletVelocity: 10
   fireType: 0
-  skillLevel: 0
-  unavailableScopes: []
+  skillLevel: 24000
+  unavailableScopes:
+  - Acog
   shootSound: {fileID: 82185514628338602}
   sound: {fileID: 0}
   weaponAnim: {fileID: 95688323670642866}
