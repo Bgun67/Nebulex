@@ -101,9 +101,8 @@ public class Loadout_Controller : MonoBehaviour {
 		InstantiateButtons(primaryScopesObjs, Gun_Button_Controller.ButtonTypes.Scope, primaryScopesParent);
 		InstantiateButtons(secondaryScopesObjs, Gun_Button_Controller.ButtonTypes.Scope, secondaryScopesParent);
 		SceneManager.SetActiveScene (SceneManager.GetSceneByName ("Loadout Scene"));
-
 		//BackClicked ();
-				
+
 	}
 	void Update(){
 		transform.Rotate (0f, 1f, 0f);

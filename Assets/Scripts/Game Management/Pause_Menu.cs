@@ -36,6 +36,7 @@ public class Pause_Menu : MonoBehaviour {
 
 	}
 	public void KillPlayer(){
+		MInput.inputLock = MInput.InputLock.None;
 		player.GetComponent<Damage> ().TakeDamage (200, 0);
 		this.gameObject.SetActive (false);
 	}
@@ -49,6 +50,7 @@ public class Pause_Menu : MonoBehaviour {
 		catch{
 			Debug.LogError("Failed to find one or more network components when quitting");
 		}
+		MInput.inputLock = MInput.InputLock.None;
 		SceneManager.LoadScene ("Start Scene");
 	}
 	public void Resume(){
@@ -59,4 +61,10 @@ public class Pause_Menu : MonoBehaviour {
 
 		//eventSystem.SetActive (false);
 	}
+	public void GoToLoadoutScene()
+	{
+		MInput.inputLock = MInput.InputLock.None;
+		SceneManager.LoadScene("Loadout Scene", LoadSceneMode.Additive);
+	}
+
 }
