@@ -489,11 +489,11 @@ public class Player_Controller : MonoBehaviour {
 	#region Grapple
 	void Grapple(bool _enabled)
 	{
-		/*print("grapling");
+		print("grapling");
 		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
 		_grapple.BreakWire();
 		_grapple.anim.SetBool("Enabled", _enabled);
-		anim.SetBool("Grapple", _enabled);*/
+		anim.SetBool("Grapple", _enabled);
 
 	}	
 	//signalled from grapple
@@ -1326,7 +1326,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 	public void SetupWeapons(){
 		try {
-			loadoutSettings = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.streamingAssetsPath+"/Loadout Settings.txt"));
+			loadoutSettings = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Loadout Settings.txt"));
 			string loadoutSettingsString = "";
 			foreach(string line in loadoutSettings){
 				loadoutSettingsString+=line+'/';
@@ -1449,7 +1449,7 @@ public class Player_Controller : MonoBehaviour {
 		string playerDataString = "";
 
 		try {
-			playerData = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.streamingAssetsPath + "/Player Data.txt"));
+			playerData = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath + "/Player Data.txt"));
 		} catch {
 			print ("Loding player data failer");
 			playerData = Profile.RestoreDataFile ();

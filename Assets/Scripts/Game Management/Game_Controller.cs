@@ -170,7 +170,7 @@ public class Game_Controller : MonoBehaviour {
 
 		try
 		{
-			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Match Settings.txt"));
+			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
 			this.matchLength = int.Parse(matchSettings[0]);
 			initialTime = Time.time;//Network.time;
 			this.gameMode = matchSettings[1];
@@ -524,10 +524,10 @@ public class Game_Controller : MonoBehaviour {
 
 	}
 	public void SavePlayerScore(){
-		string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.streamingAssetsPath+"/Player Data.txt"));
+		string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Player Data.txt"));
 		int previousScore = int.Parse( data [1]);
 		data [1] =( previousScore+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].score).ToString();
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Player Data.txt", Util.ThiccWatermelon(data));
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Player Data.txt", Util.ThiccWatermelon(data));
 			
 
 	}

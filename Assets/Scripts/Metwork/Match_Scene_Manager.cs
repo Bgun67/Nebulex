@@ -63,7 +63,7 @@ public class MapClass
 		}
 		if (testing)
 		{
-			localIP = File.ReadAllLines(Application.streamingAssetsPath + "/Player Data.txt")[3];
+			localIP = File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt")[3];
 		}
 		connection = this.GetComponent<PHPMasterServerConnect>();
 		ChangeMatchType("Destruction");
@@ -113,7 +113,7 @@ public class MapClass
 
 	public void ChangeMatchType(string _matchType)
 	{
-		System.IO.File.WriteAllLines(Application.streamingAssetsPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
+		System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
 			"1200",
 			_matchType
 		}));
@@ -175,7 +175,7 @@ public class MapClass
 
 		Metwork.onConnectedToServer += OnConnectedToMetServer;
 		Metwork.onPlayerConnected += OnMetPlayerConnected;
-		System.IO.File.WriteAllLines(Application.streamingAssetsPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
+		System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
 			"1200",
 			hostData[index].gameType
 		}));

@@ -13,7 +13,7 @@ public class Profile : MonoBehaviour {
 	void Start () {
 		try
 		{
-			playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Player Data.txt"));
+			playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
 			print("Info Length" + playerInfo.Length);
 			playerScore.text = playerInfo[1];
 			nameInput.text = playerInfo[0];
@@ -28,7 +28,7 @@ public class Profile : MonoBehaviour {
 		playerInfo [0] = nameInput.text;
 		print ("Info Length 2:" + playerInfo.Length);
 
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Player Data.txt",Util.ThiccWatermelon(playerInfo));
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Player Data.txt",Util.ThiccWatermelon(playerInfo));
 
 	}
 	public void OpenOptions()
@@ -40,19 +40,19 @@ public class Profile : MonoBehaviour {
 	}
 	public static string[] RestoreDataFile(){
 		string[] playerData = new string[]{ "Unnamed Player", "10", "", "192.168.2.40", "true"};
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath + "/Player Data.txt", Util.ThiccWatermelon (playerData));
+		System.IO.File.WriteAllLines (Application.persistentDataPath + "/Player Data.txt", Util.ThiccWatermelon (playerData));
 		return playerData;
 	}
 	public static string[] RestoreMatchFile(){
 		
 		string[] matchSettings = new string[]{ "1200", "Destruction" };
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath + "/Match Settings.txt", Util.ThiccWatermelon (matchSettings));
+		System.IO.File.WriteAllLines (Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon (matchSettings));
 		return matchSettings;
 	}
 	public static string[] RestoreLoadoutFile(){
 		
 		string[] loadoutSettings = new string[]{ "SRR-3", "FN-227", "None", "None"};
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Loadout Settings.txt",Util.ThiccWatermelon(loadoutSettings) );
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Loadout Settings.txt",Util.ThiccWatermelon(loadoutSettings) );
 		return loadoutSettings;
 
 	}
@@ -60,7 +60,7 @@ public class Profile : MonoBehaviour {
 	{
 		print("Restoring Options file");
 		string[] optionsSettings = new string[]{ "1", "True", "1", "2", "False"};
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsSettings) );
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsSettings) );
 		return optionsSettings;
 	}
 

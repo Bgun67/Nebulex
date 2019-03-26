@@ -90,7 +90,7 @@ public class Loadout_Controller : MonoBehaviour {
 	void Start () {
 		LoadData ();
 		try{
-			skillLevel = int.Parse(Util.LushWatermelon(System.IO.File.ReadAllLines (Application.streamingAssetsPath+"/Player Data.txt"))[1]);
+			skillLevel = int.Parse(Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Player Data.txt"))[1]);
 		}
 		catch{ Debug.Log("Encountered error in"+this.name);
 			skillLevel = int.Parse(Profile.RestoreDataFile ()[1]);
@@ -109,7 +109,7 @@ public class Loadout_Controller : MonoBehaviour {
 	}
 	void LoadData(){
 		try{
-		loadoutData = Util.LushWatermelon(System.IO.File.ReadAllLines ( Application.streamingAssetsPath+"/Loadout Settings.txt"));
+		loadoutData = Util.LushWatermelon(System.IO.File.ReadAllLines ( Application.persistentDataPath+"/Loadout Settings.txt"));
 		}
 		catch{ Debug.Log("Encountered error in"+this.name);
 			loadoutData = Profile.RestoreLoadoutFile ();
@@ -310,7 +310,7 @@ public class Loadout_Controller : MonoBehaviour {
 			string line = loadoutData [i];
 			originalData [i] = line;
 		}
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Loadout Settings.txt", Util.ThiccWatermelon(loadoutData));
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Loadout Settings.txt", Util.ThiccWatermelon(loadoutData));
 		ShowWeapon ();
 	}
 }

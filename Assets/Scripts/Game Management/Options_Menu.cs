@@ -19,7 +19,7 @@ public class Options_Menu : MonoBehaviour {
 	{
 		try
 		{
-			optionsInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Options Settings.txt"));
+			optionsInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Options Settings.txt"));
 			LoadSettings();
 		}
 		catch
@@ -163,7 +163,7 @@ public class Options_Menu : MonoBehaviour {
 		optionsInfo[3] = QualitySettings.GetQualityLevel().ToString();
 		optionsInfo[4] = Screen.fullScreen.ToString();
 
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsInfo) );
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsInfo) );
 
 	}
 }
