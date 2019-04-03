@@ -49,19 +49,29 @@ public class Poynting_Shield : MonoBehaviour {
 			}
 		}
 	}
+	public void ReactivateShieldActivater(){
+		StartCoroutine(ReactivateShield());
+	}
+	public void ShutdownShieldActivater(){
+		StartCoroutine(ShutdownShield());
+	}
+
 	public IEnumerator ShutdownShield()
 	{
+		
 		MeshRenderer renderer = GetComponent<MeshRenderer>();
 		Material mat = renderer.material;
-
-		while (mat.color.a>0f)
+		int _progress = renderer.sharedMaterial.GetInt("_Progress");
+		collider.enabled = false;
+		while (_progress>19f)
 		{
-			mat.color =new Color(mat.color.r, mat.color.g, mat.color.b, mat.color.a-0.01f);
-			renderer.material = mat;
-			yield return new WaitForSeconds(0.01f);
+			
+			_progress -= 20;
+			renderer.sharedMaterial.SetInt("_Progress", _progress);
+			yield return new WaitForSeconds(0.1f);
 		}
 		renderer.enabled = false;
-		collider.enabled = false;
+		
 
 	}
 	public IEnumerator ReactivateShield()
@@ -69,12 +79,12 @@ public class Poynting_Shield : MonoBehaviour {
 		MeshRenderer renderer = GetComponent<MeshRenderer>();
 		Material mat = renderer.material;
 		renderer.enabled = true;
-
-		while (mat.color.a<1f)
+		int _progress = renderer.sharedMaterial.GetInt("_Progress");
+		while (_progress<396f)
 		{
-			mat.color =new Color(mat.color.r, mat.color.g, mat.color.b, mat.color.a+0.01f);
-			renderer.material = mat;
-			yield return new WaitForSeconds(0.01f);
+			_progress+= 4;
+			renderer.sharedMaterial.SetInt("_Progress", _progress);
+			yield return new WaitForEndOfFrame();
 		}
 		collider.enabled = true;
 	}

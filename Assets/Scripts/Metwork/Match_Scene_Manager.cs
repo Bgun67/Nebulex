@@ -15,7 +15,8 @@ public class Match_Scene_Manager : MonoBehaviour
 	public enum MapType
 	{
 		Galaxy,
-		Tenningrad
+		Tenningrad,
+		LHXUltimaBase
 	}
 	[System.Serializable]
 public class MapClass

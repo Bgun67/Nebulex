@@ -18,8 +18,9 @@ public class Transistion : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 		
+		//Change to LHX Ultima
 		//This could go horribly wrong, if it does change it back to loadscenemode.single
-		loadOperation = SceneManager.LoadSceneAsync ("Space", LoadSceneMode.Single);
+		loadOperation = SceneManager.LoadSceneAsync ("LHX Ultima Base", LoadSceneMode.Single);
 		Application.backgroundLoadingPriority = ThreadPriority.Low;
 		loadOperation.allowSceneActivation = false;
 		loadOperation.priority = 0;

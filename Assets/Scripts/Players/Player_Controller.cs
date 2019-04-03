@@ -919,6 +919,8 @@ public class Player_Controller : MonoBehaviour {
 			refueling = true;
 		}
 		if (refueling == false) {
+			//Factor to make realistic rocket effects
+			float _fuelFactor = Mathf.Pow(2f*jetpackFuel - 2.6f, 4) * Mathf.Cos(1f + 2f*jetpackFuel - 2.6f) + 1;
 			rb.AddRelativeForce (0f, Time.deltaTime * 60f * forceFactor * z * 2f, 0f);
 			//rb.velocity = transform.up * z * 20f;
 			foreach (ParticleSystem jet in jetpackJets) {
@@ -985,7 +987,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 
 	public void SpaceMove(){
-		float factor = Time.deltaTime * forceFactor ;
+		float factor = Time.deltaTime * forceFactor;
 		if (Input.GetButtonDown("Sprint")&&(Time.time >jumpWait))
 		{
 			jumpWait = Time.time + 5f;
@@ -997,6 +999,57 @@ public class Player_Controller : MonoBehaviour {
 			rb.AddRelativeTorque(-v2 * factor/3f, h2*factor/3f, -h * factor/3f);
 			//transform.Rotate(Vector3.Lerp(Vector3.zero, new Vector3(-v2 * Time.deltaTime, h2 * Time.deltaTime, -h * Time.deltaTime),0.1f));
 			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 20f);
+		}
+
+		RaycastHit _hit;
+		//Raycast down to find ground to lock on to
+		if(Physics.Linecast(transform.position,transform.position- transform.up * 5.4f, out _hit)){
+			Vector3 _lerpedForward = Vector3.Slerp(transform.forward,Vector3.ProjectOnPlane(transform.forward, _hit.normal), 0.4f);
+			Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hit.normal, 0.4f);
+			rb.transform.rotation = Quaternion.LookRotation(_lerpedForward,_lerpedUp);
+			//rb.transform.rotation = Quaternion.AngleAxis(0f,_hit.normal);
+			//rb.transform.forward = -1f*Vector3.Cross(Vector3.Cross(_originalForward, _hit.normal), _hit.normal).normalized;
+			//rb.transform.LookAt(transform.position + -1f*Vector3.Cross(Vector3.Cross(_originalForward, _hit.normal), _hit.normal).normalized);
+			Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward, _hit.normal), Color.yellow);
+			Debug.DrawRay(_hit.point,_hit.normal, Color.green);
+			rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
+			rb.AddForceAtPosition((footRaycast.position - _hit.point).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hit.distance * _hit.distance)), footRaycast.position);
+			
+			float lookUpDownTime = anim.GetFloat("Look Speed");	
+			anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 2f*Time.deltaTime, -1f, 1f));
+			if (Time.frameCount % 4==0) {
+				if (Metwork.peerType != MetworkPeerType.Disconnected) {
+					netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
+				}
+			}
+			rb.angularDrag = 20f;
+			//Add torque to compensate for extra friction
+			rb.AddRelativeTorque(0, h2*factor/3f* 20f, 0);
+		}
+		else{
+			//Return to zero-g defaults
+			rb.constraints = RigidbodyConstraints.None;
+			rb.angularDrag = 1f;
+
+			//Try to right the player's body and camera (as in exit gravity)
+			Vector3 _aimDirection = mainCam.transform.forward;
+			float _originalLookTime = anim.GetFloat("Look Speed");
+			Vector3 _originalForward = transform.forward;
+		
+			float _counter = Vector3.Dot(_aimDirection.normalized,_originalForward.normalized);
+			if(_counter < 0.95f){
+				
+				//transform.LookAt(transform.position + Vector3.Slerp (_originalForward, _aimDirection,0.5f));
+				Vector3 _lerpedForward = Vector3.Slerp (_originalForward, _aimDirection,0.4f);
+				Vector3 _lerpedUp = Vector3.ProjectOnPlane(_lerpedForward, transform.up);
+				rb.transform.rotation = Quaternion.LookRotation(_lerpedForward, _lerpedUp);
+				anim.SetFloat ("Look Speed",Mathf.Lerp(_originalLookTime ,0.5f,_counter));
+				//rb.AddForce(Vector3.Lerp(Vector3.zero,Vector3.up * 9.81f,  _counter), ForceMode.Acceleration);
+			}
+
+				
+			
+			
 		}
 	}
 	public void AnimateMovement(){
