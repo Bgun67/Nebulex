@@ -990,7 +990,7 @@ public class Player_Controller : MonoBehaviour {
 
 	public void SpaceMove(){
 		float factor = Time.deltaTime * forceFactor;
-		if (Input.GetButtonDown("Sprint")&&(Time.time >jumpWait))
+		if (Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
 		{
 			jumpWait = Time.time + 5f;
 			rb.AddRelativeForce (new Vector3(0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f)*60f);
@@ -1044,9 +1044,7 @@ public class Player_Controller : MonoBehaviour {
 			Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hitNormal,0.3f*( 1f-_hitDistance/5.4f));
 			previousNormal = _lerpedUp;
 			rb.transform.rotation = Quaternion.LookRotation(_lerpedForward,_lerpedUp);
-			//rb.transform.rotation = Quaternion.AngleAxis(0f,_hit.normal);
-			//rb.transform.forward = -1f*Vector3.Cross(Vector3.Cross(_originalForward, _hit.normal), _hit.normal).normalized;
-			//rb.transform.LookAt(transform.position + -1f*Vector3.Cross(Vector3.Cross(_originalForward, _hit.normal), _hit.normal).normalized);
+			
 			Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
 			Debug.DrawRay(_hit.point,_hitNormal, Color.green);
 			rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
@@ -1062,6 +1060,10 @@ public class Player_Controller : MonoBehaviour {
 			rb.angularDrag = 20f;
 			//Add torque to compensate for extra friction
 			rb.AddRelativeTorque(0, h2*factor/3f* 20f, 0);
+			//Add left/right force (to convert the roll force to side-side)
+			
+			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 18f,0,0);
+			
 		}
 		else{
 			//Return to zero-g defaults
