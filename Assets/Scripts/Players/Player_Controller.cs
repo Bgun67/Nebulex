@@ -14,6 +14,8 @@ public class Player_Controller : MonoBehaviour {
 	public Rigidbody rb;
 	public Animator anim;
 
+	public LayerMask magBootsLayer;
+	Vector3 previousNormal = new Vector3(0,1,0);
 	public bool onLadder = false;
 	public float forceFactor;
 	public Player player;
@@ -996,24 +998,59 @@ public class Player_Controller : MonoBehaviour {
 		}
 		else
 		{
-			rb.AddRelativeTorque(-v2 * factor/3f, h2*factor/3f, -h * factor/3f);
+			rb.AddRelativeTorque(-v2 * factor/0.75f, h2*factor/2.5f, -h * factor/1.5f);
 			//transform.Rotate(Vector3.Lerp(Vector3.zero, new Vector3(-v2 * Time.deltaTime, h2 * Time.deltaTime, -h * Time.deltaTime),0.1f));
 			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 20f);
 		}
 
-		RaycastHit _hit;
+		RaycastHit _hit = new RaycastHit();
+		RaycastHit _hit2 = new RaycastHit();
+		RaycastHit _hit3 = new RaycastHit();
+
+
+		//Raycast from three different spots
+		Physics.SphereCast(transform.position,0.1f,- transform.up * 5.4f,out _hit,5.4f, magBootsLayer,  QueryTriggerInteraction.Ignore);
+		Physics.Linecast(transform.position - transform.right * 0.1f,transform.position+ transform.right * 0.15f- transform.up * 5.4f, out _hit2, magBootsLayer, QueryTriggerInteraction.Ignore);
+		Physics.Linecast(transform.position + transform.right * 0.1f,transform.position- transform.right * 0.15f- transform.up * 5.4f, out _hit3, magBootsLayer,  QueryTriggerInteraction.Ignore);
+		//Hit distance is zero if no hit
+		_hit.distance = _hit.distance == 0 ? 100000f : _hit.distance;
+		_hit2.distance = _hit2.distance == 0 ? 100000f : _hit2.distance;
+		_hit3.distance = _hit3.distance == 0 ? 100000f : _hit3.distance;
+
 		//Raycast down to find ground to lock on to
-		if(Physics.Linecast(transform.position,transform.position- transform.up * 5.4f, out _hit)){
-			Vector3 _lerpedForward = Vector3.Slerp(transform.forward,Vector3.ProjectOnPlane(transform.forward, _hit.normal), 0.4f);
-			Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hit.normal, 0.4f);
+		//Also check if the jump key is pressed
+		if(!Input.GetButton("Jump") && Input.GetAxis("Move Y") <= 0.05f && ( _hit.distance <= 5.4f || _hit2.distance <= 5.4f || _hit3.distance <= 5.4f)){
+			
+			//Take the weighted average of the three distances;
+			Vector3 _hitNormal = _hit.normal; //(_hit.normal / _hit.distance + _hit2.normal / _hit2.distance + _hit3.normal / _hit3.distance)/3f; 
+			
+			if(Vector3.Dot(_hitNormal.normalized, previousNormal.normalized)> 0.4f){
+
+				_hitNormal = Vector3.Slerp(previousNormal,_hitNormal, 0.5f);
+
+			}
+			else{
+				
+				_hitNormal = Vector3.Slerp(_hitNormal, previousNormal, 0.95f);
+			}
+			
+			
+			float _hitDistance = 1f / (1f/_hit.distance + 1f/_hit2.distance + 1f/_hit3.distance);
+			Vector3 _hitPoint = _hit.point;//(_hit.point / _hit.distance + _hit2.point / _hit2.distance + _hit3.point / _hit3.distance) / (_hitDistance); 
+			
+			//print(_hit.point + " " + _hitPoint);
+
+			Vector3 _lerpedForward = Vector3.Slerp(transform.forward,Vector3.ProjectOnPlane(transform.forward, _hitNormal), 0.3f * (1f-_hitDistance/5.4f));
+			Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hitNormal,0.3f*( 1f-_hitDistance/5.4f));
+			previousNormal = _lerpedUp;
 			rb.transform.rotation = Quaternion.LookRotation(_lerpedForward,_lerpedUp);
 			//rb.transform.rotation = Quaternion.AngleAxis(0f,_hit.normal);
 			//rb.transform.forward = -1f*Vector3.Cross(Vector3.Cross(_originalForward, _hit.normal), _hit.normal).normalized;
 			//rb.transform.LookAt(transform.position + -1f*Vector3.Cross(Vector3.Cross(_originalForward, _hit.normal), _hit.normal).normalized);
-			Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward, _hit.normal), Color.yellow);
-			Debug.DrawRay(_hit.point,_hit.normal, Color.green);
+			Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
+			Debug.DrawRay(_hit.point,_hitNormal, Color.green);
 			rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
-			rb.AddForceAtPosition((footRaycast.position - _hit.point).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hit.distance * _hit.distance)), footRaycast.position);
+			rb.AddForceAtPosition((transform.up).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)), footRaycast.position);
 			
 			float lookUpDownTime = anim.GetFloat("Look Speed");	
 			anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 2f*Time.deltaTime, -1f, 1f));
@@ -1030,6 +1067,9 @@ public class Player_Controller : MonoBehaviour {
 			//Return to zero-g defaults
 			rb.constraints = RigidbodyConstraints.None;
 			rb.angularDrag = 1f;
+			if(Input.GetButton("Jump")){
+				previousNormal = transform.up;
+			}
 
 			//Try to right the player's body and camera (as in exit gravity)
 			Vector3 _aimDirection = mainCam.transform.forward;
@@ -1037,13 +1077,14 @@ public class Player_Controller : MonoBehaviour {
 			Vector3 _originalForward = transform.forward;
 		
 			float _counter = Vector3.Dot(_aimDirection.normalized,_originalForward.normalized);
-			if(_counter < 0.95f){
+			if(_counter < 0.97f){
 				
 				//transform.LookAt(transform.position + Vector3.Slerp (_originalForward, _aimDirection,0.5f));
-				Vector3 _lerpedForward = Vector3.Slerp (_originalForward, _aimDirection,0.4f);
-				Vector3 _lerpedUp = Vector3.ProjectOnPlane(_lerpedForward, transform.up);
+				Vector3 _lerpedForward = Vector3.Slerp (_originalForward, _aimDirection,0.3f);
+				Vector3 _lerpedUp = Vector3.ProjectOnPlane(transform.up,_lerpedForward);
 				rb.transform.rotation = Quaternion.LookRotation(_lerpedForward, _lerpedUp);
-				anim.SetFloat ("Look Speed",Mathf.Lerp(_originalLookTime ,0.5f,_counter));
+				//anim.SetFloat ("Look Speed",Mathf.Lerp(_originalLookTime ,0.5f,_counter));
+				anim.SetFloat ("Look Speed", 0.5f - 0.8f * Vector3.SignedAngle(_originalForward,transform.forward,transform.right)/90f);
 				//rb.AddForce(Vector3.Lerp(Vector3.zero,Vector3.up * 9.81f,  _counter), ForceMode.Acceleration);
 			}
 
