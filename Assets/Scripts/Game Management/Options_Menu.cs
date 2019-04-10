@@ -13,6 +13,7 @@ public class Options_Menu : MonoBehaviour {
 	public Slider volumeSlider;
 	public Slider sensitivitySlider;
 	static string[] optionsInfo;
+	public GameObject controlsMenu;
 	//Runs when the program starts
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	static void LoadStaticData()
@@ -70,6 +71,10 @@ public class Options_Menu : MonoBehaviour {
 		MInput.useMouse = !MInput.useMouse;
 		UpdateControlText();
 		SaveData();
+	}
+	public void EditMappings() {
+		this.gameObject.SetActive(false);
+		controlsMenu.SetActive(true);
 	}
 	public void FullScreenClicked() {
 		if (!Screen.fullScreen)
