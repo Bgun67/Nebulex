@@ -35,14 +35,14 @@ public class Bullet_Controller : MonoBehaviour {
 		}
 		try {
 			try {
-				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, transform.position);
 
 
 			} catch {
 				try {
-					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID);
+					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, transform.position);
 				} catch {
-					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID, transform.position);
 				}
 			}
 		} catch {
@@ -76,12 +76,12 @@ public class Bullet_Controller : MonoBehaviour {
 		print (other.name);
 		try {
 			try {
-				other.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+				other.GetComponent<Damage> ().TakeDamage (damagePower, fromID, transform.position);
 			} catch {
 				try {
-					other.transform.parent.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+					other.transform.parent.GetComponent<Damage> ().TakeDamage (damagePower, fromID,transform.position);
 				} catch {
-					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID,transform.position);
 				}
 			}
 		} catch {

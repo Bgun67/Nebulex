@@ -118,7 +118,7 @@ public class Turret_Controller : MonoBehaviour {
 		if (player != null) {
 			Exit ();
 			player = FindObjectOfType<Game_Controller> ().GetPlayerFromNetID (id);
-			player.GetComponent<Damage> ().TakeDamage (1000, 0);
+			player.GetComponent<Damage> ().TakeDamage (1000, 0,transform.position);
 
 			//tmpPlayer.GetComponent<Player_Controller> ().Die ();
 

@@ -37,7 +37,7 @@ public class Pause_Menu : MonoBehaviour {
 	}
 	public void KillPlayer(){
 		MInput.inputLock = MInput.InputLock.None;
-		player.GetComponent<Damage> ().TakeDamage (200, 0);
+		player.GetComponent<Damage> ().TakeDamage (200, 0, transform.position);
 		this.gameObject.SetActive (false);
 	}
 	public void GoToMainMenu(){

@@ -25,6 +25,17 @@ public class UI_Manager : MonoBehaviour {
 	private Image secondaryPanel;
 	public GameObject[] pieQuadrants;
 
+	public Image[] damageIndicators;
+
+	[System.Serializable]
+	public class HitDirection{
+		public Vector3 normal;
+		public float time;
+		public Transform transform;
+
+	}
+	public List<HitDirection> hitDirections = new List<HitDirection>();
+
 
 	/// <summary>
 	/// Pie state keeps track of the status of the pie. Center is when no segment group is selected
@@ -57,7 +68,17 @@ public class UI_Manager : MonoBehaviour {
 	public static int GetPieChoice(){
 		return pieChoice;
 	}
-
+	void Update(){
+		for(int i = 0; i < damageIndicators.Length; i++){
+			Vector3 _projectedDirection = Vector3.ProjectOnPlane(hitDirections[i].normal, hitDirections[i].transform.up);
+			float _angle = -Vector3.SignedAngle(hitDirections[i].transform.forward, _projectedDirection, hitDirections[i].transform.up);
+			damageIndicators[i].transform.eulerAngles = new Vector3(0,0,_angle);
+			Color _color = damageIndicators[i].color;
+			_color.a = Mathf.Clamp01(1f - (Time.time - hitDirections[i].time)/3f);
+			damageIndicators[i].color = _color;
+			
+		}
+	}
 	void LateUpdate(){
 		pieChoice = -1;
 		if (Input.GetKeyDown (KeyCode.LeftControl)) {
@@ -215,6 +236,54 @@ public class UI_Manager : MonoBehaviour {
 			secondaryPanel.enabled = true;
 		}
 	}
+
+	public void UpdateHitDirection(Vector3 _direction, Transform _transform){
+		_direction = _direction.normalized;
+
+		
+
+		int _index = hitDirections.FindIndex(x => Vector3.Dot(x.normal,_direction) > 0.9f);
+
+		if(_index != -1){
+			hitDirections[_index].normal = _direction;
+			hitDirections[_index].time = Time.time;
+			hitDirections[_index].transform = _transform;
+		}
+		else{
+			hitDirections.Sort((x,y) => y.time.CompareTo(x.time));
+			hitDirections[0].normal = _direction;
+			hitDirections[0].time = Time.time;
+			hitDirections[0].transform = _transform;
+			Color _color = damageIndicators[0].color;
+			_color.a =1f;
+			damageIndicators[0].color = _color;
+			hitDirections.Sort((x,y) => x.time.CompareTo(y.time));
+
+		}
+
+		for(int i = 0; i < damageIndicators.Length; i++){
+			Vector3 _projectedDirection = Vector3.ProjectOnPlane(hitDirections[i].normal, hitDirections[i].transform.up);
+			float _angle = -Vector3.SignedAngle(hitDirections[i].transform.forward, _projectedDirection, hitDirections[i].transform.up);
+			damageIndicators[i].transform.eulerAngles = new Vector3(0,0,_angle);
+			Color _color = damageIndicators[i].color;
+			_color.a = Mathf.Clamp01(1f - (Time.time - hitDirections[i].time)/3f);
+			damageIndicators[i].color = _color;
+			
+
+			
+			
+		}
+
+		//StartCoroutine(CoHitDirection());
+		
+	}
+	//IEnumerator CoHitDirection(){
+	//	hitDirection.enabled = (true);
+		
+	//	yield return new WaitForSeconds (2.5f);
+	//	hitDirection.enabled = (false);
+
+	//}
 
 	void OnDestroy(){
 		UI_Manager._instance = null;

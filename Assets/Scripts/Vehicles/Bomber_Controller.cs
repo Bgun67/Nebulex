@@ -87,7 +87,7 @@ public class Bomber_Controller : MonoBehaviour
 		yield return new WaitForSeconds (60f);
 		while (damageScript.currentHealth > 0) {
 			if (this.player == null && Vector3.SqrMagnitude (damageScript.initialPosition.position - transform.position) > 500f) {
-				damageScript.TakeDamage (100, 0);
+				damageScript.TakeDamage (100, 0, transform.position);
 			} else {
 				addDamage = null;
 				break;
@@ -447,7 +447,7 @@ public class Bomber_Controller : MonoBehaviour
 		if (player != null) {
 			player.SetActive (true);
 			//player.GetComponent<Player_Controller> ().Invoke ("Die", 0.1f);
-			player.GetComponent<Damage> ().TakeDamage(1000,0);
+			player.GetComponent<Damage> ().TakeDamage(1000,0, transform.position);
 			Exit ();
 
 

@@ -278,7 +278,7 @@ public class Carrier_Controller : MonoBehaviour {
 		}
 		yield return new WaitForSeconds (1.5f);
 		foreach (Collider collider in Physics.OverlapSphere (this.transform.position, 200f)) {
-			collider.GetComponent<Damage> ().TakeDamage (100, 0);
+			collider.GetComponent<Damage> ().TakeDamage (100, 0, transform.position);
 		}
 		if (destroyAfterDeath) {
 			yield return new WaitForSeconds (4f);

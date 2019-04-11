@@ -311,7 +311,7 @@ public class Player_Controller : MonoBehaviour {
 			
 		}
 		if (Input.GetKeyDown ("/")) {
-			damageScript.TakeDamage (1000, 0);
+			damageScript.TakeDamage (1000, 0, transform.position);
 		}
 
 		if (MInput.GetButtonDown ("Switch Weapons")) {
@@ -692,7 +692,7 @@ public class Player_Controller : MonoBehaviour {
             if (initialTime - Time.time > 120f)
             {
                 Navigation.DeregisterTarget(_ship.transform);
-                damageScript.TakeDamage(10000, 0);
+                damageScript.TakeDamage(10000, 0, transform.position);
             }
         }
 
@@ -718,7 +718,7 @@ public class Player_Controller : MonoBehaviour {
 
 		if (airTime < 0) {
 			airTime = airTime + 1f;
-			damageScript.TakeDamage (10,0);
+			damageScript.TakeDamage (10,0, transform.position + transform.forward);
 
 		}
 	}
@@ -739,7 +739,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 		else
 		{
-			damageScript.TakeDamage(100, otherPlayerInt);
+			damageScript.TakeDamage(100, otherPlayerInt, otherPlayer.transform.position);
 		}
 	}
 

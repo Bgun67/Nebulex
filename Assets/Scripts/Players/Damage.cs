@@ -111,20 +111,27 @@ public class Damage : MonoBehaviour {
 		}
 	}
 
-	public void TakeDamage(int damageAmount, int fromID)
+	
+
+	public void TakeDamage(int damageAmount, int fromID, Vector3 _point)
 	{
 		
 		if (forwarder)
 		{
 			print("sendingDamage");
 
-			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID);
+			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _point);
 			return;
 		}
 		if (!CheckLocal() || isDead)
 		{
 			return;
 		}
+		if(netObj.isLocal && this.tag == "Player"){
+			
+			UI_Manager._instance.UpdateHitDirection(_point-this.transform.position, this.transform);
+		}
+
 		if(damageAmount >= damageThreshold){
 			currentHealth -= damageAmount;
 		}
@@ -190,7 +197,7 @@ public class Damage : MonoBehaviour {
 				{
 					break;
 				}
-				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID);
+				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID, _point);
 				j++;
 			}
 
@@ -266,6 +273,10 @@ public class Damage : MonoBehaviour {
 			impact.transform.forward = -collision.contacts [0].normal;
 			impact.transform.SetParent (this.transform);
 			Destroy (impact, 20f);
+
+			
+
+
 			return;
 		}
 
@@ -286,8 +297,10 @@ public class Damage : MonoBehaviour {
 			damage *= originalHealth/1000f;
 
 			if (damage > 0.01f*originalHealth) {
-				TakeDamage ((int)damage, 0);
+				TakeDamage ((int)damage, 0, collision.contacts[0].point);
 			}
+
+			
 		}
 	}
 	public void UpdateUI(){

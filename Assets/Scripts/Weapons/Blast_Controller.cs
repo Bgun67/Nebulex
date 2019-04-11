@@ -27,14 +27,14 @@ public class Blast_Controller : MonoBehaviour {
 					GameObject other = _hit.collider.gameObject;
 					try {
 						try {
-							other.transform.GetComponent<Damage> ().TakeDamage ((int)(damagePower / distance), fromID);
+							other.transform.GetComponent<Damage> ().TakeDamage ((int)(damagePower / distance), fromID,transform.position);
 
 						} catch {
 							try {
-								other.transform.parent.GetComponent<Damage> ().TakeDamage ((int)(damagePower / distance), fromID);
+								other.transform.parent.GetComponent<Damage> ().TakeDamage ((int)(damagePower / distance), fromID, transform.position);
 
 							} catch {
-								other.transform.root.GetComponent<Damage> ().TakeDamage ((int)(damagePower / distance), fromID);
+								other.transform.root.GetComponent<Damage> ().TakeDamage ((int)(damagePower / distance), fromID, transform.position);
 
 							}
 						}
