@@ -408,7 +408,7 @@ public class Player_Controller : MonoBehaviour {
 
 		}
 
-		blackoutShader.ChangeConciousness (airTime / suffocationTime * 9f + 1f);
+		blackoutShader.ChangeConciousness (airTime / suffocationTime * 20f + 1f);
 		if(netObj.isLocal){
 			breatheSound.volume = 1f-airTime / suffocationTime;
 		}
