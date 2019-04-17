@@ -438,7 +438,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 66, y: 0}
+  m_AnchoredPosition: {x: 94.28999, y: 0}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &78403023
@@ -514,8 +514,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 2471375fd777550408db4dccd9729263, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 0
   m_FillMethod: 4
@@ -1324,7 +1324,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 30}
+  m_SizeDelta: {x: 158.58, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &403301583
 CanvasRenderer:
@@ -2113,7 +2113,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 9.6, y: 0}
-  m_SizeDelta: {x: 819.2, y: 0.0000000037252903}
+  m_SizeDelta: {x: 1054.6, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &947458407
 MonoBehaviour:
@@ -2136,8 +2136,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
+  m_Type: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -2325,7 +2325,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 30}
+  m_SizeDelta: {x: 158.58, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1026873959
 MonoBehaviour:
@@ -2347,7 +2347,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 0
@@ -3301,7 +3301,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -65.8, y: 0}
+  m_AnchoredPosition: {x: -94.29, y: 0}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1219029494
@@ -3377,8 +3377,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 2471375fd777550408db4dccd9729263, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 0
   m_FillMethod: 4
@@ -3952,29 +3952,32 @@ MonoBehaviour:
   maps:
   - type: 0
     sceneName: Space
+    displayedName: Orbit
     mapImage: {fileID: 21300000, guid: e40ac0ae2c43cbe499501a0600aa71ef, type: 3}
     availableGames:
-    - DESTRUCTION
-    - TEAM DEATHMATCH
-    - CAPTURE THE FLAG
-    - ASTROBALL
-    - MELTDOWN
+    - Destruction
+    - Team Deathmatch
+    - Capture The Flag
+    - Astroball
+    - Meltdown
   - type: 1
     sceneName: Planet
+    displayedName: Tenninggrad
     mapImage: {fileID: 21300000, guid: 4a5fe4fe552de9b4db2115b69dec60d2, type: 3}
     availableGames:
     - 
-    - TEAM DEATHMATCH
-    - CAPTURE THE FLAG
-    - ASTROBALL
+    - Team Deathmatch
+    - Capture The Flag
+    - Astroball
     - 
   - type: 2
     sceneName: LHX Ultima Base
-    mapImage: {fileID: 21300000, guid: 4a5fe4fe552de9b4db2115b69dec60d2, type: 3}
+    displayedName: LHX Ultima Base
+    mapImage: {fileID: 21300000, guid: 3bac2246d927eea4a943707437fe01cd, type: 3}
     availableGames:
     - 
-    - TEAM DEATHMATCH
-    - CAPTURE THE FLAG
+    - Team Deathmatch
+    - Capture The Flag
     - 
     - 
   currentMapNum: 0
@@ -4659,8 +4662,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 219, y: -133}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -200, y: -66}
+  m_SizeDelta: {x: 192.39, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1918746613 stripped
 RectTransform:

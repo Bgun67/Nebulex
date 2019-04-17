@@ -177,7 +177,7 @@ public class Game_Controller : MonoBehaviour {
 		}
 		catch
 		{
-			print("Failed");
+			Debug.LogError("Failed to read data from Match Settings.txt");
 
 			string[] matchSettings = Profile.RestoreMatchFile();
 			this.matchLength = int.Parse(matchSettings[0]);

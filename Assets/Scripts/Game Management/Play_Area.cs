@@ -30,12 +30,12 @@ public class Play_Area : MonoBehaviour
             rbs.Remove(_otherRb);
         }
     }
-     void OnTriggerStay(Collider other){
+    /*void OnTriggerStay(Collider other){
         Rigidbody _otherRb = other.transform.root.GetComponent<Rigidbody>();
         if(rbs.Contains(_otherRb)){
             rbs.Remove(_otherRb);
         }
-    }
+    }*/
    
     
 }

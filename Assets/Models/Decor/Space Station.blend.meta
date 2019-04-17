@@ -211,6 +211,9 @@ ModelImporter:
     2100006: None__toilet-paper-albedo_tif
     2100008: Material__metal-galvanized-albedo_tif
     2100010: None__metal-galvanized-albedo_tif
+    2100012: None__Station-Body-AO
+    2100014: None__Station-Tanks-AO
+    2100016: None__Station-Airlock-Albedo
     2300000: BezierCurve
     2300002: BezierCurve_001
     2300004: BezierCurve_002
@@ -524,6 +527,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 0
@@ -548,6 +552,9 @@ ModelImporter:
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -562,7 +569,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

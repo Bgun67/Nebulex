@@ -2,7 +2,7 @@
 
 Shader "Unlit/Shield" {
 Properties {
-    _TintColor ("Tint Color", Color) = (0.5,0.5,0.5,0.5)
+    [HDR]_TintColor ("Tint Color", Color) = (0.5,0.5,0.5,0.5)
     _MainTex ("Particle Texture", 2D) = "white" {}
     _Progress("Progress", Range(0,1000)) = 0
     _UVSpeed("UVSpeed", Range(-5,5)) = 0
@@ -34,6 +34,7 @@ Category {
                 uint id : SV_VertexID;
                 fixed4 color : COLOR;
                 float4 texcoords : TEXCOORD0;
+                float3 normal : NORMAL;
             };
 
             struct v2f {
@@ -41,8 +42,9 @@ Category {
                 uint id: VertexID;
                 fixed4 color : COLOR;
                 float2 texcoord : TEXCOORD0;
-                float2 texcoord2 : TEXCOORD1;
+                //float2 texcoord2 : TEXCOORD1;
                 fixed blend : TEXCOORD2;
+                half3 normal :TEXCOORD1;
                 UNITY_FOG_COORDS(3)
                 
                 
@@ -61,8 +63,11 @@ Category {
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 
-                
+
+                o.normal = UnityObjectToWorldNormal(v.normal);;
                 o.color = v.color * _TintColor;
+
+                
                 
                 o.texcoord = TRANSFORM_TEX(v.texcoords.xy + float2(_Time.y * _UVSpeed,0),_MainTex);
                
@@ -77,9 +82,17 @@ Category {
                 
                 
                 fixed4 colA = tex2D(_MainTex, i.texcoord);
-                colA.a = 0;
-                fixed4 col = 2.0f * (i.color + 0.4 * colA);
+               // colA.a = 0;
                
+               float3 forward = mul((float3x3)unity_CameraToWorld, float3(0,0,1));
+
+                float3 normal = i.normal;
+                
+               
+                //fixed4 col = 2.0f * (i.color + 0.4 * colA);
+               fixed4 col = 2.0f * i.color * (colA * 0.5f) * float4(1,1,1, 1.3f-abs(dot(forward,normal)));
+               
+
                 //UNITY_APPLY_FOG(i.fogCoord, col);
                 clip((float)_Progress - (float)i.id - 1);
                 //clip((float)_Progress - (float)i.vertex.x);

@@ -142,6 +142,8 @@ public class Player_Controller : MonoBehaviour {
 
 	#endregion
 
+	//Used to lerp the space rotation
+	Vector3 previousRot = Vector3.zero;
 
 	public enum WalkState{
 		Walking,
@@ -989,6 +991,8 @@ public class Player_Controller : MonoBehaviour {
 	}
 
 	public void SpaceMove(){
+		
+		rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
 		float factor = Time.deltaTime * forceFactor;
 		if (Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
 		{
@@ -999,6 +1003,7 @@ public class Player_Controller : MonoBehaviour {
 		else
 		{
 			rb.AddRelativeTorque(-v2 * factor/0.75f, h2*factor/2.5f, -h * factor/1.5f);
+			
 			//transform.Rotate(Vector3.Lerp(Vector3.zero, new Vector3(-v2 * Time.deltaTime, h2 * Time.deltaTime, -h * Time.deltaTime),0.1f));
 			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 20f);
 		}
@@ -1019,7 +1024,7 @@ public class Player_Controller : MonoBehaviour {
 
 		//Raycast down to find ground to lock on to
 		//Also check if the jump key is pressed
-		if(!Input.GetButton("Jump") && Input.GetAxis("Move Y") <= 0.05f && ( _hit.distance <= 5.4f || _hit2.distance <= 5.4f || _hit3.distance <= 5.4f)){
+		if(Input.GetButton("Jump") && Input.GetAxis("Move Y") <= 0.05f && ( _hit.distance <= 5.4f || _hit2.distance <= 5.4f || _hit3.distance <= 5.4f)){
 			
 			//Take the weighted average of the three distances;
 			Vector3 _hitNormal = _hit.normal; //(_hit.normal / _hit.distance + _hit2.normal / _hit2.distance + _hit3.normal / _hit3.distance)/3f; 
@@ -1067,9 +1072,9 @@ public class Player_Controller : MonoBehaviour {
 		}
 		else{
 			//Return to zero-g defaults
-			rb.constraints = RigidbodyConstraints.None;
+			//rb.constraints = RigidbodyConstraints.None;
 			rb.angularDrag = 1f;
-			if(Input.GetButton("Jump")){
+			if(!Input.GetButton("Jump")){
 				previousNormal = transform.up;
 			}
 
@@ -1089,6 +1094,9 @@ public class Player_Controller : MonoBehaviour {
 				anim.SetFloat ("Look Speed", 0.5f - 0.8f * Vector3.SignedAngle(_originalForward,transform.forward,transform.right)/90f);
 				//rb.AddForce(Vector3.Lerp(Vector3.zero,Vector3.up * 9.81f,  _counter), ForceMode.Acceleration);
 			}
+			Vector3 _rotateAmount = Vector3.Lerp(previousRot,new Vector3(-v2 * 0.75f, h2*2.5f, -h * 1.5f) * 5f * Time.deltaTime * 30f, 0.05f);
+			rb.transform.Rotate(_rotateAmount);
+			previousRot = _rotateAmount;
 
 				
 			
@@ -1630,6 +1638,7 @@ public class Player_Controller : MonoBehaviour {
 			helmet.SetActive(false);
 		}
 	}
+	
 	public void UpdateUI(){
 		if(!netObj.isLocal){
 			return;

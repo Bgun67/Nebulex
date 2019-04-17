@@ -326,12 +326,12 @@ public class Ship_Controller : MonoBehaviour {
 
 		rb.velocity = Vector3.Lerp (rb.velocity, Vector3.zero, 0.005f);
 
-		if ((GetComponent<Raycaster>().target - this.transform.position).sqrMagnitude < 225f) {
+		/*if ((GetComponent<Raycaster>().target - this.transform.position).sqrMagnitude < 225f) {
 			rb.velocity = Vector3.zero;
 			isAI = false;
 			this.enabled = false;
 			Navigation.DeregisterTarget (this.transform);
-		}
+		}*/
 
 
 	}

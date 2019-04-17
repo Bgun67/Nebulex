@@ -45,7 +45,7 @@ public class Profile : MonoBehaviour {
 	}
 	public static string[] RestoreMatchFile(){
 		
-		string[] matchSettings = new string[]{ "1200", "Destruction" };
+		string[] matchSettings = new string[]{ "1200", "Destruction", "Space" };
 		System.IO.File.WriteAllLines (Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon (matchSettings));
 		return matchSettings;
 	}

@@ -10,23 +10,26 @@ public class Splash_Scene_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		StartCoroutine (DisplayStartText());
+		Invoke("NextScene", 6f);
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (Input.anyKeyDown) {
-			
+			if(SceneManager.GetActiveScene().name == "DiPolar Scene"){
+				SceneManager.LoadScene ("Splash Scene");
+			}
+			else{
 				SceneManager.LoadScene ("Start Scene");
+			}
 		}
 	}
-	IEnumerator DisplayStartText(){
-		
-		yield return new WaitForSeconds(0.1f);
-		while (true){
-			yield return new WaitForSeconds(0.5f);
-			startText.enabled = !startText.enabled;
+
+	void NextScene(){
+		if(SceneManager.GetActiveScene().name == "DiPolar Scene"){
+				SceneManager.LoadScene ("Splash Scene");
 		}
 	}
+	
 }

@@ -23,8 +23,9 @@ public class MapClass
 	{
 		public MapType type;
 		public string sceneName;
+		public string displayedName;
 		public Sprite mapImage;
-		public string[] availableGames = new string []{ "DESTRUCTION", "TEAM DEATHMATCH", "CAPTURE THE FLAG", "ASTROBALL", "MELTDOWN" };
+		public string[] availableGames = new string []{ "Destruction", "Team Deathmatch", "Capture The Flag", "Astroball", "Meltdown" };
 	}
 	//public Network netView;
 	public InputField gameNameInput;
@@ -97,6 +98,9 @@ public class MapClass
 		{
 			for (int i = 0; i < hostData.Length; i++)
 			{
+				if(hostData[i].comment == this.maps[currentMapNum].sceneName){
+					continue;
+				}
 				hostButtons[i].GetComponentInChildren<Text>().text = hostData[i].gameName + " " + hostData[i].gameType + " " + hostData[i].connectedPlayers + "/" + hostData[i].playerLimit;
 				hostButtons[i].gameObject.SetActive(true);
 			}
@@ -116,8 +120,10 @@ public class MapClass
 	{
 		System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
 			"1200",
-			_matchType
+			_matchType,
+			maps[currentMapNum].sceneName
 		}));
+		
 		connection.gameType = _matchType;
 
 		//Hide the buttons from the old match type
@@ -140,19 +146,24 @@ public class MapClass
 			currentMapNum = 0;
 		}
 		MapClass map = maps[currentMapNum];
-		mapNameText.text = map.type.ToString();
+		mapNameText.text = map.displayedName;
 		mapImage.sprite = map.mapImage;
 		ShowAllowedMatchTypes(map);
 	}
 	void ShowAllowedMatchTypes(MapClass _map)
 	{
+		bool _isNewTypeSet = false;
 		foreach (Button matchButton in matchTypeButtons)
 		{
 			matchButton.interactable = false;
 			 foreach (string availableGame in _map.availableGames)
 			{
-			 	if (matchButton.GetComponentInChildren<Text>().text == availableGame)
+			 	if (matchButton.GetComponentInChildren<Text>().text.ToLower() == availableGame.ToLower())
 				{
+					if(!_isNewTypeSet){
+						ChangeMatchType(availableGame);
+						_isNewTypeSet = true;
+					}
 					matchButton.interactable = true;
 				}
 			}
@@ -178,7 +189,8 @@ public class MapClass
 		Metwork.onPlayerConnected += OnMetPlayerConnected;
 		System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
 			"1200",
-			hostData[index].gameType
+			hostData[index].gameType,
+			maps[currentMapNum].sceneName
 		}));
 		connection.gameType = hostData[index].gameType;
 		connection.gameName = hostData[index].gameName;
@@ -253,6 +265,7 @@ public class MapClass
 
 		if (gameNameInput.text != "")
 		{
+			connection.comment = maps[currentMapNum].sceneName;
 			connection.gameName = gameNameInput.text;
 			if (testing)
 			{
