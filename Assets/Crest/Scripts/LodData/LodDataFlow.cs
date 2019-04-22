@@ -7,13 +7,17 @@ namespace Crest
     /// <summary>
     /// A persistent flow simulation that moves around with a displacement LOD. The input is fully combined water surface shape.
     /// </summary>
-    public class LodDataFlow : LodDataPersistent
+    public class LodDataFlow : LodData
     {
         public override SimType LodDataType { get { return SimType.Flow; } }
-        protected override string ShaderSim { get { return "Ocean/Shape/Sim/Flow"; } }
         public override RenderTextureFormat TextureFormat { get { return RenderTextureFormat.RGHalf; } }
-        protected override Camera[] SimCameras { get { return OceanRenderer.Instance.Builder._camsFlow; } }
+        public override CameraClearFlags CamClearFlags { get { return CameraClearFlags.Color; } }
+        public override RenderTexture DataTexture { get { return Cam.targetTexture; } }
 
+        [SerializeField]
+        protected SimSettingsFlow _settings;
+        public override void UseSettings(SimSettingsBase settings) { _settings = settings as SimSettingsFlow; }
+        public SimSettingsFlow Settings { get { return _settings as SimSettingsFlow; } }
         public override SimSettingsBase CreateDefaultSettings()
         {
             var settings = ScriptableObject.CreateInstance<SimSettingsFlow>();
@@ -21,18 +25,16 @@ namespace Crest
             return settings;
         }
 
-        protected override void SetAdditionalSimParams(Material simMaterial)
+        protected override void Start()
         {
-            base.SetAdditionalSimParams(simMaterial);
+            base.Start();
 
-            simMaterial.SetFloat("_FlowSpeed", Settings._flowSpeed);
-
-            // assign animated waves - to slot 1 current frame data
-            OceanRenderer.Instance.Builder._lodDataAnimWaves[LodTransform.LodIndex].BindResultData(1, simMaterial);
-            // assign sea floor depth - to slot 1 current frame data
-            OceanRenderer.Instance.Builder._lodDataAnimWaves[LodTransform.LodIndex].LDSeaDepth.BindResultData(1, simMaterial);
+#if UNITY_EDITOR
+            if (!OceanRenderer.Instance.OceanMaterial.IsKeywordEnabled("_FLOW_ON"))
+            {
+                Debug.LogWarning("Flow is not enabled on the current ocean material and will not be visible.", this);
+            }
+#endif
         }
-
-        SimSettingsFlow Settings { get { return _settings as SimSettingsFlow; } }
     }
 }

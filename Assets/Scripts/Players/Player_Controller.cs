@@ -1386,7 +1386,7 @@ public class Player_Controller : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			_counter += 0.1f;
 		}
-
+		
 		transform.forward = newForwardVector;
 
 

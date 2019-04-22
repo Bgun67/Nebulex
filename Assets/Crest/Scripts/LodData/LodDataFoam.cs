@@ -12,13 +12,25 @@ namespace Crest
         public override SimType LodDataType { get { return SimType.Foam; } }
         protected override string ShaderSim { get { return "Ocean/Shape/Sim/Foam"; } }
         public override RenderTextureFormat TextureFormat { get { return RenderTextureFormat.RHalf; } }
-        protected override Camera[] SimCameras { get { return OceanRenderer.Instance.Builder._camsFoam; } }
+        protected override Camera[] SimCameras { get { return OceanRenderer.Instance._camsFoam; } }
 
         public override SimSettingsBase CreateDefaultSettings()
         {
             var settings = ScriptableObject.CreateInstance<SimSettingsFoam>();
             settings.name = SimName + " Auto-generated Settings";
             return settings;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+
+#if UNITY_EDITOR
+            if (!OceanRenderer.Instance.OceanMaterial.IsKeywordEnabled("_FOAM_ON"))
+            {
+                Debug.LogWarning("Foam is not enabled on the current ocean material and will not be visible.", this);
+            }
+#endif
         }
 
         protected override void SetAdditionalSimParams(Material simMaterial)
@@ -31,10 +43,23 @@ namespace Crest
             simMaterial.SetFloat("_ShorelineFoamMaxDepth", Settings._shorelineFoamMaxDepth);
             simMaterial.SetFloat("_ShorelineFoamStrength", Settings._shorelineFoamStrength);
 
+            var animWaves = OceanRenderer.Instance._lodDataAnimWaves;
+            int lodIdx = LodTransform.LodIndex;
+
             // assign animated waves - to slot 1 current frame data
-            OceanRenderer.Instance.Builder._lodDataAnimWaves[LodTransform.LodIndex].BindResultData(1, simMaterial);
+            animWaves[lodIdx].BindResultData(1, simMaterial);
+
             // assign sea floor depth - to slot 1 current frame data
-            OceanRenderer.Instance.Builder._lodDataAnimWaves[LodTransform.LodIndex].LDSeaDepth.BindResultData(1, simMaterial);
+            if (OceanRenderer.Instance._createSeaFloorDepthData)
+            {
+                animWaves[lodIdx].LDSeaDepth.BindResultData(1, simMaterial);
+            }
+
+            // assign flow - to slot 1 current frame data
+            if (OceanRenderer.Instance._createFlowSim)
+            {
+                animWaves[lodIdx].LDFlow.BindResultData(1, simMaterial);
+            }
         }
 
         SimSettingsFoam Settings { get { return _settings as SimSettingsFoam; } }

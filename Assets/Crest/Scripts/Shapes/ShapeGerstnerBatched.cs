@@ -26,6 +26,8 @@ namespace Crest
 
         public int _randomSeed = 0;
 
+        float _minSpatialLengthForArea = 0;
+
         // data for all components
         float[] _wavelengths;
         float[] _amplitudes;
@@ -49,7 +51,7 @@ namespace Crest
             Attached
         }
 
-        CmdBufStatus[] _cmdBufWaveAdded = new CmdBufStatus[16];
+        CmdBufStatus[] _cmdBufWaveAdded = new CmdBufStatus[LodData.MAX_LOD_COUNT];
         CmdBufStatus _cmdBufBigWavesAdded = CmdBufStatus.NoStatus;
 
         // scratch data used by batching code
@@ -65,7 +67,13 @@ namespace Crest
 
         void Start()
         {
-            if( _spectrum == null )
+            if (OceanRenderer.Instance == null)
+            {
+                enabled = false;
+                return;
+            }
+
+            if ( _spectrum == null )
             {
                 _spectrum = ScriptableObject.CreateInstance<OceanWaveSpectrum>();
                 _spectrum.name = "Default Waves (auto)";
@@ -82,18 +90,20 @@ namespace Crest
 
             Random.state = randomStateBkp;
 
+            _minSpatialLengthForArea = 0f;
+
             UpdateAmplitudes();
 
             ReportMaxDisplacement();
 
             // this is done every frame for flexibility/convenience, in case the lod count changes
-            if (_materials == null || _materials.Length != OceanRenderer.Instance.Builder.CurrentLodCount)
+            if (_materials == null || _materials.Length != OceanRenderer.Instance.CurrentLodCount)
             {
                 InitMaterials();
             }
 
             // this is done every frame for flexibility/convenience, in case the lod count changes
-            if (_renderWaveShapeCmdBufs == null || _renderWaveShapeCmdBufs.Length != OceanRenderer.Instance.Builder.CurrentLodCount - 1)
+            if (_renderWaveShapeCmdBufs == null || _renderWaveShapeCmdBufs.Length != OceanRenderer.Instance.CurrentLodCount - 1)
             {
                 InitCommandBuffers();
             }
@@ -130,7 +140,7 @@ namespace Crest
             }
 
             // num octaves plus one, because there is an additional last bucket for large wavelengths
-            _materials = new Material[OceanRenderer.Instance.Builder.CurrentLodCount];
+            _materials = new Material[OceanRenderer.Instance.CurrentLodCount];
 
             for (int i = 0; i < _materials.Length; i++)
             {
@@ -169,7 +179,7 @@ namespace Crest
                         int ei = numInBatch - vi * 4;
                         UpdateBatchScratchData._wavelengthsBatch[vi][ei] = wl;
                         UpdateBatchScratchData._ampsBatch[vi][ei] = amp;
-                        UpdateBatchScratchData._anglesBatch[vi][ei] = 
+                        UpdateBatchScratchData._anglesBatch[vi][ei] =
                             Mathf.Deg2Rad * (OceanRenderer.Instance._windDirectionAngle + _angleDegs[firstComponent + i]);
                         UpdateBatchScratchData._phasesBatch[vi][ei] = _phases[firstComponent + i];
                         UpdateBatchScratchData._chopScalesBatch[vi][ei] = _spectrum._chopScales[(firstComponent + i) / _componentsPerOctave];
@@ -214,7 +224,10 @@ namespace Crest
             material.SetFloat("_Chop", _spectrum._chop);
             material.SetFloat("_Gravity", OceanRenderer.Instance.Gravity * _spectrum._gravityScale);
 
-            OceanRenderer.Instance.Builder._lodDataAnimWaves[lodIdx].LDSeaDepth.BindResultData(0, material, false);
+            if (OceanRenderer.Instance._createSeaFloorDepthData)
+            {
+                OceanRenderer.Instance._lodDataAnimWaves[lodIdx].LDSeaDepth.BindResultData(0, material, false);
+            }
 
             return numInBatch;
         }
@@ -228,14 +241,14 @@ namespace Crest
             int componentIdx = 0;
 
             // seek forward to first wavelength that is big enough to render into current LODs
-            float minWl = OceanRenderer.Instance.Builder._lodDataAnimWaves[0].MaxWavelength() / 2f;
+            float minWl = OceanRenderer.Instance._lodDataAnimWaves[0].MaxWavelength() / 2f;
             while (_wavelengths[componentIdx] < minWl && componentIdx < _wavelengths.Length)
             {
                 componentIdx++;
             }
 
             // batch together appropriate wavelengths for each lod, except the last lod, which are handled separately below
-            for (int lod = 0; lod < OceanRenderer.Instance.Builder.CurrentLodCount - 1; lod++, minWl *= 2f)
+            for (int lod = 0; lod < OceanRenderer.Instance.CurrentLodCount - 1; lod++, minWl *= 2f)
             {
                 int startCompIdx = componentIdx;
                 while(componentIdx < _wavelengths.Length && _wavelengths[componentIdx] < 2f * minWl)
@@ -255,8 +268,8 @@ namespace Crest
             }
 
             // the last batch handles waves for the last lod, and waves that did not fit in the last lod
-            int lastBatchCount = UpdateBatch(OceanRenderer.Instance.Builder.CurrentLodCount - 1, componentIdx, _wavelengths.Length, _materials[OceanRenderer.Instance.Builder.CurrentLodCount - 1]);
-            UpdateBatch(OceanRenderer.Instance.Builder.CurrentLodCount - 2, componentIdx, _wavelengths.Length, _materialBigWaveTransition);
+            int lastBatchCount = UpdateBatch(OceanRenderer.Instance.CurrentLodCount - 1, componentIdx, _wavelengths.Length, _materials[OceanRenderer.Instance.CurrentLodCount - 1]);
+            UpdateBatch(OceanRenderer.Instance.CurrentLodCount - 2, componentIdx, _wavelengths.Length, _materialBigWaveTransition);
 
             if (lastBatchCount > 0)
             {
@@ -276,7 +289,7 @@ namespace Crest
         {
             if(_cmdBufWaveAdded[lodIndex] != CmdBufStatus.Attached)
             {
-                OceanRenderer.Instance.Builder._camsAnimWaves[lodIndex].AddCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderWaveShapeCmdBufs[lodIndex]);
+                OceanRenderer.Instance._camsAnimWaves[lodIndex].AddCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderWaveShapeCmdBufs[lodIndex]);
                 _cmdBufWaveAdded[lodIndex] = CmdBufStatus.Attached;
             }
         }
@@ -285,7 +298,7 @@ namespace Crest
         {
             if (_cmdBufWaveAdded[lodIndex] != CmdBufStatus.NotAttached)
             {
-                OceanRenderer.Instance.Builder._camsAnimWaves[lodIndex].RemoveCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderWaveShapeCmdBufs[lodIndex]);
+                OceanRenderer.Instance._camsAnimWaves[lodIndex].RemoveCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderWaveShapeCmdBufs[lodIndex]);
                 _cmdBufWaveAdded[lodIndex] = CmdBufStatus.NotAttached;
             }
         }
@@ -294,10 +307,10 @@ namespace Crest
         {
             if(_cmdBufBigWavesAdded != CmdBufStatus.Attached)
             {
-                int lastLod = OceanRenderer.Instance.Builder.CurrentLodCount - 1;
-                OceanRenderer.Instance.Builder._camsAnimWaves[lastLod].AddCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderBigWavelengthsShapeCmdBuf);
+                int lastLod = OceanRenderer.Instance.CurrentLodCount - 1;
+                OceanRenderer.Instance._camsAnimWaves[lastLod].AddCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderBigWavelengthsShapeCmdBuf);
                 // the second-to-last lod will transition content into it from the last lod
-                OceanRenderer.Instance.Builder._camsAnimWaves[lastLod - 1].AddCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderBigWavelengthsShapeCmdBufTransition);
+                OceanRenderer.Instance._camsAnimWaves[lastLod - 1].AddCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderBigWavelengthsShapeCmdBufTransition);
 
                 _cmdBufBigWavesAdded = CmdBufStatus.Attached;
             }
@@ -307,10 +320,10 @@ namespace Crest
         {
             if (_cmdBufBigWavesAdded != CmdBufStatus.NotAttached)
             {
-                int lastLod = OceanRenderer.Instance.Builder.CurrentLodCount - 1;
-                OceanRenderer.Instance.Builder._camsAnimWaves[lastLod].RemoveCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderBigWavelengthsShapeCmdBuf);
+                int lastLod = OceanRenderer.Instance.CurrentLodCount - 1;
+                OceanRenderer.Instance._camsAnimWaves[lastLod].RemoveCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderBigWavelengthsShapeCmdBuf);
                 // the second-to-last lod will transition content into it from the last lod
-                OceanRenderer.Instance.Builder._camsAnimWaves[lastLod - 1].RemoveCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderBigWavelengthsShapeCmdBufTransition);
+                OceanRenderer.Instance._camsAnimWaves[lastLod - 1].RemoveCommandBuffer(CameraEvent.BeforeForwardAlpha, _renderBigWavelengthsShapeCmdBufTransition);
 
                 _cmdBufBigWavesAdded = CmdBufStatus.NotAttached;
             }
@@ -318,10 +331,10 @@ namespace Crest
 
         void RemoveDrawShapeCommandBuffers()
         {
-            if (OceanRenderer.Instance == null || OceanRenderer.Instance.Builder == null || _renderBigWavelengthsShapeCmdBuf == null || _renderBigWavelengthsShapeCmdBufTransition == null)
+            if (OceanRenderer.Instance == null || _renderBigWavelengthsShapeCmdBuf == null || _renderBigWavelengthsShapeCmdBufTransition == null)
                 return;
 
-            for (int lod = 0; lod < OceanRenderer.Instance.Builder.CurrentLodCount - 1; lod++)
+            for (int lod = 0; lod < OceanRenderer.Instance.CurrentLodCount - 1; lod++)
             {
                 RemoveDrawShapeCommandBuffer(lod);
             }
@@ -334,7 +347,7 @@ namespace Crest
             Matrix4x4 drawMatrix = Matrix4x4.TRS(Vector3.zero, Quaternion.AngleAxis(90f, Vector3.right), Vector3.one * 100000f);
 
             // see the command buffer helpers below for comments about how the command buffers are arranged
-            _renderWaveShapeCmdBufs = new CommandBuffer[OceanRenderer.Instance.Builder.CurrentLodCount - 1];
+            _renderWaveShapeCmdBufs = new CommandBuffer[OceanRenderer.Instance.CurrentLodCount - 1];
             for (int i = 0; i < _renderWaveShapeCmdBufs.Length; i++)
             {
                 _renderWaveShapeCmdBufs[i] = new CommandBuffer();
@@ -344,7 +357,7 @@ namespace Crest
 
             _renderBigWavelengthsShapeCmdBuf = new CommandBuffer();
             _renderBigWavelengthsShapeCmdBuf.name = "ShapeGerstnerBatchedBigWavelengths";
-            _renderBigWavelengthsShapeCmdBuf.DrawMesh(_rasterMesh, drawMatrix, _materials[OceanRenderer.Instance.Builder.CurrentLodCount - 1]);
+            _renderBigWavelengthsShapeCmdBuf.DrawMesh(_rasterMesh, drawMatrix, _materials[OceanRenderer.Instance.CurrentLodCount - 1]);
 
             _renderBigWavelengthsShapeCmdBufTransition = new CommandBuffer();
             _renderBigWavelengthsShapeCmdBufTransition.name = "ShapeGerstnerBatchedBigWavelengthsTrans";
@@ -374,39 +387,24 @@ namespace Crest
             return cp;
         }
 
-        public Vector3 GetPositionDisplacedToPosition(ref Vector3 displacedWorldPos, float toff)
+        public bool SampleDisplacement(ref Vector3 i_worldPos, out Vector3 o_displacement, float minSpatialLength = 0f)
         {
-            // fpi - guess should converge to location that displaces to the target position
-            Vector3 guess = displacedWorldPos;
-            // 2 iterations was enough to get very close when chop = 1, added 2 more which should be
-            // sufficient for most applications. for high chop values or really stormy conditions there may
-            // be some error here. one could also terminate iteration based on the size of the error, this is
-            // worth trying but is left as future work for now.
-            for (int i = 0; i < 4; i++)
+            o_displacement = Vector3.zero;
+
+            if (_amplitudes == null)
             {
-                Vector3 error = guess + SampleDisplacement(ref guess, toff) - displacedWorldPos;
-                guess.x -= error.x;
-                guess.z -= error.z;
+                return false;
             }
 
-            guess.y = OceanRenderer.Instance.SeaLevel;
-
-            return guess;
-        }
-
-        public Vector3 SampleDisplacement(ref Vector3 worldPos, float toff)
-        {
-            if (_amplitudes == null) return Vector3.zero;
-
-            Vector2 pos = new Vector2(worldPos.x, worldPos.z);
-            float mytime = Time.time + toff;
+            Vector2 pos = new Vector2(i_worldPos.x, i_worldPos.z);
+            float mytime = OceanRenderer.Instance.CurrentTime;
             float windAngle = OceanRenderer.Instance._windDirectionAngle;
-
-            Vector3 result = Vector3.zero;
+            float minWavelength = minSpatialLength / 2f;
 
             for (int j = 0; j < _amplitudes.Length; j++)
             {
                 if (_amplitudes[j] <= 0.001f) continue;
+                if (_wavelengths[j] < minWavelength) continue;
 
                 float C = ComputeWaveSpeed(_wavelengths[j]);
 
@@ -418,24 +416,103 @@ namespace Crest
                 float x = Vector2.Dot(D, pos);
                 float t = k * (x + C * mytime) + _phases[j];
                 float disp = -_spectrum._chop * Mathf.Sin(t);
-                result += _amplitudes[j] * new Vector3(
+                o_displacement += _amplitudes[j] * new Vector3(
                     D.x * disp,
                     Mathf.Cos(t),
                     D.y * disp
                     );
             }
 
-            return result;
+            return true;
+        }
+
+        public bool GetSurfaceVelocity(ref Vector3 i_worldPos, out Vector3 surfaceVel, float minSpatialLength)
+        {
+            surfaceVel = Vector3.zero;
+
+            if (_amplitudes == null) return false;
+
+            Vector2 pos = new Vector2(i_worldPos.x, i_worldPos.z);
+            float mytime = OceanRenderer.Instance.CurrentTime;
+            float windAngle = OceanRenderer.Instance._windDirectionAngle;
+            float minWaveLength = minSpatialLength / 2f;
+
+            for (int j = 0; j < _amplitudes.Length; j++)
+            {
+                if (_amplitudes[j] <= 0.001f) continue;
+                if (_wavelengths[j] < minWaveLength) continue;
+
+                float C = ComputeWaveSpeed(_wavelengths[j]);
+
+                // direction
+                Vector2 D = new Vector2(Mathf.Cos((windAngle + _angleDegs[j]) * Mathf.Deg2Rad), Mathf.Sin((windAngle + _angleDegs[j]) * Mathf.Deg2Rad));
+                // wave number
+                float k = 2f * Mathf.PI / _wavelengths[j];
+
+                float x = Vector2.Dot(D, pos);
+                float t = k * (x + C * mytime) + _phases[j];
+                float disp = -_spectrum._chop * k * C * Mathf.Cos(t);
+                surfaceVel += _amplitudes[j] * new Vector3(
+                    D.x * disp,
+                    -k * C * Mathf.Sin(t),
+                    D.y * disp
+                    );
+            }
+
+            return true;
+        }
+
+        public void SampleDisplacementVel(ref Vector3 i_worldPos, out Vector3 o_displacement, out bool o_displacementValid, out Vector3 o_displacementVel, out bool o_velValid, float minSpatialLength)
+        {
+            o_displacementValid = SampleDisplacement(ref i_worldPos, out o_displacement, minSpatialLength);
+            o_velValid = GetSurfaceVelocity(ref i_worldPos, out o_displacementVel, minSpatialLength);
+        }
+
+        public bool SampleHeight(ref Vector3 i_worldPos, out float height, float minSpatialLength = 0f)
+        {
+            height = 0f;
+
+            Vector3 posFlatland = i_worldPos;
+            posFlatland.y = OceanRenderer.Instance.transform.position.y;
+
+            Vector3 undisplacedPos;
+            if (!ComputeUndisplacedPosition(ref posFlatland, out undisplacedPos, minSpatialLength))
+                return false;
+
+            Vector3 disp;
+            if (!SampleDisplacement(ref undisplacedPos, out disp, minSpatialLength))
+                return false;
+
+            height = posFlatland.y + disp.y;
+
+            return true;
+        }
+
+        public bool PrewarmForSamplingArea(Rect areaXZ)
+        {
+            // We're not bothered with areas as the waves are infinite, so just reset the cached min wavelength.
+            _minSpatialLengthForArea = 0f;
+            return true;
+        }
+        public bool PrewarmForSamplingArea(Rect areaXZ, float minSpatialLength)
+        {
+            // Compute min wavelength based on the min spatial length of the subject. Don't bother computing waves that cross
+            // the object more than twice.
+            _minSpatialLengthForArea = minSpatialLength;
+            return true;
         }
 
         // compute normal to a surface with a parameterization - equation 14 here: http://mathworld.wolfram.com/NormalVector.html
-        public Vector3 GetNormal(ref Vector3 worldPos, float toff)
+        public bool SampleNormal(ref Vector3 in__undisplacedWorldPos, out Vector3 o_normal, float minSpatialLength)
         {
-            if (_amplitudes == null) return Vector3.zero;
+            o_normal = Vector3.zero;
 
-            var pos = new Vector2(worldPos.x, worldPos.z);
-            float mytime = Time.time + toff;
+            if (_amplitudes == null) return false;
+
+            var pos = new Vector2(in__undisplacedWorldPos.x, in__undisplacedWorldPos.z);
+            float mytime = OceanRenderer.Instance.CurrentTime;
             float windAngle = OceanRenderer.Instance._windDirectionAngle;
+            float minWaveLength = minSpatialLength / 2f;
 
             // base rate of change of our displacement function in x and z is unit
             var delfdelx = Vector3.right;
@@ -444,6 +521,7 @@ namespace Crest
             for (int j = 0; j < _amplitudes.Length; j++)
             {
                 if (_amplitudes[j] <= 0.001f) continue;
+                if (_wavelengths[j] < minWaveLength) continue;
 
                 float C = ComputeWaveSpeed(_wavelengths[j]);
 
@@ -463,110 +541,23 @@ namespace Crest
                 delfdelz += _amplitudes[j] * new Vector3(D.x * dispz, D.y * dispy, D.y * dispz);
             }
 
-            return Vector3.Cross(delfdelz, delfdelx).normalized;
-        }
+            o_normal = Vector3.Cross(delfdelz, delfdelx).normalized;
 
-        public float SampleHeight(ref Vector3 worldPos, float toff)
-        {
-            Vector3 posFlatland = worldPos;
-            posFlatland.y = OceanRenderer.Instance.transform.position.y;
-
-            Vector3 undisplacedPos = GetPositionDisplacedToPosition(ref posFlatland, toff);
-
-            return posFlatland.y + SampleDisplacement(ref undisplacedPos, toff).y;
-        }
-
-        public Vector3 GetSurfaceVelocity(ref Vector3 worldPos, float toff)
-        {
-            if (_amplitudes == null) return Vector3.zero;
-
-            Vector2 pos = new Vector2(worldPos.x, worldPos.z);
-            float mytime = Time.time + toff;
-            float windAngle = OceanRenderer.Instance._windDirectionAngle;
-
-            Vector3 result = Vector3.zero;
-
-            for (int j = 0; j < _amplitudes.Length; j++)
-            {
-                if (_amplitudes[j] <= 0.001f) continue;
-
-                float C = ComputeWaveSpeed(_wavelengths[j]);
-
-                // direction
-                Vector2 D = new Vector2(Mathf.Cos((windAngle + _angleDegs[j]) * Mathf.Deg2Rad), Mathf.Sin((windAngle + _angleDegs[j]) * Mathf.Deg2Rad));
-                // wave number
-                float k = 2f * Mathf.PI / _wavelengths[j];
-
-                float x = Vector2.Dot(D, pos);
-                float t = k * (x + C * mytime) + _phases[j];
-                float disp = -_spectrum._chop * k * C * Mathf.Cos(t);
-                result += _amplitudes[j] * new Vector3(
-                    D.x * disp,
-                    -k * C * Mathf.Sin(t),
-                    D.y * disp
-                    );
-            }
-
-            return result;
-        }
-
-        public bool SampleDisplacement(ref Vector3 worldPos, ref Vector3 displacement)
-        {
-            displacement = SampleDisplacement(ref worldPos, 0f);
             return true;
         }
 
-        public bool SampleHeight(ref Vector3 worldPos, ref float height)
-        {
-            height = SampleHeight(ref worldPos, 0f);
-            return true;
-        }
-
-        public void PrewarmForSamplingArea(Rect areaXZ)
-        {
-            // nothing to do here
-        }
-        public void PrewarmForSamplingArea(Rect areaXZ, float minSpatialLength)
-        {
-            // nothing to do here
-            OnDisable();
-
-        }
-        public bool SampleDisplacementInArea(ref Vector3 worldPos, ref Vector3 displacement)
-        {
-            // revert to usual function
-            return SampleDisplacement(ref worldPos, ref displacement);
-        }
-        public bool SampleHeightInArea(ref Vector3 worldPos, ref float height)
-        {
-            // revert to usual function
-            return SampleHeight(ref worldPos, ref height);
-        }
-
-        public bool SampleNormal(ref Vector3 undisplacedWorldPos, ref Vector3 normal)
-        {
-            normal = GetNormal(ref undisplacedWorldPos, 0f);
-            return true;
-        }
-        public bool SampleNormal(ref Vector3 undisplacedWorldPos, ref Vector3 normal, float minSpatialLength)
-        {
-            Debug.LogWarning("ShapeGerstnerBatched: minSpatialLength not implemented for GetNormal(), this parameter will be ignored.", this);
-            normal = GetNormal(ref undisplacedWorldPos, 0f);
-            return true;
-        }
-
-        public bool ComputeUndisplacedPosition(ref Vector3 worldPos, ref Vector3 undisplacedWorldPos)
+        public bool ComputeUndisplacedPosition(ref Vector3 i_worldPos, out Vector3 undisplacedWorldPos, float minSpatialLength)
         {
             // fpi - guess should converge to location that displaces to the target position
-            Vector3 guess = worldPos;
+            Vector3 guess = i_worldPos;
             // 2 iterations was enough to get very close when chop = 1, added 2 more which should be
             // sufficient for most applications. for high chop values or really stormy conditions there may
             // be some error here. one could also terminate iteration based on the size of the error, this is
             // worth trying but is left as future work for now.
-            Vector3 disp = Vector3.zero;
-            for (int i = 0; i < 4 && SampleDisplacement(ref guess, ref disp); i++)
+            Vector3 disp;
+            for (int i = 0; i < 4 && SampleDisplacement(ref guess, out disp, minSpatialLength); i++)
             {
-                Vector3 error = guess + disp - worldPos;
+                Vector3 error = guess + disp - i_worldPos;
                 guess.x -= error.x;
                 guess.z -= error.z;
             }
@@ -575,6 +566,26 @@ namespace Crest
             undisplacedWorldPos.y = OceanRenderer.Instance.SeaLevel;
 
             return true;
+        }
+
+        public bool SampleDisplacementInArea(ref Vector3 i_worldPos, out Vector3 o_displacement)
+        {
+            return SampleDisplacement(ref i_worldPos, out o_displacement, _minSpatialLengthForArea);
+        }
+
+        public void SampleDisplacementVelInArea(ref Vector3 i_worldPos, out Vector3 o_displacement, out bool o_displacementValid, out Vector3 o_displacementVel, out bool o_velValid)
+        {
+            SampleDisplacementVel(ref i_worldPos, out o_displacement, out o_displacementValid, out o_displacementVel, out o_velValid, _minSpatialLengthForArea);
+        }
+
+        public bool SampleNormalInArea(ref Vector3 in__undisplacedWorldPos, out Vector3 o_normal)
+        {
+            return SampleNormal(ref in__undisplacedWorldPos, out o_normal, _minSpatialLengthForArea);
+        }
+
+        public AvailabilityResult CheckAvailability(ref Vector3 i_worldPos, float minSpatialLength)
+        {
+            return _amplitudes == null ? AvailabilityResult.NotInitialisedYet : AvailabilityResult.DataAvailable;
         }
     }
 }

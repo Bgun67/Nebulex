@@ -115,6 +115,7 @@ public class Damage : MonoBehaviour {
 
 	public void TakeDamage(int damageAmount, int fromID, Vector3 _point)
 	{
+		print("Taking Damage");
 		
 		if (forwarder)
 		{
@@ -127,9 +128,13 @@ public class Damage : MonoBehaviour {
 		{
 			return;
 		}
-		if(netObj.isLocal && this.tag == "Player"){
-			
+		if(this.tag == "Player"){
+			if (gameController.statsArray[fromID].team == gameController.statsArray[netObj.netID].team)
+			{
+				return;
+			}
 			UI_Manager._instance.UpdateHitDirection(_point-this.transform.position, this.transform);
+			
 		}
 
 		if(damageAmount >= damageThreshold){
@@ -151,6 +156,7 @@ public class Damage : MonoBehaviour {
 			
 				if (this.tag == "Player")
 				{
+					
 					gameController.AddKill(fromID);
 					gameController.AddDeath(netObj.owner);
 

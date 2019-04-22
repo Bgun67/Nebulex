@@ -10,7 +10,7 @@ namespace Crest
     /// </summary>
     public interface IOceanScheduler
     {
-        void ApplySchedule(OceanBuilder ocean);
+        void ApplySchedule(OceanRenderer ocean);
     }
 
     /// <summary>
@@ -21,10 +21,17 @@ namespace Crest
     {
         public bool _warnIfMainCameraDepthLessThan0 = true;
 
-        public virtual void ApplySchedule(OceanBuilder ocean)
+        public virtual void ApplySchedule(OceanRenderer ocean)
         {
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // --- Dynamic waves camera renders first
+            // --- Flow camera renders first
+            for (int i = 0; i < ocean.CurrentLodCount && ocean._camsFlow[i] != null; i++)
+            {
+                ocean._camsFlow[i].depth = -50 - i;
+            }
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // --- Dynamic waves camera renders second
             for (int i = 0; i < ocean.CurrentLodCount && ocean._camsDynWaves[i] != null; i++)
             {
                 ocean._camsDynWaves[i].depth = -40 - i;
