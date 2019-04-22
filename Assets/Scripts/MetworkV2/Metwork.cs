@@ -499,6 +499,8 @@ public class Metwork:MonoBehaviour {
 	{
 		Debug.Log("Cleanup!");
 
+
+
 		pIsServer = false;
 		mConnections = new List<ConnectionId>();
 		Cleanup();
@@ -719,6 +721,13 @@ public class Metwork:MonoBehaviour {
 							Debug.Log(evt.MessageData);
 							break;
 						}
+
+						//Uncomment this if you want to deactivate the loading panel this way
+						/*Match_Scene_Manager _manager = this.GetComponent<Match_Scene_Manager>();
+						if(_manager != null){
+							_manager.loadingPanel.SetActive(false);
+						}*/
+
 						pPeerType = MetworkPeerType.Disconnected;
 						//Outgoing connection failed. Inform the user.
 						Append("Connection failed");
@@ -1272,16 +1281,6 @@ public class Metwork:MonoBehaviour {
 		mMetwork.Connect(_room);
 		print("Connecting to " + _room + " ...");
 		roomName = _room;
-		/*foreach (MetworkView _view in metViews.Values) {
-			try{
-				Debug.Log ("Metwork view: " + _view.viewID);
-			}
-			catch{
-				Debug.Log ("Unsucessful");
-			}
-		}
-		Debug.Log (metViews.Count);*/
-		//Debug.Log (GameObject.FindObjectsOfType<MetworkView> ().Length);
 	}
 
 
