@@ -3640,7 +3640,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.20392157}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -15914,7 +15914,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.20392157}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -20418,6 +20418,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4286637082970894}
+  - {fileID: 4133896901133310973}
   m_Father: {fileID: 4132394559212446}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20844,9 +20845,9 @@ MonoBehaviour:
   anim: {fileID: 95818475718642482}
   magBootsLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   onLadder: 0
-  forceFactor: 3000
+  forceFactor: 2200
   inVehicle: 0
   footRaycast: {fileID: 4682091218351686}
   maxStepHeight: 2
@@ -20864,7 +20865,7 @@ MonoBehaviour:
   - {fileID: 198659550789455852}
   refueling: 0
   airTime: 0
-  suffocationTime: 30
+  suffocationTime: 90
   damageScript: {fileID: 114518248454381344}
   ladder: {fileID: 0}
   kills: 0
@@ -20872,8 +20873,24 @@ MonoBehaviour:
   playerName: Fred
   ragdoll: {fileID: 1333036756815864, guid: b30042f9b29c8ab498091d0074f93a31, type: 3}
   knifePosition: 1
-  knifeAnim: {fileID: 0}
+  knifeAnim: {fileID: 6377626030590673445}
   team: 0
+  teamMaterials:
+  - {fileID: 2100000, guid: 28488d9009630ef439324b276fed7ac6, type: 2}
+  - {fileID: 2100000, guid: 9426603634ffa0d428909270e40dfcd4, type: 2}
+  jerseyMeshes:
+  - {fileID: 137884858888063136}
+  - {fileID: 137370333754873242}
+  - {fileID: 137673913952385258}
+  - {fileID: 137365577506938044}
+  - {fileID: 137273150800717958}
+  - {fileID: 137480732329806754}
+  - {fileID: 137822449286761510}
+  - {fileID: 137245958128095882}
+  - {fileID: 137513764707327680}
+  - {fileID: 137041046159147642}
+  - {fileID: 137112186199894672}
+  - {fileID: 137048652060817426}
   pieQuadrants:
   - {fileID: 0}
   - {fileID: 0}
@@ -20888,7 +20905,6 @@ MonoBehaviour:
   minimapUI: {fileID: 0}
   nameTextMesh: {fileID: 102574867340404876}
   UI_ammoText: {fileID: 0}
-  fuelBar: {fileID: 0}
   blackoutShader: {fileID: 114518945735932212}
   pauseMenu: {fileID: 0}
   helmet: {fileID: 1422727278368344}
@@ -20896,7 +20912,11 @@ MonoBehaviour:
   minimapCam: {fileID: 1683813926893388}
   iconCamera: {fileID: 1844786432300740}
   walkSound: {fileID: 82177542381058764}
-  walkClips: []
+  walkClips:
+  - {fileID: 8300000, guid: efc3a3c96e3961944ac7d1fd519ce54f, type: 3}
+  - {fileID: 8300000, guid: 40377f076cf325d478c386e778f8b572, type: 3}
+  - {fileID: 8300000, guid: 8e20f53f2f69f4e419fcccdb99b3f328, type: 3}
+  - {fileID: 8300000, guid: 53fb6e0b27eea5041a289e99b0faa799, type: 3}
   breatheSound: {fileID: 82566036147691700}
   fireScript: {fileID: 0}
   loadoutSettings: []
@@ -20913,9 +20933,10 @@ MonoBehaviour:
     type: 3}
   secondaryLocalPosition: {x: -0.12, y: -0.23, z: -0.05}
   secondaryLocalRotation: {x: 14.13, y: -13.1, z: -8.2}
-  grenadePrefab: {fileID: 0}
-  grenadeModelPrefab: {fileID: 0}
-  grenadeSpawn: {fileID: 0}
+  grenadePrefab: {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965,
+    type: 3}
+  grenadeModelPrefab: {fileID: 100000, guid: be7ef7df2c9824143a6ffe770d4ce193, type: 3}
+  grenadeSpawn: {fileID: 4133896901133310973}
   grappleActive: 0
 --- !u!1 &1517102025802952
 GameObject:
@@ -21360,7 +21381,7 @@ GameObject:
   - component: {fileID: 81211099928833766}
   - component: {fileID: 114518945735932212}
   - component: {fileID: 114370055474099900}
-  - component: {fileID: 114118980269592692}
+  - component: {fileID: 822781699824278331}
   m_Layer: 0
   m_Name: Player Camera
   m_TagString: MainCamera
@@ -21468,7 +21489,7 @@ MonoBehaviour:
   targetImage: {fileID: 21300000, guid: 81dba0ea77f58a54d80b1abe78e16375, type: 3}
   arrowImage: {fileID: 21300000, guid: 2a09e1df1ddf32243861804afe6929b1, type: 3}
   targetsToRegister: []
---- !u!114 &114118980269592692
+--- !u!114 &822781699824278331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21477,12 +21498,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1588855270228332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad300a2039718fc49b28db017c242ba5, type: 3}
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetImage: {fileID: 21300000, guid: 81dba0ea77f58a54d80b1abe78e16375, type: 3}
-  arrowImage: {fileID: 21300000, guid: 2a09e1df1ddf32243861804afe6929b1, type: 3}
-  targetsToRegister: []
+  profile: {fileID: 11400000, guid: ec703ac0d115ff44e80097fdc1ebea42, type: 2}
 --- !u!1 &1608526058415096
 GameObject:
   m_ObjectHideFlags: 0
@@ -23082,7 +23101,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: cd25d80d03a864fdd90534b28f15208a, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23120,7 +23139,7 @@ TextMesh:
   m_FontSize: 0
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: cd25d80d03a864fdd90534b28f15208a, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190335
@@ -30851,6 +30870,36 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.16424541, y: 0.0044060946, z: 0.17071772}
     m_Extent: {x: 0.37086624, y: 0.93226874, z: 0.743304}
   m_DirtyAABB: 0
+--- !u!1 &2911673191819755963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4133896901133310973}
+  m_Layer: 0
+  m_Name: Grenade Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4133896901133310973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2911673191819755963}
+  m_LocalRotation: {x: 0.121410556, y: 0.036032196, z: 0.1355872, w: 0.98263794}
+  m_LocalPosition: {x: -0.392, y: -0.144, z: -0.286}
+  m_LocalScale: {x: 5.0000105, y: 5.0000114, z: 5}
+  m_Children: []
+  m_Father: {fileID: 4373999865693330}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4856520215039870864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30935,6 +30984,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfb1b612e20ad524cbce361d8d2d1e1d, type: 3}
+--- !u!95 &6377626030590673445 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2009786799900116405, guid: cfb1b612e20ad524cbce361d8d2d1e1d,
+    type: 3}
+  m_PrefabInstance: {fileID: 4856520215039870864}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6377626030583229893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2009786799907809877, guid: cfb1b612e20ad524cbce361d8d2d1e1d,

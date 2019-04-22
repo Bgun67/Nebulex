@@ -77,10 +77,10 @@ public class Game_Controller : MonoBehaviour {
 	public int scoreB;
 	[Header( "UI Objects")]
 	public Text UI_timeText;
-	public Text UI_homeScoreText;
-	public Image UI_homeColour;
-	public Text UI_awayScoreText;
-	public Image UI_awayColour;
+	Text UI_homeScoreText;
+	Image UI_homeColour;
+	Text UI_awayScoreText;
+	Image UI_awayColour;
 	public Text UI_fpsText;
 	public GameObject eventSystem;
 	public GameObject gameplayUI;
@@ -145,6 +145,14 @@ public class Game_Controller : MonoBehaviour {
 	public void Start()
 	{
 		_instance = GameObject.FindObjectOfType<Game_Controller>();
+
+		UI_homeScoreText = UI_Manager._instance.UI_HomeScoreText;
+		UI_awayScoreText = UI_Manager._instance.UI_AwayScoreText;
+
+		UI_homeColour = UI_Manager._instance.UI_HomeColour;
+		UI_awayColour = UI_Manager._instance.UI_AwayColour;
+
+
 		netView = this.GetComponent<MetworkView>();
 		GetLocalPlayer();
 		
@@ -277,7 +285,13 @@ public class Game_Controller : MonoBehaviour {
 			int team = (i+1) % 2;
 			statsArray [_id].team = team;
 			if (playerObjects.Count > i) {
-				GetPlayerFromNetID (_id).GetComponent<Player_Controller> ().team = team;
+				Player_Controller _player = GetPlayerFromNetID (_id).GetComponent<Player_Controller> ();
+				_player.team = team;
+
+				//Set the colour highlights of the player's "jersey" meshes
+				for(int j = 0; j < _player.jerseyMeshes.Length; j++){
+					_player.jerseyMeshes[j].sharedMaterial = _player.teamMaterials[team];
+				}
 			}
 		}
 	}

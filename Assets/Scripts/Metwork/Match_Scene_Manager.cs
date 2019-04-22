@@ -98,7 +98,8 @@ public class MapClass
 		{
 			for (int i = 0; i < hostData.Length; i++)
 			{
-				if(hostData[i].comment == this.maps[currentMapNum].sceneName){
+				if(hostData[i].comment != this.maps[currentMapNum].sceneName){
+					print(hostData[i].comment + " " + this.maps[currentMapNum].sceneName);
 					continue;
 				}
 				hostButtons[i].GetComponentInChildren<Text>().text = hostData[i].gameName + " " + hostData[i].gameType + " " + hostData[i].connectedPlayers + "/" + hostData[i].playerLimit;
@@ -198,9 +199,12 @@ public class MapClass
 		try
 		{
 			loadingPanel.SetActive(true);
+			
 
 		}
-		catch { }
+		catch { 
+			Debug.LogWarning("Loading panel could not be activated");
+		}
 
 		//Moved from 8 to 12 seconds to increase likelyhood of properly connecting
 		Invoke("DeactivateLoadPanel", 12f);
@@ -210,6 +214,8 @@ public class MapClass
 	}
 	void DeactivateLoadPanel()
 	{
+		//TODO: Reload the scene when the network connection fails! or make workaround! 
+		Debug.Log("Showing loading panel");
 		//unsecure, but should not fail
 		loadingPanel.SetActive(false);
 	}

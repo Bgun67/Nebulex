@@ -7,8 +7,18 @@ public class UI_Manager : MonoBehaviour {
 
 	public static UI_Manager _instance;
 
+	public Pause_Menu pauseMenu;
+
 	public RectTransform healthBox;
 	public RectTransform healthBar;
+	
+	public RectTransform fuelBar;
+
+	public Text UI_HomeScoreText;
+	public Text UI_AwayScoreText;
+
+	public Image UI_HomeColour;
+	public Image UI_AwayColour;
 
 	//first
 	[SerializeField]
@@ -34,7 +44,7 @@ public class UI_Manager : MonoBehaviour {
 		public Transform transform;
 
 	}
-	public List<HitDirection> hitDirections = new List<HitDirection>();
+	List<HitDirection> hitDirections;
 
 
 	/// <summary>
@@ -62,7 +72,17 @@ public class UI_Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		UI_Manager._instance = this;	
+		UI_Manager._instance = this;
+
+		hitDirections = new List<HitDirection>();
+
+		//Temp first assign
+		HitDirection _tmpHitDir = new HitDirection();
+		_tmpHitDir.transform = this.transform;
+		for(int i = 0; i<damageIndicators.Length; i++){
+			hitDirections.Add(_tmpHitDir);
+		}
+
 	}
 
 	public static int GetPieChoice(){

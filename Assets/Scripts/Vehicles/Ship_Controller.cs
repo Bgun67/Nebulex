@@ -47,6 +47,7 @@ public class Ship_Controller : MonoBehaviour {
 	 float emptyTime; 
 	Damage damageScript;
 	bool landMode = false;
+	float getInTime = -1f;
 
 
 	// Use this for initialization
@@ -110,7 +111,7 @@ public class Ship_Controller : MonoBehaviour {
 		if (Input.GetButton ("Fire1")) {
 			Fire ();
 		}
-		if(Input.GetButtonDown("Use Item")){
+		if(Input.GetButtonDown("Use Item") && Time.time - getInTime > 1f){
 			Exit ();
 		}
 		if (Input.GetButtonDown("Jump"))
@@ -254,6 +255,11 @@ public class Ship_Controller : MonoBehaviour {
 		}
 	}
 
+	public void DisableAI(){
+		this.isAI = false;
+		Navigation.DeregisterTarget(this.transform);
+	}
+
 	void AI(){
 		Vector3 nextPosition;
 		if (route == null || route.Count <= 0) {
@@ -372,10 +378,12 @@ public class Ship_Controller : MonoBehaviour {
 		}
 
 		if (pilot.GetComponent<Metwork_Object> ().isLocal && this.player == null) {
+			this.DisableAI();
 			pilot.GetComponent<Player_Controller> ().GainAir ();
 			this.mainCamera.SetActive (true);
 			GetComponent<Damage> ().healthShown = true;
 			GetComponent<Damage> ().UpdateUI ();
+			getInTime = Time.time;
 			//carrierPointer.SetActive (true);
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netObj.netView.RPC ("RPC_Activate", MRPCMode.AllBuffered, pilot.GetComponent<Metwork_Object> ().owner);
@@ -395,8 +403,7 @@ public class Ship_Controller : MonoBehaviour {
 			netObj = this.GetComponent<Metwork_Object> ();
 		}
 
-		Navigation.DeregisterTarget (this.transform);
-		isAI = false;
+		this.DisableAI();
 		anim = this.GetComponent<Animator> ();
 
 		try{

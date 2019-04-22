@@ -58,6 +58,9 @@ public class Player_Controller : MonoBehaviour {
 	/// The player's team. 0 being team A and 1 being team B
 	/// </summary>
 	public int team;
+	public Material[] teamMaterials;
+	public SkinnedMeshRenderer[] jerseyMeshes;
+
 	#region CrouchHeights
 	float capsule_originalHeight1 = 1f;
 	float capsule_originalHeight2 = 1f;
@@ -84,7 +87,7 @@ public class Player_Controller : MonoBehaviour {
 	public TextMesh nameTextMesh;
 	public Text UI_ammoText;
 	bool keypadPushed;
-	public RectTransform fuelBar;
+	
 	public Blackout_Effects blackoutShader;
 	public Pause_Menu pauseMenu;
 
@@ -643,7 +646,7 @@ public class Player_Controller : MonoBehaviour {
         {
             if (ship.target == this.transform)
             {
-                ship.target = ship.transform;
+                ship.DisableAI();
                 continue;
             }
             if (ship.player == null && !ship.isTransport && !ship.isAI)
@@ -661,6 +664,8 @@ public class Player_Controller : MonoBehaviour {
             print("All ships occupied");
             return;
         }
+
+		
 
 
         if (Metwork.peerType != MetworkPeerType.Disconnected)
@@ -686,10 +691,10 @@ public class Player_Controller : MonoBehaviour {
 
         while (_ship.isAI)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(5f);
             if ((_ship.transform.position - previousPosition).sqrMagnitude < 25f)
             {
-                _ship.target = _ship.transform;
+                _ship.DisableAI();
             }
             if (initialTime - Time.time > 120f)
             {
@@ -753,8 +758,8 @@ public class Player_Controller : MonoBehaviour {
 	public void Pause()
 	{
 		Cursor.lockState = CursorLockMode.None;
-		pauseMenu.gameObject.SetActive(true);
-		pauseMenu.Pause(this.gameObject);
+		UI_Manager._instance.pauseMenu.gameObject.SetActive(true);
+		UI_Manager._instance.pauseMenu.Pause(this.gameObject);
 	}
 	[MRPC]
 	public void RPC_Sit(bool sitMode){
@@ -993,6 +998,7 @@ public class Player_Controller : MonoBehaviour {
 	public void SpaceMove(){
 		
 		rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+		
 		float factor = Time.deltaTime * forceFactor;
 		if (Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
 		{
@@ -1102,6 +1108,8 @@ public class Player_Controller : MonoBehaviour {
 			
 			
 		}
+		//Clamp the maximum speed
+		rb.velocity = Vector3.Lerp(rb.velocity, Vector3.ClampMagnitude(rb.velocity,7f), 0.3f);
 	}
 	public void AnimateMovement(){
 		anim.SetFloat ("H Movement", h*moveFactor);
@@ -1646,12 +1654,12 @@ public class Player_Controller : MonoBehaviour {
 		if (fireScript != null) {
 			UI_Manager._instance.UpdateAmmo(fireScript.magAmmo, fireScript.magSize, fireScript.totalAmmo);
 		}
-		fuelBar.localScale = new Vector2(1f, jetpackFuel / 2f);
+		UI_Manager._instance.fuelBar.localScale = new Vector2(1f, jetpackFuel / 2f);
 		blackoutShader.ChangeBlood (Mathf.Clamp01(1-damageScript.currentHealth/100f));
 
 
 	}
-
+	
 	public IEnumerator ShowMinimap(){
 		
 		while (minimapRunning) {
