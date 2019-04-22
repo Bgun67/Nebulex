@@ -34,10 +34,6 @@ public class Game_Controller : MonoBehaviour {
 
 
 	public PlayerStats[] statsArray = new PlayerStats [32];
-	public bool dreadNaughtEnabled = true;
-	public GameObject dreadNaught;
-	public float dreadNaughtSpawnWait;
-	public float nextDreadnaughtTime;
 
 
 	public List<Transform> playerSpawnTransforms = new List<Transform> ();
@@ -157,8 +153,6 @@ public class Game_Controller : MonoBehaviour {
 		GetLocalPlayer();
 		
 		Physics.autoSimulation = false;
-
-		nextDreadnaughtTime = dreadNaughtSpawnWait;
 		//eventSystem.SetActive (false);
 		RPC_SetTeam();
 
@@ -329,10 +323,7 @@ public class Game_Controller : MonoBehaviour {
 		}
 
 		fps = 1f / Time.deltaTime;
-		if (dreadNaughtEnabled &&matchLength-currentTime >= nextDreadnaughtTime) {
-			SpawnDreadnaught (shipDisplacement);
-			nextDreadnaughtTime += matchLength;
-		}
+		
 		switch (gameMode) {
 		case "Destruction":
 			scoreA = carrierADmg.currentHealth;
@@ -630,11 +621,7 @@ public class Game_Controller : MonoBehaviour {
 			scoreB++;
 		}
 	}
-	public void SpawnDreadnaught(Vector3 displacement){
-		dreadNaught.SetActive (true);
-		dreadNaught.transform.position = shipOneTransform.position + displacement+new Vector3(0f,0f,-600f);
-		dreadNaught.transform.LookAt (shipOneTransform.position + displacement);
-	}
+
 	public void RestartGame()
 	{
 		print("Loading Spawn Scene");

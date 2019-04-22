@@ -18,7 +18,7 @@ namespace Crest
         static bool _applyPiersonMoskowitzSpectrum = false;
         static bool _applyJONSWAPSpectrum = false;
 
-        /*public override void OnInspectorGUI()
+/*        public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 

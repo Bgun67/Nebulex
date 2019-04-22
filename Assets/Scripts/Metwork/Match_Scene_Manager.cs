@@ -99,7 +99,6 @@ public class MapClass
 			for (int i = 0; i < hostData.Length; i++)
 			{
 				if(hostData[i].comment != this.maps[currentMapNum].sceneName){
-					print(hostData[i].comment + " " + this.maps[currentMapNum].sceneName);
 					continue;
 				}
 				hostButtons[i].GetComponentInChildren<Text>().text = hostData[i].gameName + " " + hostData[i].gameType + " " + hostData[i].connectedPlayers + "/" + hostData[i].playerLimit;

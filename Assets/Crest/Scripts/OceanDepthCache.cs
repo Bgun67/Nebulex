@@ -17,9 +17,6 @@ namespace Crest
         [Tooltip("The layers to render into the depth cache.")]
         public string[] _layerNames;
 
-        [FormerlySerializedAs("_layerName"), Tooltip("Please use the Layer Names field instead.")]
-        public string _layerNameDEPRECATED;
-
         [Tooltip("The resolution of the cached depth - lower will be more efficient.")]
         public int _resolution = 512;
 
@@ -36,14 +33,15 @@ namespace Crest
 
         void Start()
         {
-            if(!string.IsNullOrEmpty(_layerNameDEPRECATED))
-            {
-                Debug.LogWarning("The Layer Name field is deprecated - please use the Layer Names list instead.", this);
-            }
-
             if (_layerNames == null || _layerNames.Length < 1)
             {
                 Debug.LogError("At least one layer name to render into the cache must be provided.", this);
+                enabled = false;
+                return;
+            }
+
+            if (OceanRenderer.Instance == null)
+            {
                 enabled = false;
                 return;
             }
@@ -72,7 +70,8 @@ namespace Crest
                 int layerIdx = LayerMask.NameToLayer(layer);
                 if (string.IsNullOrEmpty(layer) || layerIdx == -1)
                 {
-                    Debug.LogError("Invalid layer specified: \"" + layer + "\"", this);
+                    Debug.LogError("OceanDepthCache: Invalid layer specified: \"" + layer + 
+                        "\". Please specify valid layers for objects/geometry that provide the ocean depth.", this);
                 }
                 else
                 {
@@ -83,7 +82,7 @@ namespace Crest
             {
                 Debug.LogError("No valid layers for populating depth cache, aborting.", this);
             }
-
+            
             if (_cache == null)
             {
                 _cache = new RenderTexture(_resolution, _resolution, 0);
@@ -100,10 +99,11 @@ namespace Crest
                 _drawCacheQuad.name = "Draw_" + _cache.name;
                 _drawCacheQuad.transform.SetParent(transform, false);
                 _drawCacheQuad.transform.localEulerAngles = 90f * Vector3.right;
-                _drawCacheQuad.AddComponent<RenderOceanDepth>();
+                var rod = _drawCacheQuad.AddComponent<RenderOceanDepth>();
                 var qr = _drawCacheQuad.GetComponent<Renderer>();
                 qr.material = new Material(Shader.Find("Ocean/Ocean Depth Cache"));
                 qr.material.mainTexture = _cache;
+                rod.SetMaterial(qr.material);
                 qr.enabled = false;
             }
 
@@ -118,7 +118,8 @@ namespace Crest
                 _camDepthCache.targetTexture = _cache;
                 _camDepthCache.cullingMask = layerMask;
                 _camDepthCache.clearFlags = CameraClearFlags.SolidColor;
-                _camDepthCache.backgroundColor = Color.red * 10000f;
+                // 0 means '0m above very deep sea floor'
+                _camDepthCache.backgroundColor = Color.black;
                 _camDepthCache.enabled = false;
                 _camDepthCache.allowMSAA = false;
                 // I'd prefer to destroy the cam object, but I found sometimes (on first start of editor) it will fail to render.

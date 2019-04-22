@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
+
+using UnityEngine;
 
 namespace Crest
 {
@@ -17,6 +19,12 @@ namespace Crest
 
         private void Start()
         {
+            if (OceanRenderer.Instance == null)
+            {
+                enabled = false;
+                return;
+            }
+
             _rend = GetComponent<Renderer>();
             _mesh = GetComponent<MeshFilter>().mesh;
             _boundsLocal = _mesh.bounds;
@@ -39,7 +47,7 @@ namespace Crest
 
                 _rend.GetPropertyBlock(_mpb);
 
-                var ldaws = OceanRenderer.Instance.Builder._lodDataAnimWaves;
+                var ldaws = OceanRenderer.Instance._lodDataAnimWaves;
                 ldaws[idx].BindResultData(0, _mpb);
                 int idx1 = Mathf.Min(idx + 1, ldaws.Length - 1);
                 ldaws[idx1].BindResultData(1, _mpb);

@@ -77,21 +77,35 @@ namespace Crest
             float normalScrollSpeed1 = Mathf.Pow( Mathf.Log( 1f + 4f * squareSize ) * mul, pow );
             _mpb.SetVector( "_GeomData", new Vector3( squareSize, normalScrollSpeed0, normalScrollSpeed1 ) );
 
-            // assign shape textures to shader
-            // this relies on the render textures being init'd in CreateAssignRenderTexture::Awake().
-            var shapeCams = OceanRenderer.Instance.Builder._lodDataAnimWaves;
-            shapeCams[_lodIndex].BindResultData(0, _mpb);
-            shapeCams[_lodIndex].LDFoam.BindResultData(0, _mpb);
+            // assign lod data to ocean shader
+            var shapeCams = OceanRenderer.Instance._lodDataAnimWaves;
 
-            if(OceanRenderer.Instance.Builder._createFlowSim) shapeCams[_lodIndex].LDFlow.BindResultData(0, _mpb);
-            shapeCams[_lodIndex].LDSeaDepth.BindResultData(0, _mpb);
+            shapeCams[_lodIndex].BindResultData(0, _mpb);
+            if (OceanRenderer.Instance._createFlowSim) shapeCams[_lodIndex].LDFlow.BindResultData(0, _mpb);
+            if (OceanRenderer.Instance._createFoamSim) shapeCams[_lodIndex].LDFoam.BindResultData(0, _mpb);
+            if (OceanRenderer.Instance._createSeaFloorDepthData) shapeCams[_lodIndex].LDSeaDepth.BindResultData(0, _mpb);
+            if (OceanRenderer.Instance._createShadowData) shapeCams[_lodIndex].LDShadow.BindResultData(0, _mpb);
+
             if (_lodIndex + 1 < shapeCams.Length)
             {
                 shapeCams[_lodIndex + 1].BindResultData(1, _mpb);
-                shapeCams[_lodIndex + 1].LDFoam.BindResultData(1, _mpb);
-                if(OceanRenderer.Instance.Builder._createFlowSim) shapeCams[_lodIndex + 1].LDFlow.BindResultData(1, _mpb);
-                shapeCams[_lodIndex + 1].LDSeaDepth.BindResultData(1, _mpb);
+                if (OceanRenderer.Instance._createFlowSim) shapeCams[_lodIndex + 1].LDFlow.BindResultData(1, _mpb);
+                if (OceanRenderer.Instance._createFoamSim) shapeCams[_lodIndex + 1].LDFoam.BindResultData(1, _mpb);
+                if (OceanRenderer.Instance._createSeaFloorDepthData) shapeCams[_lodIndex + 1].LDSeaDepth.BindResultData(1, _mpb);
+                if (OceanRenderer.Instance._createShadowData) shapeCams[_lodIndex + 1].LDShadow.BindResultData(1, _mpb);
             }
+
+            if (OceanRenderer.Instance.PlanarReflection && OceanRenderer.Instance.PlanarReflection.ReflectionTexture)
+            {
+                _mpb.SetTexture("_ReflectionTex", OceanRenderer.Instance.PlanarReflection.ReflectionTexture);
+            }
+
+            // Hack - due to SV_IsFrontFace occasionally coming through as true for backfaces,
+            // add a param here that forces ocean to be in undrwater state. I think the root
+            // cause here might be imprecision or numerical issues at ocean tile boundaries, although
+            // i'm not sure why cracks are not visible in this case.
+            float heightOffset = OceanRenderer.Instance.ViewerHeightAboveWater;
+            _mpb.SetFloat("_ForceUnderwater", heightOffset < -2f ? 1f : 0f);
 
             _rend.SetPropertyBlock(_mpb);
 

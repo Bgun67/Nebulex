@@ -26,8 +26,8 @@ Shader "Ocean/Shape/Gerstner Batch"
 				#pragma fragment frag
 				#pragma multi_compile_fog
 				#include "UnityCG.cginc"
-				#include "MultiscaleShape.cginc"
-				#include "../OceanLODData.cginc"
+				#include "MultiscaleShape.hlsl"
+				#include "../OceanLODData.hlsl"
 
 				#define TWOPI 6.283185
 
@@ -53,7 +53,7 @@ Shader "Ocean/Shape/Gerstner Batch"
 					return o;
 				}
 
-				// respects the gui option to freeze time
+				uniform float _CrestTime;
 				uniform half _Chop;
 				uniform half _Gravity;
 				uniform half4 _Wavelengths[BATCH_SIZE / 4];
@@ -68,7 +68,7 @@ Shader "Ocean/Shape/Gerstner Batch"
 					const half minWavelength = MinWavelengthForCurrentOrthoCamera();
 			
 					// sample ocean depth (this render target should 1:1 match depth texture, so UVs are trivial)
-					const half depth = tex2D(_LD_Sampler_SeaFloorDepth_0, i.vertex.xy / _ScreenParams.xy).x + DEPTH_BIAS;
+					const half depth = DEPTH_BASELINE - tex2D(_LD_Sampler_SeaFloorDepth_0, i.vertex.xy / _ScreenParams.xy).x;
 					half3 result = (half3)0.;
 
 					// unrolling this loop once helped SM Issue Utilization and some other stats, but the GPU time is already very low so leaving this for now
@@ -105,8 +105,8 @@ Shader "Ocean/Shape/Gerstner Batch"
 							half x = dot(D, i.worldPos_wt.xy);
 
 							half3 result_i = wt * _Amplitudes[vi][ei];
-							result_i.y *= cos(k*(x + C * _Time.y) + _Phases[vi][ei]);
-							result_i.xz *= -_Chop * _ChopScales[vi][ei] * D * sin(k*(x + C * _Time.y) + _Phases[vi][ei]);
+							result_i.y *= cos(k*(x + C * _CrestTime) + _Phases[vi][ei]);
+							result_i.xz *= -_Chop * _ChopScales[vi][ei] * D * sin(k*(x + C * _CrestTime) + _Phases[vi][ei]);
 							result += result_i;
 						}
 					}
