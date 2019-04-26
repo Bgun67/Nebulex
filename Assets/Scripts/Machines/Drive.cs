@@ -11,15 +11,21 @@ public class Drive : MonoBehaviour {
 	public float speed;
 	public ParticleSystem dust;
 	public ParticleSystem.MainModule main;
+	public Passenger_Enter driversSeat;
+	public Metwork_Object netObj;
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
 		rb.centerOfMass = centerOfMass.localPosition;
 		main = dust.main;
 	}
-	void Activate()
+	public void Activate(GameObject _player)
 	{
-
+		driversSeat.Activate(_player);
+	}
+	void Exit()
+	{
+		
 	}
 	// Update is called once per frame
 	void Update () {
@@ -30,6 +36,10 @@ public class Drive : MonoBehaviour {
 
 		wheels[2].motorTorque = force*Input.GetAxis("Move Z");
 */
+		if (driversSeat.player == null||(Metwork.peerType!=MetworkPeerType.Disconnected&&!netObj.isLocal))
+		{
+			return;
+		}
 		Vector3 relativeSpeed = transform.InverseTransformDirection(rb.velocity);
 		speed = transform.InverseTransformDirection(rb.velocity).z;
 		rb.velocity = transform.TransformDirection(new Vector3(relativeSpeed.x, relativeSpeed.y,Mathf.Clamp(speed, -maxSpeed, maxSpeed)));

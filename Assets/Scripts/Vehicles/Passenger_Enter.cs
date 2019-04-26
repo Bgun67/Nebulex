@@ -5,7 +5,7 @@ using UnityEngine;
 public class Passenger_Enter : MonoBehaviour {	
 	float lastTime = 0f;
 	float exitWait = 0f;
-	Player_Controller player;
+	public Player_Controller player;
 	public Transform seat;
 
 	// Use this for initialization
@@ -27,7 +27,10 @@ public class Passenger_Enter : MonoBehaviour {
 		if (Input.GetButtonDown ("Use Item") &&Time.time>exitWait) {
 			Exit();
 		}
-	
+		if (Input.GetButton("Fire1")){
+			player.fireScript.FireWeapon();
+		}
+
 	}
 	void Exit()
 	{
@@ -53,7 +56,7 @@ public class Passenger_Enter : MonoBehaviour {
 		print("Disconnecting");
 	}
 
-	void Activate(GameObject _player){
+	public void Activate(GameObject _player){
 		if (Time.time - lastTime < 2f) {
 			return;
 		}

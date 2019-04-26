@@ -134,7 +134,7 @@ public class BoatAlignNormal : MonoBehaviour
         }
 
         var buoyancy = -Physics.gravity.normalized * _buoyancyCoeff * bottomDepth * bottomDepth * bottomDepth;
-        _rb.AddForce(buoyancy, ForceMode.Acceleration);
+        _rb.AddForce(Vector3.ClampMagnitude(buoyancy,200f), ForceMode.Acceleration);
 
 
         // apply drag relative to water

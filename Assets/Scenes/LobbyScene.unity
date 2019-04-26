@@ -690,10 +690,6 @@ MonoBehaviour:
     assists: 0
     score: 0
     team: -1
-  dreadNaughtEnabled: 0
-  dreadNaught: {fileID: 0}
-  dreadNaughtSpawnWait: 0
-  nextDreadnaughtTime: 0
   playerSpawnTransforms: []
   currentTeamNum: 0
   gameMode: 
@@ -733,7 +729,8 @@ MonoBehaviour:
   winPanel: {fileID: 0}
   initialTime: 0
   GameClipMode: 0
-  GameClipCameraPrefab: {fileID: 0}
+  GameClipCameraPrefab: {fileID: 1640164882564388, guid: a4d7dcd496bbf3b47817919fa943cc54,
+    type: 3}
   GameClipCamera: {fileID: 0}
   GameClipCameraOffset: 5
   GameClipTarget: {fileID: 0}
@@ -4216,26 +4213,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_ID
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: netID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: owner
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -4256,6 +4233,26 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_ID
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: netID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: owner
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 54116375269606128, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_UseGravity
@@ -4675,26 +4672,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 16
       objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_ID
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: netID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: owner
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -4715,6 +4692,26 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_ID
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: netID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: owner
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 54116375269606128, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_UseGravity
@@ -5293,26 +5290,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_ID
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: netID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: owner
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -5333,6 +5310,26 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_ID
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: netID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: owner
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 54116375269606128, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_UseGravity
@@ -6386,26 +6383,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 15
       objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_ID
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: netID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: owner
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -6426,6 +6403,26 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_ID
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: netID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: owner
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 54116375269606128, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_UseGravity
@@ -8100,11 +8097,6 @@ PrefabInstance:
       propertyPath: impactDamageFactor
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 198659550789455852, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.a
-      value: 0.05490196
-      objectReference: {fileID: 0}
     - target: {fileID: 114850064201148746, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: sceneCam
@@ -8188,6 +8180,11 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 198659550789455852, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.05490196
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
 --- !u!1 &1314153829 stripped
@@ -8805,26 +8802,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_ID
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: netID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: owner
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -8845,6 +8822,26 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_ID
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: netID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: owner
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 54116375269606128, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_UseGravity
@@ -9534,26 +9531,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_ID
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: netID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: owner
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -9574,6 +9551,26 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_ID
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: netID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: owner
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 54116375269606128, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_UseGravity
@@ -15032,26 +15029,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 12
       objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_ID
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: netID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: owner
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -15072,6 +15049,26 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_ID
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: netID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: owner
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 54116375269606128, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_UseGravity
@@ -15633,26 +15630,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_ID
-      value: 46
-      objectReference: {fileID: 0}
-    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: m_ViewID.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: netID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: owner
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 20529243542558822, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -15673,6 +15650,26 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_ID
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 148997749434004560, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: netID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114846443861391422, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: owner
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 54116375269606128, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: m_UseGravity
@@ -16543,6 +16540,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gameplay UI
       objectReference: {fileID: 0}
+    - target: {fileID: 2079494426507240282, guid: f56231951baa15d41a100fb884d0d68d,
+        type: 3}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 1982494483}
     - target: {fileID: 2079494427318759908, guid: f56231951baa15d41a100fb884d0d68d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16678,11 +16680,6 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494426507240282, guid: f56231951baa15d41a100fb884d0d68d,
-        type: 3}
-      propertyPath: eventSystem
-      value: 
-      objectReference: {fileID: 1982494483}
     - target: {fileID: 2079494426751034219, guid: f56231951baa15d41a100fb884d0d68d,
         type: 3}
       propertyPath: m_FontData.m_Font

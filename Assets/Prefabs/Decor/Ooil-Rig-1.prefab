@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 5867040025578504232}
   - component: {fileID: 5867040025579831306}
   - component: {fileID: 5867040025580798922}
-  - component: {fileID: 5867040024213091666}
+  - component: {fileID: 876391592750910434}
   m_Layer: 0
   m_Name: Cube_040
   m_TagString: Untagged
@@ -442,7 +442,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5867040024213091666
+--- !u!65 &876391592750910434
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -453,8 +453,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.6892661, y: 19.72816, z: 9.555088}
-  m_Center: {x: 27.793947, y: 5.867313, z: 3.777544}
+  m_Size: {x: 0.47686192, y: 19.72816, z: 9.555088}
+  m_Center: {x: 28.400148, y: 5.867313, z: 3.777543}
 --- !u!1 &5867040025578609674
 GameObject:
   m_ObjectHideFlags: 0
@@ -4144,7 +4144,6 @@ GameObject:
   - component: {fileID: 5867040025579831684}
   - component: {fileID: 5867040025580798788}
   - component: {fileID: 5867040024469535134}
-  - component: {fileID: 5867040024469535129}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -4225,24 +4224,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300012, guid: 729cde9e6319bfe47a87ad8cd36dc20e, type: 3}
---- !u!114 &5867040024469535129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5867040025578610052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be4155a909a5ef47bdaaf1422602735, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _populateOnStartup: 1
-  _layerNames: []
-  _layerNameDEPRECATED: 
-  _resolution: 512
-  _cameraMaxTerrainHeight: 100
-  _forceAlwaysUpdateDebug: 0
 --- !u!1 &5867040025578610054
 GameObject:
   m_ObjectHideFlags: 0
@@ -5186,7 +5167,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5867040025578504634}
   - component: {fileID: 5867040025569259082}
-  - component: {fileID: 5867040024958525001}
   m_Layer: 0
   m_Name: Ooil-Rig-1
   m_TagString: Untagged
@@ -5318,24 +5298,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5867040024958525001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5867040025578610074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be4155a909a5ef47bdaaf1422602735, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _populateOnStartup: 1
-  _layerNames: []
-  _layerNameDEPRECATED: 
-  _resolution: 512
-  _cameraMaxTerrainHeight: 100
-  _forceAlwaysUpdateDebug: 0
 --- !u!1 &5867040025578610076
 GameObject:
   m_ObjectHideFlags: 0
