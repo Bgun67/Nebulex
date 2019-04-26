@@ -26,7 +26,7 @@ public class Game_Controller : MonoBehaviour {
 
 	}
 
-	public static Game_Controller _instance;
+	public static Game_Controller GetInstance;
 
 	public List<Player> players = new List<Player>();
 	public List<GameObject> playerObjects = new List<GameObject> ();
@@ -140,13 +140,13 @@ public class Game_Controller : MonoBehaviour {
 
 	public void Start()
 	{
-		_instance = GameObject.FindObjectOfType<Game_Controller>();
+		GetInstance = GameObject.FindObjectOfType<Game_Controller>();
+		
+		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
+		UI_awayScoreText = UI_Manager.GetInstance.UI_AwayScoreText;
 
-		UI_homeScoreText = UI_Manager._instance.UI_HomeScoreText;
-		UI_awayScoreText = UI_Manager._instance.UI_AwayScoreText;
-
-		UI_homeColour = UI_Manager._instance.UI_HomeColour;
-		UI_awayColour = UI_Manager._instance.UI_AwayColour;
+		UI_homeColour = UI_Manager.GetInstance.UI_HomeColour;
+		UI_awayColour = UI_Manager.GetInstance.UI_AwayColour;
 
 
 		netView = this.GetComponent<MetworkView>();

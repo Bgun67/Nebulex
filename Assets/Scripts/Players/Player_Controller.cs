@@ -1407,6 +1407,7 @@ public class Player_Controller : MonoBehaviour {
 		StartCoroutine (SwitchWeapons (_primary));
 	}
 	public IEnumerator SwitchWeapons(bool _primary){
+		if (fireScript == null) { yield break; }
 		anim.SetBool ("Switch Weapons", true);
 		yield return new WaitForSeconds (0.5f);
 		if (_primary) {

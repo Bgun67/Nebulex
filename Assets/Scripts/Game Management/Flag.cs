@@ -11,11 +11,11 @@ public class Flag : MonoBehaviour {
 
 	public Rigidbody stand;
 
-	public ConfigurableJoint joint;
+	public Rigidbody rb;
 	public Metwork_Object netObj;
 	Game_Controller gameController;
-	public BoxCollider boxCollider;
-	public Player_Controller _player;
+	public Transform target;
+	public Player_Controller player;
 	public float droppedTime;
 	public float maxDropTime;
 	bool vehicleEntered;
@@ -24,21 +24,19 @@ public class Flag : MonoBehaviour {
 
 	void Start(){
 		gameController = GameObject.FindObjectOfType<Game_Controller> ();
+		rb = GetComponent<Rigidbody>();
 		ReturnFlag ();
 		if (gameController.gameMode != Game_Controller.GameType.CTF) {
 			this.gameObject.SetActive (false);
 			teamAPosition.gameObject.SetActive (false);
 			teamBPosition.gameObject.SetActive (false);
-
 			stand.gameObject.SetActive (false);
-
 		}
 			
 	}
 
 	public void StartGame(){
 		gameController = GameObject.FindObjectOfType<Game_Controller> ();
-
 		ReturnFlag ();
 		Invoke ("Register", 2f);
 
@@ -56,7 +54,17 @@ public class Flag : MonoBehaviour {
 
 	}
 	void Update(){
-		if (_player == null) {
+		if (target==null) {
+			
+			player = null;
+			stand.transform.position = this.transform.position;
+
+			target = stand.transform;
+			return;
+		}
+		rb.MovePosition(Vector3.Lerp(transform.position,target.position,0.9f));
+		rb.MoveRotation(Quaternion.Lerp(transform.rotation,target.rotation,0.9f));
+		if (player == null) {
 			if (Metwork.isServer)
 			{
 				droppedTime += Time.deltaTime;
@@ -67,66 +75,56 @@ public class Flag : MonoBehaviour {
 			}
 			return;
 		}
-		if (joint.connectedBody==null) {
-			_player = null;
-			stand.transform.position = this.transform.position;
-			boxCollider.enabled = true;
-
-			joint.connectedBody = stand;
-			return;
-		}
+	
 		
-		if (_player.inVehicle) {
+		if (player.inVehicle) {
 			print ("Invehicle");
 			if (!vehicleEntered) {
 				vehicleEntered = true;
 				//shitty workaround
 				foreach (Ship_Controller ship in FindObjectsOfType<Ship_Controller>()) {
-					if (ship.player == _player.gameObject) {
-						this.transform.position = ship.transform.position;
-						this.transform.rotation = ship.transform.rotation;
-						joint.connectedBody = ship.GetComponent<Rigidbody> ();
+					if (ship.player == player.gameObject) {
+						target = ship.transform;
 					}
 				}
 				foreach (Turret_Controller turret in FindObjectsOfType<Turret_Controller>()) {
-					if (turret.player == _player.gameObject) {
-						this.transform.position = turret.transform.position;
-						this.transform.rotation = turret.transform.rotation;
-						joint.connectedBody = turret.transform.root.GetComponent<Rigidbody> ();
+					if (turret.player == player.gameObject) {
+						target = turret.transform;
 					}
 				}
 			}
 		} else
 		{
-			if (!joint.connectedBody.gameObject.activeInHierarchy)
+			if (!target.gameObject.activeInHierarchy)
 			{
-				_player = null;
+				player = null;
 				stand.transform.position = this.transform.position;
-				boxCollider.enabled = true;
-
-				joint.connectedBody = stand;
+				target = stand.transform;
 				return;
 			}
 			if (vehicleEntered)
 			{
 				vehicleEntered = false;
-				this.transform.forward = _player.transform.forward;
-				joint.connectedBody = _player.rb;
-				this.transform.position = _player.jetpackJets[0].transform.position + _player.jetpackJets[0].transform.forward;
+				this.transform.forward = player.transform.forward;
+				target = player.jetpackJets[0].transform;
 
 			}
 
 		}
+		
+
 
 
 	}
 
 	public void OnTriggerEnter(Collider other){
-		if (other.transform.root.GetComponent<Player_Controller> () != null) {
-			_player = other.transform.root.GetComponent<Player_Controller> ();
-		} else {
+		Player_Controller _player = other.transform.root.GetComponent<Player_Controller> ();
+		if (player!= null && _player!= null) {
 			return;
 		}
+		_player = other.transform.root.GetComponent<Player_Controller> ();
+
+		print("Trigger Enter");
 
 		//Check if the player matches the flag's team
 		if (_player.team == this.team) {
@@ -146,15 +144,12 @@ public class Flag : MonoBehaviour {
 	[MRPC]
 	void RPC_PickupFlag(int _owner){
 		print ("Picking up flag");
-		_player = gameController.GetPlayerFromNetID (_owner).GetComponent<Player_Controller>();
+		player = gameController.GetPlayerFromNetID (_owner).GetComponent<Player_Controller>();
 		//The player picks up the opposing team's flag
-		boxCollider.enabled = false;
 
-		this.transform.position = _player.jetpackJets[0].transform.position + new Vector3(0,-1,0);
-		this.transform.forward = _player.transform.forward;
-		GetComponent<Rigidbody> ().useGravity = false;
-		joint.connectedBody = _player.rb;
-		netObj.owner = _player.netObj.owner;
+		target = player.jetpackJets[0].transform;
+		this.transform.forward = player.transform.forward;
+		netObj.owner = player.netObj.owner;
 	}
 
 
@@ -169,18 +164,16 @@ public class Flag : MonoBehaviour {
 
 	[MRPC]
 	void RPC_ReturnFlag(){
-		joint.connectedBody = stand;
+		target = stand.transform;
 
 		if (this.team == 0) {
-			this.transform.position = teamAPosition.position;
-			this.transform.rotation = teamAPosition.rotation;
+			stand.MovePosition(teamAPosition.position);
+			stand.MoveRotation(teamAPosition.rotation);
 		} else {
-			this.transform.position = teamBPosition.position;
-			this.transform.rotation = teamBPosition.rotation;
+			stand.MovePosition(teamBPosition.position);
+			stand.MoveRotation(teamBPosition.rotation);
 		}
-		_player = null;
-		stand.transform.position = this.transform.position;
-		boxCollider.enabled = true;
+		player = null;
 	}
 
 

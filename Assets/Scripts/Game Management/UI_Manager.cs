@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Manager : MonoBehaviour {
+public class UI_Manager : MonoBehaviour
+{
 
 	public static UI_Manager _instance;
 
@@ -11,7 +12,7 @@ public class UI_Manager : MonoBehaviour {
 
 	public RectTransform healthBox;
 	public RectTransform healthBar;
-	
+
 	public RectTransform fuelBar;
 
 	public Text UI_HomeScoreText;
@@ -27,7 +28,7 @@ public class UI_Manager : MonoBehaviour {
 	private Text magAmmoText;
 	[SerializeField]
 	private Text totalAmmoText;
-	
+
 	//Pie Menu
 	[SerializeField]
 	private Image primaryPanel;
@@ -38,7 +39,8 @@ public class UI_Manager : MonoBehaviour {
 	public Image[] damageIndicators;
 
 	[System.Serializable]
-	public class HitDirection{
+	public class HitDirection
+	{
 		public Vector3 normal;
 		public float time;
 		public Transform transform;
@@ -71,7 +73,8 @@ public class UI_Manager : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		UI_Manager._instance = this;
 
 		hitDirections = new List<HitDirection>();
@@ -79,13 +82,26 @@ public class UI_Manager : MonoBehaviour {
 		//Temp first assign
 		HitDirection _tmpHitDir = new HitDirection();
 		_tmpHitDir.transform = this.transform;
-		for(int i = 0; i<damageIndicators.Length; i++){
+		for (int i = 0; i < damageIndicators.Length; i++)
+		{
 			hitDirections.Add(_tmpHitDir);
+		}
+	}
+	public static UI_Manager GetInstance{
+		get{
+			if (_instance == null)
+			{
+				return FindObjectOfType<UI_Manager>();
+			}
+			else
+			{
+				return _instance;
+			}
 		}
 
 	}
 
-	public static int GetPieChoice(){
+public static int GetPieChoice(){
 		return pieChoice;
 	}
 	void Update(){
