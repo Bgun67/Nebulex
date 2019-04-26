@@ -1127,8 +1127,8 @@ public class Player_Controller : MonoBehaviour {
 	}
 	public void FootstepAnim(){
 		//if (!walkSound.isPlaying) {
-		//walkSound.PlayOneShot(walkClips[0]);//[Mathf.Clamp(Time.frameCount % 4,0,walkClips.Length-1)]);
-										 //}
+			walkSound.PlayOneShot(walkClips[Random.Range(0,walkClips.Length)]);//[Mathf.Clamp(Time.frameCount % 4,0,walkClips.Length-1)]);
+		//}
 	}
 	[MRPC]
 	public void RPC_AnimateMovement(int state, float hSpeed, float vSpeed){

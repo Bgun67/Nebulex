@@ -115,11 +115,11 @@ public class Damage : MonoBehaviour {
 
 	public void TakeDamage(int damageAmount, int fromID, Vector3 _point)
 	{
-		print("Taking Damage");
+		//print("Taking Damage");
 		
 		if (forwarder)
 		{
-			print("sendingDamage");
+			//print("sendingDamage");
 
 			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _point);
 			return;
