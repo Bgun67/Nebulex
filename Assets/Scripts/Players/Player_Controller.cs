@@ -1103,8 +1103,9 @@ public class Player_Controller : MonoBehaviour {
 			}
 
 			//Play thruster sounds
-			walkSound.PlayOnShot(thrusterClips [0], Math.Clamp01(Math.Abs(Input.GetAxis("Move X") + Input.GetAxis("Move Y") + Input.GetAxis("Move Z")); 
-
+			if(!walkSound.isPlaying){
+				walkSound.PlayOneShot(thrusterClips[0], Mathf.Clamp01(Mathf.Abs(Input.GetAxis("Move X") + Input.GetAxis("Move Y") + Input.GetAxis("Move Z"))));
+			}
 
 			Vector3 _rotateAmount = Vector3.Lerp(previousRot,new Vector3(-v2 * 0.75f, h2*2.5f, -h * 1.5f) * 5f * Time.deltaTime * 30f, 0.05f);
 			rb.transform.Rotate(_rotateAmount);
