@@ -293,11 +293,11 @@ public class Game_Controller : MonoBehaviour {
 		Vector3 shipDisplacement = (shipTwoTransform.position - shipOneTransform.position) / 2f;
 		if (Vector3.SqrMagnitude(shipDisplacement) == 0)
 		{
-			sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, shipOneTransform.position + new Vector3(0f, 700f, 0), 0.5f);
+			sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, shipOneTransform.position + new Vector3(0f, 700f, 0), 0.9f);
 		}
 		else
 		{
-			sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, shipOneTransform.position + shipDisplacement + new Vector3(0f, Vector3.Magnitude(shipDisplacement * (4f / 3f) * 1.5f), 0f), 0.5f);
+			sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, shipOneTransform.position + shipDisplacement + new Vector3(0f, Vector3.Magnitude(shipDisplacement * (4f / 3f) * 1.5f), 0f), 0.9f);
 		}
 	}
 

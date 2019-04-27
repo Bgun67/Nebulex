@@ -113,7 +113,7 @@ public class Damage : MonoBehaviour {
 
 	
 
-	public void TakeDamage(int damageAmount, int fromID, Vector3 _point, bool overrideTeam = false)
+	public void TakeDamage(int damageAmount, int fromID, Vector3 _hitDirection, bool overrideTeam = false)
 	{
 		//print("Taking Damage");
 		
@@ -121,7 +121,7 @@ public class Damage : MonoBehaviour {
 		{
 			//print("sendingDamage");
 
-			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _point);
+			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _hitDirection);
 			return;
 		}
 		if (!CheckLocal() || isDead)
@@ -133,7 +133,7 @@ public class Damage : MonoBehaviour {
 			{
 				return;
 			}
-			UI_Manager._instance.UpdateHitDirection(_point-this.transform.position, this.transform);
+			UI_Manager._instance.UpdateHitDirection(_hitDirection, this.transform);
 			
 		}
 
@@ -203,7 +203,7 @@ public class Damage : MonoBehaviour {
 				{
 					break;
 				}
-				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID, _point);
+				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID, _hitDirection);
 				j++;
 			}
 

@@ -4975,8 +4975,6 @@ GameObject:
   - component: {fileID: 95947182173568420}
   - component: {fileID: 114041897218599616}
   - component: {fileID: 82216935135489244}
-  - component: {fileID: 114223929772824298}
-  - component: {fileID: 136362297295081054}
   - component: {fileID: 114343764164266812}
   m_Layer: 0
   m_Name: SRR-3
@@ -5049,6 +5047,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 82216935135489244}
+  triggerClick: {fileID: 8300000, guid: f71519fc0ecf8d8498600a1181ae50f4, type: 3}
+  cockSound: {fileID: 8300000, guid: 088940cda1af1c9499ced22b55580323, type: 3}
   sound: {fileID: 8300000, guid: 0846601c78386494bb98bf1529862725, type: 3}
   weaponAnim: {fileID: 0}
   isRecoil: 1
@@ -5062,9 +5062,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 4893021308517778}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 198191471837166540}
   playerID: 0
@@ -5166,38 +5164,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114223929772824298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991755903921898}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b12d5102dcbabd469735dd868cdc148, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptsToActivate:
-  - {fileID: 114041897218599616}
-  maxPassengers: 0
-  passengers: 0
-  netView: {fileID: 0}
-  text: 
---- !u!136 &136362297295081054
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991755903921898}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.06835299
-  m_Height: 0.9875615
-  m_Direction: 0
-  m_Center: {x: -0.14915887, y: -0.02, z: 0}
 --- !u!114 &114343764164266812
 MonoBehaviour:
   m_ObjectHideFlags: 0
