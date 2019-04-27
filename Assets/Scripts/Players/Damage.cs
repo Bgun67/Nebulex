@@ -113,7 +113,7 @@ public class Damage : MonoBehaviour {
 
 	
 
-	public void TakeDamage(int damageAmount, int fromID, Vector3 _point)
+	public void TakeDamage(int damageAmount, int fromID, Vector3 _point, bool overrideTeam = false)
 	{
 		//print("Taking Damage");
 		
@@ -129,7 +129,7 @@ public class Damage : MonoBehaviour {
 			return;
 		}
 		if(this.tag == "Player"){
-			if (gameController.statsArray[fromID].team == gameController.statsArray[netObj.netID].team)
+			if (gameController.statsArray[fromID].team == gameController.statsArray[netObj.netID].team && !overrideTeam)
 			{
 				return;
 			}

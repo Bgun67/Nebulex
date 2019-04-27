@@ -274,6 +274,7 @@ public class Game_Controller : MonoBehaviour {
 
 
 	public void RPC_SetTeam(){
+		
 		for(int i = 1; i<statsArray.Length; i++) {
 			int _id = i;
 			int team = (i+1) % 2;
@@ -368,6 +369,10 @@ public class Game_Controller : MonoBehaviour {
 		currentTime = _time;
 	}
 	public void UpdateShipHealths(){
+		if(carrierADmg == null){
+			return;
+		}
+
 		if (carrierADmg.netObj.isLocal) {
 			netView.RPC ("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 0, carrierADmg.currentHealth});
 		}
