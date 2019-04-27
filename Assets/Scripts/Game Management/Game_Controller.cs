@@ -128,7 +128,7 @@ public class Game_Controller : MonoBehaviour {
 	[MRPC]
 	public void RPC_UpdateStatsArrayEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
 	{
-		PlayerStats _stat = new PlayerStats();
+		PlayerStats _stat = statsArray[_index];
 		_stat.name = _name;
 		_stat.kills = _kills;
 		_stat.deaths = _deaths;
@@ -260,7 +260,7 @@ public class Game_Controller : MonoBehaviour {
 	[MRPC]
 	public void RPC_AddPlayerStat(string name, int _owner){
 
-		PlayerStats stat = new PlayerStats ();
+		PlayerStats stat = statsArray[_owner];
 		stat.name = name;
 		stat.kills = 0;
 		stat.deaths = 0;
@@ -274,6 +274,7 @@ public class Game_Controller : MonoBehaviour {
 
 
 	public void RPC_SetTeam(){
+		
 		for(int i = 1; i<statsArray.Length; i++) {
 			int _id = i;
 			int team = (i+1) % 2;
@@ -281,6 +282,8 @@ public class Game_Controller : MonoBehaviour {
 			if (playerObjects.Count > i) {
 				Player_Controller _player = GetPlayerFromNetID (_id).GetComponent<Player_Controller> ();
 				_player.team = team;
+
+				print("statsArray.Length" + _player.team);
 
 				//Set the colour highlights of the player's "jersey" meshes
 				for(int j = 0; j < _player.jerseyMeshes.Length; j++){
@@ -363,6 +366,10 @@ public class Game_Controller : MonoBehaviour {
 		currentTime = _time;
 	}
 	public void UpdateShipHealths(){
+		if(carrierADmg == null){
+			return;
+		}
+
 		if (carrierADmg.netObj.isLocal) {
 			netView.RPC ("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 0, carrierADmg.currentHealth});
 		}

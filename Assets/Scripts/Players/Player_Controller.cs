@@ -109,6 +109,8 @@ public class Player_Controller : MonoBehaviour {
 	public AudioSource walkSound;
 	public AudioClip[] walkClips;
 	public AudioSource breatheSound;
+	public AudioClip[] thrusterClips;
+
 	#endregion
 	[Space(5)]
 	[Header("Weapons")]
@@ -316,7 +318,7 @@ public class Player_Controller : MonoBehaviour {
 			
 		}
 		if (Input.GetKeyDown ("/")) {
-			damageScript.TakeDamage (1000, 0, transform.position);
+			damageScript.TakeDamage (1000, 0, transform.position, true);
 		}
 
 		if (MInput.GetButtonDown ("Switch Weapons")) {
@@ -1100,6 +1102,11 @@ public class Player_Controller : MonoBehaviour {
 				anim.SetFloat ("Look Speed", 0.5f - 0.8f * Vector3.SignedAngle(_originalForward,transform.forward,transform.right)/90f);
 				//rb.AddForce(Vector3.Lerp(Vector3.zero,Vector3.up * 9.81f,  _counter), ForceMode.Acceleration);
 			}
+
+			//Play thruster sounds
+			walkSound.PlayOnShot(thrusterClips [0], Math.Clamp01(Math.Abs(Input.GetAxis("Move X") + Input.GetAxis("Move Y") + Input.GetAxis("Move Z")); 
+
+
 			Vector3 _rotateAmount = Vector3.Lerp(previousRot,new Vector3(-v2 * 0.75f, h2*2.5f, -h * 1.5f) * 5f * Time.deltaTime * 30f, 0.05f);
 			rb.transform.Rotate(_rotateAmount);
 			previousRot = _rotateAmount;
@@ -1407,7 +1414,7 @@ public class Player_Controller : MonoBehaviour {
 		StartCoroutine (SwitchWeapons (_primary));
 	}
 	public IEnumerator SwitchWeapons(bool _primary){
-		if (fireScript == null) { yield break; }
+		
 		anim.SetBool ("Switch Weapons", true);
 		yield return new WaitForSeconds (0.5f);
 		if (_primary) {
@@ -1555,6 +1562,10 @@ public class Player_Controller : MonoBehaviour {
 		} else {
 			Metwork.metViews[_secondaryMetID] = secondaryWeapon.GetComponent<MetworkView> ();
 		}
+
+		RPC_SwitchWeapons(false);
+
+		
 
 	}
 	public void LoadPlayerData(){
