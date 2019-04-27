@@ -57,7 +57,6 @@ public class Player_Controller : MonoBehaviour {
 	/// <summary>
 	/// The player's team. 0 being team A and 1 being team B
 	/// </summary>
-	public int team;
 	public Material[] teamMaterials;
 	public SkinnedMeshRenderer[] jerseyMeshes;
 
@@ -221,12 +220,12 @@ public class Player_Controller : MonoBehaviour {
 			InvokeRepeating ("UpdateUI", 1f, 1f);
 			LoadPlayerData ();
 		}
-		primarySelected = !primarySelected;
+		//primarySelected = !primarySelected;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
-			netView.RPC("RPC_SwitchWeapons",MRPCMode.AllBuffered, new object[]{primarySelected});
+			//netView.RPC("RPC_SwitchWeapons",MRPCMode.AllBuffered, new object[]{primarySelected});
 		} else {
-			RPC_SwitchWeapons(primarySelected);
+			//RPC_SwitchWeapons(primarySelected);
 			RPC_ShowNameText ();
 			sceneCam.enabled = false;
 		}
@@ -1407,7 +1406,6 @@ public class Player_Controller : MonoBehaviour {
 		StartCoroutine (SwitchWeapons (_primary));
 	}
 	public IEnumerator SwitchWeapons(bool _primary){
-		if (fireScript == null) { yield break; }
 		anim.SetBool ("Switch Weapons", true);
 		yield return new WaitForSeconds (0.5f);
 		if (_primary) {
@@ -1437,6 +1435,11 @@ public class Player_Controller : MonoBehaviour {
 
 
 	}
+	public int GetTeam()
+	{
+		return gameController.statsArray[netObj.netID].team;
+	
+	}
 	public void SetupWeapons(){
 		try {
 			loadoutSettings = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Loadout Settings.txt"));
@@ -1463,7 +1466,6 @@ public class Player_Controller : MonoBehaviour {
 
 			if(Metwork.peerType  != MetworkPeerType.Disconnected){
 				netView.RPC("RPC_LoadWeaponData",MRPCMode.AllBuffered, new object[]{loadoutSettingsString, primaryNetView, secondaryNetView });
-
 			}
 			else{
 				RPC_LoadWeaponData(loadoutSettingsString, primaryNetView, secondaryNetView);
@@ -1500,14 +1502,6 @@ public class Player_Controller : MonoBehaviour {
 				RPC_LoadWeaponData(loadoutSettingsString,primaryNetView,secondaryNetView);
 			}
 		}
-
-		fireScript = primaryWeapon.GetComponent<Fire> ();
-		fireScript.playerID = netObj.owner;
-	
-		recoilAmount = fireScript.recoilAmount;
-		anim.SetFloat ("Drift", fireScript.bulk);
-
-
 	}
 	[MRPC]
 	public void RPC_LoadWeaponData(string settingsString, int _primaryMetID, int _secondaryMetID){
@@ -1555,7 +1549,8 @@ public class Player_Controller : MonoBehaviour {
 		} else {
 			Metwork.metViews[_secondaryMetID] = secondaryWeapon.GetComponent<MetworkView> ();
 		}
-
+		RPC_SwitchWeapons(false);
+		
 	}
 	public void LoadPlayerData(){
 		string[] playerData = new string[10];
@@ -1632,9 +1627,8 @@ public class Player_Controller : MonoBehaviour {
 		if (gameController.localPlayer == null) {
 			gameController.GetLocalPlayer ();
 		}
-		int localTeam = gameController.statsArray 
-			[gameController.localPlayer.GetComponent<Metwork_Object> ().netID].team;
-		if (team == localTeam && this.gameObject!=gameController.localPlayer) {
+		int localTeam = gameController.GetLocalTeam();
+		if (GetTeam() == localTeam && this.gameObject!=gameController.localPlayer) {
 			nameTextMesh.color = new Color (0f, 50f, 255f);
 			nameTextMesh.gameObject.SetActive (true);
 

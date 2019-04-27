@@ -30,7 +30,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 	void Update () {
 		GameObject[] spawnPoints;
 	
-		spawnPoints = GameObject.FindGameObjectsWithTag ("Spawn Point " + gameController.localPlayer.GetComponent<Player_Controller>().team);
+		spawnPoints = GameObject.FindGameObjectsWithTag ("Spawn Point " + gameController.GetLocalTeam());
 		if (spawnPoints.Length < 1) {
 			spawnPoints = GameObject.FindGameObjectsWithTag ("Spawn Point 1");
 		}

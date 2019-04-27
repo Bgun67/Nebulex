@@ -33,7 +33,7 @@ public class Game_Controller : MonoBehaviour {
 
 
 
-	public PlayerStats[] statsArray = new PlayerStats [32];
+	public PlayerStats[] statsArray = new PlayerStats[32];
 
 
 	public List<Transform> playerSpawnTransforms = new List<Transform> ();
@@ -128,7 +128,7 @@ public class Game_Controller : MonoBehaviour {
 	[MRPC]
 	public void RPC_UpdateStatsArrayEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
 	{
-		PlayerStats _stat = new PlayerStats();
+		PlayerStats _stat = statsArray[_index];
 		_stat.name = _name;
 		_stat.kills = _kills;
 		_stat.deaths = _deaths;
@@ -260,7 +260,7 @@ public class Game_Controller : MonoBehaviour {
 	[MRPC]
 	public void RPC_AddPlayerStat(string name, int _owner){
 
-		PlayerStats stat = new PlayerStats ();
+		PlayerStats stat = statsArray[_owner];
 		stat.name = name;
 		stat.kills = 0;
 		stat.deaths = 0;
@@ -278,10 +278,8 @@ public class Game_Controller : MonoBehaviour {
 			int _id = i;
 			int team = (i+1) % 2;
 			statsArray [_id].team = team;
-			if (playerObjects.Count > i) {
+			if (playerObjects.Count >= i) {
 				Player_Controller _player = GetPlayerFromNetID (_id).GetComponent<Player_Controller> ();
-				_player.team = team;
-
 				//Set the colour highlights of the player's "jersey" meshes
 				for(int j = 0; j < _player.jerseyMeshes.Length; j++){
 					_player.jerseyMeshes[j].sharedMaterial = _player.teamMaterials[team];
@@ -391,12 +389,12 @@ public class Game_Controller : MonoBehaviour {
 
 		//Update the scores of the teams, the local team being on the
 		//left side and the opposing team being on the right
-		if (localPlayer != null && localPlayer.GetComponent<Player_Controller> ().team == 0) {
+		if (localPlayer != null && GetLocalTeam() == 0) {
 			UI_homeScoreText.text = scoreA.ToString();
 			UI_awayScoreText.text = scoreB.ToString();
 			UI_homeColour.color = new Color(0,1f,0);
 			UI_awayColour.color = new Color(1f,0f,0);
-		} else if (localPlayer.GetComponent<Player_Controller> ().team == 1){
+		} else if (GetLocalTeam() == 1){
 			UI_homeScoreText.text = scoreB.ToString();
 			UI_awayScoreText.text = scoreA.ToString();
 			UI_awayColour.color = new Color(0,1f,0);
@@ -627,6 +625,11 @@ public class Game_Controller : MonoBehaviour {
 		print("Loading Spawn Scene");
 		FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
 		SceneManager.LoadScene("LobbyScene");
+	}
+	public int GetLocalTeam()
+	{
+		GetLocalPlayer();
+		return statsArray[localPlayer.GetComponent<Metwork_Object>().netID].team;
 	}
 	void Update()
 	{

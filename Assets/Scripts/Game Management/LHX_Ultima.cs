@@ -14,6 +14,8 @@ public class LHX_Ultima : Map_Manager
     // Update is called once per frame
     void Update()
     {
-        
+        foreach( Player_Controller _player in players){
+            _player.airTime = 36000f;
+        }
     }
 }
