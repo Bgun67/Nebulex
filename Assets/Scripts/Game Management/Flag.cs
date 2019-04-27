@@ -127,7 +127,7 @@ public class Flag : MonoBehaviour {
 		print("Trigger Enter");
 
 		//Check if the player matches the flag's team
-		if (_player.team == this.team) {
+		if (_player.GetTeam() == this.team) {
 			//The flag returns to it's rightful owner
 			ReturnFlag();
 
