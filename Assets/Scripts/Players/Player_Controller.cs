@@ -268,11 +268,11 @@ public class Player_Controller : MonoBehaviour {
 		//Play thruster sounds
 		if(!walkSound.isPlaying && !rb.useGravity){
 			float _soundVolume = 0f;
-			float _deltaV = (rb.velocity.sqrMagnitude - previousVelocity.sqrMagnitude);
+			float _deltaV = (rb.velocity.sqrMagnitude - previousVelocity.sqrMagnitude) / Time.deltaTime;
 			float _deltaRot = Mathf.Abs(Input.GetAxis("Move X"));
 
 			if(_deltaV > 0.01f){
-				_soundVolume += 0.5f;
+				_soundVolume += Mathf.Clamp01(0.001f * _deltaV) * 0.6f;
 			}
 			if(_deltaRot > 0.1f){
 				_soundVolume += 0.3f;
