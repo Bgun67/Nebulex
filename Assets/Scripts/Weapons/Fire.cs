@@ -29,9 +29,15 @@ public class Fire : MonoBehaviour {
 	public int skillLevel;
 	#endregion
 	public List<string> unavailableScopes = new List<string> ();
+	[Space()]
+	[Header("Sound")]
 	public AudioSource shootSound;
+	public AudioClip triggerClick;
+	public AudioClip cockSound;
 	[HideInInspector]
 	public AudioClip sound;
+
+	[Space()]
 	public WaitForSeconds reloadWait;
 	public Animator weaponAnim;
 	public bool isRecoil = false;
@@ -46,16 +52,16 @@ public class Fire : MonoBehaviour {
 	public int recoilNumber = 1;
 	public int aimAnimNumber = 1;
 	public Transform scopePosition;
-	public int fired = 0;
+	int fired = 0;
 	[Tooltip("DO fired bullets start with the parents velocity?")]
 	public bool ignoreParentVelocity;
-	public Rigidbody rootRB;
+	Rigidbody rootRB;
 	public MetworkView netView;
 	public ParticleSystem muzzleFlash;
 	public int playerID;
 	public bool reloading;
 	public GameObject magGO;
-	[SerializeField]
+
 	public Stack<GameObject> poolList = new Stack<GameObject> ();
 	public Stack<GameObject> destroyedStack = new Stack<GameObject> ();
 
@@ -91,6 +97,7 @@ public class Fire : MonoBehaviour {
 		Invoke("CreateObjectPool", Random.Range(0, 0.01f));
 		//
 	}
+
 	public void Activate(GameObject player){
 		/*Player_Controller controller = player.GetComponent<Player_Controller> ();
 		string loadoutSettingsString = "";
@@ -184,11 +191,12 @@ public class Fire : MonoBehaviour {
 
 					magAmmo--;
 					if (magAmmo < 1) {
-						StartCoroutine (Reload ());
+					//	StartCoroutine (Reload ());
 
 					}
 
 				} else {
+					shootSound.PlayOneShot(triggerClick);
 					StartCoroutine (Reload ());
 
 				}
@@ -256,6 +264,7 @@ public class Fire : MonoBehaviour {
 			reloading = false;
 			StartCoroutine (Reload());
 		}
+		shootSound.PlayOneShot(cockSound);
 		transform.root.SendMessage ("UpdateUI");
 
 	}

@@ -380,6 +380,8 @@ MonoBehaviour:
   unavailableScopes:
   - Acog
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 8300000, guid: f71519fc0ecf8d8498600a1181ae50f4, type: 3}
+  cockSound: {fileID: 8300000, guid: 088940cda1af1c9499ced22b55580323, type: 3}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 1
@@ -393,9 +395,7 @@ MonoBehaviour:
   recoilNumber: 3
   aimAnimNumber: 3
   scopePosition: {fileID: 4529063519476114}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -411,8 +411,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 8602b7d5cd15c1943a50aa53f171c8cf, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

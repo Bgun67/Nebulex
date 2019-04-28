@@ -166,7 +166,7 @@ public class Game_Controller : MonoBehaviour {
 		{
 			SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
 		}
-
+		InvokeRepeating("SceneCamFollow", 0.1f, 1/15f);
 
 
 
@@ -288,6 +288,18 @@ public class Game_Controller : MonoBehaviour {
 			}
 		}
 	}
+	void SceneCamFollow()
+	{
+		Vector3 shipDisplacement = (shipTwoTransform.position - shipOneTransform.position) / 2f;
+		if (Vector3.SqrMagnitude(shipDisplacement) == 0)
+		{
+			sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, shipOneTransform.position + new Vector3(0f, 700f, 0), 0.9f);
+		}
+		else
+		{
+			sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, shipOneTransform.position + shipDisplacement + new Vector3(0f, Vector3.Magnitude(shipDisplacement * (4f / 3f) * 1.5f), 0f), 0.9f);
+		}
+	}
 
 
 	public void GameUpdate(){
@@ -297,12 +309,7 @@ public class Game_Controller : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 		}
-		Vector3 shipDisplacement = (shipTwoTransform.position-shipOneTransform.position  )/2f;
-		if (Vector3.SqrMagnitude(shipDisplacement) == 0) {
-			sceneCam.transform.position = shipOneTransform.position + new Vector3 (0f, 700f, 0);
-		} else {
-			sceneCam.transform.position = shipOneTransform.position + shipDisplacement + new Vector3 (0f, Vector3.Magnitude (shipDisplacement * (4f / 3f) * 1.5f), 0f);
-		}
+		
 
 		foreach (Player_Controller player in GameObject.FindObjectsOfType<Player_Controller>()) {
 			if (player.GetComponent<Metwork_Object> ().isLocal) {

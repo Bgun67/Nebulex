@@ -35,14 +35,14 @@ public class Bullet_Controller : MonoBehaviour {
 		}
 		try {
 			try {
-				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, transform.position);
+				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, -other.relativeVelocity);
 
 
 			} catch {
 				try {
-					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, transform.position);
+					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, -other.relativeVelocity);
 				} catch {
-					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID, transform.position);
+					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID, -other.relativeVelocity);
 				}
 			}
 		} catch {
