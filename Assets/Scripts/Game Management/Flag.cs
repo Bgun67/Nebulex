@@ -119,11 +119,9 @@ public class Flag : MonoBehaviour {
 
 	public void OnTriggerEnter(Collider other){
 		Player_Controller _player = other.transform.root.GetComponent<Player_Controller> ();
-		if (player!= null && _player!= null) {
+		if (player!= null || _player== null) {
 			return;
 		}
-		_player = other.transform.root.GetComponent<Player_Controller> ();
-
 		print("Trigger Enter");
 
 		//Check if the player matches the flag's team
