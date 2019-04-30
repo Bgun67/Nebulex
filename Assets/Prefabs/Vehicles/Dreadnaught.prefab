@@ -261,7 +261,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -397,7 +397,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3eb079016c4106b41bc3f19de570f770, type: 2}
+  - {fileID: 2100000, guid: 4664978f4da7a5d46a8a0c625789f631, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -766,8 +766,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4435738759897000}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -780,6 +780,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -793,9 +795,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -1077,8 +1077,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4584086715826236}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -1091,6 +1091,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -1104,9 +1106,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -1269,7 +1269,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2878,7 +2878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9675075717bc5804093cf2271977e735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originalHealth: 400
+  originalHealth: 500
   currentHealth: 0
   dieFunction:
     m_PersistentCalls:
@@ -2900,7 +2900,7 @@ MonoBehaviour:
   UI_healthBar: {fileID: 0}
   UI_healthBox: {fileID: 0}
   initialPosition: {fileID: 4150641945418778}
-  resetTime: 10
+  resetTime: 20
   gameController: {fileID: 0}
   regen: 1
   regenTime: 5
@@ -5124,7 +5124,7 @@ MonoBehaviour:
   UI_healthBar: {fileID: 0}
   UI_healthBox: {fileID: 0}
   initialPosition: {fileID: 4100195049387122}
-  resetTime: 10
+  resetTime: 20
   gameController: {fileID: 0}
   regen: 1
   regenTime: 5
@@ -5199,6 +5199,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 82374943824382876}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -5212,9 +5214,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -5551,7 +5551,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6180,8 +6180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4693345900092914}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -6194,6 +6194,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -6207,9 +6209,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -6509,8 +6509,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1144722900877822}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.208, z: 13.953}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.208, z: 14.73}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 4068139831520438}
   m_RootOrder: 23
@@ -6536,6 +6536,7 @@ MonoBehaviour:
   chargePercentage: 0
   charge: 0
   fire: 0
+  damagePower: 20000
   chargeState: 0
 --- !u!120 &120293333894086598
 LineRenderer:
@@ -7367,7 +7368,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7829,7 +7830,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8982,7 +8983,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 08bc4440c9b6fe84cbe6df85b54816ad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10146,7 +10147,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11961,7 +11962,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3eb079016c4106b41bc3f19de570f770, type: 2}
+  - {fileID: 2100000, guid: 4664978f4da7a5d46a8a0c625789f631, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12363,8 +12364,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4903638176367308}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -12377,6 +12378,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -12390,9 +12393,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -14125,7 +14126,7 @@ MonoBehaviour:
   UI_healthBar: {fileID: 0}
   UI_healthBox: {fileID: 0}
   initialPosition: {fileID: 4680157489240084}
-  resetTime: 10
+  resetTime: 20
   gameController: {fileID: 0}
   regen: 1
   regenTime: 5
@@ -15486,7 +15487,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15789,7 +15790,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16155,7 +16156,7 @@ MonoBehaviour:
   UI_healthBar: {fileID: 0}
   UI_healthBox: {fileID: 0}
   initialPosition: {fileID: 4780406664199048}
-  resetTime: 10
+  resetTime: 20
   gameController: {fileID: 0}
   regen: 1
   regenTime: 5
@@ -18278,7 +18279,7 @@ MonoBehaviour:
   UI_healthBar: {fileID: 0}
   UI_healthBox: {fileID: 0}
   initialPosition: {fileID: 4116126224757168}
-  resetTime: 10
+  resetTime: 20
   gameController: {fileID: 0}
   regen: 1
   regenTime: 5
@@ -19063,7 +19064,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -20589,7 +20590,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: adb6b844ab5da36479712f36c84821d0, type: 2}
+  - {fileID: 2100000, guid: 1ea9f9b03e3440f41bc10ca4f34adf8d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21385,8 +21386,8 @@ Rigidbody:
   m_GameObject: {fileID: 1542855918338904}
   serializedVersion: 2
   m_Mass: 5000000
-  m_Drag: 0.6
-  m_AngularDrag: 1.5
+  m_Drag: 2
+  m_AngularDrag: 5
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -21445,8 +21446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9675075717bc5804093cf2271977e735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originalHealth: 50000
-  currentHealth: 50000
+  originalHealth: 75000
+  currentHealth: 75000
   dieFunction:
     m_PersistentCalls:
       m_Calls:
@@ -21752,7 +21753,7 @@ MonoBehaviour:
   UI_healthBar: {fileID: 0}
   UI_healthBox: {fileID: 0}
   initialPosition: {fileID: 4713121638996002}
-  resetTime: 10
+  resetTime: 20
   gameController: {fileID: 0}
   regen: 1
   regenTime: 5
@@ -21827,6 +21828,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 82270287622775456}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -21840,9 +21843,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -22177,8 +22178,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4123679612901250}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -22191,6 +22192,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -22204,9 +22207,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -22419,8 +22420,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4198463258463642}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -22433,6 +22434,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -22446,9 +22449,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -24820,7 +24821,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3eb079016c4106b41bc3f19de570f770, type: 2}
+  - {fileID: 2100000, guid: 4664978f4da7a5d46a8a0c625789f631, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25456,7 +25457,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25548,7 +25549,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3eb079016c4106b41bc3f19de570f770, type: 2}
+  - {fileID: 2100000, guid: 4664978f4da7a5d46a8a0c625789f631, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25793,7 +25794,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25861,7 +25862,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26359,7 +26360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9675075717bc5804093cf2271977e735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originalHealth: 400
+  originalHealth: 500
   currentHealth: 0
   dieFunction:
     m_PersistentCalls:
@@ -26381,7 +26382,7 @@ MonoBehaviour:
   UI_healthBar: {fileID: 0}
   UI_healthBox: {fileID: 0}
   initialPosition: {fileID: 4691742401902482}
-  resetTime: 10
+  resetTime: 20
   gameController: {fileID: 0}
   regen: 1
   regenTime: 5
@@ -26484,7 +26485,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26720,7 +26721,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -27164,6 +27165,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 82128166659833098}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -27177,9 +27180,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -29941,8 +29942,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4029383053087246}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -29955,6 +29956,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -29968,9 +29971,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -31150,8 +31151,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4932236732878632}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -31164,6 +31165,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -31177,9 +31180,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -31561,8 +31562,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4660935180073262}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -31575,6 +31576,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -31588,9 +31591,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -31797,7 +31798,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -32065,7 +32067,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3eb079016c4106b41bc3f19de570f770, type: 2}
+  - {fileID: 2100000, guid: 4664978f4da7a5d46a8a0c625789f631, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -32159,6 +32161,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 82502568158103806}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -32172,9 +32176,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -32593,7 +32595,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -32843,7 +32845,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -33016,7 +33018,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3eb079016c4106b41bc3f19de570f770, type: 2}
+  - {fileID: 2100000, guid: 4664978f4da7a5d46a8a0c625789f631, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -35865,8 +35867,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4990735721431642}
-  reloadTime: 1
-  fireRate: 180
+  reloadTime: 3
+  fireRate: 250
   magSize: 200
   magAmmo: 200
   maxAmmo: 10000
@@ -35879,6 +35881,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -35892,9 +35896,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -36036,7 +36038,7 @@ Transform:
   m_GameObject: {fileID: 1928619135730582}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6512517, y: 1.6512517, z: 9.114313}
+  m_LocalScale: {x: 2, y: 2.2, z: 10}
   m_Children: []
   m_Father: {fileID: 4068139831520438}
   m_RootOrder: 32
@@ -36716,7 +36718,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37225,8 +37227,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37511,7 +37513,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100002, guid: 985eeae2839463c4890631c78c418b76, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

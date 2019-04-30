@@ -74,10 +74,10 @@ public class Asteroid_Field_Manager : ScriptableWizard {
 			
 			bool _isAsteroid = Random.Range(0f,10f)>asteroidToJunkRatio;
 			if(_isAsteroid){
-			 prefab = asteroidPrefabs[Random.Range(0,junkPrefabs.Length-1)];
+			 prefab = asteroidPrefabs[Random.Range(0,asteroidPrefabs.Length-1)];
 			}
 			else{
-			prefab = junkPrefabs[Random.Range(0,asteroidPrefabs.Length-1)];
+			prefab = junkPrefabs[Random.Range(0,junkPrefabs.Length-1)];
 			}
 			Vector3 center = Vector3.zero;
 			Vector3 position = new Vector3(0f,0f,0f);

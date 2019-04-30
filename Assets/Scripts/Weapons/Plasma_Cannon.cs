@@ -34,6 +34,7 @@ public class Plasma_Cannon : MonoBehaviour {
 	public bool charge = false;
 	//If the cannon has been requested to fire
 	public bool fire;
+	public int damagePower = 50000;
 
 	//The state of the plasma cannon
 	[SerializeField]
@@ -149,7 +150,7 @@ public class Plasma_Cannon : MonoBehaviour {
 		plasmaBall.GetComponent<SphereCollider> ().enabled = true;
 
 		plasmaBall.GetComponent<Rigidbody> ().velocity += transform.forward * 400f;
-		plasmaBall.GetComponent<Bullet_Controller> ().damagePower = 50000;
+		plasmaBall.GetComponent<Bullet_Controller> ().damagePower = damagePower;
 
 		Destroy (plasmaBall, 40f);
 
