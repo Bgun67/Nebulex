@@ -6,9 +6,10 @@ using UnityEngine.EventSystems;
 
 public class Chat : MonoBehaviour {
 
+
 	public MetworkView netView;
 
-	public InputField txtChatLog;
+	public Text txtChatLog;
 	public InputField txtField;
 
 	public Game_Controller gameController;
@@ -27,44 +28,19 @@ public class Chat : MonoBehaviour {
 				EventSystem.current.SetSelectedGameObject (txtField.gameObject, null);
 				txtField.OnPointerClick (new PointerEventData (EventSystem.current));
 				showLog = true;
-				StartCoroutine(ShowLog ());
+				
 			} else {
 				fieldActive = false;
 				showLog = false;
-				StartCoroutine(HideLog ());
+				OnSubmit();
+				
 			}
 		}
+		if(fieldActive){
+			Input.ResetInputAxes();
+		}
 	}
 
-	IEnumerator ShowLog(){
-		Color _chatColor = txtChatLog.image.color;
-		Color _textColor = txtChatLog.textComponent.color;
-		while (txtChatLog.image.color.a < 1f && showLog) {
-			_chatColor.a += 0.1f;
-			txtChatLog.image.color = _chatColor;
-			_textColor.a += 0.1f;
-			txtChatLog.textComponent.color = _textColor;
-			yield return new WaitForSeconds (0.001f);
-		}
-		while(EventSystem.current.currentSelectedGameObject == txtField.gameObject){
-			yield return new WaitForSeconds (0.5f);
-		}
-
-		StartCoroutine (HideLog ());
-	}
-	IEnumerator HideLog(){
-		showLog = false;
-		yield return new WaitForSeconds (3f);
-		Color _chatColor = txtChatLog.image.color;
-		Color _textColor = txtChatLog.textComponent.color;
-		while (txtChatLog.image.color.a > 0f && !showLog) {
-			_chatColor.a -= 0.1f;
-			txtChatLog.image.color = _chatColor;
-			_textColor.a -= 0.1f;
-			txtChatLog.textComponent.color = _textColor;
-			yield return new WaitForSeconds (0.001f);
-		}
-	}
 
 	public void OnSubmit(){
 		if (txtField.text.Length < 1) {
@@ -72,27 +48,40 @@ public class Chat : MonoBehaviour {
 		}
 
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_SendMessage", MRPCMode.AllBuffered, new object[]{ gameController.localPlayer.GetComponent<Player_Controller>().playerName + ": " + txtField.text + "\n" });
+			netView.RPC ("RPC_SendMessage", MRPCMode.AllBuffered, new object[]{ gameController.localPlayer.GetComponent<Player_Controller>().playerName + ": " + txtField.text + "\n" , gameController.GetLocalTeam()});
 		} else {
-			RPC_SendMessage (gameController.localPlayer.name + ": " + txtField.text + "\n");
+			RPC_SendMessage (gameController.localPlayer.name + ": " + txtField.text + "\n", gameController.GetLocalTeam());
 		}
 		txtField.text = "";
 		EventSystem.current.SetSelectedGameObject (null, null);
 		//txtChatLog.OnPointerClick (new PointerEventData (EventSystem.current));
 	}
 
+	///<summary>
+	///Team 2 is everyone
+	///Team 0 and Team 1 are only those teams
+	///<summary>
 	[MRPC]
-	public void RPC_SendMessage(string message){
-		
-		txtChatLog.text += message;
-		
-		//if(txtChatLog.text.Length > 20000){
-		//	txtChatLog.text.Substring(10);
-		//}
+	public void RPC_SendMessage(string message, int team){
+		switch(team){
+			case 2:
+			txtChatLog.text += "[All] " + message;
+			break;
+			case 0:
+			txtChatLog.text += "<color=#BBFFBB>[Green] " + message + "</color>";
+			break;
+			case 1:
+			txtChatLog.text += "<color=#FFBBBB>[Red] " + message + "</color>";
+			break;
+			default:
+			break;
 
-		showLog = true;
-		StartCoroutine (ShowLog ());
-		StartCoroutine (HideLog ());
+		}
+		
+		
+		
+
+		
 
 	}
 

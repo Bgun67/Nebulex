@@ -34,6 +34,8 @@ public class AudioWrapper : MonoBehaviour
     void Start()
     {
         source = this.gameObject.AddComponent<AudioSource>();
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.maxDistance = 50f;
     }
 
     public void PlayOneShot(int _clip, float _volume){
@@ -52,7 +54,7 @@ public class AudioWrapper : MonoBehaviour
 
             runningClips.Add(_info);
             source.PlayOneShot(entries[_clip], _volume);
-            print("To Entrance");
+
         }
         else{
             _info = runningClips[_index];
@@ -76,7 +78,6 @@ public class AudioWrapper : MonoBehaviour
 
                 source.PlayOneShot(loops[_info.id], _info.volume);
 
-                print("To Loop");
                 runningClips[i] = _info;
             }
             else if(_info.status == ClipStatus.Loop && Time.time - _info.lastTime > loops[_info.id].length - 0.00f && Time.time - _info.lastTransistionTime > loops[_info.id].length - 0.0f){
@@ -85,7 +86,7 @@ public class AudioWrapper : MonoBehaviour
                 _info.lastTransistionTime = Time.time;
                 
                 source.PlayOneShot(exits[_info.id], _info.volume);
-                print("To Exit");
+
             }
             else if(_info.status == ClipStatus.Loop && Time.time - _info.lastTransistionTime >= loops[_info.id].length){
                 
@@ -93,7 +94,7 @@ public class AudioWrapper : MonoBehaviour
                  
 
                 source.PlayOneShot(loops[_info.id], _info.volume * 1f);
-                print("To Loop Again");
+
                 _info.isInterpolating = false;
                 runningClips[i] = _info;
 
@@ -103,7 +104,7 @@ public class AudioWrapper : MonoBehaviour
                  
 
                 source.PlayOneShot(interpolation[_info.id], _info.volume * 1f);
-                print("");
+
                 _info.isInterpolating = true;
                 runningClips[i] = _info;
                 
