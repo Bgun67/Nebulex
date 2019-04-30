@@ -56,6 +56,13 @@ public class Chat : MonoBehaviour {
 		EventSystem.current.SetSelectedGameObject (null, null);
 		//txtChatLog.OnPointerClick (new PointerEventData (EventSystem.current));
 	}
+	public static void LogToChat(string _message){
+		if (Metwork.peerType != MetworkPeerType.Disconnected) {
+			FindObjectOfType<Chat>().netView.RPC ("RPC_SendMessage", MRPCMode.AllBuffered, new object[]{ _message, 2});
+		} else {
+			FindObjectOfType<Chat>().RPC_SendMessage (_message, 2);
+		}
+	}
 
 	///<summary>
 	///Team 2 is everyone
@@ -72,6 +79,9 @@ public class Chat : MonoBehaviour {
 			break;
 			case 1:
 			txtChatLog.text += "<color=#FFBBBB>[Red] " + message + "</color>";
+			break;
+			case 3:
+			txtChatLog.text += message;
 			break;
 			default:
 			break;

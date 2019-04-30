@@ -245,12 +245,15 @@ public class Game_Controller : MonoBehaviour {
 		Invoke("PhysicsUpdate", 1f);
 
 	}
-	public void GetLocalPlayer(){
+	public int GetLocalPlayer(){
 		foreach (Player_Controller player in FindObjectsOfType<Player_Controller>()) {
-			if (player.GetComponent<Metwork_Object>()!=null && player.GetComponent<Metwork_Object> ().isLocal) {
+			Metwork_Object _metObj = player.GetComponent<Metwork_Object>();
+			if (_metObj!=null && _metObj.isLocal) {
 				localPlayer = player.gameObject;
+				return _metObj.netID;
 			}
 		}
+		return -1;
 	}
 	void PhysicsUpdate(){
 		Physics.autoSimulation = true;
@@ -610,6 +613,7 @@ public class Game_Controller : MonoBehaviour {
 		playerStat.assists++;
 	}
 	public void AddKill(int playerNum){
+
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_AddKill", MRPCMode.AllBuffered, new object[] {
 				playerNum
@@ -627,6 +631,10 @@ public class Game_Controller : MonoBehaviour {
 	public void RPC_AddKill(int playerNum){
 		statsArray [playerNum].kills++;
 		statsArray [playerNum].score += 100;
+
+		if(playerNum == localPlayer.GetComponent<Metwork_Object>().netID){
+			WindowsVoice.Speak("Target Down");
+		}
 	}
 	public void AddDeath(int playerNum){
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
