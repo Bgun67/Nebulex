@@ -688,6 +688,7 @@ public class Player_Controller : MonoBehaviour {
         if (!isAssigned)
         {
             print("All ships occupied");
+			WindowsVoice.Speak("All fighters occupied");
             return;
         }
 
@@ -703,6 +704,7 @@ public class Player_Controller : MonoBehaviour {
         bestShip.isAI = true;
         bestShip.enabled = true;
         print("Calling: " + bestShip.name);
+		WindowsVoice.Speak("Dispatching fighter");
         anim.SetTrigger("Command");
         StartCoroutine(CancelCall(bestShip));
 
@@ -749,6 +751,12 @@ public class Player_Controller : MonoBehaviour {
     public void LoseAir(){
 		airTime -= Time.deltaTime;
 
+		if((int)(airTime/suffocationTime * 100) == 50){
+			WindowsVoice.Speak("Oxygen at 50%");
+		}
+		if((int)(airTime/suffocationTime * 100) == 10){
+			WindowsVoice.Speak("Oxygen at 10%");
+		}	
 		if (airTime < 0) {
 			airTime = airTime + 1f;
 			damageScript.TakeDamage (10,0, transform.position + transform.forward);

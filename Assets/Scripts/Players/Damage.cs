@@ -159,6 +159,7 @@ public class Damage : MonoBehaviour {
 					
 					gameController.AddKill(fromID);
 					gameController.AddDeath(netObj.owner);
+					Chat.LogToChat(gameController.statsArray[fromID].name + " killed " + gameController.statsArray[netObj.owner].name);
 
 
 				}
