@@ -1706,7 +1706,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 	}
 	//Admin only
-	public void RegisterAdmin(){
+	public void RegisterModerator(){
 		damageScript.originalHealth = 300;
 		damageScript.currentHealth = damageScript.originalHealth;
 		primaryWeapon.GetComponent<Fire> ().magSize = 50;
@@ -1715,7 +1715,7 @@ public class Player_Controller : MonoBehaviour {
 
 	}
 	//Admin only
-	public void RegisterModerator(){
+	public void RegisterAdmin(){
 		damageScript.originalHealth = 500;
 		damageScript.currentHealth = damageScript.originalHealth;
 		secondaryWeapon.GetComponent<Fire> ().magSize = 100;

@@ -9,19 +9,32 @@ public class Profile : MonoBehaviour {
 	public Toggle mouseToggle;
 	public string[] playerInfo;
 	public Text playerScore;
+	public Text playerKills;
+	public Text playerDeaths;
+	public Text playerKD;
 	// Use this for initialization
 	void Start () {
-		try
-		{
+		/*try
+		{*/
 			playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
 			print("Info Length" + playerInfo.Length);
-			playerScore.text = playerInfo[1];
 			nameInput.text = playerInfo[0];
-		}
+			playerScore.text = playerInfo[1];
+			playerKills.text = playerInfo[2];
+			playerDeaths.text = playerInfo[3];
+			if (float.Parse(playerInfo[3]) < 1)
+			{
+				playerKD.text = "<color=yellow>inf</color>";
+			}
+			else
+			{
+				playerKD.text = (float.Parse(playerInfo[2]) / float.Parse(playerInfo[3])).ToString();
+			}
+		/*}
 		catch
 		{
 			RestoreDataFile();
-		}
+		}*/
 
 	}
 	public void SaveChanges(){
@@ -39,7 +52,8 @@ public class Profile : MonoBehaviour {
 		SceneManager.LoadScene ("Start Scene");
 	}
 	public static string[] RestoreDataFile(){
-		string[] playerData = new string[]{ "Unnamed Player", "10", "", "192.168.2.40", "true"};
+		Debug.LogWarning("Restoring Data File");
+		string[] playerData = new string[]{ "Unnamed Player", "10", "0", "0"};
 		System.IO.File.WriteAllLines (Application.persistentDataPath + "/Player Data.txt", Util.ThiccWatermelon (playerData));
 		return playerData;
 	}

@@ -370,7 +370,6 @@ GameObject:
   - component: {fileID: 265925499}
   - component: {fileID: 265925498}
   - component: {fileID: 265925497}
-  - component: {fileID: 265925496}
   m_Layer: 0
   m_Name: Player View
   m_TagString: MainCamera
@@ -378,22 +377,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &265925496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 265925495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 683d279bd0ac97340957eb5c62f67a65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameInput: {fileID: 1514824532}
-  mouseToggle: {fileID: 0}
-  playerInfo: []
-  playerScore: {fileID: 1754495621}
 --- !u!81 &265925497
 AudioListener:
   m_ObjectHideFlags: 0
@@ -574,6 +557,9 @@ MonoBehaviour:
   mouseToggle: {fileID: 0}
   playerInfo: []
   playerScore: {fileID: 1754495621}
+  playerKills: {fileID: 948821671}
+  playerDeaths: {fileID: 500910781}
+  playerKD: {fileID: 401104776}
 --- !u!1001 &384864428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -804,6 +790,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 384864428}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &401104776 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114774808528721986, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+    type: 3}
+  m_PrefabInstance: {fileID: 863989318}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &449621785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1034,6 +1032,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 449621785}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &500910781 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114774808528721986, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1421556836}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &600126115
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1044,6 +1054,10 @@ PrefabInstance:
     - target: {fileID: 1979519779000974, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9, type: 3}
       propertyPath: m_Name
       value: Score Label
+      objectReference: {fileID: 0}
+    - target: {fileID: 1979519779000974, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114554082647739868, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -1353,6 +1367,10 @@ PrefabInstance:
     - target: {fileID: 1979519779000974, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9, type: 3}
       propertyPath: m_Name
       value: Score
+      objectReference: {fileID: 0}
+    - target: {fileID: 1979519779000974, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114554082647739868, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -2167,6 +2185,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &948821671 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114774808528721986, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1576118668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &983956813
 GameObject:
   m_ObjectHideFlags: 0
