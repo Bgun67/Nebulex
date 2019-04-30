@@ -607,9 +607,8 @@ public class Game_Controller : MonoBehaviour {
 	}
 	[MRPC]
 	public void RPC_AddKill(int playerNum){
-		PlayerStats playerStat = statsArray [playerNum];
-		playerStat.kills++;
-		playerStat.score += 100;
+		statsArray [playerNum].kills++;
+		statsArray [playerNum].score += 100;
 	}
 	public void AddDeath(int playerNum){
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -623,13 +622,14 @@ public class Game_Controller : MonoBehaviour {
 	}
 	[MRPC]
 	public void RPC_AddDeath(int playerNum){
-		PlayerStats playerStat = statsArray [playerNum];
-		playerStat.deaths++;
-		if (playerStat.team == 0) {
+
+		statsArray [playerNum].deaths++;
+		if (statsArray [playerNum].team == 1) {
 			scoreA++;
 		} else {
 			scoreB++;
 		}
+		
 	}
 
 	public void RestartGame()

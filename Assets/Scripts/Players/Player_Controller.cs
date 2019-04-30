@@ -194,6 +194,7 @@ public class Player_Controller : MonoBehaviour {
 		} else {
 			RPC_ShowNameText ();
 			sceneCam.enabled = false;
+			sceneCam.GetComponent<AudioListener>().enabled = false;
 		}
 		anim.SetFloat ("Look Speed", 0.5f);
 	}
@@ -231,6 +232,7 @@ public class Player_Controller : MonoBehaviour {
 			//RPC_SwitchWeapons(primarySelected);
 			RPC_ShowNameText ();
 			sceneCam.enabled = false;
+			sceneCam.GetComponent<AudioListener>().enabled = false;
 		}
 		
 		UpdateUI ();
@@ -437,7 +439,7 @@ public class Player_Controller : MonoBehaviour {
 
 		}
 
-		blackoutShader.ChangeConciousness (airTime / suffocationTime * 20f + 1f);
+		blackoutShader.ChangeConciousness (airTime / suffocationTime * 10f);
 		if(netObj.isLocal){
 			breatheSound.volume = 1f-airTime / suffocationTime;
 		}
@@ -1302,6 +1304,7 @@ public class Player_Controller : MonoBehaviour {
 	public void CoDie(){
 		
 		sceneCam.enabled = true;
+		sceneCam.GetComponent<AudioListener>().enabled = true;
 		
 		if (netObj.isLocal) {
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)

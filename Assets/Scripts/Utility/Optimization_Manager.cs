@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [ExecuteInEditMode]
 public class Optimization_Manager : MonoBehaviour {
 
@@ -14,6 +15,17 @@ public class Optimization_Manager : MonoBehaviour {
 	public List<Light> lights;
 
 	public float cullDist;
+
+	void Start(){
+		if(Application.isPlaying){
+			foreach(MeshRenderer renderer in GameObject.FindObjectsOfType<MeshRenderer>()){
+				renderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+			}
+			foreach(SkinnedMeshRenderer renderer in GameObject.FindObjectsOfType<SkinnedMeshRenderer>()){
+				renderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+			}
+		}
+	}
 
 	// Use this for initialization
 	void Update () {
