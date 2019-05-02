@@ -21,7 +21,29 @@ public class Chat : MonoBehaviour {
 		gameController = GameObject.FindObjectOfType<Game_Controller> ();
 	}
 
-	void Update(){
+	void FixedUpdate(){
+		//Runs before update so I can get that juice
+		if (Input.GetKeyDown (KeyCode.Return)) {
+			if (!fieldActive) {
+				fieldActive = true;
+				EventSystem.current.SetSelectedGameObject (txtField.gameObject, null);
+				txtField.OnPointerClick (new PointerEventData (EventSystem.current));
+				showLog = true;
+				
+			} else {
+				fieldActive = false;
+				showLog = false;
+				Input.ResetInputAxes();
+				OnSubmit();
+
+				
+			}
+		}
+		if(fieldActive){
+			Input.ResetInputAxes();
+		}
+	}
+	/*void Update(){
 		if (Input.GetKeyDown (KeyCode.Return)) {
 			if (!fieldActive) {
 				fieldActive = true;
@@ -39,7 +61,7 @@ public class Chat : MonoBehaviour {
 		if(fieldActive){
 			Input.ResetInputAxes();
 		}
-	}
+	}*/
 
 
 	public void OnSubmit(){

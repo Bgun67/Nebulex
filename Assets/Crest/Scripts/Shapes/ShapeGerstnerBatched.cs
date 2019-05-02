@@ -195,7 +195,9 @@ namespace Crest
 
             if (dropped > 0)
             {
+                #if Unity_Editor
                 Debug.LogWarning(string.Format("Gerstner LOD{0}: Batch limit reached, dropped {1} wavelengths. To support bigger batch sizes, see the comment around the BATCH_SIZE declaration.", lodIdx, dropped), this);
+                #endif
                 numComponents = BATCH_SIZE;
             }
 
