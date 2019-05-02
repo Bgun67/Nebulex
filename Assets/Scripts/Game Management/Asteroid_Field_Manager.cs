@@ -97,16 +97,17 @@ public class Asteroid_Field_Manager : ScriptableWizard {
 
 			for (int i = 0; i<5; i++) {
 				position = center+new Vector3(Random.Range(-worldSize,worldSize),0f, Random.Range(-worldSize, worldSize));
-				if (!Physics.CheckBox (position, prefab.transform.lossyScale * _scale / 2f)) {
-			
-					GameObject asteroid = GameObject.Instantiate (prefab, position, Quaternion.identity);
-			asteroid.transform.localScale = Vector3.one*_scale;
-			asteroid.transform.rotation = Random.rotation;
-			asteroid.name = "Space Junk";
-			asteroid.isStatic = true;
-			asteroid.hideFlags = HideFlags.HideInHierarchy;
-			asteroid.transform.parent = sector1.transform;
-			break;
+				if (!Physics.CheckBox(position, prefab.transform.lossyScale * _scale / 2f))
+				{
+
+					GameObject asteroid = GameObject.Instantiate(prefab, position, Quaternion.identity);
+					asteroid.transform.localScale = Vector3.one * _scale;
+					asteroid.transform.rotation = Random.rotation;
+					asteroid.name = "Space Junk";
+					asteroid.isStatic = true;
+					asteroid.hideFlags = HideFlags.HideInHierarchy;
+					asteroid.transform.parent = sector1.transform;
+					break;
 				}
 
 			}

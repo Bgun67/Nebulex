@@ -565,7 +565,7 @@ public class Ship_Controller : MonoBehaviour {
 		if (player != null) {
 			Exit ();
 			player = FindObjectOfType<Game_Controller> ().GetPlayerFromNetID (id);
-			player.GetComponent<Damage> ().TakeDamage(1000,0, transform.position);
+			player.GetComponent<Damage> ().TakeDamage(1000,0, transform.position, true);
 		}
 
 

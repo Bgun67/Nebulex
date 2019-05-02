@@ -447,7 +447,7 @@ public class Bomber_Controller : MonoBehaviour
 		if (player != null) {
 			player.SetActive (true);
 			//player.GetComponent<Player_Controller> ().Invoke ("Die", 0.1f);
-			player.GetComponent<Damage> ().TakeDamage(1000,0, transform.position);
+			player.GetComponent<Damage> ().TakeDamage(1000,0, transform.position, true);
 			Exit ();
 
 

@@ -9,7 +9,7 @@ public class Map_Manager : MonoBehaviour
 	public float slowUpdateTime = 1f;
 	protected Player_Controller[] players;
 	/// <summary>Do not override</summary>Start is called before the first frame update
-	void Start()
+	protected void Start()
     {
 		players = FindObjectsOfType<Player_Controller>();
 		MapSetup();
