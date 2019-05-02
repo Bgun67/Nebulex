@@ -14,7 +14,7 @@ namespace Crest
                 return _instance
 #if UNITY_EDITOR
                     // Allow hot code edit/recompile in editor - reinit singleton reference.
-                    ?? (_instance = FindObjectOfType<GPUReadbackFlow>())
+                    //?? (_instance = FindObjectOfType<GPUReadbackFlow>())
 #endif
                     ;
             }

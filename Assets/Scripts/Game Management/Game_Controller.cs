@@ -140,6 +140,7 @@ public class Game_Controller : MonoBehaviour {
 
 	public void Start()
 	{
+		
 		GetInstance = GameObject.FindObjectOfType<Game_Controller>();
 		
 		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
@@ -537,32 +538,18 @@ public class Game_Controller : MonoBehaviour {
 			endTimeText.text = "Remaining Time: 0:00"; 
 		}
 		eventSystem.SetActive(true);
-		SavePlayerData(1, statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].score);
+		SavePlayerScore();
 
 
 	}
-	
-	void SavePlayerData(int _index, int _additionAmount)
-	{
-		try
-		{
-			string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
-			int previous = int.Parse(data[_index]);
-			data[_index] = (previous + _additionAmount).ToString();
-			System.IO.File.WriteAllLines(Application.persistentDataPath + "/Player Data.txt", Util.ThiccWatermelon(data));
-		}
-		catch
-		{
-			Profile.RestoreDataFile();
-			string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
-			int previous = int.Parse(data[_index]);
-			data[_index] = (previous + _additionAmount).ToString();
-			System.IO.File.WriteAllLines(Application.persistentDataPath + "/Player Data.txt", Util.ThiccWatermelon(data));
-		}
+	public void SavePlayerScore(){
+		string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Player Data.txt"));
+		int previousScore = int.Parse( data [1]);
+		data [1] =( previousScore+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].score).ToString();
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Player Data.txt", Util.ThiccWatermelon(data));
+			
+
 	}
-
-
-
 	public void RPC_EndGame(){
 
 	}
@@ -621,10 +608,6 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			RPC_AddKill (playerNum);
 		}
-		if (SceneManager.GetActiveScene().name != "LobbyScene")
-		{
-			SavePlayerData(2, 1);
-		}
 
 	}
 	[MRPC]
@@ -634,6 +617,7 @@ public class Game_Controller : MonoBehaviour {
 
 		if(playerNum == localPlayer.GetComponent<Metwork_Object>().netID){
 			WindowsVoice.Speak("Target Down");
+			
 		}
 	}
 	public void AddDeath(int playerNum){
@@ -644,10 +628,7 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			RPC_AddDeath (playerNum);
 		}
-		if (SceneManager.GetActiveScene().name != "LobbyScene")
-		{
-			SavePlayerData(3, 1);
-		}
+
 	}
 	[MRPC]
 	public void RPC_AddDeath(int playerNum){
@@ -658,7 +639,7 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			scoreB++;
 		}
-
+		
 	}
 
 	public void RestartGame()
