@@ -8,9 +8,10 @@ public class Damage : MonoBehaviour {
 	public int originalHealth;
 	public int currentHealth;
 	public UnityEvent dieFunction;
-	public Text UI_healthText;
-	public RectTransform UI_healthBar;
-	public RectTransform UI_healthBox;
+	public bool isVehicle = true;
+	//public Text UI_healthText;
+	//public RectTransform UI_healthBar;
+	//public RectTransform UI_healthBox;
 
 	public Transform initialPosition;
 	[Tooltip ("Make Longer than the carcass destroy time")]
@@ -133,7 +134,7 @@ public class Damage : MonoBehaviour {
 			{
 				return;
 			}
-			UI_Manager._instance.UpdateHitDirection(_hitDirection, this.transform);
+			UI_Manager.GetInstance.UpdateHitDirection(_hitDirection, this.transform);
 			
 		}
 
@@ -312,14 +313,35 @@ public class Damage : MonoBehaviour {
 	}
 	public void UpdateUI(){
 		if (healthShown == true) {
-			UI_healthBox.gameObject.SetActive (true);
-			UI_healthText.text = "+" + currentHealth;
-			UI_healthBar.offsetMin = new Vector2(128f - (float)currentHealth/(float)originalHealth * 128f,-16f);
-			UI_healthBar.offsetMax = new Vector2(256f - (float)currentHealth/(float)originalHealth * 128f,0f);
+			if (isVehicle)
+			{
+				UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(true);
+				UI_Manager.GetInstance.vehicleHealthText.text = "+" + currentHealth;
+				UI_Manager.GetInstance.vehicleHealthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
+				UI_Manager.GetInstance.vehicleHealthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
+			}
+			else
+			{
+				UI_Manager.GetInstance.healthBox.gameObject.SetActive(true);
+				UI_Manager.GetInstance.healthText.text = "+" + currentHealth;
+				UI_Manager.GetInstance.healthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
+				UI_Manager.GetInstance.healthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
+			}
 		} else {
 			//UI_healthText.text = "";
-			if (UI_healthBox != null) {
-				UI_healthBox.gameObject.SetActive (false);
+			if (isVehicle)
+			{
+				if (UI_Manager.GetInstance.vehicleHealthBox != null)
+				{
+					UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(false);
+				}
+			}
+			else
+			{
+				if (UI_Manager.GetInstance.healthBox != null)
+				{
+					UI_Manager.GetInstance.healthBox.gameObject.SetActive(false);
+				}
 			}
 
 		}

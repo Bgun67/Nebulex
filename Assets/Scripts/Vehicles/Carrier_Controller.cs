@@ -272,19 +272,24 @@ public class Carrier_Controller : MonoBehaviour {
 			for (int j = -1; j < 2; j++) {
 				explosion = (GameObject)Instantiate (subExplosionPrefab, this.transform.position + transform.forward * (100f * i + 10f * j), Quaternion.identity);
 				explosion.transform.parent = this.transform;
-				explosion.transform.localScale = Vector3.one * 0.0001f;
+				//explosion.transform.localScale = Vector3.one * 0.0001f;
 				yield return new WaitForSeconds (0.05f);
 			}
 
 			yield return new WaitForSeconds (0.4f);
 		}
 		yield return new WaitForSeconds (1.5f);
-		foreach (Collider collider in Physics.OverlapSphere (this.transform.position, 200f)) {
-			collider.GetComponent<Damage> ().TakeDamage (100, 0, transform.position);
+		foreach (Collider collider in Physics.OverlapSphere(this.transform.position, 200f))
+		{
+			if (collider.GetComponent<Damage>() != null)
+			{
+				collider.GetComponent<Damage>().TakeDamage(100, 0, transform.position, true);
+			}
 		}
 		if (destroyAfterDeath) {
 			yield return new WaitForSeconds (4f);
-			Destroy (this.gameObject);
+			//Destroy (this.gameObject);
+			gameObject.SetActive(false);
 		}
 		//gameObject.SetActive (false);
 	}

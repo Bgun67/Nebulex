@@ -12,6 +12,11 @@ public class UI_Manager : MonoBehaviour
 
 	public RectTransform healthBox;
 	public RectTransform healthBar;
+	public Text healthText;
+
+	public RectTransform vehicleHealthBox;
+	public RectTransform vehicleHealthBar;
+	public Text vehicleHealthText;
 
 	public RectTransform fuelBar;
 
@@ -261,6 +266,7 @@ public static int GetPieChoice(){
 		magAmmoText.text = _magAmmo.ToString();
 		totalAmmoText.text = _totalAmmo.ToString();
 	}
+	
 
 	public void ChangeWeapon(bool _isPrimary){
 		if (_isPrimary) {

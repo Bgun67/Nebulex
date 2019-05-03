@@ -263,6 +263,8 @@ public class Fire : MonoBehaviour {
 
 	}
 	void OnEnable(){
+		shootSound = this.GetComponent<AudioSource>();
+
 		if (reloading) {
 			reloading = false;
 			StartCoroutine (Reload());

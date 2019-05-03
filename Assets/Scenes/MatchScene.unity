@@ -1402,7 +1402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.899994, y: -10.000015}
+  m_AnchoredPosition: {x: 2.899994, y: -10}
   m_SizeDelta: {x: -30.2, y: -65.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &444943504
@@ -3950,8 +3950,7 @@ MonoBehaviour:
   localIP: 192.168.2.40
   pollingTime: 5
   maps:
-  - type: 0
-    sceneName: Space
+  - sceneName: Space
     displayedName: Orbit
     mapImage: {fileID: 21300000, guid: e40ac0ae2c43cbe499501a0600aa71ef, type: 3}
     availableGames:
@@ -3960,8 +3959,7 @@ MonoBehaviour:
     - Capture The Flag
     - Astroball
     - Meltdown
-  - type: 1
-    sceneName: Crater
+  - sceneName: Crater
     displayedName: Tenningrad
     mapImage: {fileID: 21300000, guid: 4a5fe4fe552de9b4db2115b69dec60d2, type: 3}
     availableGames:
@@ -3970,12 +3968,20 @@ MonoBehaviour:
     - Capture The Flag
     - Astroball
     - 
-  - type: 2
-    sceneName: LHX Ultima Base
+  - sceneName: LHX Ultima Base
     displayedName: LHX Ultima Base
     mapImage: {fileID: 21300000, guid: 3bac2246d927eea4a943707437fe01cd, type: 3}
     availableGames:
     - 
+    - Team Deathmatch
+    - Capture The Flag
+    - 
+    - 
+  - sceneName: Fracture
+    displayedName: Fracture
+    mapImage: {fileID: 21300000, guid: 3bac2246d927eea4a943707437fe01cd, type: 3}
+    availableGames:
+    - Destruction
     - Team Deathmatch
     - Capture The Flag
     - 
