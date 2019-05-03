@@ -7,10 +7,11 @@ public class Passenger_Enter : MonoBehaviour {
 	float exitWait = 0f;
 	public Player_Controller player;
 	public Transform seat;
+	public Rigidbody rootRB;
 
 	// Use this for initialization
 	void Start () {
-
+		rootRB = seat.root.GetComponent<Rigidbody>();
 	}
 
 	void FixedUpdate(){
@@ -19,6 +20,7 @@ public class Passenger_Enter : MonoBehaviour {
 			return;
 		}
 		player.rb.MovePosition(seat.position);
+		player.rb.velocity = rootRB.GetPointVelocity(seat.position);
 		player.rb.MoveRotation(seat.rotation);
 		if (!player.gameObject.activeInHierarchy)
 		{
