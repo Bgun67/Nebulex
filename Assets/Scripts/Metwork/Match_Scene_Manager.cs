@@ -21,7 +21,7 @@ public class Match_Scene_Manager : MonoBehaviour
 	[System.Serializable]
 public class MapClass
 	{
-		public MapType type;
+		//public MapType type;
 		public string sceneName;
 		public string displayedName;
 		public Sprite mapImage;
