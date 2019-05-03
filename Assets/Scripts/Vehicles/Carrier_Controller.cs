@@ -16,6 +16,7 @@ public class Carrier_Controller : MonoBehaviour {
 	public Engine_Controller starboardEngine;
 	public bool hasPower = true;
 	public Plasma_Cannon cannon;
+	//public ParticleSystem plasmaParticles;
 	public Light fireCannonLight;
 	public Light chargeCannonLight;
 	public Transform pilotPosition;
@@ -108,6 +109,7 @@ public class Carrier_Controller : MonoBehaviour {
 	}
 
 	void Update(){
+		
 		if (pilot != null && playerNetObj.isLocal)
 		{
 

@@ -16,6 +16,7 @@ public class Drive : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
+		netObj = GetComponent<Metwork_Object> ();
 		rb.centerOfMass = centerOfMass.localPosition;
 		main = dust.main;
 	}

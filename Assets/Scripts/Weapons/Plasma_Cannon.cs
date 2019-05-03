@@ -49,6 +49,9 @@ public class Plasma_Cannon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//if(chargeState == PlasmaCannonChargeState.Charging){
+		//	plasmaParticles;
+		//}
 		if (ship.hasPower && charge &&chargeState != PlasmaCannonChargeState.Charging) {
 			StartCoroutine (ChargeCannon ());
 
