@@ -69,14 +69,14 @@ public class MetID_Manager : MonoBehaviour
 		formattedData = new MetID_Storage[_maxIndex];
 		for (int i = 0; i < _maxIndex; i++)
 		{
-			if (i % 50 == 0)
+			if (i % 1000 == 0)
 			{
 				Thread.Sleep(100);
 			}
 			string[] _chunk = _data[i].Split('\t');
 			int _id;
 			if (!int.TryParse(_chunk[0], out _id)){
-				return;
+				continue;
 			}
 			MetID_Storage _tmpContainer = new MetID_Storage(_id,_chunk[1], _chunk[2], _chunk[3], _chunk[4], _chunk[5]);
 			formattedData[i] = _tmpContainer;

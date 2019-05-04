@@ -11,6 +11,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 
 	public GameObject[] spawnButtons;
 	public Transform[] spawnPositions;
+	public GameObject sceneCam;
 
 	Game_Controller gameController;
 	public GameObject eventSystem;
@@ -23,7 +24,10 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			eventSystem = GameObject.Find ("EventSystem");
 
 		}
+		sceneCam = gameController.sceneCam;
 		eventSystem.SetActive (true);
+		sceneCam.transform.position = Vector3.Lerp(Vector3.zero, sceneCam.transform.position, 0.5f);
+
 	}
 	
 	// Update is called once per frame
@@ -50,6 +54,50 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			spawnButtons [i].SetActive (true);
 			spawnButtons[i].transform.position = buttonPos;
 		}
+		PositionSceneCam();
+	}
+
+	void PositionSceneCam()
+	{
+
+		
+		GameObject[] spawn0Points = GameObject.FindGameObjectsWithTag("Spawn Point 0");
+		Vector3 max = spawn0Points[0].transform.position;
+		Vector3 min = spawn0Points[0].transform.position;
+		FindMax(min, max, spawn0Points, out min, out max);
+		FindMax(min, max, GameObject.FindGameObjectsWithTag("Spawn Point 1"), out min, out max);
+
+		Vector3 center = Vector3.Lerp(min, max, 0.5f);
+		center.y = 0f;
+		print(center);
+
+		sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, center + Vector3.up * (max - center).magnitude / Screen.height * 1000f, 0.1f);
+
+	}
+	void FindMax(Vector3 initialMin, Vector3 initialMax, GameObject[] arrayToSearch, out Vector3 finalMin, out Vector3 finalMax)
+	{
+		finalMax = initialMax;
+		finalMin = initialMin;
+		foreach (GameObject spawnPoint in arrayToSearch)
+		{
+			Vector3 _pos = spawnPoint.transform.position;
+			if (_pos.x > finalMax.x)
+			{
+				finalMax.x = _pos.x;
+			}
+			if (_pos.x < finalMin.x)
+			{
+				finalMin.x = _pos.x;
+			}
+			if (_pos.z > finalMax.z)
+			{
+				finalMax.z = _pos.z;
+			}
+			if (_pos.z < finalMin.z)
+			{
+				finalMin.z = _pos.z;
+			}
+		}
 	}
 
 	public void Spawn(int index){
@@ -59,8 +107,10 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			Cursor.visible = false;
 		}
 		Player_Controller _player = gameController.localPlayer.GetComponent<Player_Controller>();
-		_player.transform.position = spawnPositions [index].position;
 		_player.transform.rotation = Quaternion.LookRotation(spawnPositions [index].forward,Vector3.up);
+		//_player.transform.up = Vector3.up;
+		_player.transform.position = spawnPositions [index].position;
+
 		_player.damageScript.initialPosition = null;
 		_player.damageScript.Reactivate();
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
