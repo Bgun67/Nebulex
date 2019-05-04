@@ -148,23 +148,28 @@ public class Ship_Controller : MonoBehaviour {
 			moveZ *deltaThrustForce);
 		
 		if(rb.useGravity){
-			//entering gravity, activate landing
-			if (!landMode)
-			{
-				if (Metwork.peerType != MetworkPeerType.Disconnected)
+			if(Physics.Linecast(transform.position, transform.position - 15f * Vector3.up)){
+				//Balancing
+				//entering gravity, activate landing
+				if (!landMode)
 				{
-					netObj.netView.RPC("RPC_LandMode", MRPCMode.All, new object[] { true });
-				}
-				else
-				{
-					RPC_LandMode(true);
-				}
-				landMode = true;
+					if (Metwork.peerType != MetworkPeerType.Disconnected)
+					{
+						netObj.netView.RPC("RPC_LandMode", MRPCMode.All, new object[] { true });
+					}
+					else
+					{
+						RPC_LandMode(true);
+					}
+					landMode = true;
 
+				}
+				rb.AddForce(rb.mass * 9.81f * Mathf.Clamp01(1f/Vector3.Dot(Vector3.up, transform.up))*transform.up * 50f * Time.deltaTime);
+				rb.AddTorque(Vector3.Cross(-transform.up,(transform.up - Vector3.up)*Vector3.Magnitude(transform.up - Vector3.up)*rb.mass*10f)*rb.mass/1000f);
 			}
-			rb.AddForce(rb.mass * 9.81f * Mathf.Clamp01(1f/Vector3.Dot(Vector3.up, transform.up))*transform.up * 50f * Time.deltaTime);
-			rb.AddTorque(Vector3.Cross(-transform.up,(transform.up - Vector3.up)*Vector3.Magnitude(transform.up - Vector3.up)*rb.mass*10f)*rb.mass/1000f);
-			
+			else{
+				rb.AddRelativeForce(rb.mass * 9.81f * Vector3.Project(rb.velocity, transform.forward).sqrMagnitude * 0.001f * 50f * Time.deltaTime * Vector3.up);
+			}
 		}
 		else
 		{
