@@ -5439,6 +5439,10 @@ MonoBehaviour:
   dust: {fileID: 689502547}
   driversSeat: {fileID: 92930782}
   netObj: {fileID: 0}
+  explosionEffect: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b,
+    type: 3}
+  destroyedPrefabs:
+  - {fileID: 1318701348548840, guid: 817304952a4f89848bf77650ec0d9619, type: 3}
 --- !u!54 &1624334508412601636
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6073,3 +6077,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   seat: {fileID: 2409847420083676815}
+  rootRB: {fileID: 0}

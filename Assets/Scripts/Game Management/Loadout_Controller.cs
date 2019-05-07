@@ -21,6 +21,8 @@ public class Loadout_Controller : MonoBehaviour {
 		{"Thunderstroke", new Vector3(-0.24f,-0.27f,1.36f)},
 		{"ATX-Heavy", new Vector3(-0.26f,0.08f,0.94f)},
 
+		{"MT0A3", new Vector3(-0.26f,0.08f,0.94f)},
+
 
 		{"SIT", new Vector3(-0.164f,0.0962f,0.3289f)}
 
@@ -42,6 +44,7 @@ public class Loadout_Controller : MonoBehaviour {
 		{"Thunderstroke", new Vector3(-67.67f,12.501f,-19.18f)},
 		{"ATX-Heavy", new Vector3(21.191f,-8.791f,-7.971f)},
 
+		{"MT0A3", new Vector3(21.191f,-8.791f,-7.971f)},
 
 
 		{"SIT", new Vector3(11.55f,-9.26f,-7.1f)}

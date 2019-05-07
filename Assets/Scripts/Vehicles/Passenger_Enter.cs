@@ -15,6 +15,8 @@ public class Passenger_Enter : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
+		
+		
 		if (player== null||!player.netObj.isLocal)
 		{
 			return;
@@ -27,6 +29,7 @@ public class Passenger_Enter : MonoBehaviour {
 			Exit();
 		}
 		if (Input.GetButtonDown ("Use Item") &&Time.time>exitWait) {
+			
 			Exit();
 		}
 		if (Input.GetButton("Fire1")){
@@ -34,7 +37,7 @@ public class Passenger_Enter : MonoBehaviour {
 		}
 
 	}
-	void Exit()
+	public void Exit()
 	{
 		player.airTime = player.suffocationTime;
 
@@ -48,11 +51,11 @@ public class Passenger_Enter : MonoBehaviour {
 			player.RPC_Sit(false);
 		}
 		player.inVehicle = false;
-		player.rb.isKinematic = false;
+		//player.rb.isKinematic = false;
 		player.ExitGravity();
 		CapsuleCollider[] capsules = player.GetComponents<CapsuleCollider>();
-		capsules[0].isTrigger = false;
-		capsules[1].isTrigger = false;
+		capsules[0].enabled = true;
+		capsules[1].enabled = true;
 		player = null;
 		lastTime = Time.time;
 		print("Disconnecting");
@@ -62,14 +65,14 @@ public class Passenger_Enter : MonoBehaviour {
 		if (Time.time - lastTime < 2f) {
 			return;
 		}
-		if (player == null) {
+		if (player == null||!player.netObj.isLocal) {
 			player = _player.GetComponent<Player_Controller>();
-			player.rb.isKinematic = true;
+			//player.rb.isKinematic = true;
 			player.inVehicle = true;
 			player.airTime = 20000f;
 			CapsuleCollider[] capsules = player.GetComponents<CapsuleCollider> ();
-			capsules[0].isTrigger = true;
-			capsules[1].isTrigger = true;
+			capsules[0].enabled = false;
+			capsules[1].enabled = false;
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				player.netObj.netView.RPC ("RPC_Sit", MRPCMode.AllBuffered, new object[]{ true});
 			} else {
