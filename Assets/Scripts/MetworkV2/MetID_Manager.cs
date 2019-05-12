@@ -17,7 +17,6 @@ public class MetID_Manager : MonoBehaviour
 	public int currentID;
 	// Start is called before the first frame update
 
-	// Update is called once per frame
 	void OnGUI()
     {
 		if (readIdsFromFile)

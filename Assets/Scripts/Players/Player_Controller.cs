@@ -274,7 +274,8 @@ public class Player_Controller : MonoBehaviour {
 			float _deltaRot = Mathf.Abs(Input.GetAxis("Move X"));
 
 			if(_deltaV > 0.01f){
-				_soundVolume += Mathf.Clamp01(0.001f * _deltaV) * 0.6f;
+				//0.001f
+				_soundVolume += Mathf.Clamp01(0.01f * _deltaV) * 0.6f;
 			}
 			if(_deltaRot > 0.1f){
 				_soundVolume += 0.3f;
@@ -756,11 +757,13 @@ public class Player_Controller : MonoBehaviour {
 		}
 		if((int)(airTime/suffocationTime * 100) == 10){
 			WindowsVoice.Speak("Oxygen at 10%");
-		}	
+		}
+		if((int)(airTime/suffocationTime * 100) < 2){
+			WindowsVoice.Speak("Oxygen Critical <break />");
+		}		
 		if (airTime < 0) {
 			airTime = airTime + 1f;
-			damageScript.TakeDamage (10,0, transform.position + transform.forward);
-
+			damageScript.TakeDamage (10,0, transform.position + transform.forward, true);
 		}
 	}
 	[MRPC]
