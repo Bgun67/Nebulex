@@ -276,14 +276,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1559899269193400}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.0083774375, y: 0, z: 0, w: 0.99996495}
   m_LocalPosition: {x: 0, y: -0.091, z: 2.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4394050124655708}
   m_Father: {fileID: 4394497605494664}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.96, y: 0, z: 0}
 --- !u!1 &1585738097643948
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,7 +365,7 @@ MonoBehaviour:
   damagePower: 52
   bulletVelocity: 600
   fireType: 0
-  skillLevel: 20000
+  skillLevel: 2500
   unavailableScopes: []
   shootSound: {fileID: 0}
   triggerClick: {fileID: 8300000, guid: f71519fc0ecf8d8498600a1181ae50f4, type: 3}
@@ -445,7 +445,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

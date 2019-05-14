@@ -14,8 +14,7 @@ public class Bullet_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-			Invoke ("DisableBullet", range);
-
+		Invoke ("DisableBullet", range);
 	}
 
 	// Update is called once per frame
@@ -30,7 +29,8 @@ public class Bullet_Controller : MonoBehaviour {
 			blastScript.fromID = fromID;
 			blastScript.damagePower = damagePower;
 			blastScript.explosionForce = explosionForce;
-			Invoke ("DisableBullet", 0.1f);
+			//Invoke ("DisableBullet", 0.1f);
+			DisableBullet();
 			Destroy(blastScript.gameObject, 5f);
 		}
 		try {
@@ -49,9 +49,10 @@ public class Bullet_Controller : MonoBehaviour {
 
 		}
 
-		this.enabled = false;
+		//this.enabled = false;
 
-		Invoke ("DisableBullet", 0.1f);
+		//Invoke ("DisableBullet", 0.1f);
+		DisableBullet();
 		/*
 		if (other.collider.tag == checkTag1) {
 			RaycastHit hit;

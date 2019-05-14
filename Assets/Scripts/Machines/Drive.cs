@@ -25,6 +25,7 @@ public class Drive : MonoBehaviour {
 	public void Activate(GameObject _player)
 	{
 		driversSeat.Activate(_player);
+		netObj.owner = _player.GetComponent<Metwork_Object>().netID;
 	}
 	void Exit()
 	{

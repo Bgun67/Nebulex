@@ -122,7 +122,7 @@ public class Damage : MonoBehaviour {
 		{
 			//print("sendingDamage");
 
-			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _hitDirection);
+			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _hitDirection, overrideTeam);
 			return;
 		}
 		if (!CheckLocal() || isDead)
@@ -281,10 +281,6 @@ public class Damage : MonoBehaviour {
 			impact.transform.forward = -collision.contacts [0].normal;
 			impact.transform.SetParent (this.transform);
 			Destroy (impact, 20f);
-
-			
-
-
 			return;
 		}
 

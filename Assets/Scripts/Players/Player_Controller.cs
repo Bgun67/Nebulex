@@ -31,6 +31,7 @@ public class Player_Controller : MonoBehaviour {
 	public float currentStepHeight;
 	public bool enteringGravity = false;
 	float jumpWait;
+	float jumpHeldTime;
 	public MetworkView netView;
 	public Metwork_Object netObj;
 	public float jetpackFuel = 1f;
@@ -53,6 +54,7 @@ public class Player_Controller : MonoBehaviour {
 	public float knifePosition;
 	public Animator knifeAnim;
 	bool counterKnife;
+	public Transform flagPosition;
 
 	/// <summary>
 	/// The player's team. 0 being team A and 1 being team B
@@ -104,7 +106,7 @@ public class Player_Controller : MonoBehaviour {
 	#endregion
 	[Header("Sound")]
 	#region sound
-
+	AudioWrapper wrapper;
 	public AudioSource walkSound;
 	public AudioClip[] walkClips;
 	public AudioSource breatheSound;
@@ -163,7 +165,8 @@ public class Player_Controller : MonoBehaviour {
 		netObj = this.GetComponent<Metwork_Object> ();
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponent<Animator> ();
-		mainCam = mainCamObj.GetComponent<Camera> (); 
+		mainCam = mainCamObj.GetComponent<Camera> ();
+		wrapper = GetComponent<AudioWrapper>();
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
 		originalCamPosition = mainCamObj.transform.localPosition;
 		originalCamRotation = mainCamObj.transform.localRotation;
@@ -231,8 +234,8 @@ public class Player_Controller : MonoBehaviour {
 		} else {
 			//RPC_SwitchWeapons(primarySelected);
 			RPC_ShowNameText ();
-			sceneCam.enabled = false;
-			sceneCam.GetComponent<AudioListener>().enabled = false;
+//			sceneCam.enabled = false;
+//			sceneCam.GetComponent<AudioListener>().enabled = false;
 		}
 		
 		UpdateUI ();
@@ -281,7 +284,7 @@ public class Player_Controller : MonoBehaviour {
 				_soundVolume += 0.3f;
 			}
 			if(_soundVolume > 0.1f){
-			this.GetComponent<AudioWrapper>().PlayOneShot(0, _soundVolume);
+			wrapper.PlayOneShot(0, _soundVolume);
 			}
 
 			previousVelocity = rb.velocity;
@@ -366,12 +369,20 @@ public class Player_Controller : MonoBehaviour {
 				Hop();
 			}
 			if (z > 0f) {
-				Jump ();
+				jumpHeldTime+=Time.deltaTime;
+				if (jumpHeldTime > 0.75f)
+				{
+					Jump();
+				}
+				wrapper.PlayOneShot(0, jumpHeldTime);
+
+				
 			} else {
 				
 				foreach (ParticleSystem jet in jetpackJets) {
 					jet.Stop ();
 				}
+				jumpHeldTime = 0f;
 
 			}
 			
@@ -440,9 +451,9 @@ public class Player_Controller : MonoBehaviour {
 
 		}
 
-		blackoutShader.ChangeConciousness (airTime / suffocationTime * 10f);
+		blackoutShader.ChangeConciousness (Mathf.Clamp01(Mathf.Pow(airTime / suffocationTime,2f)+0.3f) * 10f);
 		if(netObj.isLocal){
-			breatheSound.volume = 1f-airTime / suffocationTime;
+			breatheSound.volume = Mathf.Clamp01(Mathf.Pow((suffocationTime-airTime) / suffocationTime,2f)-0.1f);
 		}
 		else{
 			breatheSound.volume = 0f;
@@ -774,7 +785,7 @@ public class Player_Controller : MonoBehaviour {
 		GameObject otherPlayer = Game_Controller.GetGameObjectFromNetID(otherPlayerInt);
 
 		print("other player: " + otherPlayer.name);
-		this.transform.position = otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition;
+		rb.MovePosition(otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition);
 		if (counterKnife == true)
 		{
 			otherPlayer.GetComponent<Player_Controller>().netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
@@ -841,7 +852,13 @@ public class Player_Controller : MonoBehaviour {
 	}
 	IEnumerator Stab(GameObject _otherPlayer)
 	{
-		yield return new WaitForSeconds(1.5f);
+		float i = 0;
+		while (i < 1.5f)
+		{
+			transform.position = Vector3.Lerp(transform.position, _otherPlayer.transform.position-transform.forward*1.1f, i/1.5f);
+			yield return new WaitForEndOfFrame();
+			i += Time.deltaTime;
+		}
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {

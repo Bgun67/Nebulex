@@ -973,6 +973,8 @@ MonoBehaviour:
   unavailableScopes:
   - Acog
   shootSound: {fileID: 82268380300547692}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 8300000, guid: 0846601c78386494bb98bf1529862725, type: 3}
   weaponAnim: {fileID: 95743912247803958}
   isRecoil: 1
@@ -986,9 +988,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 4742317291064454}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -1017,7 +1017,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 50
   Pan2D: 0
-  rolloffMode: 1
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0

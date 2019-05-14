@@ -77,7 +77,7 @@ public class Fire : MonoBehaviour {
 		shootSound = this.GetComponent<AudioSource>();
 		sound = shootSound.clip;
 		weaponAnim = this.GetComponent<Animator>();
-		fireRate = 1 / (fireRate / 60f);
+		fireRate = 1f / (fireRate / 60f);
 
 		if (!ignoreParentVelocity)
 		{
@@ -158,10 +158,11 @@ public class Fire : MonoBehaviour {
 
 						}
 					}
+					Vector3 randomFactor = Random.insideUnitSphere*recoilAmount*0.01f*Mathf.Clamp(fired,1f,3f);
 					if (ignoreParentVelocity) {
-						bullet.GetComponent<Rigidbody> ().velocity = shotSpawn.transform.forward * bulletVelocity;
+						bullet.GetComponent<Rigidbody> ().velocity = (shotSpawn.transform.forward+randomFactor) * bulletVelocity;
 					} else {
-						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + shotSpawn.transform.forward * bulletVelocity;
+						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + (shotSpawn.transform.forward+randomFactor) * bulletVelocity;
 					}
 					bullet.GetComponent<Bullet_Controller> ().damagePower = damagePower;
 
@@ -269,7 +270,7 @@ public class Fire : MonoBehaviour {
 			reloading = false;
 			StartCoroutine (Reload());
 		}
-		if (cockSound != null)
+		if (cockSound != null&&transform.parent!=null)
 		{
 			shootSound.PlayOneShot(cockSound);
 		}

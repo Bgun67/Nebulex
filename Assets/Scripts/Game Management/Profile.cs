@@ -73,7 +73,8 @@ public class Profile : MonoBehaviour {
 	public static string[] RestoreOptionsFile()
 	{
 		print("Restoring Options file");
-		string[] optionsSettings = new string[]{ "1", "True", "1", "2", "False"};
+
+		string[] optionsSettings = new string[]{ "1", "True", "1", "3", "False"};
 		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsSettings) );
 		return optionsSettings;
 	}
