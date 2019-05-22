@@ -266,6 +266,7 @@ public class Ship_Controller : MonoBehaviour {
 
 	public void DisableAI(){
 		this.isAI = false;
+		this.target = null;
 		Navigation.DeregisterTarget(this.transform);
 	}
 
@@ -568,7 +569,8 @@ public class Ship_Controller : MonoBehaviour {
 	public void RPC_Die(int id){
 		print ("Running ship controller die");
 		Navigation.DeregisterTarget (this.transform);
-		isAI = false;
+		DisableAI();
+
 		Destroy(Instantiate (explosionEffect, this.transform.position, transform.rotation),5f);
 		Destroy(Instantiate (destroyedPrefabs [Random.Range (0, destroyedPrefabs.Length)], this.transform.position, transform.rotation),5f);
 		if (player != null) {

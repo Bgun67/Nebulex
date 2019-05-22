@@ -132,7 +132,9 @@ public class Fire : MonoBehaviour {
 
 	}
 	public void FireWeapon(){
+		
 		if (!reloading) {
+			
 			if (fireType == FireTypes.SemiAuto) {
 			
 				if (fired > 0) {
@@ -145,9 +147,11 @@ public class Fire : MonoBehaviour {
 				} 
 			}
 			if (Time.time >= fireDelay) {
+				
 				if (magAmmo > 0) {
 					fireDelay = Time.time + fireRate;
 					GameObject bullet = GetBullet ();
+					print(bullet.name);
 					bullet.transform.position = shotSpawn.position;
 					bullet.transform.rotation = shotSpawn.rotation;
 					fired++;
@@ -165,7 +169,7 @@ public class Fire : MonoBehaviour {
 						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + (shotSpawn.transform.forward+randomFactor) * bulletVelocity;
 					}
 					bullet.GetComponent<Bullet_Controller> ().damagePower = damagePower;
-
+					
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						netView.RPC ("RPC_FireWeapon", MRPCMode.Others, new object[] {
 							bullet.transform.position,
@@ -230,6 +234,7 @@ public class Fire : MonoBehaviour {
 		bullet.GetComponent<Rigidbody> ().velocity = _velocity;
 		bullet.GetComponent<Bullet_Controller> ().damagePower = _damagePower;
 		bullet.GetComponent<Bullet_Controller> ().fromID = _ID;
+		
 
 	}
 

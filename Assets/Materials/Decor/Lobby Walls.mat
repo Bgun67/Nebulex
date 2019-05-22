@@ -5,23 +5,23 @@ Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Lobby Walls
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 3407f95f0d86a3f44bbc57c7c9576ab9, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _EMISSION
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 1a8a0d8b617262849acfd307145fd11a, type: 3}
+        m_Scale: {x: -30, y: 4}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
@@ -40,10 +40,14 @@ Material:
         m_Scale: {x: -30, y: 4}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 49b8776b6fad8cc428f9569dd94dbc8f, type: 3}
+        m_Texture: {fileID: 2800000, guid: a969414c77deb674fac34b31e9fe469e, type: 3}
         m_Scale: {x: -30, y: 4}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -75,3 +79,4 @@ Material:
     m_Colors:
     - _Color: {r: 0.17421678, g: 0.40829018, b: 0.8207547, a: 1}
     - _EmissionColor: {r: 0, g: 0.23529412, b: 2, a: 1}
+    - _Tint: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}

@@ -26,6 +26,16 @@ public class Game_Controller : MonoBehaviour {
 
 	}
 
+	public static Game_Controller _instance{
+		get{
+			if(_instance == null){
+				_instance = FindObjectOfType<Game_Controller>();
+			}
+			return _instance;
+		}
+		set{
+		}
+	}
 	public static Game_Controller GetInstance;
 
 	public List<GameObject> playerObjects = new List<GameObject> ();
@@ -713,6 +723,15 @@ public class Game_Controller : MonoBehaviour {
 			}
 			GameClipCamera.depth = 3;
 		}
+	}
+	public static int GetTeam(int _viewID){
+		return Game_Controller._instance.statsArray[_viewID].team;
+	}
+	public static int GetTeam(Player_Controller _player){
+		return Game_Controller._instance.statsArray[_player.netObj.netID].team;
+	}
+	public static int GetTeam(GameObject _player){
+		return Game_Controller._instance.statsArray[_player.GetComponent<Metwork_Object>().netID].team;
 	}
 
 

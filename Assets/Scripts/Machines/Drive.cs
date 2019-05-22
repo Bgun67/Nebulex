@@ -15,6 +15,7 @@ public class Drive : MonoBehaviour {
 	public Metwork_Object netObj;
 	public GameObject explosionEffect;
 	public GameObject[] destroyedPrefabs;
+	public AudioWrapper audioWrapper;
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
@@ -33,6 +34,9 @@ public class Drive : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+		if(speed > 0.1f){
+			audioWrapper.PlayOneShot(0, speed);
+		}
 		/*wheels [0].motorTorque = force * (Input.GetAxis ("Move Z"));//+2f*Input.GetAxis("Move X"));
 		wheels [1].motorTorque = force * (Input.GetAxis ("Move Z"));//-2f*Input.GetAxis("Move X"));
 		print ("Wheel1: "+wheels [0].motorTorque);
