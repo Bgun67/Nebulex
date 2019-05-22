@@ -16,7 +16,13 @@ public class Turret_Controller : MonoBehaviour {
 	public GameObject explosionEffect;
 	public GameObject destroyedPrefab;
 	public bool auto;
+	public int team;
 
+	public void Start(){
+		netView = this.GetComponent<MetworkView> ();
+		primary1.playerID = 0;
+		primary2.playerID = 0;
+	}
 	public virtual void Activate(GameObject pilot){
 		//Switch to the internal camera
 		print(pilot.name);
@@ -130,9 +136,10 @@ public class Turret_Controller : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if (auto && Metwork.isServer)
+		if (auto && (Metwork.isServer||Metwork.peerType == MetworkPeerType.Disconnected))
 		{
 			AutoAim();
+			return;
 		}
 		if (player.GetComponent<Metwork_Object> ().isLocal) {
 			if (MInput.useMouse)
@@ -170,29 +177,7 @@ public class Turret_Controller : MonoBehaviour {
 		float turnTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
 		anim.Play("Turn", 1, Mathf.Lerp(turnTime, hTime, 0.5f));
 	}
-	/* public IEnumerator AdjustView(float hTime, float time){
-		float lookTime = anim.GetCurrentAnimatorStateInfo (0).normalizedTime;
-		if (lookTime < time) {
-			anim.SetFloat ("Look Speed", 1f);
-		} else if(lookTime>time) {
-			anim.SetFloat ("Look Speed", -1f);
-		}
-
-		yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (0).normalizedTime - time) < 0.05f);
-		anim.Play ("Aim Up/Down", 0, time);
-		anim.SetFloat ("Look Speed",0f);
-
-		float turnTime = anim.GetCurrentAnimatorStateInfo (1).normalizedTime;
-		if (lookTime < hTime) {
-			anim.SetFloat ("Turn Speed", 1f);
-		} else if(lookTime>hTime) {
-			anim.SetFloat ("Turn Speed", -1f);
-		}
-
-		yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - hTime) < 0.05f);
-		anim.Play ("Turn", 1, hTime);
-		anim.SetFloat ("Turn Speed",0f);
-	}*/
+	
 	void Look(){
 		if (anim == null)
 		{
@@ -228,6 +213,39 @@ public class Turret_Controller : MonoBehaviour {
 	}
 	void AutoAim()
 	{
+		if(Time.time < 5f){
+			return;
+		}
+		//Find all the fighters in the scene
+		Ship_Controller[] _fighters = FindObjectsOfType<Ship_Controller>();
+
+		Ship_Controller _bestShip = _fighters[0];
+		//Find the closest fighter
+		for(int i = 0; i< _fighters.Length; i++){
+			if( (_bestShip.transform.position-transform.position).sqrMagnitude > (_fighters[i].transform.position-transform.position).sqrMagnitude
+			 && _fighters[i].player!= null && Game_Controller.GetTeam(_fighters[i].player) != team){
+				_bestShip = _fighters[i];
+			}
+		}
+		//Project on the relative (to the base) x-z plane to find left right rotation
+		float _yAngle = Vector3.SignedAngle(primary1.shotSpawn.forward,_bestShip.transform.position - transform.position,transform.up);
+		anim.SetFloat ("Turn Speed", Mathf.Clamp(-_yAngle/200f,-0.3f,0.3f));
+		//Project on the relative (to the base) x-z plane to find left right rotation
+		float _xAngle = Vector3.SignedAngle(primary1.shotSpawn.forward,_bestShip.transform.position - transform.position,transform.right);
 		
+
+		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo (0).normalizedTime;
+		if(lookUpDownTime > 1.0f){
+			_xAngle = -10f;
+		}
+		if(lookUpDownTime < 0.0f){
+			_xAngle = 10f;
+		}
+		anim.SetFloat ("Look Speed",  Mathf.Clamp(_xAngle/10f,-1f,1f));
+
+		if(Vector3.Dot(primary1.shotSpawn.forward, (_bestShip.transform.position-transform.position).normalized) >0.7){
+			primary1.FireWeapon ();
+			primary2.FireWeapon ();
+		}
 	}
 }

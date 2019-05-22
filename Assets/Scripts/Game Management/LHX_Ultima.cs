@@ -16,6 +16,7 @@ public class LHX_Ultima : Map_Manager
     {
         foreach( Player_Controller _player in players){
             _player.airTime = 36000f;
+            _player.suffocationTime = 36000f;
         }
     }
 }
