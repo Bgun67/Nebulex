@@ -126,12 +126,12 @@ public static int GetPieChoice(){
 			isPieShown = true;
 
 		} 
-		bool _isShown = false;
+		/*bool _isShown = false;
 		for (int i = 0; i<pieQuadrants.Length; i++){
 			if(pieQuadrants [i].activeSelf == true){
 				_isShown = true;
 			}
-		}
+		}*/
 		
 		if (Input.GetKeyUp(KeyCode.LeftControl)) {
 			isPieShown = false;

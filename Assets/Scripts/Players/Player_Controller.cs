@@ -18,7 +18,6 @@ public class Player_Controller : MonoBehaviour {
 	Vector3 previousNormal = new Vector3(0,1,0);
 	public bool onLadder = false;
 	public float forceFactor;
-	public Player player;
 	public bool inVehicle = false;
 	public Transform footRaycast;
 	public float maxStepHeight;
@@ -786,7 +785,7 @@ public class Player_Controller : MonoBehaviour {
 
 		print("other player: " + otherPlayer.name);
 		rb.MovePosition(otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition);
-		if (counterKnife == true)
+		if (counterKnife)
 		{
 			otherPlayer.GetComponent<Player_Controller>().netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
 			this.netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
@@ -828,14 +827,14 @@ public class Player_Controller : MonoBehaviour {
 			return;
 		}
 		RaycastHit hit;
-		if (Physics.Raycast (mainCamObj.transform.position, mainCamObj.transform.forward, out hit, 2f)) {
+		if (Physics.SphereCast (mainCamObj.transform.position,0.01f, mainCamObj.transform.forward, out hit, 2f)) {
 			if (hit.transform.root.tag == "Player") {
 				if (hit.transform.root.GetComponent<Animator>().GetBool("Knife"))
 				{
 					counterKnife = true;
 					return;
 				}
-				StartCoroutine(Stab(hit.collider.gameObject));
+				StartCoroutine(Stab(hit.transform.root.gameObject));
 				
 
 			}
@@ -853,9 +852,13 @@ public class Player_Controller : MonoBehaviour {
 	IEnumerator Stab(GameObject _otherPlayer)
 	{
 		float i = 0;
-		while (i < 1.5f)
+		while (i < 1.1f)
 		{
-			transform.position = Vector3.Lerp(transform.position, _otherPlayer.transform.position-transform.forward*1.1f, i/1.5f);
+			if (!_otherPlayer.activeInHierarchy)
+			{
+				break;
+			}
+			transform.position = Vector3.Lerp(transform.position, _otherPlayer.transform.position-transform.forward*1.1f, i/1.1f);
 			yield return new WaitForEndOfFrame();
 			i += Time.deltaTime;
 		}
@@ -873,10 +876,15 @@ public class Player_Controller : MonoBehaviour {
 	[MRPC]
 	public void RPC_Knife(){
 		anim.SetTrigger ("Knife");
+		Invoke("StopKnife", 0.2f);
+	}
+	public void StopKnife()
+	{
+		anim.SetBool("Knife", false);
 
 	}
 	#region Region1
-	
+
 	public virtual void Aim(){
 		if (fireScript == null||grappleActive)
 		{
@@ -984,12 +992,12 @@ public class Player_Controller : MonoBehaviour {
 		if (refueling == false) {
 			//Factor to make realistic rocket effects
 			float _fuelFactor = Mathf.Pow(2f*jetpackFuel - 2.6f, 4) * Mathf.Cos(1f + 2f*jetpackFuel - 2.6f) + 1;
-			rb.AddRelativeForce (0f, Time.deltaTime * 60f * forceFactor * z * 2f, 0f);
-			//rb.velocity = transform.up * z * 20f;
+			rb.AddRelativeForce (0f, Time.deltaTime * 30f * forceFactor * z * 2f, 0f);
+			//rb.velocity = new Vector3(rb.velocity.x,12f, rb.velocity.z);
 			foreach (ParticleSystem jet in jetpackJets) {
 				jet.Play ();
 			}
-			jetpackFuel -= Time.deltaTime * 3f;
+			jetpackFuel -= Time.deltaTime * 2.5f;
 		} else {
 			foreach (ParticleSystem jet in jetpackJets) {
 				jet.Stop ();

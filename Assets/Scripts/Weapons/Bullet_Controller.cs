@@ -11,10 +11,12 @@ public class Bullet_Controller : MonoBehaviour {
 	public float explosionForce;
 	public GameObject blastSystem;
 	public int fromID;
+	Rigidbody rb;
 
 	// Use this for initialization
 	void Start () {
 		Invoke ("DisableBullet", range);
+		rb = GetComponent<Rigidbody>();
 	}
 
 	// Update is called once per frame
@@ -92,6 +94,9 @@ public class Bullet_Controller : MonoBehaviour {
 	}
 	public void DisableBullet(){
 		this.gameObject.SetActive (false);
+		rb.velocity = Vector3.zero;
+		rb.angularVelocity = Vector3.zero;
+		rb.useGravity = false;
 	}
 
 }

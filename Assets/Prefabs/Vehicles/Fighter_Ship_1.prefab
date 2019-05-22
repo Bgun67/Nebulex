@@ -5154,6 +5154,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -5167,9 +5169,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -24581,6 +24581,8 @@ MonoBehaviour:
   skillLevel: 0
   unavailableScopes: []
   shootSound: {fileID: 0}
+  triggerClick: {fileID: 0}
+  cockSound: {fileID: 0}
   sound: {fileID: 0}
   weaponAnim: {fileID: 0}
   isRecoil: 0
@@ -24594,9 +24596,7 @@ MonoBehaviour:
   recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 0}
-  fired: 0
   ignoreParentVelocity: 0
-  rootRB: {fileID: 0}
   netView: {fileID: 0}
   muzzleFlash: {fileID: 0}
   playerID: 0
@@ -29375,6 +29375,8 @@ GameObject:
   - component: {fileID: 82079831117045636}
   - component: {fileID: 114076846857374498}
   - component: {fileID: 95748899085066370}
+  - component: {fileID: 7767002625869890905}
+  - component: {fileID: 5171915236189998733}
   m_Layer: 0
   m_Name: Fighter_Ship_1
   m_TagString: Untagged
@@ -29515,9 +29517,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  UI_healthText: {fileID: 0}
-  UI_healthBar: {fileID: 0}
-  UI_healthBox: {fileID: 0}
+  isVehicle: 1
   initialPosition: {fileID: 0}
   resetTime: 10
   gameController: {fileID: 0}
@@ -29568,8 +29568,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 500d5e54ab5b5f3419a58f4a036130a9, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.19
-  m_Pitch: 1
+  m_Volume: 0.848
+  m_Pitch: 0.6
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -29579,7 +29579,7 @@ AudioSource:
   MinDistance: 0.15
   MaxDistance: 40
   Pan2D: 0
-  rolloffMode: 1
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -29685,6 +29685,54 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!164 &7767002625869890905
+AudioReverbFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844531578879706}
+  m_Enabled: 1
+  m_DryLevel: 0
+  m_Room: 0
+  m_RoomHF: 0
+  m_DecayTime: 1
+  m_DecayHFRatio: 0.5
+  m_ReflectionsLevel: -10000
+  m_ReverbLevel: 1600
+  m_ReverbDelay: 0.04
+  m_Diffusion: 0
+  m_Density: 100
+  m_HFReference: 5000
+  m_RoomLF: 0
+  m_LFReference: 250
+  m_ReflectionsDelay: 0
+  m_ReverbPreset: 27
+--- !u!169 &5171915236189998733
+AudioLowPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844531578879706}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_LowpassResonanceQ: 1
+  lowpassLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.17272727
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1970523225036168
 GameObject:
   m_ObjectHideFlags: 0

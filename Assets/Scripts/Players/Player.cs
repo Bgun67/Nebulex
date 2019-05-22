@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,4 +12,4 @@ public class Player{
 		this.name = playerName;
 		this.playerPrefab = newPrefab;
 	}
-}
+}*/

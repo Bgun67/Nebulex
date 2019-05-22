@@ -60,6 +60,9 @@ public class Ship_Controller : MonoBehaviour {
 		InvokeRepeating ("CheckOccupied", 1f, 1f);
 		damageScript = this.GetComponent<Damage> ();
 		this.enabled = false;
+		engineSound.pitch = Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.85f;
+		previousEnginePitch = engineSound.pitch;
+
 	}
 
 	void CheckOccupied(){
@@ -142,6 +145,7 @@ public class Ship_Controller : MonoBehaviour {
 	{
 		transform.GetComponentInChildren<Door_Controller>().GetComponent<Activater>().ActivateScript(player);
 	}
+	
 
 	void Fly(){
 		rb.AddRelativeForce (0f,moveY *deltaThrustForce* 2f,
@@ -190,7 +194,7 @@ public class Ship_Controller : MonoBehaviour {
 		}
 		//rb.useGravity = false;
 
-		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.95f, 0.3f);
+		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.85f, 0.3f);
 		previousEnginePitch = engineSound.pitch;
 		if (MInput.useMouse)
 		{

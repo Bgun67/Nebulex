@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class MHostData{
 	public int connectedPlayers;
 	public string gameName;

@@ -106,7 +106,7 @@ public class Flag : MonoBehaviour {
 			{
 				vehicleEntered = false;
 				this.transform.forward = player.transform.forward;
-				target = player.jetpackJets[0].transform;
+				target = player.flagPosition;
 
 			}
 

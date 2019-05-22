@@ -28,7 +28,6 @@ public class Game_Controller : MonoBehaviour {
 
 	public static Game_Controller GetInstance;
 
-	public List<Player> players = new List<Player>();
 	public List<GameObject> playerObjects = new List<GameObject> ();
 
 
