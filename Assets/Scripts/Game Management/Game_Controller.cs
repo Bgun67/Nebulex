@@ -33,8 +33,6 @@ public class Game_Controller : MonoBehaviour {
 			}
 			return instance;
 		}
-		set{
-		}
 	}
 
 	public List<GameObject> playerObjects = new List<GameObject> ();
