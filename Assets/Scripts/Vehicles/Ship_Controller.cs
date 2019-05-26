@@ -152,7 +152,7 @@ public class Ship_Controller : MonoBehaviour {
 			moveZ *deltaThrustForce);
 		
 		if(rb.useGravity){
-			if(Physics.Linecast(transform.position, transform.position - 15f * Vector3.up)){
+			if(rb.velocity.sqrMagnitude < 16f){
 				//Balancing
 				//entering gravity, activate landing
 				if (!landMode)

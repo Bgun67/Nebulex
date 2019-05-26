@@ -17,9 +17,19 @@ public class Turret_Controller : MonoBehaviour {
 	public GameObject destroyedPrefab;
 	public bool auto;
 	public int team;
+	public LayerMask layerMask;
+
+	public Ship_Controller[] fighters;
+	public Bomber_Controller[] bombers;
 
 	public void Start(){
 		netView = this.GetComponent<MetworkView> ();
+		
+		//Find all the fighters in the scene
+		fighters = FindObjectsOfType<Ship_Controller>();
+		//Find all the bombbers in the scene
+		bombers = FindObjectsOfType<Bomber_Controller>();
+
 		primary1.playerID = 0;
 		primary2.playerID = 0;
 	}
@@ -216,36 +226,57 @@ public class Turret_Controller : MonoBehaviour {
 		if(Time.time < 5f){
 			return;
 		}
-		//Find all the fighters in the scene
-		Ship_Controller[] _fighters = FindObjectsOfType<Ship_Controller>();
-
-		Ship_Controller _bestShip = _fighters[0];
+		
+		Transform _bestShip;
+		if(fighters.Length > 0){
+			_bestShip = fighters[0].transform;
+		}
+		else{
+			return;
+		}
+		
 		//Find the closest fighter
-		for(int i = 0; i< _fighters.Length; i++){
-			if( (_bestShip.transform.position-transform.position).sqrMagnitude > (_fighters[i].transform.position-transform.position).sqrMagnitude
-			 && _fighters[i].player!= null && Game_Controller.GetTeam(_fighters[i].player) != team){
-				_bestShip = _fighters[i];
+		for(int i = 0; i< fighters.Length; i++){
+			if( (_bestShip.transform.position-transform.position).sqrMagnitude > (fighters[i].transform.position-transform.position).sqrMagnitude
+			 && fighters[i].player!= null && Game_Controller.GetTeam(fighters[i].player) != team){
+				_bestShip = fighters[i].transform;
 			}
 		}
+		
+		
+		//Find the closest fighter
+		for(int i = 0; i< bombers.Length; i++){
+			if( (_bestShip.transform.position-transform.position).sqrMagnitude > (bombers[i].transform.position-transform.position).sqrMagnitude
+			 && bombers[i].player!= null && Game_Controller.GetTeam(bombers[i].player) != team){
+				_bestShip = bombers[i].transform;
+			}
+		}
+
+
+
 		//Project on the relative (to the base) x-z plane to find left right rotation
 		float _yAngle = Vector3.SignedAngle(primary1.shotSpawn.forward,_bestShip.transform.position - transform.position,transform.up);
-		anim.SetFloat ("Turn Speed", Mathf.Clamp(-_yAngle/200f,-0.3f,0.3f));
+		anim.SetFloat ("Turn Speed", Mathf.Clamp(-_yAngle/200f,-1f,1f));
 		//Project on the relative (to the base) x-z plane to find left right rotation
 		float _xAngle = Vector3.SignedAngle(primary1.shotSpawn.forward,_bestShip.transform.position - transform.position,transform.right);
 		
 
 		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo (0).normalizedTime;
-		if(lookUpDownTime > 1.0f){
+		if(lookUpDownTime >= 1.0f){
 			_xAngle = -10f;
 		}
-		if(lookUpDownTime < 0.0f){
+		if(lookUpDownTime <= 0.0f){
 			_xAngle = 10f;
 		}
-		anim.SetFloat ("Look Speed",  Mathf.Clamp(_xAngle/10f,-1f,1f));
+		anim.SetFloat ("Look Speed",  Mathf.Clamp(_xAngle/10f,-2f,2f));
 
 		if(Vector3.Dot(primary1.shotSpawn.forward, (_bestShip.transform.position-transform.position).normalized) >0.7){
-			primary1.FireWeapon ();
-			primary2.FireWeapon ();
+			RaycastHit _hit;
+			Physics.Raycast(transform.position, _bestShip.transform.position-transform.position, out _hit,500f, layerMask, QueryTriggerInteraction.Ignore);
+			if(_hit.transform.root == _bestShip.transform){
+				primary1.FireWeapon ();
+				primary2.FireWeapon ();
+			}
 		}
 	}
 }
