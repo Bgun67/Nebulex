@@ -25,18 +25,17 @@ public class Game_Controller : MonoBehaviour {
 		public const string Soccer = "AstroBall";
 
 	}
-
-	public static Game_Controller _instance{
+	private static Game_Controller instance;
+	public static Game_Controller Instance{
 		get{
-			if(_instance == null){
-				_instance = FindObjectOfType<Game_Controller>();
+			if(instance == null){
+				instance = FindObjectOfType<Game_Controller>();
 			}
-			return _instance;
+			return instance;
 		}
 		set{
 		}
 	}
-	public static Game_Controller GetInstance;
 
 	public List<GameObject> playerObjects = new List<GameObject> ();
 
@@ -149,9 +148,8 @@ public class Game_Controller : MonoBehaviour {
 
 	public void Start()
 	{
-		
-		GetInstance = GameObject.FindObjectOfType<Game_Controller>();
-		
+
+		instance = Instance;
 		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
 		UI_awayScoreText = UI_Manager.GetInstance.UI_AwayScoreText;
 
@@ -725,13 +723,13 @@ public class Game_Controller : MonoBehaviour {
 		}
 	}
 	public static int GetTeam(int _viewID){
-		return Game_Controller._instance.statsArray[_viewID].team;
+		return Game_Controller.instance.statsArray[_viewID].team;
 	}
 	public static int GetTeam(Player_Controller _player){
-		return Game_Controller._instance.statsArray[_player.netObj.netID].team;
+		return Game_Controller.instance.statsArray[_player.netObj.netID].team;
 	}
 	public static int GetTeam(GameObject _player){
-		return Game_Controller._instance.statsArray[_player.GetComponent<Metwork_Object>().netID].team;
+		return Game_Controller.instance.statsArray[_player.GetComponent<Metwork_Object>().netID].team;
 	}
 
 
