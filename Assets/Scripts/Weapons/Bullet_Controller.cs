@@ -11,13 +11,13 @@ public class Bullet_Controller : MonoBehaviour {
 	public float explosionForce;
 	public GameObject blastSystem;
 	public int fromID;
-	Rigidbody rb;
+Rigidbody rb;
 
 	// Use this for initialization
 	void OnEnable () {
 		//Invoke ("DisableBullet", range);
-		
 	}
+	
 
 	// Update is called once per frame
 	 void OnCollisionEnter(Collision other)
