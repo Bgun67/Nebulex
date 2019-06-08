@@ -14,9 +14,9 @@ public class Bullet_Controller : MonoBehaviour {
 	Rigidbody rb;
 
 	// Use this for initialization
-	void Start () {
-		Invoke ("DisableBullet", range);
-		rb = GetComponent<Rigidbody>();
+	void OnEnable () {
+		//Invoke ("DisableBullet", range);
+		
 	}
 
 	// Update is called once per frame
@@ -93,6 +93,9 @@ public class Bullet_Controller : MonoBehaviour {
 
 	}
 	public void DisableBullet(){
+		if(rb == null){
+			rb = GetComponent<Rigidbody>();
+		}
 		this.gameObject.SetActive (false);
 		rb.velocity = Vector3.zero;
 		rb.angularVelocity = Vector3.zero;

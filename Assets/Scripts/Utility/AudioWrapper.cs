@@ -35,7 +35,7 @@ public class AudioWrapper : MonoBehaviour
     {
         source = this.gameObject.AddComponent<AudioSource>();
         source.rolloffMode = AudioRolloffMode.Linear;
-        source.maxDistance = 50f;
+        source.maxDistance = 20f;
     }
 
     public void PlayOneShot(int _clip, float _volume){

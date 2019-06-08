@@ -216,6 +216,7 @@ public class Carrier_Controller : MonoBehaviour {
 			//Add a force to the number 1 engine (Change to force at position)
 			numEngines += 1f;
 			rotEngines += 1f;
+			portEngine.SetThrottle(throttle + steering);
 			//rb.AddRelativeTorque (thrust * (throttle + steering) * 100f * Time.smoothDeltaTime * 30f * Vector3.up);
 		}
 
@@ -231,6 +232,7 @@ public class Carrier_Controller : MonoBehaviour {
 			//rb.AddRelativeTorque (thrust * (-throttle + steering) * 100f * Time.smoothDeltaTime * 30f * Vector3.up);
 			numEngines += 1f;
 			rotEngines -= 1f;
+			starboardEngine.SetThrottle(throttle - steering);
 		}
 		if (threeAxis) {
 			rb.AddRelativeForce (vertical * thrust * Time.smoothDeltaTime * 30f * Vector3.up);
