@@ -162,11 +162,11 @@ public class Fire : MonoBehaviour {
 
 						}
 					}
-					Vector3 randomFactor = Random.insideUnitSphere*recoilAmount*0.01f*Mathf.Clamp(fired,1f,3f);
+					//Vector3 randomFactor = Random.insideUnitSphere*recoilAmount*0.01f*Mathf.Clamp(fired,1f,3f);
 					if (ignoreParentVelocity) {
-						bullet.GetComponent<Rigidbody> ().velocity = (shotSpawn.transform.forward+randomFactor) * bulletVelocity;
+						bullet.GetComponent<Rigidbody> ().velocity = (shotSpawn.transform.forward) * bulletVelocity;
 					} else {
-						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + (shotSpawn.transform.forward+randomFactor) * bulletVelocity;
+						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + (shotSpawn.transform.forward) * bulletVelocity;
 					}
 					bullet.GetComponent<Bullet_Controller> ().damagePower = damagePower;
 					

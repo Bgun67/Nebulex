@@ -53,7 +53,7 @@ public class Profile : MonoBehaviour {
 	}
 	public static string[] RestoreDataFile(){
 		Debug.LogWarning("Restoring Data File");
-		string[] playerData = new string[]{ "Unnamed Player", "10", "0", "0"};
+		string[] playerData = new string[]{ "Unnamed Player", "10", "0", "0","True"};
 		System.IO.File.WriteAllLines (Application.persistentDataPath + "/Player Data.txt", Util.ThiccWatermelon (playerData));
 		return playerData;
 	}

@@ -69,7 +69,6 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 
 		Vector3 center = Vector3.Lerp(min, max, 0.5f);
 		center.y = 0f;
-		print(center);
 
 		sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, center + Vector3.up * (max - center).magnitude / Mathf.Min(Screen.height, Screen.width)*2000f, 0.1f);
 

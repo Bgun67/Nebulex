@@ -19,7 +19,6 @@ public class Turret_Controller : MonoBehaviour
 	public LayerMask layerMask;
 	public bool auto;
 	public int team;
-	public LayerMask layerMask;
 
 	public Ship_Controller[] fighters;
 	public Bomber_Controller[] bombers;
@@ -175,12 +174,12 @@ public class Turret_Controller : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (auto && (Metwork.isServer || Metwork.peerType == MetworkPeerType.Disconnected))
+		if (player == null && auto && (Metwork.isServer || Metwork.peerType == MetworkPeerType.Disconnected))
 		{
 			AutoAim();
 			return;
 		}
-		if (player.GetComponent<Metwork_Object>().isLocal)
+		if (player!= null && player.GetComponent<Metwork_Object>().isLocal)
 		{
 			if (MInput.useMouse)
 			{
