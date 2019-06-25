@@ -70,7 +70,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		Vector3 center = Vector3.Lerp(min, max, 0.5f);
 		center.y = 0f;
 
-		sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, center + Vector3.up * (max - center).magnitude / Mathf.Min(Screen.height, Screen.width)*2000f, 0.1f);
+		sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, center + Vector3.up * (max - center).magnitude / Mathf.Min(Screen.height, Screen.width)*2300f, 0.1f);
 
 	}
 	void FindMax(Vector3 initialMin, Vector3 initialMax, GameObject[] arrayToSearch, out Vector3 finalMin, out Vector3 finalMax)

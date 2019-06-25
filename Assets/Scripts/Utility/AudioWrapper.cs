@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AudioWrapper : MonoBehaviour
 {
-    AudioSource source;
+    public AudioSource source;
 
     public AudioClip[] entries;
     public AudioClip[] loops;
@@ -24,6 +24,7 @@ public class AudioWrapper : MonoBehaviour
         public float lastTime;
         public float lastTransistionTime;
         public bool isInterpolating;
+        public int loopIndex;
     }
 
 
@@ -33,9 +34,11 @@ public class AudioWrapper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        source = this.gameObject.AddComponent<AudioSource>();
-        source.rolloffMode = AudioRolloffMode.Linear;
-        source.maxDistance = 20f;
+        if(source == null){
+            source = this.gameObject.AddComponent<AudioSource>();
+            source.rolloffMode = AudioRolloffMode.Linear;
+            source.maxDistance = 20f;
+        }
     }
 
     public void PlayOneShot(int _clip, float _volume){
@@ -51,9 +54,10 @@ public class AudioWrapper : MonoBehaviour
             _info.lastTime = Time.time;
             _info.lastTransistionTime = Time.time;
             _info.isInterpolating = false;
+            _info.loopIndex = 0;
 
             runningClips.Add(_info);
-            source.PlayOneShot(entries[_clip], _volume);
+            source.PlayOneShot(entries[_clip], _volume * source.volume);
 
         }
         else{
@@ -70,45 +74,48 @@ public class AudioWrapper : MonoBehaviour
     void Update()
     {
         ClipInfo _info;
+        
         for(int i = 0; i< runningClips.Count; i++){
             _info = runningClips[i];
+            source.volume = _info.volume;
             if(_info.status == ClipStatus.Entry && Time.time - _info.lastTime > entries[_info.id].length - 0.00f){
                 _info.status = ClipStatus.Loop;
                 _info.lastTransistionTime = Time.time;
 
-                source.PlayOneShot(loops[_info.id], _info.volume);
+                source.PlayOneShot(loops[_info.id], _info.volume * source.volume);
 
                 runningClips[i] = _info;
             }
-            else if(_info.status == ClipStatus.Loop && Time.time - _info.lastTime > loops[_info.id].length - 0.00f && Time.time - _info.lastTransistionTime > loops[_info.id].length - 0.0f){
+            else if(_info.status == ClipStatus.Loop && Time.time - _info.lastTime > loops[_info.id].length - 0.00f && Time.time - _info.lastTransistionTime > loops[_info.id].length* 0.9f){
                 runningClips.Remove(_info);
                 _info.status = ClipStatus.Exit;
                 _info.lastTransistionTime = Time.time;
                 
-                source.PlayOneShot(exits[_info.id], _info.volume);
+                source.PlayOneShot(exits[_info.id], _info.volume * source.volume);
 
             }
-            else if(_info.status == ClipStatus.Loop && Time.time - _info.lastTransistionTime >= loops[_info.id].length){
+            else if(_info.status == ClipStatus.Loop && Time.time - _info.lastTransistionTime >= loops[_info.loopIndex].length * 0.9f){
                 
                  _info.lastTransistionTime = Time.time;
-                 
+                 //Max is exclusive
+                 _info.loopIndex = Random.Range(0, loops.Length);
 
-                source.PlayOneShot(loops[_info.id], _info.volume * 1f);
+                source.PlayOneShot(loops[_info.loopIndex], _info.volume * source.volume);
 
                 _info.isInterpolating = false;
                 runningClips[i] = _info;
 
             }
-            else if(_info.status == ClipStatus.Loop && Time.time - _info.lastTransistionTime >= loops[_info.id].length - interpolation[_info.id].length / 2f && !_info.isInterpolating){
+            /*else if(_info.status == ClipStatus.Loop && Time.time - _info.lastTransistionTime >= loops[_info.id].length - interpolation[_info.id].length / 2f && !_info.isInterpolating){
                 
                  
 
-                source.PlayOneShot(interpolation[_info.id], _info.volume * 1f);
+                source.PlayOneShot(interpolation[_info.id], _info.volume * source.volume);
 
                 _info.isInterpolating = true;
                 runningClips[i] = _info;
                 
-            }
+            }*/
             
             
 

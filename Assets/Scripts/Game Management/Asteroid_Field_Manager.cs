@@ -66,6 +66,8 @@ public class Asteroid_Field_Manager : ScriptableWizard {
 	public void GenerateAsteroids(){
 		GameObject sector1 = new GameObject();
 		GameObject prefab = new GameObject();
+		
+		
 
 		sector1.name = "Asteroid Sector";
 		sector1.SetActive(false);

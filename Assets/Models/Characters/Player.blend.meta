@@ -151,6 +151,7 @@ ModelImporter:
     100290: Thigh_r
     100292: Hip_R
     100294: Empty_001
+    100296: Tac-Light
     400000: Armature_004
     400002: Bone
     400004: Bone_001
@@ -299,12 +300,15 @@ ModelImporter:
     400290: Thigh_r
     400292: Hip_R
     400294: Empty_001
+    400296: Tac-Light
     2300000: NurbsPath
     2300002: Cube_066
     2300004: Cube_038
+    2300006: Tac-Light
     3300000: NurbsPath
     3300002: Cube_066
     3300004: Cube_038
+    3300006: Tac-Light
     4300000: NurbsPath
     4300002: Cube_086
     4300004: Cube_085
@@ -362,6 +366,7 @@ ModelImporter:
     4300108: Cube_062
     4300110: Cube_060
     4300112: Cube_066
+    4300114: Tac-Light
     7400000: Scope Idle
     7400002: Armature_004Action_002
     7400004: Crouch
@@ -492,6 +497,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: None__Flashlight-Albedo
+    second: {fileID: 2100000, guid: 5f35a7f3db89bb145a42ec787da42fd7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Reticle__reticle_png
     second: {fileID: 2100000, guid: 7d1590dc97d124149983fd07a8265f43, type: 2}
   - first:
@@ -608,89 +618,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Default Take' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Bone_002_L_001' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\nClip 'Armature_004Action_002'
-      has import animation warnings that might lower retargeting quality:\nNote: Activate
-      translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L' is
-      inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'hip'
-      has translation animation that will be discarded.\n\t'Hip_R' has translation
-      animation that will be discarded.\n\t'Foot_r' has translation animation that
-      will be discarded.\n\nClip 'Climb_Ladder' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
-      improve retargeting quality.\n\t'Bone_002_L_023' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'Bone_002_L_001' is inbetween
-      humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_L_020'
-      has translation animation that will be discarded.\n\t'Bone_002_R_023' is inbetween
-      humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_005'
-      has translation animation that will be discarded.\n\nClip 'Crouch' has import
-      animation warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'toe_r' has translation animation
-      that will be discarded.\n\nClip 'Crouch_001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
-      improve retargeting quality.\n\t'hip' has translation animation that will be
-      discarded.\n\t'Hip_R' has translation animation that will be discarded.\n\nClip
-      'Crouch_002' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'toe_r'
-      has translation animation that will be discarded.\n\nClip 'Hold_Grapple' has
-      import animation warnings that might lower retargeting quality:\nNote: Activate
-      translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'Knife' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'Look_Up_Down' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'Reload_pistol' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'ReloadSmg' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_L_020'
-      has translation animation that will be discarded.\n\nClip 'Command_1' has import
-      animation warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_023' is inbetween
-      humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_005'
-      has translation animation that will be discarded.\n\nClip 'Run' has import animation
-      warnings that might lower retargeting quality:\nNote: Activate translation DOF
-      on avatar to improve retargeting quality.\n\t'Bone_002_L_023' is inbetween humanoid
-      transforms and has rotation animation that will be discarded.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'toe_r'
-      has translation animation that will be discarded.\n\nClip 'Run_001' has import
-      animation warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'hip' has translation animation
-      that will be discarded.\n\t'Hip_R' has translation animation that will be discarded.\n\nClip
-      'Scope_' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'Scope__UnderBarrel__000' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'Scope__001' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'Scope__UnderBarrel__001' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'Switch_Weapons' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_R_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'ThrowGrenade' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Bone_002_L_023'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bone_002_L_001'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0

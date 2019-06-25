@@ -25,6 +25,7 @@ public class StartFootage : MonoBehaviour
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	static void CheckFirstTimeExecution()
 	{
+		return;
 		try
 		{
 			string[] playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
