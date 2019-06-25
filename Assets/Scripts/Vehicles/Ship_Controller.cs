@@ -152,7 +152,7 @@ public class Ship_Controller : MonoBehaviour {
 			moveZ *deltaThrustForce);
 		
 		if(rb.useGravity){
-			if(rb.velocity.sqrMagnitude < 16f){
+			if(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude < 300f){
 				//Balancing
 				//entering gravity, activate landing
 				if (!landMode)
@@ -168,11 +168,11 @@ public class Ship_Controller : MonoBehaviour {
 					landMode = true;
 
 				}
-				rb.AddForce(rb.mass * 9.81f * Mathf.Clamp01(1f/Vector3.Dot(Vector3.up, transform.up))*transform.up * 50f * Time.deltaTime);
+				rb.AddForce(rb.mass * 9.81f * Mathf.Clamp(1f/Vector3.Dot(Vector3.up, transform.up), 0.1f, 1f)*transform.up * 50f * Time.deltaTime);
 				rb.AddTorque(Vector3.Cross(-transform.up,(transform.up - Vector3.up)*Vector3.Magnitude(transform.up - Vector3.up)*rb.mass*10f)*rb.mass/1000f);
 			}
 			else{
-				rb.AddRelativeForce(rb.mass * 9.81f * Vector3.Project(rb.velocity, transform.forward).sqrMagnitude * 0.001f * 50f * Time.deltaTime * Vector3.up);
+				rb.AddRelativeForce(rb.mass * 9.81f * Mathf.Clamp(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude * 0.002f,0, 1.5f) * 50f * Time.deltaTime * Vector3.up);
 			}
 		}
 		else

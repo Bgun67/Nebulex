@@ -106,6 +106,7 @@ public class Player_Controller : MonoBehaviour {
 	[Header("Sound")]
 	#region sound
 	AudioWrapper wrapper;
+	float thrusterSoundFactor = 0f;
 	public AudioSource walkSound;
 	public AudioClip[] walkClips;
 	public AudioSource breatheSound;
@@ -249,6 +250,9 @@ public class Player_Controller : MonoBehaviour {
 			}
 
 		}
+		previousNormal = transform.up;
+		previousRot = Vector3.zero;
+
 		anim.SetFloat ("Look Speed", 0.5f);
 
 		Invoke ("Setup", 0.2f);
@@ -277,13 +281,13 @@ public class Player_Controller : MonoBehaviour {
 
 			if(_deltaV > 0.01f){
 				//0.001f
-				_soundVolume += Mathf.Clamp01(0.01f * _deltaV) * 0.6f;
+				_soundVolume += 1.0f;//Mathf.Clamp01(0.01f * _deltaV) * 0.6f;
 			}
 			if(_deltaRot > 0.1f){
 				_soundVolume += 0.3f;
 			}
-			if(_soundVolume > 0.1f){
-			wrapper.PlayOneShot(0, _soundVolume);
+			if(thrusterSoundFactor > 0.1f){
+				wrapper.PlayOneShot(0, thrusterSoundFactor);
 			}
 
 			previousVelocity = rb.velocity;
@@ -457,11 +461,11 @@ public class Player_Controller : MonoBehaviour {
 		else{
 			breatheSound.volume = 0f;
 		}
-		
-			if (Input.GetButton ("Fire1")) {
-				Attack ();
+		//TODO: Come up with a move elegant solution
+		if (Input.GetButton ("Fire1") && !UI_Manager._instance.pauseMenu.gameObject.activeSelf) {
+			Attack ();
 
-			}
+		}
 		if (MInput.GetButtonDown ("Fire2")) {
 			if(grenadesNum>0){
 				grenadesNum--;
@@ -1061,6 +1065,8 @@ public class Player_Controller : MonoBehaviour {
 		
 		rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
 		
+
+
 		float factor = Time.deltaTime * forceFactor;
 		if (Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
 		{
@@ -1169,9 +1175,17 @@ public class Player_Controller : MonoBehaviour {
 			rb.transform.Rotate(_rotateAmount);
 			previousRot = _rotateAmount;
 
+			thrusterSoundFactor = 0.5f * Mathf.Ceil(Mathf.Abs(h) + Mathf.Abs(z)) + 0.3f * Mathf.Ceil(Mathf.Abs(v));
+
 				
 			
 			
+		}
+		if (Time.frameCount % 4 == 0) {
+
+			if (Metwork.peerType != MetworkPeerType.Disconnected) {
+				netView.RPC ("RPC_AnimateSpace", MRPCMode.Others, new object[]{ thrusterSoundFactor});
+			} 
 		}
 		//Clamp the maximum speed
 		rb.velocity = Vector3.Lerp(rb.velocity, Vector3.ClampMagnitude(rb.velocity,7f), 0.3f);
@@ -1186,7 +1200,7 @@ public class Player_Controller : MonoBehaviour {
 		if (Time.frameCount % 4 == 0) {
 
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_AnimateMovement", MRPCMode.Others, new object[]{ (int)walkState, h*moveFactor,v*moveFactor});
+				netView.RPC ("RPC_AnimateMovement", MRPCMode.Others, new object[]{ (int)walkState, h*moveFactor,v*moveFactor, thrusterSoundFactor});
 			} 
 		}
 	}
@@ -1196,12 +1210,20 @@ public class Player_Controller : MonoBehaviour {
 		//}
 	}
 	[MRPC]
-	public void RPC_AnimateMovement(int state, float hSpeed, float vSpeed){
+	public void RPC_AnimateMovement(int state, float hSpeed, float vSpeed, float _thrusterSoundFactor){
 		anim.SetFloat ("H Movement", hSpeed);
 		anim.SetFloat ("V Movement", vSpeed);
 		anim.SetInteger ("Walk State", state);
+		thrusterSoundFactor = _thrusterSoundFactor;
 		//walkSound.volume = Mathf.Clamp01 (Mathf.Abs (hSpeed + vSpeed));
 	}
+
+	[MRPC]
+	public void RPC_AnimateSpace(float _thrusterSoundFactor){
+		thrusterSoundFactor = _thrusterSoundFactor;
+		//walkSound.volume = Mathf.Clamp01 (Mathf.Abs (hSpeed + vSpeed));
+	}
+
 	[MRPC]
 	public void RPC_Crouch(){
 		CapsuleCollider[] capsules = this.GetComponents<CapsuleCollider> ();

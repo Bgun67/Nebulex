@@ -16,6 +16,7 @@ public class Drive : MonoBehaviour {
 	public GameObject explosionEffect;
 	public GameObject[] destroyedPrefabs;
 	public AudioWrapper audioWrapper;
+	public AudioSource idleSound;
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
@@ -25,6 +26,7 @@ public class Drive : MonoBehaviour {
 	}
 	public void Activate(GameObject _player)
 	{
+		netObj = GetComponent<Metwork_Object>();
 		driversSeat.Activate(_player);
 		netObj.owner = _player.GetComponent<Metwork_Object>().netID;
 	}
@@ -34,9 +36,9 @@ public class Drive : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if(speed > 0.1f){
-			audioWrapper.PlayOneShot(0, speed);
-		}
+		//if(speed > 0.1f){
+		
+		//}
 		/*wheels [0].motorTorque = force * (Input.GetAxis ("Move Z"));//+2f*Input.GetAxis("Move X"));
 		wheels [1].motorTorque = force * (Input.GetAxis ("Move Z"));//-2f*Input.GetAxis("Move X"));
 		print ("Wheel1: "+wheels [0].motorTorque);
@@ -44,10 +46,23 @@ public class Drive : MonoBehaviour {
 
 		wheels[2].motorTorque = force*Input.GetAxis("Move Z");
 */
+		if(driversSeat.player != null){
+			if(!idleSound.isPlaying){
+				idleSound.Play();
+				idleSound.loop = true;
+			}
+		}
+		else{
+			if(idleSound.isPlaying){
+				idleSound.loop = false;
+			}
+
+		}
 		if (driversSeat.player == null||(Metwork.peerType!=MetworkPeerType.Disconnected&&!netObj.isLocal))
 		{
 			return;
 		}
+		audioWrapper.PlayOneShot(0, Input.GetAxis("Move Z"));
 		Vector3 relativeSpeed = transform.InverseTransformDirection(rb.velocity);
 		speed = transform.InverseTransformDirection(rb.velocity).z;
 		//rb.velocity = transform.TransformDirection(new Vector3(relativeSpeed.x, relativeSpeed.y,Mathf.Clamp(speed, -maxSpeed, maxSpeed)));

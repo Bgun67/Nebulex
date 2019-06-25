@@ -37,14 +37,14 @@ Rigidbody rb;
 		}
 		try {
 			try {
-				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position-other.relativeVelocity);
+				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
 
 
 			} catch {
 				try {
-					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position-other.relativeVelocity);
+					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
 				} catch {
-					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID,other.transform.position-other.relativeVelocity);
+					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID,other.transform.position+other.relativeVelocity);
 				}
 			}
 		} catch {

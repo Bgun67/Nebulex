@@ -8,7 +8,7 @@ Shader "Ocean/Ocean"
 		[Toggle] _ApplyNormalMapping("Enable", Float) = 1
 		[NoScaleOffset] _Normals ( "Normal Map", 2D ) = "bump" {}
 		_NormalsStrength("Strength", Range(0.01, 2.0)) = 0.3
-		_NormalsScale("Scale", Range(0.01, 50.0)) = 1.0
+		_NormalsScale("Scale", Range(0.01, 500.0)) = 1.0
 
 		[Header(Scattering)]
 		_Diffuse("Diffuse", Color) = (0.2, 0.05, 0.05, 1.0)
