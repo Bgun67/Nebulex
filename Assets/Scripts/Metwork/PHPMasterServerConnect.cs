@@ -217,7 +217,9 @@ public class PHPMasterServerConnect : MonoBehaviour
 	
 	private IEnumerator UnregisterHostCR ()
 	{
-		if (registered) {
+		
+		if (true) {
+			
 	        string url = masterServerURL+"UnregisterHost.php";
 	        url += "?gameType="+WWW.EscapeURL (gameType);
 	        url += "&gameName="+WWW.EscapeURL (gameName);
@@ -295,6 +297,60 @@ public class PHPMasterServerConnect : MonoBehaviour
 
 		RegisterHost (this.gameName, this.comment);
 		Metwork.disconnectReason = DisconnectReason.Unexpected;
+	}
+
+	public void UpdateHost(string _comment){
+		this.comment = _comment;
+		StartCoroutine(CoUpdateHost());
+	}
+	public IEnumerator CoUpdateHost () {
+
+
+
+		//while (Network.player.externalPort == 65535) {
+		//	print (Network.player.externalPort);
+		//	yield return new WaitForSeconds(1f);
+		//}
+
+		print ("Updating Host");
+
+		string url = masterServerURL+"UpdateHost.php";
+		url += "?gameType="+WWW.EscapeURL (gameType);
+		url += "&gameName="+WWW.EscapeURL (gameName);
+		url += "&comment="+WWW.EscapeURL (comment);
+		//url += "&useNat=" + true;//!Network.HavePublicAddress();
+		url += "&connectedPlayers="+Metwork.players.Count;//(Network.connections.Length + 1);
+		url += "&playerLimit="+32;//Network.maxConnections;
+		url += "&internalIp="+"192.168.2.30";//Network.player.ipAddress;
+		url += "&internalPort="+10235;//Network.player.port;
+		url += "&externalIp="+"204.123.32.5";//Network.player.externalIP;
+		url += "&externalPort="+10235;//Network.player.externalPort;
+		url += "&guid="+10234915;//Network.player.guid;
+		url += "&passwordProtected="+0;//(Network.incomingPassword != "" ? 1 : 0);
+		Debug.Log (url);
+		var www = new WWW (url);
+		yield return www;
+		Debug.Log("Returned from url: " + www.text);
+
+		retries = 0;
+		while ((www.error != null || www.text != "succeeded") && retries < maxRetries) {
+			print(www.text);
+			retries ++;
+			www = new WWW (url);
+			yield return www;
+			Debug.Log("Returned from url: " + www.text);
+		}
+		if ((www.error != null || www.text != "succeeded")) {
+			Debug.Log("Returned from url with error: " + www.text);
+			try{
+			SendMessage ("OnUpdateHostFailed");
+			}catch{}
+			print(www.text);
+			yield break;
+		}
+
+		Debug.Log("Returned from url: " + www.text);
+
 	}
 
 	void OnMetPlayerConnected(MetworkPlayer _player){

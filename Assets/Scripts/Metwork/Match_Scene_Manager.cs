@@ -334,7 +334,7 @@ public class MapClass
 					},
 					{
 						"content",
-						"Server"+ matchName +" has been created at "+DateTime.Now.ToString()+"\r\n"+sassyNotificationArray[UnityEngine.Random.Range(0,sassyNotificationArray.Length)]
+						"Server "+ matchName +" has been created at "+DateTime.Now.ToString()+"\r\n"+sassyNotificationArray[UnityEngine.Random.Range(0,sassyNotificationArray.Length)]
 					}
 				};
 				webClient.UploadValues(url, pairs);

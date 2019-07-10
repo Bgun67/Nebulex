@@ -167,6 +167,7 @@ public class Game_Controller : MonoBehaviour {
 		{
 			InvokeRepeating("GameUpdate", 1f, 1f);
 			InvokeRepeating("UpdateUI", 1f, 0.1f);
+			InvokeRepeating("UpdateHost", 130f, 10f);
 		}
 		if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
 		{
@@ -263,6 +264,13 @@ public class Game_Controller : MonoBehaviour {
 	void PhysicsUpdate(){
 		Physics.autoSimulation = true;
 		
+	}
+	void UpdateHost(){
+		if(Metwork.isServer){
+			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+			string _newScene = matchSettings[2];
+			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (_newScene);
+		}
 	}
 
 	[MRPC]
@@ -425,22 +433,30 @@ public class Game_Controller : MonoBehaviour {
 		//Time.timeScale = 0.5f;
 		CancelInvoke ("GameUpdate");
 		CancelInvoke ("UpdateUI");
+		
 		switch (gameMode) {
 		case "Destruction":
 			scoreA = carrierADmg.currentHealth;
 			scoreB = carrierBDmg.currentHealth;
-			if (scoreA >scoreB) {
+			if (scoreA > scoreB) {
 				winningTeam = 0;
 			}
-			else {
+			else if (scoreA < scoreB) {
 				winningTeam = 1;
+			}
+			 else {
+				winningTeam = -1;
 			}
 			break;
 		case "Team Deathmatch":
 			if (scoreA > scoreB) {
 				winningTeam = 0;
-			} else {
+			}
+			else if (scoreA < scoreB) {
 				winningTeam = 1;
+			}
+			 else {
+				winningTeam = -1;
 			}
 			break;
 		case "Capture The Flag":
@@ -452,8 +468,12 @@ public class Game_Controller : MonoBehaviour {
 			//The game has timed out
 			else if (scoreA > scoreB) {
 				winningTeam = 0;
-			} else {
+			}
+			else if (scoreA < scoreB) {
 				winningTeam = 1;
+			}
+			 else {
+				winningTeam = -1;
 			}
 			break;
 		case "Meltdown":
@@ -482,6 +502,17 @@ public class Game_Controller : MonoBehaviour {
 				player.score += 50;
 				winners.Add (player);
 				print ("We have a winner");
+			}
+			//Tie
+			else if(winningTeam == -1){
+				player.score += 50;
+				if(player.team == 0){
+					winners.Add (player);
+				}
+				else{
+					losers.Add (player);
+				}
+				print ("We have a tie");
 			} else {
 				losers.Add (player);
 				print ("loser");
@@ -505,11 +536,20 @@ public class Game_Controller : MonoBehaviour {
 			loserKillsText.text += player.kills.ToString() + "\r\n";
 
 		}
+		//Hide the pause menu, all the players should be destroyed anyway so everything should be peachy
+		UI_Manager._instance.pauseMenu.gameObject.SetActive(false);
+		if(SceneManager.GetSceneByName("SpawnScene").isLoaded == true){
+			SceneManager.UnloadSceneAsync("SpawnScene");
+		}
 		endOfGameUI.SetActive (true);
 		gameplayUI.SetActive (false);
+
 		if (statsArray[localPlayer.GetComponent<Metwork_Object>().netID].team == winningTeam)
 		{
 			winningTeamText.text = "Your Team Wins!";
+		}
+		else if(winningTeam == -1){
+			winningTeamText.text = "Tie Game!";
 		}
 		else
 		{
@@ -530,8 +570,11 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			endTimeText.text = "Remaining Time: 0:00"; 
 		}
+		endTimeText.text = "Next match in 20 sec";
 		eventSystem.SetActive(true);
 		SavePlayerScore();
+
+		Invoke("RestartGame", 20.0f);
 
 
 	}
@@ -637,9 +680,49 @@ public class Game_Controller : MonoBehaviour {
 
 	public void RestartGame()
 	{
-		print("Loading Spawn Scene");
-		FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
-		SceneManager.LoadScene("LobbyScene");
+		print("Loading next scene Scene");
+		//FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
+		//SceneManager.LoadScene("LobbyScene");
+		string newScene = "LobbyScene";
+		switch(SceneManager.GetActiveScene().name){
+			case "LHX Ultima Base":
+				newScene = "Crater";
+				break;
+			case "Crater":
+				newScene = "Fracture";
+				break;
+			case "Fracture":
+				newScene = "Space";
+				break;
+			case "Space":
+				newScene = "LHX Ultima Base";
+				break;
+			default:
+				newScene = "LobbyScene";
+				break;
+		}
+		
+		string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+		//TODO: Update to support all match types
+		if(gameMode == "Team Deathmatch" || gameMode == "Capture The Flag"){
+			matchSettings[2] = newScene;
+			System.IO.File.WriteAllLines (Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon (matchSettings));
+		}
+		else{
+			newScene = matchSettings[2];
+		}
+		
+		
+		if(Metwork.isServer){
+			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (newScene);
+		}
+
+		
+		SceneManager.LoadScene("TransistionScene");
+		//TODO: Assign variable gameplayUI of gamecontroller in LHX ULTIMA
+		
+	
+
 	}
 	public int GetLocalTeam()
 	{

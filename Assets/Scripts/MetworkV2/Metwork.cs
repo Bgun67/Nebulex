@@ -1122,11 +1122,15 @@ public class Metwork:MonoBehaviour {
 
 	private void OnGUI()
 	{
+		GUIStyle _style = new GUIStyle();
+		_style.fontSize = 13;
+		
+
 		try{
-			GUI.Label (new Rect (10, 10, 400, 80), player.connectionID.ToString());
+			GUI.Label (new Rect (10, 10, 400, 80), player.connectionID.ToString(),_style);
 
 		}catch{
-			GUI.Label (new Rect (10, 10, 400, 80), Metwork.peerType.ToString());
+			GUI.Label (new Rect (10, 10, 400, 80), Metwork.peerType.ToString(),_style);
 		}
 		//draws the debug console (or the show button in the corner to open it)
 		DebugHelper.DrawConsole();
