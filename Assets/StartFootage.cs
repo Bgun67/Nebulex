@@ -25,7 +25,7 @@ public class StartFootage : MonoBehaviour
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	static void CheckFirstTimeExecution()
 	{
-		return;
+		#if !UnityEditor||UnityEditor64
 		try
 		{
 			string[] playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
@@ -35,6 +35,7 @@ public class StartFootage : MonoBehaviour
 		{
 			CheckData(Profile.RestoreDataFile());
 		}
+		#endif
 
 	}
 	static void CheckData(string[] playerInfo)
