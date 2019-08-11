@@ -395,9 +395,13 @@ CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 222019122034234756, guid: ef95a86558f177449883c606cb94d57c,
     type: 3}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183504179}
   m_CullTransparentMesh: 0
 --- !u!1 &297027485
 GameObject:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 1562325416339436, guid: ef95a86558f177449883c606cb94d57c,
     type: 3}
   m_PrefabInstance: {fileID: 0}
@@ -610,9 +614,13 @@ CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 222019122034234756, guid: ef95a86558f177449883c606cb94d57c,
     type: 3}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319287489}
   m_CullTransparentMesh: 0
 --- !u!1 &352105151
 GameObject:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -892,8 +900,11 @@ Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374692653}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 3.4844322, y: 2.5147896, z: 33.432453}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -6153,8 +6164,11 @@ CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944562158}
   m_CullTransparentMesh: 0
 --- !u!1 &1000696563
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 1562325416339436, guid: ef95a86558f177449883c606cb94d57c,
     type: 3}
@@ -6400,7 +6414,10 @@ ParticleSystemRenderer:
   m_VertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
+  m_Mesh2: {fileID: 0}
+  m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!198 &1122699731
 ParticleSystem:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11620,6 +11637,7 @@ GameObject:
   - component: {fileID: 1445524773}
   - component: {fileID: 1445524772}
   - component: {fileID: 1445524771}
+  - component: {fileID: 1445524775}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
