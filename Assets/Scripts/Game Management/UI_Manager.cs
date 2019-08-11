@@ -142,16 +142,6 @@ public static int GetPieChoice(){
 			//	onPieEvent.Invoke (selectedSegment);
 			//}
 		}
-		
-		if (Input.GetKeyUp(KeyCode.LeftControl)) {
-			isPieShown = false;
-
-			pieChoice = selectedSegment;
-			//pieChoice = selectedSegment;
-			//if (selectedSegment != -1 && onPieEvent != null) {
-			//	onPieEvent.Invoke (selectedSegment);
-			//}
-		}
 		LaunchPie ();
 	}
 

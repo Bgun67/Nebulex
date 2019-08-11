@@ -64,7 +64,6 @@ public class Network_Manager : MonoBehaviour {
 		print("Invoked RPC");
 	}
 
-
 	void OnSceneLoaded(Scene _scene, LoadSceneMode _mode){
 		if (_scene.name == "LobbyScene") {
 			sceneMode = SceneMode.Lobby;

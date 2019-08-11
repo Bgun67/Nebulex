@@ -155,16 +155,15 @@ public class Damage : MonoBehaviour {
 		{
 			currentHealth = 0;
 			
-			if (this.tag == "Player")
-			{
+				if (this.tag == "Player")
+				{
 					
-				gameController.AddKill(fromID);
-				gameController.AddDeath(netObj.owner);
-				Chat.LogToChat(gameController.statsArray[fromID].name + " killed " + gameController.statsArray[netObj.owner].name +"\n");
+					gameController.AddKill(fromID);
+					gameController.AddDeath(netObj.owner);
+					Chat.LogToChat(gameController.statsArray[fromID].name + " killed " + gameController.statsArray[netObj.owner].name +"\n");
 
 
-			}
-			
+				}
 			for (int i = 1; i < assistArray.Length; i++)
 			{
 				if (i == fromID)
@@ -227,8 +226,6 @@ public class Damage : MonoBehaviour {
 		}
 
 	}
-	
-	
 	public void ShowLowHealthEffect(bool _show)
 	{
 		if (indicateLowHealth)

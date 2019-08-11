@@ -130,6 +130,7 @@ public class Ship_Controller : MonoBehaviour {
 		}
 
 
+
 	}
 	void EnableNightVision()
 	{
@@ -144,7 +145,6 @@ public class Ship_Controller : MonoBehaviour {
 	{
 		transform.GetComponentInChildren<Door_Controller>().GetComponent<Activater>().ActivateScript(player);
 	}
-
 	
 
 	void Fly(){

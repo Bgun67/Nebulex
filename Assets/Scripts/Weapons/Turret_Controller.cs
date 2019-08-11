@@ -324,5 +324,4 @@ public class Turret_Controller : MonoBehaviour
 			}
 		}
 	}
-	
 }

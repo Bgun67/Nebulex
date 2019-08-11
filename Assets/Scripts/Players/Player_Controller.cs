@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Player_Controller : MonoBehaviour {
 	float v;
-	public float v2;
+	float v2;
 	float h;
-	public float h2;
+	float h2;
 	float z;
 	float down;
 	public Rigidbody rb;
@@ -1267,9 +1267,8 @@ public class Player_Controller : MonoBehaviour {
 			CheckStep();
 		}
 	}
-	
 
-	void CheckStep()
+	 void CheckStep()
 	{
 		if (v > 0.1f)
 		{

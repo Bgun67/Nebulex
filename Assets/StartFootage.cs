@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using System.Media;
+using System.Media;
 using UnityEngine.SceneManagement;
 using UnityEngine.PostProcessing;
 
@@ -70,7 +70,7 @@ public class StartFootage : MonoBehaviour
 		currentLine++;
 		SetText("Connected");
 		currentLine++;
-		//System.Media.SystemSounds.Question.Play();
+		System.Media.SystemSounds.Question.Play();
 
 		yield return DisplaySimpleCommands(lifeSupportCommands);
 
@@ -186,7 +186,7 @@ public class StartFootage : MonoBehaviour
 		{
 			
 			SetText("Depressurizing Airlock"+i+"%");
-			//System.Media.SystemSounds.Question.Play();
+			System.Media.SystemSounds.Question.Play();
 
 			if (i == 99)
 			{
