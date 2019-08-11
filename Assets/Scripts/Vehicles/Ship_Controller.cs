@@ -144,19 +144,7 @@ public class Ship_Controller : MonoBehaviour {
 	{
 		transform.GetComponentInChildren<Door_Controller>().GetComponent<Activater>().ActivateScript(player);
 	}
-	void EnableNightVision()
-	{
-		Night_Vision_Effects nightVision = mainCamera.GetComponent<Night_Vision_Effects>();
-		if (nightVision != null)
-		{
-			nightVision.enabled = !nightVision.enabled;
 
-		}
-	}
-	void LowerRamp()
-	{
-		transform.GetComponentInChildren<Door_Controller>().GetComponent<Activater>().ActivateScript(player);
-	}
 	
 
 	void Fly(){

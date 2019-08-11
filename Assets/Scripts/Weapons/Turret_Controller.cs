@@ -324,8 +324,5 @@ public class Turret_Controller : MonoBehaviour
 			}
 		}
 	}
-	void AutoAim()
-	{
-		
-	}
+	
 }

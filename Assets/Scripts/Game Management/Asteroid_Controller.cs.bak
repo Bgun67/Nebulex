@@ -30,9 +30,9 @@ public class Asteroid_Controller : MonoBehaviour {
 		float maxDistance = Vector3.Distance (carrierOne.position, carriersCenter) + boundingSphereThickness;
 		if (distanceToAsteroid > maxDistance) {
 			if (junk) {
-				fieldManager.RelaunchJunk (this.gameObject);
+				//fieldManager.RelaunchJunk (this.gameObject);
 			} else {
-				fieldManager.Relaunch (this.gameObject);
+				//fieldManager.Relaunch (this.gameObject);
 			}
 		}
 

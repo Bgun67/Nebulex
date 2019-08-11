@@ -227,32 +227,8 @@ public class Damage : MonoBehaviour {
 		}
 
 	}
-	public void ShowLowHealthEffect(bool _show)
-	{
-		if (indicateLowHealth)
-		{
-			if (lowHealthEffect != null)
-			{
-				if (netObj != null)
-				{
-					if (Metwork.peerType != MetworkPeerType.Disconnected)
-					{
-						netObj.netView.RPC("RPC_ShowLowHealthEffect", MRPCMode.All, new object[] { _show });
-					}
-					else
-					{
-						RPC_ShowLowHealthEffect(_show);
-					}
-				}
-
-			}
-		}
-	}
-	[MRPC]
-	public void RPC_ShowLowHealthEffect(bool _show)
-	{
-		lowHealthEffect.SetActive(_show);
-	}
+	
+	
 	public void ShowLowHealthEffect(bool _show)
 	{
 		if (indicateLowHealth)

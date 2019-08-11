@@ -63,23 +63,7 @@ public class Network_Manager : MonoBehaviour {
 		sceneMode = SceneMode.Game;
 		print("Invoked RPC");
 	}
-	public void PrematureStart()
-	{
-		minStartingPlayers = 1;
-		//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
-		//must be connected anyway
-		print("We Starting");
-		if (Metwork.peerType != MetworkPeerType.Disconnected)
-		{
-			netView.RPC("RPC_LoadScene", MRPCMode.AllBuffered, new object[] { "TransistionScene" });
-		}
-		else
-		{
-			RPC_LoadScene("TransistionScene");
-		}
-		sceneMode = SceneMode.Game;
-		print("Invoked RPC");
-	}
+
 
 	void OnSceneLoaded(Scene _scene, LoadSceneMode _mode){
 		if (_scene.name == "LobbyScene") {
