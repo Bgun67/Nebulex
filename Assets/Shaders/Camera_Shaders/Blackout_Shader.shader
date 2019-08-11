@@ -60,12 +60,12 @@ Shader "CameraShaders/Blackout_Shader"
 					float4 result = c;
 					float sqrScreenX = (IN.screenPos.x-0.5)*(IN.screenPos.x- 0.5);
 					float sqrScreenY = (IN.screenPos.y-0.5)*(IN.screenPos.y- 0.5);
-					float distFromCenter = float((sqrScreenX+ sqrScreenY)/ _conciousness);
-					result.rgb  = c.rgb - float3(1,1,1) * distFromCenter - conciousness * distFromCenter * sin(_Time.y*2.5) * 0.5 + 0.5*(float3(1,1,1) - conciousness) * distFromCenter * sin(_Time.y * 2);//float3(distFromCenter,distFromCenter,distFromCenter);
+					float distFromCenter = float((sqrScreenX + sqrScreenY) * 0.1f);
+					result.rgb  = c.rgb - clamp((7.0f - _conciousness), 0, 10.0f) * (float3(1,1,1) * (distFromCenter) + conciousness * distFromCenter * (sin(_Time.y*2.5)) * 0.5 - 0.5*(float3(1,1,1) - conciousness) * distFromCenter * sin(_Time.y * 2));
 
 					//Calculate blood
 					half4 blood = tex2D(_BloodTex, IN.texCoord) * IN.color;
-					result.rgb = result.rgb - result.rgb * _levelOfBlood * 5/1.5 * distFromCenter * _conciousness* (1-frac(_Time.y * 0.75) * 0.25)  + blood.rgb * _levelOfBlood * 5/2 * distFromCenter * _conciousness * (1-frac(_Time.y * 0.75) * 0.25);
+					//result.rgb = result.rgb - result.rgb * _levelOfBlood * 5/1.5 * distFromCenter * _conciousness* (1-frac(_Time.y * 0.75) * 0.25)  + blood.rgb * _levelOfBlood * 5/2 * distFromCenter * _conciousness * (1-frac(_Time.y * 0.75) * 0.25);
 
 					return result;
 				}

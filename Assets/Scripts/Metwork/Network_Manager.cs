@@ -44,7 +44,27 @@ public class Network_Manager : MonoBehaviour {
 	void Update(){
 		if (Input.GetKeyDown (".")) {
 			PrematureStart();
+<<<<<<< HEAD
+=======
 		}
+	}
+	public void PrematureStart()
+	{
+		minStartingPlayers = 1;
+		//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
+		//must be connected anyway
+		print("We Starting");
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netView.RPC("RPC_LoadScene", MRPCMode.AllBuffered, new object[] { "TransistionScene" });
+>>>>>>> Local-Git
+		}
+		else
+		{
+			RPC_LoadScene("TransistionScene");
+		}
+		sceneMode = SceneMode.Game;
+		print("Invoked RPC");
 	}
 	public void PrematureStart()
 	{
@@ -71,6 +91,8 @@ public class Network_Manager : MonoBehaviour {
 			print ("# of players: " + Metwork.players.Count);
 			//The server is not counted in connections so a +1 is required to include them
 			if (Metwork.players.Count >= minStartingPlayers && Metwork.isServer) {
+				print("Min Starting Players " + minStartingPlayers);
+				print("Metwork Players amount " + Metwork.players.Count);
 				//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
 				//must be connected anyway
 				print ("We Starting");
@@ -80,7 +102,10 @@ public class Network_Manager : MonoBehaviour {
 			}
 
 
-		} else if (_scene.name == "Space") {
+		} else if (_scene.name == "Space" ||
+			_scene.name == "LHX Ultima Base" ||
+			_scene.name == "Fracture" || 
+			_scene.name == "Crater") {
 			sceneMode = SceneMode.Game;
 			
 		}
@@ -125,42 +150,12 @@ public class Network_Manager : MonoBehaviour {
 
 
 	}
-	//Deprecated
-	//void OnPlayerConnected(NetworkPlayer player){
-		/*
-		if (Network.isServer) {
-			//byte bite;
-			//int connectionID = NetworkTransport.Connect(0, player.externalIP,player.externalPort,0,out bite);
-			//WWWForm form = new WWWForm();
-
-
-			netView.RPC ("SetPlayerNumber", player, new object[]{(new List<NetworkPlayer>(Network.connections)).IndexOf(player) + 2});
-			netView.RPC ("AddPlayer", RPCMode.AllBuffered, new object[]{ connections + 1 });
-			//netView.RPC ("MakeHostAlternate", RPCMode.AllBuffered, new object[]{Network.connections[0].guid});
-			netView.RPC ("SetHostAlternates", RPCMode.AllBuffered, new object[]{Network.connections[0].guid});
-
-			//The server is not counted in connections so a +1 is required to include them
-			if (sceneMode == SceneMode.Lobby && Network.connections.Length + 1>= minStartingPlayers) {
-				//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
-				//must be connected anyway
-				print("We Starting");
-				netView.RPC("RPC_LoadScene", RPCMode.AllBuffered, new object[]{"TransistionScene"});
-				sceneMode = SceneMode.Game;
-
-			}
-
-			foreach (Network_Object _netObj in GameObject.FindObjectsOfType<Network_Object>()) {
-				_netObj.netView.RPC ("RPC_SetLocation", player, new object[]{_netObj.transform.position, _netObj.transform.rotation, _netObj.rb.velocity});
-			}
-		}
-		*/
-
-
-	//}
+	
 
 	[MRPC]
 	void RPC_LoadScene(string _sceneName){
 		print("Loading scene " + _sceneName);
+		//sceneMode = SceneMode.Game;
 		SceneManager.LoadScene (_sceneName);
 
 	}
@@ -288,6 +283,10 @@ public class Network_Manager : MonoBehaviour {
 		Metwork.Disconnect();
 		print ("Completed break");
 
+	}
+
+	void OnDestroy(){
+		SceneManager.sceneLoaded -= this.OnSceneLoaded;
 	}
 
 

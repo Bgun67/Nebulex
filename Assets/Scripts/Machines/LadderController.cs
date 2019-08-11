@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LadderController : MonoBehaviour {
-	public GameObject player;
+	public Player_Controller player;
+	Vector3 ladderPosition;
 	public bool isTop;
-
 	public Transform top;
 	public Transform bottom;
 	public float v;
 
 	void Start(){
-		
 	}
-	void Update(){
+	/*void Update(){
 		if (player != null) {
 			if (Input.GetAxis ("Move Y") > 0.1f) {
 				LeaveLadder ();
@@ -37,46 +36,59 @@ public class LadderController : MonoBehaviour {
 
 			}
 		}
+	}*/
+	void Update(){
+		if (player != null) {
+			if (Input.GetAxis ("Move Y") > 0.1f||Input.GetButton("Jump")) {
+				LeaveLadder ();
+
+
+			} else {
+				v = Input.GetAxis ("Move Z");
+				Vector3 ladderDisplacement = top.position - bottom.position;
+				float _distanceAlongLadder = Vector3.Dot(player.transform.position - bottom.position, ladderDisplacement)/ladderDisplacement.sqrMagnitude;
+				ladderPosition = bottom.position+ladderDisplacement * (_distanceAlongLadder+v*0.01f);
+				player.rb.MovePosition (ladderPosition);
+				player.anim.SetFloat ("V Movement", v);
+				if (_distanceAlongLadder+v*0.1f <= 0.1f)
+				{
+					OnReachBottom();
+				}
+				else if ((ladderDisplacement*(_distanceAlongLadder+v*0.01f)).magnitude > ladderDisplacement.magnitude)
+				{
+					OnReachTop();
+				}
+			}
+		}
 	}
 	void OnTriggerEnter(Collider other){
 
 		if (other.tag == "Player") {
 			if (other.gameObject == player) {
-				if (isTop) {
-					print ("Reached TOp");
-					OnReachTop ();
-				} else {
-					print ("Reached Bottom");
-
-					OnReachBottom ();
-				}
+				return;
 			} else if (player == null) {
-				print ("New PLayer");
-				player = other.transform.root.gameObject;
-
-				player.GetComponent<Player_Controller> ().inVehicle = true;
-				player.GetComponent<Player_Controller> ().onLadder = true;
-				player.GetComponent<Player_Controller> ().ladder = this;
-
-				player.GetComponent<Rigidbody> ().velocity = this.transform.root.GetComponent<Rigidbody> ().GetPointVelocity(player.transform.position);
-				player.GetComponent<Rigidbody> ().useGravity = false;
-				player.GetComponent<Rigidbody> ().drag = 0f;
+				player = other.transform.root.GetComponent<Player_Controller>();
+				player.inVehicle = true;
+				player.onLadder = true;
+				player.ladder = this;
+				player.rb.useGravity = false;
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
 					player.GetComponent<MetworkView> ().RPC ("RPC_ClimbLadder", MRPCMode.AllBuffered, new object[]{ });
 				} else {
-					player.GetComponent<Player_Controller> ().RPC_ClimbLadder();
+					player.RPC_ClimbLadder();
 
 				}
 
 
 				if (isTop) {
 					bottom.GetComponent<LadderController> ().player = player;
-					player.transform.SetPositionAndRotation (this.transform.position - transform.up * 3f, this.transform.rotation);
+					
 				} else {
 					top.GetComponent<LadderController> ().player = player;
 
-					player.transform.SetPositionAndRotation (this.transform.position + Vector3.up*2.5f, this.transform.rotation);
 				}
+				player.rb.MoveRotation(this.transform.rotation);
+				player.rb.MovePosition(transform.position);
 
 
 
@@ -87,14 +99,16 @@ public class LadderController : MonoBehaviour {
 
 	public void OnReachTop(){
 		
-		player.transform.SetPositionAndRotation (top.transform.position+transform.forward*4f, top.transform.rotation);
+		player.rb.MovePosition(top.transform.position + transform.forward * 2f);
+		player.rb.MoveRotation(top.transform.rotation);
 		LeaveLadder ();
 
 	}
 
 	public void OnReachBottom(){
 		
-		player.transform.SetPositionAndRotation (bottom.transform.position+transform.forward*-2f, bottom.transform.rotation);
+		player.rb.MovePosition(bottom.transform.position + transform.forward * -2f);
+		player.rb.MoveRotation(bottom.transform.rotation);
 		LeaveLadder ();
 	}
 	public void LeaveLadder(){
@@ -105,9 +119,6 @@ public class LadderController : MonoBehaviour {
 		_player.inVehicle = false;
 
 		_player.rb.useGravity = true;
-
-		_player.rb.drag = 1f;
-
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			player.GetComponent<MetworkView> ().RPC ("RPC_LeaveLadder", MRPCMode.AllBuffered, new object[]{ });
 		} else {

@@ -69,7 +69,7 @@ public class Navigation : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void OnPreRender () {
 		if (cam == null) {
 			cam = this.GetComponent<Camera> ();
 		}
@@ -103,6 +103,10 @@ public class Navigation : MonoBehaviour {
 		Vector3 distVect;
 
 		for (int i = 0; i < targets.Count; i++) {
+			if (targets[i]._transform == null)
+			{
+				return;
+			}
 			//Check if we are far enough away from the target
 			distVect = targets [i]._transform.position - cam.transform.position;
 			if (distVect.sqrMagnitude < targets[i]._distance * targets[i]._distance) {
@@ -126,10 +130,17 @@ public class Navigation : MonoBehaviour {
 
 			//first you need the RectTransform component of your canvas
 			RectTransform CanvasRect = targets [i]._image.GetComponentInParent<Canvas> ().GetComponent<RectTransform> ();
-
+		
+			float _flipNegative = 1f;
+			//dot the forward vector of the camera with the target to see if it needs to be flipped
+			if(Vector3.Dot(cam.transform.forward, targets[i]._transform.position-cam.transform.position)<0f && !isVisible){
+				_flipNegative = -1f;
+			}
 			//then you calculate the position of the UI element
 			//0,0 for the canvas is at the center of the screen, whereas WorldToViewPortPoint treats the lower left corner as 0,0. Because of this, you need to subtract the height / width of the canvas * 0.5 to get the correct position.
 			Vector2 ViewportPosition = cam.WorldToViewportPoint (targets [i]._transform.position);
+
+			
 
 
 
@@ -138,10 +149,27 @@ public class Navigation : MonoBehaviour {
 
 			} else {
 				targets [i]._image.GetComponent<Image> ().sprite = arrowImage;
-				ViewportPosition = ViewportPosition.normalized;
-				float max = Mathf.Max (Mathf.Abs(ViewportPosition.x), Mathf.Abs(ViewportPosition.y));
-				ViewportPosition.x = Mathf.Clamp01(ViewportPosition.x / max);
-				ViewportPosition.y = Mathf.Clamp01(ViewportPosition.y/max);
+				//ViewportPosition = ViewportPosition.normalized;
+				if(_flipNegative < 0){
+				//	ViewportPosition = new Vector2(ViewportPosition.y,ViewportPosition.x);
+				}
+
+				//float max = Mathf.Max (Mathf.Abs(ViewportPosition.x), Mathf.Abs(ViewportPosition.y));
+				//ViewportPosition.x = Mathf.Clamp01(ViewportPosition.x / max);
+				//ViewportPosition.y = Mathf.Clamp01(ViewportPosition.y/max);
+				
+				if(Vector3.Dot (normalUp, distVect) < 0){
+					ViewportPosition.y = 1f;
+				}
+				if(Vector3.Dot (normalDown, distVect) < 0){
+					ViewportPosition.y = 0f;
+				}
+				if(Vector3.Dot (normalLeft, distVect) < 0){
+					ViewportPosition.x = 0f;
+				}
+				if(Vector3.Dot (normalRight, distVect) < 0){
+					ViewportPosition.x = 1f;
+				}
 			}
 
 			targets [i]._image.anchorMin = ViewportPosition;
@@ -151,5 +179,10 @@ public class Navigation : MonoBehaviour {
 		}
 
 
+	}
+
+	void OnDestroy(){
+		Navigation.targets.Clear();
+		Navigation.baseImage = null;
 	}
 }

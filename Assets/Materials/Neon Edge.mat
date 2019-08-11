@@ -4,17 +4,17 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Neon Edge
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 3407f95f0d86a3f44bbc57c7c9576ab9, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON _EMISSION _NORMALMAP _PARALLAXMAP
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -24,8 +24,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: a10a34e1457cf3e4383bbde61d3d6833, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 5dfd75ee56a8974438c85c9ae49fb7db, type: 3}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
@@ -41,23 +41,23 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 30, y: 30}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _Illum:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a10a34e1457cf3e4383bbde61d3d6833, type: 3}
-        m_Scale: {x: 30, y: 30}
+        m_Texture: {fileID: 2800000, guid: cc25cadce74d1b449a13d37909aea7a9, type: 3}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: b62ab96e7ff97b5459c633bd0fa01486, type: 3}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -78,9 +78,9 @@ Material:
     - _DstBlend: 10
     - _Emission: 1
     - _GlossMapScale: 0.5
-    - _Glossiness: 1
+    - _Glossiness: 0.78
     - _GlossyReflections: 1
-    - _Metallic: 1
+    - _Metallic: 0.5
     - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.08
@@ -95,10 +95,11 @@ Material:
     - _WireThickness: 497.85
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.120666504, g: 1, b: 0, a: 1}
+    - _Color: {r: 0.38207546, g: 1, b: 0.48436236, a: 0.5647059}
     - _EdgeColour: {r: 1, g: 1, b: 1, a: 1}
     - _Emission: {r: 0.13399053, g: 1, b: 0, a: 0}
-    - _EmissionColor: {r: 0.068733044, g: 0.6415094, b: 0, a: 1}
+    - _EmissionColor: {r: 0.10975611, g: 1, b: 0, a: 1}
     - _SnowColour: {r: 1, g: 1, b: 1, a: 1}
     - _SnowDirection: {r: 0, g: 1, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Tint: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}

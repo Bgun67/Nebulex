@@ -16,7 +16,7 @@ public class Game_Controller : MonoBehaviour {
 		public int team = -1;
 	}
 
-
+	[System.Serializable]
 	public struct GameType{
 		public const string Destruction = "Destruction";
 		public const string TeamDeathmatch = "Team Deathmatch";
@@ -25,19 +25,21 @@ public class Game_Controller : MonoBehaviour {
 		public const string Soccer = "AstroBall";
 
 	}
+	private static Game_Controller instance;
+	public static Game_Controller Instance{
+		get{
+			if(instance == null){
+				instance = FindObjectOfType<Game_Controller>();
+			}
+			return instance;
+		}
+	}
 
-	public static Game_Controller _instance;
-
-	public List<Player> players = new List<Player>();
 	public List<GameObject> playerObjects = new List<GameObject> ();
 
 
 
-	public PlayerStats[] statsArray = new PlayerStats [32];
-	public bool dreadNaughtEnabled = true;
-	public GameObject dreadNaught;
-	public float dreadNaughtSpawnWait;
-	public float nextDreadnaughtTime;
+	public PlayerStats[] statsArray = new PlayerStats[32];
 
 
 	public List<Transform> playerSpawnTransforms = new List<Transform> ();
@@ -49,9 +51,9 @@ public class Game_Controller : MonoBehaviour {
 	public Damage carrierBDmg;
 	public int winningTeam;
 
-	public GameObject sceneCam;
 	public Transform shipOneTransform;
 	public Transform shipTwoTransform;
+	public GameObject sceneCam;
 	public MetworkView netView;
 
 	public Flag flagA;
@@ -77,10 +79,17 @@ public class Game_Controller : MonoBehaviour {
 	public int scoreB;
 	[Header( "UI Objects")]
 	public Text UI_timeText;
+<<<<<<< HEAD
 	public Text UI_homeScoreText;
 	public Image UI_homeColour;
 	public Text UI_awayScoreText;
 	public Image UI_awayColour;
+=======
+	Text UI_homeScoreText;
+	Image UI_homeColour;
+	Text UI_awayScoreText;
+	Image UI_awayColour;
+>>>>>>> Local-Git
 	public Text UI_fpsText;
 	public GameObject eventSystem;
 	public GameObject gameplayUI;
@@ -95,6 +104,12 @@ public class Game_Controller : MonoBehaviour {
 	public Text endScoreText;
 	public GameObject winPanel;
 	public double initialTime;
+
+	public bool GameClipMode = false;
+	public GameObject GameClipCameraPrefab;
+	public Camera GameClipCamera;
+	public float GameClipCameraOffset = 5f;
+	public Transform GameClipTarget;
 
 
 	#endregion
@@ -126,7 +141,11 @@ public class Game_Controller : MonoBehaviour {
 	[MRPC]
 	public void RPC_UpdateStatsArrayEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
 	{
+<<<<<<< HEAD
 		PlayerStats _stat = new PlayerStats();
+=======
+		PlayerStats _stat = statsArray[_index];
+>>>>>>> Local-Git
 		_stat.name = _name;
 		_stat.kills = _kills;
 		_stat.deaths = _deaths;
@@ -138,12 +157,28 @@ public class Game_Controller : MonoBehaviour {
 
 	public void Start()
 	{
+<<<<<<< HEAD
 		_instance = GameObject.FindObjectOfType<Game_Controller>();
 		netView = this.GetComponent<MetworkView>();
 		GetLocalPlayer();
 		Physics.autoSimulation = false;
 
 		nextDreadnaughtTime = dreadNaughtSpawnWait;
+=======
+
+		instance = Instance;
+		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
+		UI_awayScoreText = UI_Manager.GetInstance.UI_AwayScoreText;
+
+		UI_homeColour = UI_Manager.GetInstance.UI_HomeColour;
+		UI_awayColour = UI_Manager.GetInstance.UI_AwayColour;
+
+
+		netView = this.GetComponent<MetworkView>();
+		GetLocalPlayer();
+		
+		Physics.autoSimulation = false;
+>>>>>>> Local-Git
 		//eventSystem.SetActive (false);
 		RPC_SetTeam();
 
@@ -152,6 +187,10 @@ public class Game_Controller : MonoBehaviour {
 		{
 			InvokeRepeating("GameUpdate", 1f, 1f);
 			InvokeRepeating("UpdateUI", 1f, 0.1f);
+<<<<<<< HEAD
+=======
+			InvokeRepeating("UpdateHost", 130f, 10f);
+>>>>>>> Local-Git
 		}
 		if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
 		{
@@ -160,17 +199,27 @@ public class Game_Controller : MonoBehaviour {
 
 
 
+<<<<<<< HEAD
 
 		try
 		{
 			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Match Settings.txt"));
+=======
+		try
+		{
+			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+>>>>>>> Local-Git
 			this.matchLength = int.Parse(matchSettings[0]);
 			initialTime = Time.time;//Network.time;
 			this.gameMode = matchSettings[1];
 		}
 		catch
 		{
+<<<<<<< HEAD
 			print("Failed");
+=======
+			Debug.LogError("Failed to read data from Match Settings.txt");
+>>>>>>> Local-Git
 
 			string[] matchSettings = Profile.RestoreMatchFile();
 			this.matchLength = int.Parse(matchSettings[0]);
@@ -236,21 +285,32 @@ public class Game_Controller : MonoBehaviour {
 		Invoke("PhysicsUpdate", 1f);
 
 	}
-	public void GetLocalPlayer(){
+	public int GetLocalPlayer(){
 		foreach (Player_Controller player in FindObjectsOfType<Player_Controller>()) {
-			if (player.GetComponent<Metwork_Object>()!=null && player.GetComponent<Metwork_Object> ().isLocal) {
+			Metwork_Object _metObj = player.GetComponent<Metwork_Object>();
+			if (_metObj!=null && _metObj.isLocal) {
 				localPlayer = player.gameObject;
+				return _metObj.netID;
 			}
 		}
+		return -1;
 	}
 	void PhysicsUpdate(){
 		Physics.autoSimulation = true;
+		
+	}
+	void UpdateHost(){
+		if(Metwork.isServer){
+			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+			string _newScene = matchSettings[2];
+			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (_newScene);
+		}
 	}
 
 	[MRPC]
 	public void RPC_AddPlayerStat(string name, int _owner){
 
-		PlayerStats stat = new PlayerStats ();
+		PlayerStats stat = statsArray[_owner];
 		stat.name = name;
 		stat.kills = 0;
 		stat.deaths = 0;
@@ -264,15 +324,21 @@ public class Game_Controller : MonoBehaviour {
 
 
 	public void RPC_SetTeam(){
+		
 		for(int i = 1; i<statsArray.Length; i++) {
 			int _id = i;
 			int team = (i+1) % 2;
 			statsArray [_id].team = team;
-			if (playerObjects.Count > i) {
-				GetPlayerFromNetID (_id).GetComponent<Player_Controller> ().team = team;
+			if (playerObjects.Count >= i) {
+				Player_Controller _player = GetPlayerFromNetID (_id).GetComponent<Player_Controller> ();
+				//Set the colour highlights of the player's "jersey" meshes
+				for(int j = 0; j < _player.jerseyMeshes.Length; j++){
+					_player.jerseyMeshes[j].sharedMaterial = _player.teamMaterials[team];
+				}
 			}
 		}
 	}
+	
 
 
 	public void GameUpdate(){
@@ -281,13 +347,17 @@ public class Game_Controller : MonoBehaviour {
 		{
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
+<<<<<<< HEAD
 		}
 		Vector3 shipDisplacement = (shipTwoTransform.position-shipOneTransform.position  )/2f;
 		if (Vector3.SqrMagnitude(shipDisplacement) == 0) {
 			sceneCam.transform.position = shipOneTransform.position + new Vector3 (0f, 700f, 0);
 		} else {
 			sceneCam.transform.position = shipOneTransform.position + shipDisplacement + new Vector3 (0f, Vector3.Magnitude (shipDisplacement * (4f / 3f) * 1.5f), 0f);
+=======
+>>>>>>> Local-Git
 		}
+		
 
 		foreach (Player_Controller player in GameObject.FindObjectsOfType<Player_Controller>()) {
 			if (player.GetComponent<Metwork_Object> ().isLocal) {
@@ -307,10 +377,7 @@ public class Game_Controller : MonoBehaviour {
 		}
 
 		fps = 1f / Time.deltaTime;
-		if (dreadNaughtEnabled &&matchLength-currentTime >= nextDreadnaughtTime) {
-			SpawnDreadnaught (shipDisplacement);
-			nextDreadnaughtTime += matchLength;
-		}
+		
 		switch (gameMode) {
 		case "Destruction":
 			scoreA = carrierADmg.currentHealth;
@@ -350,6 +417,10 @@ public class Game_Controller : MonoBehaviour {
 		currentTime = _time;
 	}
 	public void UpdateShipHealths(){
+		if(carrierADmg == null){
+			return;
+		}
+
 		if (carrierADmg.netObj.isLocal) {
 			netView.RPC ("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 0, carrierADmg.currentHealth});
 		}
@@ -374,16 +445,20 @@ public class Game_Controller : MonoBehaviour {
 		int minutes = Mathf.FloorToInt(currentTime / 60f );
 		int seconds =Mathf.FloorToInt( currentTime % 60);
 
-		UI_fpsText.text = "fps:"+fps;
+		//UI_fpsText.text = "fps:"+fps;
 
 		//Update the scores of the teams, the local team being on the
 		//left side and the opposing team being on the right
-		if (localPlayer != null && localPlayer.GetComponent<Player_Controller> ().team == 0) {
+		if (localPlayer != null && GetLocalTeam() == 0) {
 			UI_homeScoreText.text = scoreA.ToString();
 			UI_awayScoreText.text = scoreB.ToString();
 			UI_homeColour.color = new Color(0,1f,0);
 			UI_awayColour.color = new Color(1f,0f,0);
+<<<<<<< HEAD
 		} else if (localPlayer.GetComponent<Player_Controller> ().team == 1){
+=======
+		} else if (GetLocalTeam() == 1){
+>>>>>>> Local-Git
 			UI_homeScoreText.text = scoreB.ToString();
 			UI_awayScoreText.text = scoreA.ToString();
 			UI_awayColour.color = new Color(0,1f,0);
@@ -405,22 +480,30 @@ public class Game_Controller : MonoBehaviour {
 		//Time.timeScale = 0.5f;
 		CancelInvoke ("GameUpdate");
 		CancelInvoke ("UpdateUI");
+		
 		switch (gameMode) {
 		case "Destruction":
 			scoreA = carrierADmg.currentHealth;
 			scoreB = carrierBDmg.currentHealth;
-			if (scoreA >scoreB) {
+			if (scoreA > scoreB) {
 				winningTeam = 0;
 			}
-			else {
+			else if (scoreA < scoreB) {
 				winningTeam = 1;
+			}
+			 else {
+				winningTeam = -1;
 			}
 			break;
 		case "Team Deathmatch":
 			if (scoreA > scoreB) {
 				winningTeam = 0;
-			} else {
+			}
+			else if (scoreA < scoreB) {
 				winningTeam = 1;
+			}
+			 else {
+				winningTeam = -1;
 			}
 			break;
 		case "Capture The Flag":
@@ -432,8 +515,12 @@ public class Game_Controller : MonoBehaviour {
 			//The game has timed out
 			else if (scoreA > scoreB) {
 				winningTeam = 0;
-			} else {
+			}
+			else if (scoreA < scoreB) {
 				winningTeam = 1;
+			}
+			 else {
+				winningTeam = -1;
 			}
 			break;
 		case "Meltdown":
@@ -462,6 +549,17 @@ public class Game_Controller : MonoBehaviour {
 				player.score += 50;
 				winners.Add (player);
 				print ("We have a winner");
+			}
+			//Tie
+			else if(winningTeam == -1){
+				player.score += 50;
+				if(player.team == 0){
+					winners.Add (player);
+				}
+				else{
+					losers.Add (player);
+				}
+				print ("We have a tie");
 			} else {
 				losers.Add (player);
 				print ("loser");
@@ -485,9 +583,25 @@ public class Game_Controller : MonoBehaviour {
 			loserKillsText.text += player.kills.ToString() + "\r\n";
 
 		}
+		//Hide the pause menu, all the players should be destroyed anyway so everything should be peachy
+		UI_Manager._instance.pauseMenu.gameObject.SetActive(false);
+		if(SceneManager.GetSceneByName("SpawnScene").isLoaded == true){
+			SceneManager.UnloadSceneAsync("SpawnScene");
+		}
 		endOfGameUI.SetActive (true);
 		gameplayUI.SetActive (false);
-		winningTeamText.text = "Team " + winningTeam + " Wins!";
+
+		if (statsArray[localPlayer.GetComponent<Metwork_Object>().netID].team == winningTeam)
+		{
+			winningTeamText.text = "Your Team Wins!";
+		}
+		else if(winningTeam == -1){
+			winningTeamText.text = "Tie Game!";
+		}
+		else
+		{
+			winningTeamText.text = "Your Team Lost!";
+		}
 		if (scoreA < 0) {
 			scoreA = 0;
 		}
@@ -503,16 +617,24 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			endTimeText.text = "Remaining Time: 0:00"; 
 		}
+<<<<<<< HEAD
 		eventSystem.SetActive(true);
 		SavePlayerScore();
+=======
+		endTimeText.text = "Next match in 20 sec";
+		eventSystem.SetActive(true);
+		SavePlayerScore();
+
+		Invoke("RestartGame", 20.0f);
+>>>>>>> Local-Git
 
 
 	}
 	public void SavePlayerScore(){
-		string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.streamingAssetsPath+"/Player Data.txt"));
+		string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Player Data.txt"));
 		int previousScore = int.Parse( data [1]);
 		data [1] =( previousScore+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].score).ToString();
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Player Data.txt", Util.ThiccWatermelon(data));
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Player Data.txt", Util.ThiccWatermelon(data));
 			
 
 	}
@@ -566,6 +688,7 @@ public class Game_Controller : MonoBehaviour {
 		playerStat.assists++;
 	}
 	public void AddKill(int playerNum){
+
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_AddKill", MRPCMode.AllBuffered, new object[] {
 				playerNum
@@ -577,9 +700,13 @@ public class Game_Controller : MonoBehaviour {
 	}
 	[MRPC]
 	public void RPC_AddKill(int playerNum){
-		PlayerStats playerStat = statsArray [playerNum];
-		playerStat.kills++;
-		playerStat.score += 100;
+		statsArray [playerNum].kills++;
+		statsArray [playerNum].score += 100;
+
+		if(playerNum == localPlayer.GetComponent<Metwork_Object>().netID){
+			WindowsVoice.Speak("Target Down");
+			
+		}
 	}
 	public void AddDeath(int playerNum){
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -593,19 +720,68 @@ public class Game_Controller : MonoBehaviour {
 	}
 	[MRPC]
 	public void RPC_AddDeath(int playerNum){
-		PlayerStats playerStat = statsArray [playerNum];
-		playerStat.deaths++;
-		if (playerStat.team == 0) {
+
+		statsArray [playerNum].deaths++;
+		if (statsArray [playerNum].team == 1) {
 			scoreA++;
 		} else {
 			scoreB++;
 		}
+		
 	}
-	public void SpawnDreadnaught(Vector3 displacement){
-		dreadNaught.SetActive (true);
-		dreadNaught.transform.position = shipOneTransform.position + displacement+new Vector3(0f,0f,-600f);
-		dreadNaught.transform.LookAt (shipOneTransform.position + displacement);
+
+	public void RestartGame()
+	{
+		print("Loading next scene Scene");
+		//FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
+		//SceneManager.LoadScene("LobbyScene");
+		string newScene = "LobbyScene";
+		switch(SceneManager.GetActiveScene().name){
+			case "LHX Ultima Base":
+				newScene = "Crater";
+				break;
+			case "Crater":
+				newScene = "Fracture";
+				break;
+			case "Fracture":
+				newScene = "Space";
+				break;
+			case "Space":
+				newScene = "LHX Ultima Base";
+				break;
+			default:
+				newScene = "LobbyScene";
+				break;
+		}
+		
+		string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+		//TODO: Update to support all match types
+		if(gameMode == "Team Deathmatch" || gameMode == "Capture The Flag"){
+			matchSettings[2] = newScene;
+			System.IO.File.WriteAllLines (Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon (matchSettings));
+		}
+		else{
+			newScene = matchSettings[2];
+		}
+		
+		
+		if(Metwork.isServer){
+			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (newScene);
+		}
+
+		
+		SceneManager.LoadScene("TransistionScene");
+		//TODO: Assign variable gameplayUI of gamecontroller in LHX ULTIMA
+		
+	
+
 	}
+	public int GetLocalTeam()
+	{
+		GetLocalPlayer();
+		return statsArray[localPlayer.GetComponent<Metwork_Object>().netID].team;
+	}
+<<<<<<< HEAD
 	public void RestartGame()
 	{
 		print("Loading Spawn Scene");
@@ -613,6 +789,92 @@ public class Game_Controller : MonoBehaviour {
 		SceneManager.LoadScene("LobbyScene");
 	}
 	
+=======
+	void Update()
+	{
+		if (Input.GetKeyDown("0"))
+		{
+			GameClipMode = !GameClipMode;
+			if (GameClipMode)
+			{
+				localPlayer.GetComponent<Player_Controller>().mainCamObj.SetActive(false);
+
+				foreach (TextMesh textMesh in FindObjectsOfType<TextMesh>())
+				{
+					textMesh.text = "";
+				}
+				GameClipCamera = Instantiate(GameClipCameraPrefab, localPlayer.transform.position, localPlayer.transform.rotation).GetComponent<Camera>();
+			}
+			else
+			{
+				localPlayer.GetComponent<Player_Controller>().mainCamObj.SetActive(true);
+				localPlayer.GetComponent<Player_Controller>().mainCamObj.transform.position = GameClipCamera.transform.position;
+				localPlayer.GetComponent<Player_Controller>().helmet.SetActive(false);
+				Destroy(GameClipCamera.gameObject);
+			}
+		}
+		if (GameClipMode)
+		{
+			if (GameClipTarget == null)
+			{
+				GameClipTarget = localPlayer.transform;
+			}
+			localPlayer.GetComponent<Player_Controller>().helmet.SetActive(true);
+			GameClipCamera.transform.LookAt(GameClipTarget.position);
+			Vector3 targetPosition = GameClipTarget.position - GameClipCamera.transform.forward * GameClipCameraOffset;
+			GameClipCamera.transform.position = Vector3.Lerp(GameClipCamera.transform.position, targetPosition, 0.5f);
+			GameClipCamera.transform.RotateAround(GameClipTarget.transform.position, Vector3.up, Input.GetAxis("Rotate Y")*5f);
+			GameClipCamera.transform.RotateAround(GameClipTarget.transform.position, Vector3.right, Input.GetAxis("Rotate X")*5f);
+			if (Input.GetKey(KeyCode.PageUp))
+			{
+				GameClipCameraOffset++;
+			}
+			else if (Input.GetKey(KeyCode.PageDown)){
+				GameClipCameraOffset--;
+			}
+			if (Input.GetKeyDown(KeyCode.I)){
+				GameClipCamera.enabled = !GameClipCamera.enabled;
+			}
+			if (Input.GetKeyDown("j"))
+			{
+				if (GameClipTarget != localPlayer.transform)
+				{
+					GameClipTarget = localPlayer.transform;
+				}
+				else
+				{
+					foreach (Ship_Controller ship in FindObjectsOfType<Ship_Controller>())
+					{
+						if (ship.player == localPlayer.gameObject)
+						{
+							GameClipTarget = ship.transform;
+							break;
+						}
+					}
+					foreach (Turret_Controller turret in FindObjectsOfType<Turret_Controller>())
+					{
+						if (turret.player == localPlayer.gameObject)
+						{
+							GameClipTarget = turret.transform;
+							break;
+						}
+					}
+				}
+			}
+			GameClipCamera.depth = 3;
+		}
+	}
+	public static int GetTeam(int _viewID){
+		return Game_Controller.instance.statsArray[_viewID].team;
+	}
+	public static int GetTeam(Player_Controller _player){
+		return Game_Controller.instance.statsArray[_player.netObj.netID].team;
+	}
+	public static int GetTeam(GameObject _player){
+		return Game_Controller.instance.statsArray[_player.GetComponent<Metwork_Object>().netID].team;
+	}
+
+>>>>>>> Local-Git
 
 
 

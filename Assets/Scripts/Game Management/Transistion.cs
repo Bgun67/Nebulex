@@ -10,11 +10,23 @@ public class Transistion : MonoBehaviour {
 	AsyncOperation loadOperation;
 	public MetworkView metView;
 	Network_Manager netManager;
+<<<<<<< HEAD
+=======
+	string mapSceneName;
+>>>>>>> Local-Git
 
 	// Use this for initialization
 	void Start () {
+		//unlock cursor
+		
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+		string[] _matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+		mapSceneName = _matchSettings[2];
+		
+		//Change to LHX Ultima
 		//This could go horribly wrong, if it does change it back to loadscenemode.single
-		loadOperation = SceneManager.LoadSceneAsync ("Space", LoadSceneMode.Single);
+		loadOperation = SceneManager.LoadSceneAsync (mapSceneName, LoadSceneMode.Single);
 		Application.backgroundLoadingPriority = ThreadPriority.Low;
 		loadOperation.allowSceneActivation = false;
 		loadOperation.priority = 0;
@@ -41,7 +53,7 @@ public class Transistion : MonoBehaviour {
 	{
 		SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
 
-		if (_scene.name == "Space") {
+		if (_scene.name == mapSceneName) {
 			
 			//SceneManager.LoadSceneAsync ("SpawnScene", LoadSceneMode.Additive);
 			

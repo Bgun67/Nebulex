@@ -21,6 +21,16 @@ public class MInput : MonoBehaviour {
 	public static InputLock inputLock;
 	public static bool useMouse = true;
 	public static float sensitivity = 1f;
+<<<<<<< HEAD
+=======
+
+	public static string[,] buttonMappings = new string[,]{
+		//Sort name(script name) || Controller Button
+		{"Fire1", "Fire1"},
+		{"Sprint", "Fire1"},
+		{"Jump", "Jump"}
+	};
+>>>>>>> Local-Git
 
 	public static float GetAxis(string _axisName){
 		if (inputLock == InputLock.LockAll)
@@ -143,6 +153,58 @@ public class MInput : MonoBehaviour {
 		}
 
 	}
+	static string GetMappedButton(string _buttonName)
+	{
+		for (int i = 0; i < buttonMappings.GetLength(0); i++)
+		{
+			if (buttonMappings[i, 0] == _buttonName)
+			{
+				return buttonMappings[i, 1];
+			}
+		}
+		Debug.LogWarning("Button or Axis "+_buttonName+"could not be found");
+		return _buttonName;
+	}
+	static void SetMappedButton(string _scriptButtonName, string _controllerName)
+	{
+		for (int i = 0; i < buttonMappings.GetLength(0); i++)
+		{
+			if (buttonMappings[i, 0] == _scriptButtonName)
+			{
+				buttonMappings[i, 1] = _controllerName;
+				return;
+			}
+		}
+		Debug.LogError("Could not Find either " + _scriptButtonName+" or " + _controllerName);
+	}
+	public static IEnumerator SwitchMappedButton(string _buttonToSwap)
+	{
+		bool _buttonPressed = false;
+		print("SwitchMap");
+		while (!_buttonPressed)
+		{
+			//find pushedbutton from list of possible names
+			for (int i = 0; i < buttonMappings.GetLength(0); i++)
+			{
+				if (Input.GetButton(buttonMappings[i, 0]))
+				{
+					//find the index of the button we are swapping out
+					for (int k = 0; k < buttonMappings.GetLength(0); k++)
+					{
+						if (buttonMappings[k,0] == _buttonToSwap)
+						{
+							//reassign button with pushed button
+							buttonMappings[k, 1] = buttonMappings[i,0];
+						}
+					}
+					_buttonPressed = true;
+				}
+			}
+			yield return new WaitForSeconds(0.01f);
+		}
+		FindObjectOfType<Controls_Manager>().ShowMappings();
+	}
+
 
 
 }

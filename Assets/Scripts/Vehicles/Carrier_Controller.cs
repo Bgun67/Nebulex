@@ -16,6 +16,7 @@ public class Carrier_Controller : MonoBehaviour {
 	public Engine_Controller starboardEngine;
 	public bool hasPower = true;
 	public Plasma_Cannon cannon;
+	//public ParticleSystem plasmaParticles;
 	public Light fireCannonLight;
 	public Light chargeCannonLight;
 	public Transform pilotPosition;
@@ -31,6 +32,7 @@ public class Carrier_Controller : MonoBehaviour {
 	public float vertical;
 	public float exitWait;
 
+	public bool shieldActive;
 	//Carrier Bridge Systems
 	public LineRenderer predictedPath;
 
@@ -214,6 +216,7 @@ public class Carrier_Controller : MonoBehaviour {
 			//Add a force to the number 1 engine (Change to force at position)
 			numEngines += 1f;
 			rotEngines += 1f;
+			portEngine.SetThrottle(throttle + steering);
 			//rb.AddRelativeTorque (thrust * (throttle + steering) * 100f * Time.smoothDeltaTime * 30f * Vector3.up);
 		}
 
@@ -229,6 +232,7 @@ public class Carrier_Controller : MonoBehaviour {
 			//rb.AddRelativeTorque (thrust * (-throttle + steering) * 100f * Time.smoothDeltaTime * 30f * Vector3.up);
 			numEngines += 1f;
 			rotEngines -= 1f;
+			starboardEngine.SetThrottle(throttle - steering);
 		}
 		if (threeAxis) {
 			rb.AddRelativeForce (vertical * thrust * Time.smoothDeltaTime * 30f * Vector3.up);
@@ -270,19 +274,24 @@ public class Carrier_Controller : MonoBehaviour {
 			for (int j = -1; j < 2; j++) {
 				explosion = (GameObject)Instantiate (subExplosionPrefab, this.transform.position + transform.forward * (100f * i + 10f * j), Quaternion.identity);
 				explosion.transform.parent = this.transform;
-				explosion.transform.localScale = Vector3.one * 0.0001f;
+				//explosion.transform.localScale = Vector3.one * 0.0001f;
 				yield return new WaitForSeconds (0.05f);
 			}
 
 			yield return new WaitForSeconds (0.4f);
 		}
 		yield return new WaitForSeconds (1.5f);
-		foreach (Collider collider in Physics.OverlapSphere (this.transform.position, 200f)) {
-			collider.GetComponent<Damage> ().TakeDamage (100, 0);
+		foreach (Collider collider in Physics.OverlapSphere(this.transform.position, 200f))
+		{
+			if (collider.GetComponent<Damage>() != null)
+			{
+				collider.GetComponent<Damage>().TakeDamage(100, 0, transform.position, true);
+			}
 		}
 		if (destroyAfterDeath) {
 			yield return new WaitForSeconds (4f);
-			Destroy (this.gameObject);
+			//Destroy (this.gameObject);
+			gameObject.SetActive(false);
 		}
 		//gameObject.SetActive (false);
 	}
@@ -331,8 +340,45 @@ public class Carrier_Controller : MonoBehaviour {
 		hasPower = true;
 
 		Invoke ("IgnoreInternal", 1f);
+<<<<<<< HEAD
+=======
+	}
+	#region shield
+	public void ShutdownShield()
+	{
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netObj.netView.RPC("RPC_ShutdownShield", MRPCMode.AllBuffered, new object[] { });
+		}
+		else
+		{
+			RPC_ShutdownShield();
+		}
+	}
+	[MRPC]
+	public void RPC_ShutdownShield()
+	{
+		GetComponentInChildren<Poynting_Shield>().StartCoroutine("ShutdownShield");
+>>>>>>> Local-Git
 	}
 
+	public void ReactivateShield()
+	{
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+			netObj.netView.RPC("RPC_ReactivateShield", MRPCMode.AllBuffered, new object[] { });
+		}
+		else
+		{
+			RPC_ReactivateShield();
+		}
+	}
+	[MRPC]
+	public void RPC_ReactivateShield()
+	{
+		GetComponentInChildren<Poynting_Shield>().StartCoroutine("ReactivateShield");
+	}
+	#endregion
 	void IgnoreInternal(){
 		Time.timeScale = 1f;
 
@@ -370,6 +416,21 @@ public class Carrier_Controller : MonoBehaviour {
 		}
 		print ("Completed");
 
+	}
+	public static void FlashWarningLights(bool _active, Transform carrier)
+	{
+		GameObject[] _lights = GameObject.FindGameObjectsWithTag("Warning Light");
+		foreach (GameObject go in _lights)
+		{
+			if (carrier == null || go.transform.root == carrier)
+			{
+				Animator _anim = go.GetComponentInChildren<Animator>();
+				if (_anim != null)
+				{
+					_anim.SetBool("Is Flashing", _active);
+				}
+			}
+		}
 	}
 
 

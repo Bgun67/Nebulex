@@ -11,11 +11,16 @@ public class Flag : MonoBehaviour {
 
 	public Rigidbody stand;
 
-	public ConfigurableJoint joint;
+	public Rigidbody rb;
 	public Metwork_Object netObj;
 	Game_Controller gameController;
+<<<<<<< HEAD
 	public BoxCollider boxCollider;
 	public Player_Controller _player;
+=======
+	public Transform target;
+	public Player_Controller player;
+>>>>>>> Local-Git
 	public float droppedTime;
 	public float maxDropTime;
 	bool vehicleEntered;
@@ -24,21 +29,19 @@ public class Flag : MonoBehaviour {
 
 	void Start(){
 		gameController = GameObject.FindObjectOfType<Game_Controller> ();
+		rb = GetComponent<Rigidbody>();
 		ReturnFlag ();
 		if (gameController.gameMode != Game_Controller.GameType.CTF) {
 			this.gameObject.SetActive (false);
 			teamAPosition.gameObject.SetActive (false);
 			teamBPosition.gameObject.SetActive (false);
-
 			stand.gameObject.SetActive (false);
-
 		}
 			
 	}
 
 	public void StartGame(){
 		gameController = GameObject.FindObjectOfType<Game_Controller> ();
-
 		ReturnFlag ();
 		Invoke ("Register", 2f);
 
@@ -56,6 +59,7 @@ public class Flag : MonoBehaviour {
 
 	}
 	void Update(){
+<<<<<<< HEAD
 		if (_player == null) {
 			if (Metwork.isServer)
 			{
@@ -69,35 +73,55 @@ public class Flag : MonoBehaviour {
 		}
 		if (joint.connectedBody==null) {
 			_player = null;
+=======
+		if (target==null) {
+			
+			player = null;
+>>>>>>> Local-Git
 			stand.transform.position = this.transform.position;
-			boxCollider.enabled = true;
 
-			joint.connectedBody = stand;
+			target = stand.transform;
 			return;
 		}
+		rb.MovePosition(Vector3.Lerp(transform.position,target.position,0.9f));
+		rb.MoveRotation(Quaternion.Lerp(transform.rotation,target.rotation,0.9f));
+		if (player == null) {
+			if (Metwork.isServer)
+			{
+				droppedTime += Time.deltaTime;
+				if (droppedTime > maxDropTime)
+				{
+					ReturnFlag();
+				}
+			}
+			return;
+		}
+<<<<<<< HEAD
 		
 		if (_player.inVehicle) {
+=======
+	
+		
+		if (player.inVehicle) {
+>>>>>>> Local-Git
 			print ("Invehicle");
 			if (!vehicleEntered) {
 				vehicleEntered = true;
 				//shitty workaround
 				foreach (Ship_Controller ship in FindObjectsOfType<Ship_Controller>()) {
-					if (ship.player == _player.gameObject) {
-						this.transform.position = ship.transform.position;
-						this.transform.rotation = ship.transform.rotation;
-						joint.connectedBody = ship.GetComponent<Rigidbody> ();
+					if (ship.player == player.gameObject) {
+						target = ship.transform;
 					}
 				}
 				foreach (Turret_Controller turret in FindObjectsOfType<Turret_Controller>()) {
-					if (turret.player == _player.gameObject) {
-						this.transform.position = turret.transform.position;
-						this.transform.rotation = turret.transform.rotation;
-						joint.connectedBody = turret.transform.root.GetComponent<Rigidbody> ();
+					if (turret.player == player.gameObject) {
+						target = turret.transform;
 					}
 				}
 			}
 		} else
 		{
+<<<<<<< HEAD
 			if (!joint.connectedBody.gameObject.activeInHierarchy)
 			{
 				_player = null;
@@ -105,31 +129,50 @@ public class Flag : MonoBehaviour {
 				boxCollider.enabled = true;
 
 				joint.connectedBody = stand;
+=======
+			if (!target.gameObject.activeInHierarchy)
+			{
+				player = null;
+				stand.transform.position = this.transform.position;
+				target = stand.transform;
+>>>>>>> Local-Git
 				return;
 			}
 			if (vehicleEntered)
 			{
 				vehicleEntered = false;
+<<<<<<< HEAD
 				this.transform.forward = _player.transform.forward;
 				joint.connectedBody = _player.rb;
 				this.transform.position = _player.jetpackJets[0].transform.position + _player.jetpackJets[0].transform.forward;
+=======
+				this.transform.forward = player.transform.forward;
+				target = player.flagPosition;
+>>>>>>> Local-Git
 
 			}
 
 		}
+<<<<<<< HEAD
 
 
+=======
+		
+
+
+
+>>>>>>> Local-Git
 	}
 
 	public void OnTriggerEnter(Collider other){
-		if (other.transform.root.GetComponent<Player_Controller> () != null) {
-			_player = other.transform.root.GetComponent<Player_Controller> ();
-		} else {
+		Player_Controller _player = other.transform.root.GetComponent<Player_Controller> ();
+		if (player!= null || _player== null) {
 			return;
 		}
+		print("Trigger Enter");
 
 		//Check if the player matches the flag's team
-		if (_player.team == this.team) {
+		if (_player.GetTeam() == this.team) {
 			//The flag returns to it's rightful owner
 			ReturnFlag();
 
@@ -146,21 +189,17 @@ public class Flag : MonoBehaviour {
 	[MRPC]
 	void RPC_PickupFlag(int _owner){
 		print ("Picking up flag");
-		_player = gameController.GetPlayerFromNetID (_owner).GetComponent<Player_Controller>();
+		player = gameController.GetPlayerFromNetID (_owner).GetComponent<Player_Controller>();
 		//The player picks up the opposing team's flag
-		boxCollider.enabled = false;
 
-		this.transform.position = _player.jetpackJets[0].transform.position + new Vector3(0,-1,0);
-		this.transform.forward = _player.transform.forward;
-		GetComponent<Rigidbody> ().useGravity = false;
-		joint.connectedBody = _player.rb;
-		netObj.owner = _player.netObj.owner;
+		target = player.jetpackJets[0].transform;
+		this.transform.forward = player.transform.forward;
+		netObj.owner = player.netObj.owner;
 	}
 
 
 
 	void ReturnFlag(){
-		print ("Returning flag");
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netObj.netView.RPC ("RPC_ReturnFlag", MRPCMode.AllBuffered, new object[]{ });
 		} else {
@@ -170,18 +209,22 @@ public class Flag : MonoBehaviour {
 
 	[MRPC]
 	void RPC_ReturnFlag(){
-		joint.connectedBody = stand;
+		target = stand.transform;
 
 		if (this.team == 0) {
-			this.transform.position = teamAPosition.position;
-			this.transform.rotation = teamAPosition.rotation;
+			stand.MovePosition(teamAPosition.position);
+			stand.MoveRotation(teamAPosition.rotation);
 		} else {
-			this.transform.position = teamBPosition.position;
-			this.transform.rotation = teamBPosition.rotation;
+			stand.MovePosition(teamBPosition.position);
+			stand.MoveRotation(teamBPosition.rotation);
 		}
+<<<<<<< HEAD
 		_player = null;
 		stand.transform.position = this.transform.position;
 		boxCollider.enabled = true;
+=======
+		player = null;
+>>>>>>> Local-Git
 	}
 
 

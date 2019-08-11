@@ -7,17 +7,25 @@ public class Minimap_Controller : MonoBehaviour {
 	public int team;
 	public GameObject[] icons;
 	public bool Hide = true;
+<<<<<<< HEAD
+=======
+	Camera cam;
+	public Shader overdrawShader;
+>>>>>>> Local-Git
 
 	// Use this for initialization
 	void Start () {
 		icons = GameObject.FindGameObjectsWithTag ("Icon");
+		cam = this.GetComponent<Camera>();
+		cam.SetReplacementShader(overdrawShader,"");
 	}
 	void OnPreRender(){
 		
-		GL.wireframe = true;
+		//GL.wireframe = true;
+
 	}
 	void OnPostRender() {
-		GL.wireframe = false;
+		//GL.wireframe = false;
 	}
 	// Update is called once per frame
 	void Update () {

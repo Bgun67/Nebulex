@@ -23,7 +23,11 @@ public class Asteroid : MonoBehaviour {
 		Physics.Raycast(transform.position+Vector3.up*10f, Vector3.down, out hit, 11f, layerMask, QueryTriggerInteraction.Ignore);
 		if (other.GetComponent<Damage>()!=null)
 		{
+<<<<<<< HEAD
 			other.GetComponent<Damage>().TakeDamage(damagePower,0);
+=======
+			other.GetComponent<Damage>().TakeDamage(damagePower,0, transform.position);
+>>>>>>> Local-Git
 		}
 		if (other.transform.root.GetComponent<Carrier_Controller>() != null)
 		{

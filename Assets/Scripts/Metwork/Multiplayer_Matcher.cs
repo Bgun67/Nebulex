@@ -4,7 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 
+
 public class Multiplayer_Matcher : MonoBehaviour {
+	#if Unity_Editor
+	use IspVoice class
+	#endif
 	/*public NetworkView netView;
 	public bool testing;
 	public string localIP;

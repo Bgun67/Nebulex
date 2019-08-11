@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+<<<<<<< HEAD
+=======
+using UnityEngine.UI;
+>>>>>>> Local-Git
 using UnityEngine.AI;
 
 /*Michael Gunther: 2018-02-05
@@ -42,6 +46,31 @@ public class Util {
         result = Vector3.zero;
         return false;
     }
+<<<<<<< HEAD
+=======
+	public static void ShowMessage(string message)
+	{
+		float _destroyTime = GameObject.FindGameObjectsWithTag("Message").Length*3;
+
+		GameObject messageObj = GameObject.Instantiate((GameObject)Resources.Load("Notification"));
+		//Set the newer bg to be rendered lowest
+		messageObj.name = "Message";
+		messageObj.tag = "Message";
+		messageObj.transform.SetParent(GameObject.FindObjectOfType<Canvas>().transform);
+		RectTransform rt = messageObj.GetComponent<RectTransform>();
+		rt.anchoredPosition = Vector3.zero;
+		rt.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, rt.rect.height);
+		messageObj.transform.SetSiblingIndex(0);
+		messageObj.GetComponentInChildren<Text>().text = message;
+		GameObject.Destroy(messageObj, _destroyTime+3f);
+
+	}
+	static void SetAnchor()
+	{
+
+	}
+
+>>>>>>> Local-Git
 	public static Vector3 ParseToVector3(string inputString){
 		string[] tmpArray = inputString.Split (new char[]{','}, 3);
 		Vector3 returnVector = new Vector3 (float.Parse(tmpArray [0]), float.Parse(tmpArray [1]),float.Parse( tmpArray [2]));

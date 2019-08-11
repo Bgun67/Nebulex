@@ -64,6 +64,7 @@ public class Soccer_Net : MonoBehaviour {
 			for (int i = 0; i < meshes.Length; i++) {
 				meshes [i].reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 				meshes [i].lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+				
 			}
 
 			//Hide all the reflection probes blend modes
@@ -141,12 +142,21 @@ public class Soccer_Net : MonoBehaviour {
 		//Hide all the reflection probes blend modes
 		Fire[] meshes = GameObject.FindObjectsOfType<Fire>();
 		for (int i = 0; i < meshes.Length; i++) {
+			foreach(MeshRenderer _mesh in meshes[i].GetComponentsInChildren<MeshRenderer>()){
 			
+<<<<<<< HEAD
 			MeshRenderer _mesh = meshes[i].GetComponent<MeshRenderer> ();
 			if(_mesh != null){
 				_mesh.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 				_mesh.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 				
+=======
+				if(_mesh != null){
+					_mesh.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+					_mesh.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+					
+				}
+>>>>>>> Local-Git
 			}
 			
 		}
@@ -168,6 +178,11 @@ public class Soccer_Net : MonoBehaviour {
 		for (int i = 0; i < _lights.Length; i++) {
 			_lights [i].enabled = false;
 		}
+
+		LightmapData _lightM = new LightmapData();
+		_lightM.lightmapColor = Texture2D.blackTexture; 
+		//Clear Lightmaps
+		LightmapSettings.lightmaps = new LightmapData[40]{_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM,_lightM};
 	}
 	// Update is called once per frame
 	void OnTriggerEnter (Collider other) {
@@ -209,26 +224,32 @@ public class Soccer_Net : MonoBehaviour {
 		scored = false;
 
 	}
-	IEnumerator CheckForSwitch(){
-		yield return new WaitForSeconds (60f);
-		while (true) {
-				
-			yield return new WaitForSeconds (Random.Range (25f, 35f));
-				
-			if (!gravOn) {
-				yield return new WaitForSeconds (50f);
+	IEnumerator CheckForSwitch()
+	{
+		yield return new WaitUntil(()=>(gameController.currentTime+10 <= gameController.matchLength/2f));
+		Carrier_Controller.FlashWarningLights(true, transform.root);
+		yield return new WaitForSeconds(10f);
 
-			} 
-			if (Metwork.isServer) {
-				netView.RPC ("RPC_SwitchGravity", MRPCMode.AllBuffered, new object[]{ gravOn });
-			} else if (Metwork.peerType == MetworkPeerType.Disconnected) {
-				RPC_SwitchGravity (gravOn);
-			}
-			gravOn = !gravOn;
-			
-
+		if (Metwork.isServer)
+		{
+			netView.RPC("RPC_SwitchGravity", MRPCMode.AllBuffered, new object[] { false });
 		}
-		
+		else if (Metwork.peerType == MetworkPeerType.Disconnected)
+		{
+			RPC_SwitchGravity(false);
+		}
+		yield return new WaitForSeconds(60f);
+		Carrier_Controller.FlashWarningLights(false, transform.root);
+
+		if (Metwork.isServer)
+		{
+			netView.RPC("RPC_SwitchGravity", MRPCMode.AllBuffered, new object[] { true });
+		}
+		else if (Metwork.peerType == MetworkPeerType.Disconnected)
+		{
+			RPC_SwitchGravity(true);
+		}
+
 
 	}
 	[MRPC]

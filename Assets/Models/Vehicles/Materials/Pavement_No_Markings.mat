@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Pavement_No_Markings
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _DETAIL_MULX2 _GLOSSYREFLECTIONS_OFF _NORMALMAP _SPECULARHIGHLIGHTS_OFF
+  m_ShaderKeywords: _GLOSSYREFLECTIONS_OFF _NORMALMAP _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,11 +19,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a020fe29a421cc3459b8614ead307187, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
-        m_Texture: {fileID: 2800000, guid: e164bd1e2a500a5439259d0fb2516981, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 400, y: 400}
         m_Offset: {x: 0, y: 0}
     - _DetailMask:
@@ -31,16 +31,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailNormalMap:
-        m_Texture: {fileID: 2800000, guid: a020fe29a421cc3459b8614ead307187, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 400, y: 400}
+        m_Scale: {x: 395.5, y: 400}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 400, y: 400}
+        m_Texture: {fileID: 2800000, guid: 37e3f7f4367f08a418cfffc6469ac7c3, type: 3}
+        m_Scale: {x: 395.5, y: 400}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -55,7 +55,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BumpScale: 1
+    - _BumpScale: 4
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 4
     - _DstBlend: 0
@@ -72,5 +72,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.11764705, g: 0.11764705, b: 0.11764705, a: 1}
+    - _Color: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

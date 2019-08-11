@@ -3,15 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Manager : MonoBehaviour {
+public class UI_Manager : MonoBehaviour
+{
 
 	public static UI_Manager _instance;
 
+	public Pause_Menu pauseMenu;
+
 	public RectTransform healthBox;
 	public RectTransform healthBar;
+	public Text healthText;
 
-	//Ammo fields: private because Braden doesn't need to put his grubby
-	//little hands all over them
+	public RectTransform vehicleHealthBox;
+	public RectTransform vehicleHealthBar;
+	public Text vehicleHealthText;
+
+	public RectTransform fuelBar;
+
+	public Text UI_HomeScoreText;
+	public Text UI_AwayScoreText;
+
+	public Image UI_HomeColour;
+	public Image UI_AwayColour;
+
+	//first
 	[SerializeField]
 	private Animator ammoAnim;
 	[SerializeField]
@@ -25,6 +40,18 @@ public class UI_Manager : MonoBehaviour {
 	[SerializeField]
 	private Image secondaryPanel;
 	public GameObject[] pieQuadrants;
+
+	public Image[] damageIndicators;
+
+	[System.Serializable]
+	public class HitDirection
+	{
+		public Vector3 normal;
+		public float time;
+		public Transform transform;
+
+	}
+	List<HitDirection> hitDirections;
 
 
 	/// <summary>
@@ -51,25 +78,80 @@ public class UI_Manager : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
-		UI_Manager._instance = this;	
+	void Start()
+	{
+		UI_Manager._instance = this;
+
+		hitDirections = new List<HitDirection>();
+
+		//Temp first assign
+		HitDirection _tmpHitDir = new HitDirection();
+		_tmpHitDir.transform = this.transform;
+		for (int i = 0; i < damageIndicators.Length; i++)
+		{
+			hitDirections.Add(_tmpHitDir);
+		}
+	}
+	public static UI_Manager GetInstance{
+		get{
+			if (_instance == null)
+			{
+				return FindObjectOfType<UI_Manager>();
+			}
+			else
+			{
+				return _instance;
+			}
+		}
+
 	}
 
+<<<<<<< HEAD
 	public static int GetPieChoice(){
 		return pieChoice;
 	}
 
+=======
+public static int GetPieChoice(){
+		return pieChoice;
+	}
+	void Update(){
+		for(int i = 0; i < damageIndicators.Length; i++){
+			Vector3 _projectedDirection = Vector3.ProjectOnPlane(hitDirections[i].normal, hitDirections[i].transform.up);
+			float _angle = -Vector3.SignedAngle(hitDirections[i].transform.forward, _projectedDirection, hitDirections[i].transform.up);
+			damageIndicators[i].transform.eulerAngles = new Vector3(0,0,_angle);
+			Color _color = damageIndicators[i].color;
+			_color.a = Mathf.Clamp01(1f - (Time.time - hitDirections[i].time)/3f);
+			damageIndicators[i].color = _color;
+			
+		}
+	}
+>>>>>>> Local-Git
 	void LateUpdate(){
 		pieChoice = -1;
 		if (Input.GetKeyDown (KeyCode.LeftControl)) {
 			isPieShown = true;
 
 		} 
+<<<<<<< HEAD
 		bool _isShown = false;
+=======
+		/*bool _isShown = false;
+>>>>>>> Local-Git
 		for (int i = 0; i<pieQuadrants.Length; i++){
 			if(pieQuadrants [i].activeSelf == true){
 				_isShown = true;
 			}
+		}*/
+		
+		if (Input.GetKeyUp(KeyCode.LeftControl)) {
+			isPieShown = false;
+
+			pieChoice = selectedSegment;
+			//pieChoice = selectedSegment;
+			//if (selectedSegment != -1 && onPieEvent != null) {
+			//	onPieEvent.Invoke (selectedSegment);
+			//}
 		}
 		
 		if (Input.GetKeyUp(KeyCode.LeftControl)) {
@@ -205,6 +287,7 @@ public class UI_Manager : MonoBehaviour {
 		magAmmoText.text = _magAmmo.ToString();
 		totalAmmoText.text = _totalAmmo.ToString();
 	}
+	
 
 	public void ChangeWeapon(bool _isPrimary){
 		if (_isPrimary) {
@@ -216,5 +299,59 @@ public class UI_Manager : MonoBehaviour {
 			secondaryPanel.enabled = true;
 		}
 	}
+
+	public void UpdateHitDirection(Vector3 _direction, Transform _transform){
+		_direction = _direction.normalized;
+
+		
+
+		int _index = hitDirections.FindIndex(x => Vector3.Dot(x.normal,_direction) > 0.9f);
+
+		if(_index != -1){
+			hitDirections[_index].normal = _direction;
+			hitDirections[_index].time = Time.time;
+			hitDirections[_index].transform = _transform;
+		}
+		else{
+			hitDirections.Sort((x,y) => y.time.CompareTo(x.time));
+			hitDirections[0].normal = _direction;
+			hitDirections[0].time = Time.time;
+			hitDirections[0].transform = _transform;
+			Color _color = damageIndicators[0].color;
+			_color.a =1f;
+			damageIndicators[0].color = _color;
+			hitDirections.Sort((x,y) => x.time.CompareTo(y.time));
+
+		}
+
+		for(int i = 0; i < damageIndicators.Length; i++){
+			Vector3 _projectedDirection = Vector3.ProjectOnPlane(hitDirections[i].normal, hitDirections[i].transform.up);
+			float _angle = -Vector3.SignedAngle(hitDirections[i].transform.forward, _projectedDirection, hitDirections[i].transform.up);
+			damageIndicators[i].transform.eulerAngles = new Vector3(0,0,_angle);
+			Color _color = damageIndicators[i].color;
+			_color.a = Mathf.Clamp01(1f - (Time.time - hitDirections[i].time)/3f);
+			damageIndicators[i].color = _color;
+			
+
+			
+			
+		}
+
+		//StartCoroutine(CoHitDirection());
+		
+	}
+	//IEnumerator CoHitDirection(){
+	//	hitDirection.enabled = (true);
+		
+	//	yield return new WaitForSeconds (2.5f);
+	//	hitDirection.enabled = (false);
+
+	//}
+
+	void OnDestroy(){
+		UI_Manager._instance = null;
+		UI_Manager.onPieEvent = null;
+	}
+	
 
 }

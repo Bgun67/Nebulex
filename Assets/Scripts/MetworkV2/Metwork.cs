@@ -224,8 +224,11 @@ public class Metwork:MonoBehaviour {
 
 		Append("Setting up WebRtcMetworkFactory");
 		WebRtcNetworkFactory factory = WebRtcNetworkFactory.Instance;
-		if(factory != null)
+		if(factory != null){
 			Append("WebRtcMetworkFactory created");
+		}
+		else{Debug.Log("Failed to set up WebRtcNetworkFactory");
+		}
 
 
 		Metwork._instance = GameObject.FindObjectOfType<Metwork> ();
@@ -239,34 +242,6 @@ public class Metwork:MonoBehaviour {
 
 	void SceneLoaded(Scene _scene, LoadSceneMode _mode){
 		MetworkView[] _metViewsArr = GameObject.FindObjectsOfType<MetworkView> ();
-
-		/*List<MetworkView> tmpViews = new List<MetworkView> ();
-		int maxNum = 0;
-		for(int j = 0; j < _metViewsArr.Length; j++){
-			if (_metViewsArr [j].viewID > maxNum) {
-				//print (_metViewsArr [j].viewID);
-				maxNum = _metViewsArr [j].viewID;
-			}
-		}
-		for(int j = 0; j<maxNum + 1; j++){
-			tmpViews.Add (null);
-		}
-		for(int j = 0; j<_metViewsArr.Length; j++){
-
-			if (_metViewsArr [j] == null) {
-				continue;
-			}
-
-			tmpViews [_metViewsArr[j].viewID] = _metViewsArr[j];
-
-
-		}
-		//Trim excess space
-		while (tmpViews [tmpViews.Count - 1] == null && tmpViews.Count > 0) {
-			tmpViews.RemoveAt (tmpViews.Count - 1);
-		}
-
-		Metwork._instance.nonStaticViews = tmpViews;*/
 
 		for (int i = 0; i < _metViewsArr.Length; i++) {
 			if (!Metwork.metViews.ContainsKey (_metViewsArr [i].viewID)) {
@@ -296,57 +271,8 @@ public class Metwork:MonoBehaviour {
 	}
 
 
-	/*static List<MetworkView> ConvertToMetView(string[] _data){
-		List<MetworkView> _tmpViews = new List<MetworkView> ();
-		foreach (string _dataString in _data) {
-			string[] _splitData = _dataString.Split (new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
-			_tmpViews.Add(new MetworkView(
-		}
-	}*/
 
-	/// <summary>
-	/// Adds the metwork view. (Not to be used at runtime)
-	/// </summary>
-	/// <returns>The metwork view.</returns>
-	/// <param name="_metView">Met view.</param>
-	public static int AddMetworkView(MetworkView _metView){
-		
-
-		//Debug.Log (Metwork._instance.gameObject.name);
-
-		//find a MetworkViewID that is not taken
-		/*for (int i = 1; i < 60000; i++) {
-			//File format:
-			//InstanceID1
-			//ViewID1
-			//InstanceID 2
-			//View ID 2
-			string[] _data = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/MetworkData.txt");
-			bool isTaken = false;
-			for (int j = 1; j < _data.Length; j+= 2) {
-				if (_data [j] == i.ToString ()) {
-					isTaken = true;
-					break;
-				}
-			}
-			if (!isTaken) {
-				string output = "";
-				for (int j = 0; j < _data.Length; j++) {
-					output += _data [j] + "\r\n";
-				}
-				output += _metView.hashKey.ToString () + "\r\n";
-				output += i.ToString ();
-				Debug.Log ("Adding Metwork View " + i);
-
-				System.IO.File.WriteAllText (Application.streamingAssetsPath + "/MetworkData.txt", output);
-				return i;
-			}
-
-		}*/
-		//GameObject.FindObjectOfType<Metwork>().nonStaticViews.Add (_metView);
-		//return GameObject.FindObjectOfType<Metwork>().nonStaticViews.IndexOf (_metView);
-		return -1;
-	}
+	
 
 	/// <summary>
 	/// Allocates the number for the metwork view.Returns the number. Returns -1 if none could be found.
@@ -363,57 +289,10 @@ public class Metwork:MonoBehaviour {
 	}
 
 
-	/// <summary>
-	/// Removes the metwork view. (Not to be used at runtime)
-	/// </summary>
-	/// <returns>The metwork view.</returns>
-	/// <param name="_metView">Met view.</param>
-	public static void RemoveMetworkView(MetworkView _metView){
-		//File format:
-		//InstanceID1
-		//ViewID1
-		//InstanceID 2
-		//View ID 2
-		string output = "";
-		string[] _data = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/MetworkData.txt");
-		/*for(int i = 0; i< _data.Length; i+=2){
-			if (_data [i] == _metView.hashKey.ToString ()) {
-				for (int j = 0; j < _data.Length; j++) {
-					if ((j != i && j != i + 1) && j == _data.Length - 1) {
-						output += _data [j];
-					}
-					else if (j != i && j != i + 1) {
-						output += _data [j] + "\r\n";
-					}
-				}
-			}
-		}*/
-		System.IO.File.WriteAllText (Application.streamingAssetsPath + "/MetworkData.txt",output);
-
-	}
+	
 
 
-	public static bool ContainsView(MetworkView _view){
-		//File format:
-		//InstanceID1
-		//ViewID1
-		//InstanceID 2
-		//View ID 2
-
-		string[] _data = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/MetworkData.txt");
-		/*for(int i = 0; i< _data.Length; i+=2){
-			if (_data [i] == _view.hashKey.ToString ()) {
-				return true;
-			}
-		}*/
-		return false;
-
-		//if (Metwork._instance == null) {
-		//	Debug.LogWarning ("No Metwork GameObject in scene");
-		//	return false;
-		//}
-		//return Metwork._instance.nonStaticViews.Contains (_view);
-	}
+	
 		
 	/// <summary>
 	/// Invoked when a new player is added to the game
@@ -492,27 +371,29 @@ public class Metwork:MonoBehaviour {
 		SetGuiState(false);
 	}
 
-	private void Reset()
+	private void Reset(bool _keepInstance = false)
 	{
 		Debug.Log("Cleanup!");
 
+
+
 		pIsServer = false;
 		mConnections = new List<ConnectionId>();
-		Cleanup();
+		Cleanup(_keepInstance);
 		SetGuiState(true);
 
 		if (metViews.Count < 1) {
 			metViews.Add (0,null);
 		}
-		//if (GameObject.FindObjectOfType<Metwork> ()..Count < 1) {
-		//	GameObject.FindObjectOfType<Metwork>().nonStaticViews.Add (null);
-		//}
+
 	}
 
+	
+
 	/// <summary>
-	/// called during reset and destroy
+	/// called during reset and destroy. keepInstance prevents this from destroying the Metwork gameobject
 	/// </summary>
-	private static void Cleanup()
+	private static void Cleanup(bool _keepInstance = false)
 	{
 		if (player != null) {
 			player = null;
@@ -520,19 +401,49 @@ public class Metwork:MonoBehaviour {
 		if (mMetwork != null) {
 			Metwork.pIsServer = false;
 			Metwork.pPeerType = MetworkPeerType.Disconnected;
+
+			if(!_keepInstance){
+				Destroy(Metwork._instance.gameObject);
+			}
 			Metwork.reliableQueue.Clear();
 			Metwork.players.Clear();
 			mMetwork.Dispose ();
 			mMetwork = null;
 		}
+
+		
 	}
 
+	///<summary>
+	///Destroys the gameobject
+	///</summary>
 	private void OnDestroy()
 	{
 		if (mMetwork != null)
 		{
 			Cleanup();
 		}
+
+		Metwork._instance = null;
+		//Metwork.disconnectReason = DisconnectReason.ServerQuit;
+
+		Metwork.mConnections.Clear();
+		Metwork.metViews.Clear();
+		Metwork.mMetwork = null;
+		Metwork.onConnectedToServer = null;
+		Metwork.onPlayerConnected = null;
+		Metwork.onPlayerDisconnected = null;
+		Metwork.onServerInitialized = null;
+		Metwork.pIsServer = false;
+		Metwork.player = null;
+		Metwork.players.Clear();
+		Metwork.pPeerType = MetworkPeerType.Disconnected;
+		Metwork.reliableQueue.Clear();
+		
+		Metwork.replaceServerPriority = 0;
+		Metwork.roomName = "";
+		Metwork.disconnectReason = DisconnectReason.ClientQuit;
+		
 	}
 
 	private void FixedUpdate()
@@ -597,7 +508,7 @@ public class Metwork:MonoBehaviour {
 						pIsServer = false;
 						Debug.Log ("Failed To Initialize Server");
 						Append("Server start failed.");
-						GameObject.FindObjectOfType<Metwork>().Reset();
+						GameObject.FindObjectOfType<Metwork>().Reset(true);
 					} break;
 				case NetEventType.ServerClosed:
 					{
@@ -691,10 +602,20 @@ public class Metwork:MonoBehaviour {
 							Debug.Log(evt.MessageData);
 							break;
 						}
+<<<<<<< HEAD
+=======
+
+						//Uncomment this if you want to deactivate the loading panel this way
+						/*Match_Scene_Manager _manager = this.GetComponent<Match_Scene_Manager>();
+						if(_manager != null){
+							_manager.loadingPanel.SetActive(false);
+						}*/
+
+>>>>>>> Local-Git
 						pPeerType = MetworkPeerType.Disconnected;
 						//Outgoing connection failed. Inform the user.
 						Append("Connection failed");
-						Metwork._instance.Reset();
+						Metwork._instance.Reset(true);
 					} break;
 				case NetEventType.Disconnected:
 					{
@@ -1204,11 +1125,15 @@ public class Metwork:MonoBehaviour {
 
 	private void OnGUI()
 	{
+		GUIStyle _style = new GUIStyle();
+		_style.fontSize = 13;
+		
+
 		try{
-			GUI.Label (new Rect (10, 10, 400, 80), player.connectionID.ToString());
+			GUI.Label (new Rect (10, 10, 400, 80), player.connectionID.ToString(),_style);
 
 		}catch{
-			GUI.Label (new Rect (10, 10, 400, 80), Metwork.peerType.ToString());
+			GUI.Label (new Rect (10, 10, 400, 80), Metwork.peerType.ToString(),_style);
 		}
 		//draws the debug console (or the show button in the corner to open it)
 		DebugHelper.DrawConsole();
@@ -1244,6 +1169,7 @@ public class Metwork:MonoBehaviour {
 		mMetwork.Connect(_room);
 		print("Connecting to " + _room + " ...");
 		roomName = _room;
+<<<<<<< HEAD
 		/*foreach (MetworkView _view in metViews.Values) {
 			try{
 				Debug.Log ("Metwork view: " + _view.viewID);
@@ -1254,6 +1180,8 @@ public class Metwork:MonoBehaviour {
 		}
 		Debug.Log (metViews.Count);*/
 		//Debug.Log (GameObject.FindObjectsOfType<MetworkView> ().Length);
+=======
+>>>>>>> Local-Git
 	}
 
 
@@ -1319,8 +1247,13 @@ public class Metwork:MonoBehaviour {
 				
 		
 	}
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> Local-Git
 	
 	#endregion
 }

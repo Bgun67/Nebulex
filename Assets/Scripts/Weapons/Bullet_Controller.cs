@@ -11,43 +11,50 @@ public class Bullet_Controller : MonoBehaviour {
 	public float explosionForce;
 	public GameObject blastSystem;
 	public int fromID;
+Rigidbody rb;
 
 	// Use this for initialization
-	void Start () {
-			Invoke ("DisableBullet", range);
-
+	void OnEnable () {
+		//Invoke ("DisableBullet", range);
 	}
 	
+
 	// Update is called once per frame
-	void OnCollisionEnter (Collision other) {
+	 void OnCollisionEnter(Collision other)
+	{
+		BulletHit(other);
+	}
+	public void BulletHit(Collision other){
 		if (isExplosive) {
 			Blast_Controller blastScript = Instantiate (blastSystem, other.contacts[0].point, Quaternion.identity).GetComponent<Blast_Controller> ();
 			blastScript.transform.localScale = Vector3.one * 10f;
 			blastScript.fromID = fromID;
 			blastScript.damagePower = damagePower;
 			blastScript.explosionForce = explosionForce;
-			Invoke ("DisableBullet", 0.1f);
+			//Invoke ("DisableBullet", 0.1f);
+			DisableBullet();
 			Destroy(blastScript.gameObject, 5f);
 		}
 		try {
 			try {
-				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
 
 
 			} catch {
 				try {
-					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID);
+					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
 				} catch {
-					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID,other.transform.position+other.relativeVelocity);
 				}
 			}
 		} catch {
 
 		}
 
-		this.enabled = false;
+		//this.enabled = false;
 
-		Invoke ("DisableBullet", 0.5f);
+		//Invoke ("DisableBullet", 0.1f);
+		DisableBullet();
 		/*
 		if (other.collider.tag == checkTag1) {
 			RaycastHit hit;
@@ -72,12 +79,12 @@ public class Bullet_Controller : MonoBehaviour {
 		print (other.name);
 		try {
 			try {
-				other.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+				other.GetComponent<Damage> ().TakeDamage (damagePower, fromID, transform.position);
 			} catch {
 				try {
-					other.transform.parent.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+					other.transform.parent.GetComponent<Damage> ().TakeDamage (damagePower, fromID,transform.position);
 				} catch {
-					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID);
+					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID,transform.position);
 				}
 			}
 		} catch {
@@ -85,8 +92,14 @@ public class Bullet_Controller : MonoBehaviour {
 
 
 	}
-	void DisableBullet(){
+	public void DisableBullet(){
+		if(rb == null){
+			rb = GetComponent<Rigidbody>();
+		}
 		this.gameObject.SetActive (false);
+		rb.velocity = Vector3.zero;
+		rb.angularVelocity = Vector3.zero;
+		rb.useGravity = false;
 	}
 
 }

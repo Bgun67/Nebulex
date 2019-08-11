@@ -9,7 +9,6 @@ public class Airlock_Controller : MonoBehaviour {
 	Door_Controller door1Controller;
 	Door_Controller door2Controller;
 	public GameObject warningLight;
-	Light bulb;
 	public bool pressurizing;
 	public bool turnUp = false;
 	public float openTime;
@@ -20,7 +19,6 @@ public class Airlock_Controller : MonoBehaviour {
 		door1Controller = door1.GetComponent<Door_Controller> ();
 		door2Controller = door2.GetComponent<Door_Controller> ();
 		pressureSound = this.GetComponent<AudioSource> ();
-		bulb = warningLight.GetComponent<Light> ();
 	}
 
 	void Activate(){
@@ -51,7 +49,7 @@ public class Airlock_Controller : MonoBehaviour {
 		else if (door2Controller.closing&&!pressurizing) {
 			StartCoroutine (Pressurize(1));
 		}
-		if (openTime > 30f) {
+		if (openTime > 6f) {
 			openTime = 0;
 
 
@@ -70,13 +68,12 @@ public class Airlock_Controller : MonoBehaviour {
 	}
 
 	IEnumerator Pressurize(int doorToOpen){
-		print ("Running");
 		pressurizing = true;
 		yield return new WaitUntil (()=>(!door1Controller.open && !door2Controller.open));
-		if (warningLight.GetComponent<Animator> () != null) {
+		if (warningLight!=null&&warningLight.GetComponent<Animator> () != null) {
 			warningLight.GetComponent<Animator> ().SetBool ("Is Flashing", true);
 		} else {
-			Debug.LogWarning ("No animator attached to warning light: " + warningLight.transform.root.name + "/" + warningLight.name); 
+			//Debug.LogWarning ("No animator attached to warning light: " + warningLight.transform.root.name + "/" + warningLight.name); 
 		}
 		pressureSound.Play ();
 		print ("Doors Closed");

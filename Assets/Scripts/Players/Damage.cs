@@ -8,9 +8,16 @@ public class Damage : MonoBehaviour {
 	public int originalHealth;
 	public int currentHealth;
 	public UnityEvent dieFunction;
+<<<<<<< HEAD
 	public Text UI_healthText;
 	public RectTransform UI_healthBar;
 	public RectTransform UI_healthBox;
+=======
+	public bool isVehicle = true;
+	//public Text UI_healthText;
+	//public RectTransform UI_healthBar;
+	//public RectTransform UI_healthBox;
+>>>>>>> Local-Git
 
 	public Transform initialPosition;
 	[Tooltip ("Make Longer than the carcass destroy time")]
@@ -58,7 +65,11 @@ public class Damage : MonoBehaviour {
 		}
 
 		if (regen) {
+<<<<<<< HEAD
 			InvokeRepeating ("RegenHealth", 100f/originalHealth, 0.5f);
+=======
+			InvokeRepeating ("RegenHealth",regenTime, 100f/originalHealth);
+>>>>>>> Local-Git
 		}
 		if (netObj == null) {
 			netObj = this.GetComponent<Metwork_Object> ();
@@ -91,8 +102,29 @@ public class Damage : MonoBehaviour {
 
 
 	}
+	bool CheckLocal()
+	{
+		if (netObj != null)
+		{
+			return (netObj.isLocal);
+		}
+		else if(Metwork.isServer)
+		{
+			return true;
+		}
+		else if(Metwork.peerType == MetworkPeerType.Disconnected)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
+	
 
+<<<<<<< HEAD
 	public void TakeDamage(int damageAmount, int fromID)
 	{
 		
@@ -131,6 +163,56 @@ public class Damage : MonoBehaviour {
 
 
 				}
+=======
+	public void TakeDamage(int damageAmount, int fromID, Vector3 _hitDirection, bool overrideTeam = false)
+	{
+		//print("Taking Damage");
+		
+		if (forwarder)
+		{
+			//print("sendingDamage");
+
+			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _hitDirection, overrideTeam);
+			return;
+		}
+		if (!CheckLocal() || isDead)
+		{
+			return;
+		}
+		if(this.tag == "Player"){
+			if (gameController.statsArray[fromID].team == gameController.statsArray[netObj.netID].team && !overrideTeam)
+			{
+				return;
+			}
+			UI_Manager.GetInstance.UpdateHitDirection(_hitDirection, this.transform);
+			
+		}
+
+		if(damageAmount >= damageThreshold){
+			currentHealth -= damageAmount;
+		}
+
+		if (regen)
+		{
+			regenWait = Time.time + regenTime;
+		}
+		if (currentHealth < originalHealth * 0.3f)
+		{
+			ShowLowHealthEffect(true);
+		}
+		
+		if (currentHealth <= 0f)
+		{
+			currentHealth = 0;
+			
+				if (this.tag == "Player")
+				{
+					
+					gameController.AddKill(fromID);
+					gameController.AddDeath(netObj.owner);
+					Chat.LogToChat(gameController.statsArray[fromID].name + " killed " + gameController.statsArray[netObj.owner].name +"\n");
+
+>>>>>>> Local-Git
 
 			}
 			for (int i = 1; i < assistArray.Length; i++)
@@ -139,6 +221,15 @@ public class Damage : MonoBehaviour {
 				{
 					continue;
 				}
+<<<<<<< HEAD
+=======
+			for (int i = 1; i < assistArray.Length; i++)
+			{
+				if (i == fromID)
+				{
+					continue;
+				}
+>>>>>>> Local-Git
 				int assistScore = assistArray[i];
 				assistScore = (int)Mathf.Clamp((assistScore / originalHealth) * 100, 0, 100);
 				if (assistScore >= 85)
@@ -174,9 +265,14 @@ public class Damage : MonoBehaviour {
 				{
 					break;
 				}
+<<<<<<< HEAD
 				print(damageScript.gameObject.name);
 				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID);
 
+=======
+				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID, _hitDirection);
+				j++;
+>>>>>>> Local-Git
 			}
 
 
@@ -194,10 +290,37 @@ public class Damage : MonoBehaviour {
 		{
 			UpdateUI();
 		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> Local-Git
 
+	}
+	public void ShowLowHealthEffect(bool _show)
+	{
+		if (indicateLowHealth)
+		{
+			if (lowHealthEffect != null)
+			{
+				if (netObj != null)
+				{
+					if (Metwork.peerType != MetworkPeerType.Disconnected)
+					{
+						netObj.netView.RPC("RPC_ShowLowHealthEffect", MRPCMode.All, new object[] { _show });
+					}
+					else
+					{
+						RPC_ShowLowHealthEffect(_show);
+					}
+				}
 
-
+			}
+		}
+	}
+	[MRPC]
+	public void RPC_ShowLowHealthEffect(bool _show)
+	{
+		lowHealthEffect.SetActive(_show);
 	}
 	public void ShowLowHealthEffect(bool _show)
 	{
@@ -263,22 +386,54 @@ public class Damage : MonoBehaviour {
 
 		if (impactDamageFactor > 0f) {
 			
-			float damage = collision.impulse.sqrMagnitude * impactDamageFactor * 1E-6f;
-			if (damage > 1f) {
-				TakeDamage ((int)damage, 0);
+			
+			float damage = Mathf.Abs(Vector3.Dot(collision.relativeVelocity, collision.contacts[0].normal));
+			damage *= impactDamageFactor;
+			if (damage < 10f)
+			{
+				return;
 			}
+			damage *= damage;
+			damage *= originalHealth/1000f;
+
+			if (damage > 0.01f*originalHealth) {
+				TakeDamage ((int)damage, 0, collision.contacts[0].point);
+			}
+
+			
 		}
 	}
 	public void UpdateUI(){
 		if (healthShown == true) {
-			UI_healthBox.gameObject.SetActive (true);
-			UI_healthText.text = "+" + currentHealth;
-			UI_healthBar.offsetMin = new Vector2(128f - (float)currentHealth/(float)originalHealth * 128f,-16f);
-			UI_healthBar.offsetMax = new Vector2(256f - (float)currentHealth/(float)originalHealth * 128f,0f);
+			if (isVehicle)
+			{
+				UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(true);
+				UI_Manager.GetInstance.vehicleHealthText.text = "+" + currentHealth;
+				UI_Manager.GetInstance.vehicleHealthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
+				UI_Manager.GetInstance.vehicleHealthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
+			}
+			else
+			{
+				UI_Manager.GetInstance.healthBox.gameObject.SetActive(true);
+				UI_Manager.GetInstance.healthText.text = "+" + currentHealth;
+				UI_Manager.GetInstance.healthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
+				UI_Manager.GetInstance.healthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
+			}
 		} else {
 			//UI_healthText.text = "";
-			if (UI_healthBox != null) {
-				UI_healthBox.gameObject.SetActive (false);
+			if (isVehicle)
+			{
+				if (UI_Manager.GetInstance.vehicleHealthBox != null)
+				{
+					UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(false);
+				}
+			}
+			else
+			{
+				if (UI_Manager.GetInstance.healthBox != null)
+				{
+					UI_Manager.GetInstance.healthBox.gameObject.SetActive(false);
+				}
 			}
 
 		}

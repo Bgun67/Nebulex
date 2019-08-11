@@ -62,7 +62,7 @@ public class Mite_Controller : MonoBehaviour {
 	//drag at 2 force at 2 is good
 	void OnTriggerEnter(Collider other){
 		if (other.tag == "Player") {
-			other.GetComponent<Damage> ().TakeDamage (5,0);
+			other.GetComponent<Damage> ().TakeDamage (5,0, transform.position);
 		}
 	}
 	public void Die()

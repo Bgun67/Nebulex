@@ -21,6 +21,8 @@ public class Loadout_Controller : MonoBehaviour {
 		{"Thunderstroke", new Vector3(-0.24f,-0.27f,1.36f)},
 		{"ATX-Heavy", new Vector3(-0.26f,0.08f,0.94f)},
 
+		{"MT0A3", new Vector3(-0.26f,0.08f,0.94f)},
+
 
 		{"SIT", new Vector3(-0.164f,0.0962f,0.3289f)}
 
@@ -42,6 +44,7 @@ public class Loadout_Controller : MonoBehaviour {
 		{"Thunderstroke", new Vector3(-67.67f,12.501f,-19.18f)},
 		{"ATX-Heavy", new Vector3(21.191f,-8.791f,-7.971f)},
 
+		{"MT0A3", new Vector3(21.191f,-8.791f,-7.971f)},
 
 
 		{"SIT", new Vector3(11.55f,-9.26f,-7.1f)}
@@ -90,7 +93,7 @@ public class Loadout_Controller : MonoBehaviour {
 	void Start () {
 		LoadData ();
 		try{
-			skillLevel = int.Parse(Util.LushWatermelon(System.IO.File.ReadAllLines (Application.streamingAssetsPath+"/Player Data.txt"))[1]);
+			skillLevel = int.Parse(Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Player Data.txt"))[1]);
 		}
 		catch{ Debug.Log("Encountered error in"+this.name);
 			skillLevel = int.Parse(Profile.RestoreDataFile ()[1]);
@@ -101,16 +104,15 @@ public class Loadout_Controller : MonoBehaviour {
 		InstantiateButtons(primaryScopesObjs, Gun_Button_Controller.ButtonTypes.Scope, primaryScopesParent);
 		InstantiateButtons(secondaryScopesObjs, Gun_Button_Controller.ButtonTypes.Scope, secondaryScopesParent);
 		SceneManager.SetActiveScene (SceneManager.GetSceneByName ("Loadout Scene"));
-
 		//BackClicked ();
-				
+
 	}
 	void Update(){
 		transform.Rotate (0f, 1f, 0f);
 	}
 	void LoadData(){
 		try{
-		loadoutData = Util.LushWatermelon(System.IO.File.ReadAllLines ( Application.streamingAssetsPath+"/Loadout Settings.txt"));
+		loadoutData = Util.LushWatermelon(System.IO.File.ReadAllLines ( Application.persistentDataPath+"/Loadout Settings.txt"));
 		}
 		catch{ Debug.Log("Encountered error in"+this.name);
 			loadoutData = Profile.RestoreLoadoutFile ();
@@ -158,14 +160,23 @@ public class Loadout_Controller : MonoBehaviour {
 	}
 	void DisplayGunInfo(){
 		Fire tmpFire = weapon.GetComponent<Fire> ();
-		weaponDataText.text = 
-			("<b><size=16>" + weapon.name.Replace ("(Clone)", "") + "</size></b>\n" +
+		weaponDataText.text =
+			("<b><size=16>" + weapon.name.Replace("(Clone)", "") + "</size></b>\n" +
 		"Fire Rate: " + tmpFire.fireRate + "\n" +
 		"Reload Time: " + tmpFire.reloadTime + "\n" +
 		"Damage: " + tmpFire.damagePower + "\n" +
 		"Bullet Velocity: " + tmpFire.bulletVelocity + "\n" +
-		"Fire Type: " + tmpFire.fireType.ToString () + "\n" +
-		"Mag Size: " + tmpFire.magSize+"\n");
+		"Fire Type: " + tmpFire.fireType.ToString() + "\n" +
+		"Mag Size: " + tmpFire.magSize + "\n");
+		if (skillLevel < tmpFire.skillLevel)
+		{
+			weaponDataText.text+="<color=red>SKill Level: " +tmpFire.skillLevel+"</color>\n";
+		}
+		else
+		{
+					weaponDataText.text+="SKill Level: " +tmpFire.skillLevel+"\n";
+
+		}
 		if (tmpFire.bulletPrefab.GetComponent<Bullet_Controller> ().isExplosive) {
 			weaponDataText.text += "Explosive Rounds\n";
 		}
@@ -302,7 +313,7 @@ public class Loadout_Controller : MonoBehaviour {
 			string line = loadoutData [i];
 			originalData [i] = line;
 		}
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Loadout Settings.txt", Util.ThiccWatermelon(loadoutData));
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Loadout Settings.txt", Util.ThiccWatermelon(loadoutData));
 		ShowWeapon ();
 	}
 }

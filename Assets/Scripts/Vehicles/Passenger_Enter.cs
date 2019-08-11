@@ -2,76 +2,83 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Passenger_Enter : MonoBehaviour {
-	[System.Serializable]
-	public struct Seat{
-		public ConfigurableJoint joint;
-		public Transform _transform;
-	}
-
+public class Passenger_Enter : MonoBehaviour {	
 	float lastTime = 0f;
 	float exitWait = 0f;
-
-	public Seat seat;
+	public Player_Controller player;
+	public Transform seat;
+	public Rigidbody rootRB;
 
 	// Use this for initialization
 	void Start () {
-
+		rootRB = seat.root.GetComponent<Rigidbody>();
 	}
 
-	void Update(){
-		if (Input.GetButtonDown ("Use Item") && seat.joint.connectedBody != null&&Time.time>exitWait) {
-			Player_Controller player = seat.joint.connectedBody.GetComponent<Player_Controller>();
-			player.airTime = player.suffocationTime;
-
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				
-				player.netView.RPC ("RPC_Sit", MRPCMode.AllBuffered, new object[]{ false});
-			} else {
-				player.RPC_Sit (false);
-			}
-			seat.joint.connectedBody = null;
-			player.transform.position =player.transform.position+ seat._transform.forward * 1f + seat._transform.up * 2f;
-			player.inVehicle = false;
-			if (player.GetComponent<Rigidbody> ().useGravity) {
-				player.EnterGravity ();
-				player.transform.forward =  new Vector3 (player.transform.forward.x, 0f, player.transform.forward.z);
-			} else {
-				player.ExitGravity ();
-
-			}
-
-
-			lastTime = Time.time;
-			print ("Disconnecting");
-
+	void FixedUpdate(){
+		
+		
+		if (player== null||!player.netObj.isLocal)
+		{
+			return;
 		}
+		player.rb.MovePosition(seat.position);
+		player.rb.velocity = rootRB.GetPointVelocity(seat.position);
+		player.rb.MoveRotation(seat.rotation);
+		if (!player.gameObject.activeInHierarchy)
+		{
+			Exit();
+		}
+		if (Input.GetButtonDown ("Use Item") &&Time.time>exitWait) {
+			
+			Exit();
+		}
+		if (Input.GetButton("Fire1")){
+			player.fireScript.FireWeapon();
+		}
+
+	}
+	public void Exit()
+	{
+		player.airTime = player.suffocationTime;
+
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
+		{
+
+			player.netView.RPC("RPC_Sit", MRPCMode.AllBuffered, new object[] { false });
+		}
+		else
+		{
+			player.RPC_Sit(false);
+		}
+		player.inVehicle = false;
+		//player.rb.isKinematic = false;
+		player.ExitGravity();
+		CapsuleCollider[] capsules = player.GetComponents<CapsuleCollider>();
+		capsules[0].enabled = true;
+		capsules[1].enabled = true;
+		player = null;
+		lastTime = Time.time;
+		print("Disconnecting");
 	}
 
-	void Activate(GameObject _player){
+	public void Activate(GameObject _player){
 		if (Time.time - lastTime < 2f) {
 			return;
 		}
-
-		if (seat.joint.connectedBody == null) {
-
-			_player.GetComponent<Rigidbody> ().isKinematic = true;
-			_player.transform.position = seat._transform.position;
-			_player.transform.rotation = seat._transform.rotation;
-			_player.GetComponent<Rigidbody> ().isKinematic = false;
-			_player.GetComponent<Player_Controller> ().inVehicle = true;
-
-			_player.GetComponent<Player_Controller> ().airTime = 20000f;
-			seat.joint.connectedBody = _player.GetComponent<Rigidbody> ();
-
+		if (player == null||!player.netObj.isLocal) {
+			player = _player.GetComponent<Player_Controller>();
+			//player.rb.isKinematic = true;
+			player.inVehicle = true;
+			player.airTime = 20000f;
+			CapsuleCollider[] capsules = player.GetComponents<CapsuleCollider> ();
+			capsules[0].enabled = false;
+			capsules[1].enabled = false;
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				_player.GetComponent<MetworkView>().RPC ("RPC_Sit", MRPCMode.AllBuffered, new object[]{ true});
+				player.netObj.netView.RPC ("RPC_Sit", MRPCMode.AllBuffered, new object[]{ true});
 			} else {
-				_player.GetComponent<Player_Controller>().RPC_Sit (true);
+				player.RPC_Sit (true);
 			}
 			exitWait = Time.time + 2f;
-				
-		
 		}
 	}
 	
