@@ -9,12 +9,6 @@ public class Activater : MonoBehaviour
 	public int maxPassengers;
 	public int passengers;
 	public MetworkView netView;
-<<<<<<< HEAD
-	
-	// Use this for initialization
-	void Start () {
-		netView = GetComponent<MetworkView> ();
-=======
 	public string text = "";
 	GameObject textObj;
 	GameObject player;
@@ -23,7 +17,6 @@ public class Activater : MonoBehaviour
 	void Start()
 	{
 		Invoke("Setup", 0.1f);
->>>>>>> Local-Git
 	}
 	void Setup(){
 		netView = GetComponent<MetworkView>();
@@ -37,10 +30,6 @@ public class Activater : MonoBehaviour
 		{
 			_textPosition = GetComponentInChildren<Collider>().bounds.center;
 
-<<<<<<< HEAD
-	public void ActivateScript(GameObject player)
-	{
-=======
 		}
 		textObj.transform.position = _textPosition;
 		textObj.transform.parent = transform;
@@ -50,15 +39,10 @@ public class Activater : MonoBehaviour
 		StartCoroutine(CheckShowText());
 
 	}
->>>>>>> Local-Git
 
 	public void ActivateScript(GameObject player)
 	{
 
-<<<<<<< HEAD
-=======
-
->>>>>>> Local-Git
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			netView.RPC("RPC_ActivateScript", MRPCMode.AllBuffered, new object[] { player.GetComponent<Metwork_Object>().netID });

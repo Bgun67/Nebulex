@@ -7,11 +7,8 @@ public class Minimap_Controller : MonoBehaviour {
 	public int team;
 	public GameObject[] icons;
 	public bool Hide = true;
-<<<<<<< HEAD
-=======
 	Camera cam;
 	public Shader overdrawShader;
->>>>>>> Local-Git
 
 	// Use this for initialization
 	void Start () {

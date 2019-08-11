@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> Local-Git
 [ExecuteInEditMode]
 public class Optimization_Manager : MonoBehaviour {
 
@@ -15,12 +11,6 @@ public class Optimization_Manager : MonoBehaviour {
 	public int[] triCount;
 
 	public bool _lights = true;
-<<<<<<< HEAD
-	public Light[] lights;
-
-	// Use this for initialization
-	void Start () {
-=======
 	public List<Light> lights;
 
 	public float cullDist;
@@ -44,7 +34,6 @@ public class Optimization_Manager : MonoBehaviour {
 			cam.layerCullDistances = distances;
 		}
 
->>>>>>> Local-Git
 		
 		
 		
@@ -52,13 +41,6 @@ public class Optimization_Manager : MonoBehaviour {
 
 	void OnGUI(){
 		#if UNITY_EDITOR || UNITY_EDITOR_64
-<<<<<<< HEAD
-		if(Time.frameCount % 20 == 0){
-			lights = GameObject.FindObjectsOfType<Light> ();
-			for (int i = 0; i < lights.Length; i++) {
-				
-				if (lights [i].lightmapBakeType == LightmapBakeType.Baked) {
-=======
 		if(Time.frameCount % 2 == 0){
 			
 			foreach(Light _light in GameObject.FindObjectsOfType<Light> ()) {
@@ -76,7 +58,6 @@ public class Optimization_Manager : MonoBehaviour {
 				}
 				if (lights [i].lightmapBakeType == LightmapBakeType.Baked) {
 
->>>>>>> Local-Git
 					lights [i].enabled = _lights;
 					lights [i].gameObject.SetActive (_lights);
 					

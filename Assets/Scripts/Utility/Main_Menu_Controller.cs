@@ -47,12 +47,9 @@ public class Main_Menu_Controller : MonoBehaviour {
 	{
 		creditsPanel.SetActive(false);
 	}
-<<<<<<< HEAD
-=======
 
 	public void ExitGame(){
 		print("Quitting Game");
 		Application.Quit();
 	}
->>>>>>> Local-Git
 }

@@ -94,11 +94,7 @@ public class Fire : MonoBehaviour {
 		}
 		magAmmo = magSize;
 
-<<<<<<< HEAD
-		Invoke("CreateObjectPool", Random.Range(0,0.1f));
-=======
 		Invoke("CreateObjectPool", Random.Range(0, 0.01f));
->>>>>>> Local-Git
 		//
 	}
 

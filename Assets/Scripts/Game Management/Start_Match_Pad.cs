@@ -20,11 +20,8 @@ public class Start_Match_Pad : MonoBehaviour {
 		{
 			var main = glow.main;
 			main.startColor = Color.red;
-<<<<<<< HEAD
-=======
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
->>>>>>> Local-Git
 		}
 		catch { }
 		FindObjectOfType<Network_Manager>().PrematureStart();

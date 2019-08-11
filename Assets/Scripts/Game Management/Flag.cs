@@ -14,13 +14,8 @@ public class Flag : MonoBehaviour {
 	public Rigidbody rb;
 	public Metwork_Object netObj;
 	Game_Controller gameController;
-<<<<<<< HEAD
-	public BoxCollider boxCollider;
-	public Player_Controller _player;
-=======
 	public Transform target;
 	public Player_Controller player;
->>>>>>> Local-Git
 	public float droppedTime;
 	public float maxDropTime;
 	bool vehicleEntered;
@@ -59,25 +54,9 @@ public class Flag : MonoBehaviour {
 
 	}
 	void Update(){
-<<<<<<< HEAD
-		if (_player == null) {
-			if (Metwork.isServer)
-			{
-				droppedTime += Time.deltaTime;
-				if (droppedTime > maxDropTime)
-				{
-					ReturnFlag();
-				}
-			}
-			return;
-		}
-		if (joint.connectedBody==null) {
-			_player = null;
-=======
 		if (target==null) {
 			
 			player = null;
->>>>>>> Local-Git
 			stand.transform.position = this.transform.position;
 
 			target = stand.transform;
@@ -96,14 +75,9 @@ public class Flag : MonoBehaviour {
 			}
 			return;
 		}
-<<<<<<< HEAD
-		
-		if (_player.inVehicle) {
-=======
 	
 		
 		if (player.inVehicle) {
->>>>>>> Local-Git
 			print ("Invehicle");
 			if (!vehicleEntered) {
 				vehicleEntered = true;
@@ -121,47 +95,26 @@ public class Flag : MonoBehaviour {
 			}
 		} else
 		{
-<<<<<<< HEAD
-			if (!joint.connectedBody.gameObject.activeInHierarchy)
-			{
-				_player = null;
-				stand.transform.position = this.transform.position;
-				boxCollider.enabled = true;
-
-				joint.connectedBody = stand;
-=======
 			if (!target.gameObject.activeInHierarchy)
 			{
 				player = null;
 				stand.transform.position = this.transform.position;
 				target = stand.transform;
->>>>>>> Local-Git
 				return;
 			}
 			if (vehicleEntered)
 			{
 				vehicleEntered = false;
-<<<<<<< HEAD
-				this.transform.forward = _player.transform.forward;
-				joint.connectedBody = _player.rb;
-				this.transform.position = _player.jetpackJets[0].transform.position + _player.jetpackJets[0].transform.forward;
-=======
 				this.transform.forward = player.transform.forward;
 				target = player.flagPosition;
->>>>>>> Local-Git
 
 			}
 
 		}
-<<<<<<< HEAD
-
-
-=======
 		
 
 
 
->>>>>>> Local-Git
 	}
 
 	public void OnTriggerEnter(Collider other){
@@ -218,13 +171,7 @@ public class Flag : MonoBehaviour {
 			stand.MovePosition(teamBPosition.position);
 			stand.MoveRotation(teamBPosition.rotation);
 		}
-<<<<<<< HEAD
-		_player = null;
-		stand.transform.position = this.transform.position;
-		boxCollider.enabled = true;
-=======
 		player = null;
->>>>>>> Local-Git
 	}
 
 

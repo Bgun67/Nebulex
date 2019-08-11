@@ -340,8 +340,6 @@ public class Carrier_Controller : MonoBehaviour {
 		hasPower = true;
 
 		Invoke ("IgnoreInternal", 1f);
-<<<<<<< HEAD
-=======
 	}
 	#region shield
 	public void ShutdownShield()
@@ -359,7 +357,6 @@ public class Carrier_Controller : MonoBehaviour {
 	public void RPC_ShutdownShield()
 	{
 		GetComponentInChildren<Poynting_Shield>().StartCoroutine("ShutdownShield");
->>>>>>> Local-Git
 	}
 
 	public void ReactivateShield()

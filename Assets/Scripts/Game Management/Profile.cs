@@ -14,19 +14,6 @@ public class Profile : MonoBehaviour {
 	public Text playerKD;
 	// Use this for initialization
 	void Start () {
-<<<<<<< HEAD
-		try
-		{
-			playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Player Data.txt"));
-			print("Info Length" + playerInfo.Length);
-			playerScore.text = playerInfo[1];
-			nameInput.text = playerInfo[0];
-		}
-		catch
-		{
-			RestoreDataFile();
-		}
-=======
 		/*try
 		{*/
 			playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
@@ -48,7 +35,6 @@ public class Profile : MonoBehaviour {
 		{
 			RestoreDataFile();
 		}*/
->>>>>>> Local-Git
 
 	}
 	public void SaveChanges(){
@@ -66,14 +52,9 @@ public class Profile : MonoBehaviour {
 		SceneManager.LoadScene ("Start Scene");
 	}
 	public static string[] RestoreDataFile(){
-<<<<<<< HEAD
-		string[] playerData = new string[]{ "Unnamed Player", "10", "", "192.168.2.40", "true"};
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath + "/Player Data.txt", Util.ThiccWatermelon (playerData));
-=======
 		Debug.LogWarning("Restoring Data File");
 		string[] playerData = new string[]{ "Unnamed Player", "10", "0", "0","True"};
 		System.IO.File.WriteAllLines (Application.persistentDataPath + "/Player Data.txt", Util.ThiccWatermelon (playerData));
->>>>>>> Local-Git
 		return playerData;
 	}
 	public static string[] RestoreMatchFile(){
@@ -91,15 +72,10 @@ public class Profile : MonoBehaviour {
 	}
 	public static string[] RestoreOptionsFile()
 	{
-<<<<<<< HEAD
-		string[] optionsSettings = new string[]{ "1", "True", "1", "2"};
-		System.IO.File.WriteAllLines (Application.streamingAssetsPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsSettings) );
-=======
 		print("Restoring Options file");
 
 		string[] optionsSettings = new string[]{ "1", "True", "1", "3", "False"};
 		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Options Settings.txt",Util.ThiccWatermelon(optionsSettings) );
->>>>>>> Local-Git
 		return optionsSettings;
 	}
 

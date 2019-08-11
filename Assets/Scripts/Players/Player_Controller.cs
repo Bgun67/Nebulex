@@ -30,10 +30,7 @@ public class Player_Controller : MonoBehaviour {
 	public float currentStepHeight;
 	public bool enteringGravity = false;
 	float jumpWait;
-<<<<<<< HEAD
-=======
 	float jumpHeldTime;
->>>>>>> Local-Git
 	public MetworkView netView;
 	public Metwork_Object netObj;
 	public float jetpackFuel = 1f;
@@ -54,13 +51,9 @@ public class Player_Controller : MonoBehaviour {
 	public string playerName = "Fred";
 	public GameObject ragdoll;
 	public float knifePosition;
-<<<<<<< HEAD
-	bool counterKnife;
-=======
 	public Animator knifeAnim;
 	bool counterKnife;
 	public Transform flagPosition;
->>>>>>> Local-Git
 
 	/// <summary>
 	/// The player's team. 0 being team A and 1 being team B
@@ -198,14 +191,7 @@ public class Player_Controller : MonoBehaviour {
 				);
 			}
 		}
-<<<<<<< HEAD
-		else
-		{
-			print("Not Local");
-		}
-=======
 		
->>>>>>> Local-Git
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
 		} else {
@@ -223,15 +209,9 @@ public class Player_Controller : MonoBehaviour {
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> (); 
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
-<<<<<<< HEAD
-		anim.SetFloat ("Look Speed", 0.5f);
-
-		airTime = suffocationTime;
-=======
 
 		airTime = suffocationTime;
 		grenadesNum = 4;
->>>>>>> Local-Git
 		pieQuadrants = UI_Manager._instance.pieQuadrants;
 		if (MInput.useMouse)
 		{
@@ -250,15 +230,9 @@ public class Player_Controller : MonoBehaviour {
 		//primarySelected = !primarySelected;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
-<<<<<<< HEAD
-			netView.RPC("RPC_SwitchWeapons",MRPCMode.AllBuffered, new object[]{primarySelected});
-		} else {
-			RPC_SwitchWeapons(primarySelected);
-=======
 			//netView.RPC("RPC_SwitchWeapons",MRPCMode.AllBuffered, new object[]{primarySelected});
 		} else {
 			//RPC_SwitchWeapons(primarySelected);
->>>>>>> Local-Git
 			RPC_ShowNameText ();
 //			sceneCam.enabled = false;
 //			sceneCam.GetComponent<AudioListener>().enabled = false;
@@ -346,13 +320,6 @@ public class Player_Controller : MonoBehaviour {
 			h2 = MInput.GetAxis("Rotate Y") * lookFactor;
 			v2 = -MInput.GetAxis("Rotate X") * lookFactor;
 		}
-<<<<<<< HEAD
-
-		
-		OnPieEvent(UI_Manager.GetPieChoice());
-		
-=======
->>>>>>> Local-Git
 
 		
 		OnPieEvent(UI_Manager.GetPieChoice());
@@ -473,10 +440,6 @@ public class Player_Controller : MonoBehaviour {
 			
 
 
-<<<<<<< HEAD
-			
-=======
->>>>>>> Local-Git
 			MovePlayer ();
 			AnimateMovement ();
 
@@ -498,19 +461,11 @@ public class Player_Controller : MonoBehaviour {
 		else{
 			breatheSound.volume = 0f;
 		}
-<<<<<<< HEAD
-		
-			if (Input.GetButton ("Fire1")) {
-				Attack ();
-
-			}
-=======
 		//TODO: Come up with a move elegant solution
 		if (Input.GetButton ("Fire1") && !UI_Manager._instance.pauseMenu.gameObject.activeSelf) {
 			Attack ();
 
 		}
->>>>>>> Local-Git
 		if (MInput.GetButtonDown ("Fire2")) {
 			if(grenadesNum>0){
 				grenadesNum--;
@@ -525,15 +480,10 @@ public class Player_Controller : MonoBehaviour {
 
 	}
 
-<<<<<<< HEAD
-	public void OnPieEvent(int _segmentNumber){
-		if (_segmentNumber == -1 || !netObj.isLocal || !this.enabled) {
-=======
 	public void OnPieEvent(int _segmentNumber)
 	{
 		if (_segmentNumber == -1 || !netObj.isLocal || !this.enabled)
 		{
->>>>>>> Local-Git
 			return;
 		}
 		switch (_segmentNumber)
@@ -834,21 +784,12 @@ public class Player_Controller : MonoBehaviour {
 	public void RPC_GetKnifed(int otherPlayerInt)
 	{
 		print("Getting Knifed" + name);
-<<<<<<< HEAD
-
-		GameObject otherPlayer = Game_Controller.GetGameObjectFromNetID(otherPlayerInt);
-
-		print("other player: " + otherPlayer.name);
-		this.transform.position = otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition;
-		if (counterKnife == true)
-=======
 
 		GameObject otherPlayer = Game_Controller.GetGameObjectFromNetID(otherPlayerInt);
 
 		print("other player: " + otherPlayer.name);
 		rb.MovePosition(otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition);
 		if (counterKnife)
->>>>>>> Local-Git
 		{
 			otherPlayer.GetComponent<Player_Controller>().netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
 			this.netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
@@ -856,11 +797,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 		else
 		{
-<<<<<<< HEAD
-			damageScript.TakeDamage(100, otherPlayerInt);
-=======
 			damageScript.TakeDamage(100, otherPlayerInt, otherPlayer.transform.position);
->>>>>>> Local-Git
 		}
 	}
 
@@ -872,21 +809,13 @@ public class Player_Controller : MonoBehaviour {
 	public void Pause()
 	{
 		Cursor.lockState = CursorLockMode.None;
-<<<<<<< HEAD
-		pauseMenu.gameObject.SetActive(true);
-		pauseMenu.Pause(this.gameObject);
-=======
 		UI_Manager._instance.pauseMenu.gameObject.SetActive(true);
 		UI_Manager._instance.pauseMenu.Pause(this.gameObject);
->>>>>>> Local-Git
 	}
 	[MRPC]
 	public void RPC_Sit(bool sitMode){
 		anim.SetBool ("Sitting", sitMode);
 	}
-<<<<<<< HEAD
-	
-=======
 	public void OpenKnife()
 	{
 		knifeAnim.SetBool("Knife", true);
@@ -895,7 +824,6 @@ public class Player_Controller : MonoBehaviour {
 	{
 		knifeAnim.SetBool("Knife", false);
 	}
->>>>>>> Local-Git
 	public void Knife(){
 		print("Attempting to knife");
 		if (!netObj.isLocal)
@@ -903,22 +831,14 @@ public class Player_Controller : MonoBehaviour {
 			return;
 		}
 		RaycastHit hit;
-<<<<<<< HEAD
-		if (Physics.Raycast (mainCamObj.transform.position, mainCamObj.transform.forward, out hit, 2f)) {
-=======
 		if (Physics.SphereCast (mainCamObj.transform.position,0.01f, mainCamObj.transform.forward, out hit, 2f)) {
->>>>>>> Local-Git
 			if (hit.transform.root.tag == "Player") {
 				if (hit.transform.root.GetComponent<Animator>().GetBool("Knife"))
 				{
 					counterKnife = true;
 					return;
 				}
-<<<<<<< HEAD
-				StartCoroutine(Stab(hit.collider.gameObject));
-=======
 				StartCoroutine(Stab(hit.transform.root.gameObject));
->>>>>>> Local-Git
 				
 
 			}
@@ -935,9 +855,6 @@ public class Player_Controller : MonoBehaviour {
 	}
 	IEnumerator Stab(GameObject _otherPlayer)
 	{
-<<<<<<< HEAD
-		yield return new WaitForSeconds(1.5f);
-=======
 		float i = 0;
 		while (i < 1.1f)
 		{
@@ -949,7 +866,6 @@ public class Player_Controller : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			i += Time.deltaTime;
 		}
->>>>>>> Local-Git
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
@@ -972,15 +888,6 @@ public class Player_Controller : MonoBehaviour {
 
 	}
 	#region Region1
-<<<<<<< HEAD
-	
-	public virtual void Aim(){
-		if (fireScript == null)
-		{
-			return;
-		}
-		if (MInput.GetButton ("Left Trigger")) {
-=======
 
 	public virtual void Aim(){
 		if (fireScript == null||grappleActive)
@@ -989,7 +896,6 @@ public class Player_Controller : MonoBehaviour {
 			return;
 		}
 		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading) {
->>>>>>> Local-Git
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.35f + _scopeTransform.up * 0.01f;
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
@@ -1088,14 +994,6 @@ public class Player_Controller : MonoBehaviour {
 			refueling = true;
 		}
 		if (refueling == false) {
-<<<<<<< HEAD
-			rb.AddRelativeForce (0f, Time.deltaTime * 60f * forceFactor * z * 2f, 0f);
-			//rb.velocity = transform.up * z * 20f;
-			foreach (ParticleSystem jet in jetpackJets) {
-				jet.Play ();
-			}
-			jetpackFuel -= Time.deltaTime * 3f;
-=======
 			//Factor to make realistic rocket effects
 			float _fuelFactor = Mathf.Pow(2f*jetpackFuel - 2.6f, 4) * Mathf.Cos(1f + 2f*jetpackFuel - 2.6f) + 1;
 			rb.AddRelativeForce (0f, Time.deltaTime * 30f * forceFactor * z * 2f, 0f);
@@ -1104,7 +1002,6 @@ public class Player_Controller : MonoBehaviour {
 				jet.Play ();
 			}
 			jetpackFuel -= Time.deltaTime * 2.5f;
->>>>>>> Local-Git
 		} else {
 			foreach (ParticleSystem jet in jetpackJets) {
 				jet.Stop ();
@@ -1120,19 +1017,10 @@ public class Player_Controller : MonoBehaviour {
 			Debug.DrawLine(transform.position+rb.centerOfMass,transform.position- transform.up * 1.2f);
 			if (Physics.Linecast(transform.position+rb.centerOfMass,transform.position- transform.up * 1.4f))
 			{
-<<<<<<< HEAD
-				print("Hopping");
-
 				rb.velocity += transform.up*7f;
 				jumpWait = Time.time + 1f;
 			}
 
-=======
-				rb.velocity += transform.up*7f;
-				jumpWait = Time.time + 1f;
-			}
-
->>>>>>> Local-Git
 		}
 	}
 
@@ -1174,20 +1062,6 @@ public class Player_Controller : MonoBehaviour {
 	}
 
 	public void SpaceMove(){
-<<<<<<< HEAD
-		float factor = Time.deltaTime * forceFactor ;
-		if (Input.GetButtonDown("Sprint")&&(Time.time >jumpWait))
-		{
-			jumpWait = Time.time + 5f;
-			rb.AddRelativeForce (new Vector3(0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f)*60f);
-
-		}
-		else
-		{
-			rb.AddRelativeTorque(-v2 * factor / 3f, h2 * factor / 3f, -h * factor / 3f);
-			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 20f);
-		}
-=======
 		
 		rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
 		
@@ -1315,7 +1189,6 @@ public class Player_Controller : MonoBehaviour {
 		}
 		//Clamp the maximum speed
 		rb.velocity = Vector3.Lerp(rb.velocity, Vector3.ClampMagnitude(rb.velocity,7f), 0.3f);
->>>>>>> Local-Git
 	}
 	public void AnimateMovement(){
 		anim.SetFloat ("H Movement", h*moveFactor);
@@ -1332,15 +1205,9 @@ public class Player_Controller : MonoBehaviour {
 		}
 	}
 	public void FootstepAnim(){
-<<<<<<< HEAD
-		if (!walkSound.isPlaying) {
-			walkSound.PlayOneShot (walkClips [Mathf.Clamp(Time.frameCount % 4,0,walkClips.Length-1)]);
-		}
-=======
 		//if (!walkSound.isPlaying) {
 			walkSound.PlayOneShot(walkClips[Random.Range(0,walkClips.Length)]);//[Mathf.Clamp(Time.frameCount % 4,0,walkClips.Length-1)]);
 		//}
->>>>>>> Local-Git
 	}
 	[MRPC]
 	public void RPC_AnimateMovement(int state, float hSpeed, float vSpeed, float _thrusterSoundFactor){
@@ -1384,20 +1251,6 @@ public class Player_Controller : MonoBehaviour {
 		walkState = WalkState.Walking;
 	}
 	public void MovePlayer(){
-<<<<<<< HEAD
-
-
-		if (walkState == WalkState.Running)
-		{
-			rb.AddRelativeForce(h*Time.deltaTime * forceFactor * 40f, 0f,Time.deltaTime * forceFactor * 33f);
-		}
-		else
-		{
-			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f, 0f, v * Time.deltaTime * forceFactor * 20f);
-		}
-		this.transform.Rotate (0f, h2 * Time.deltaTime*180f, 0f);
-		if (Time.frameCount % 5 == 0)
-=======
 		if (walkState == WalkState.Running)
 		{
 			rb.AddRelativeForce(h*Time.deltaTime * forceFactor * 18f, 0f,Time.deltaTime * forceFactor * 27f);
@@ -1410,11 +1263,12 @@ public class Player_Controller : MonoBehaviour {
 
 		this.transform.Rotate (0f, h2 * Time.deltaTime*180f, 0f);
 		if (Time.frameCount % 4 == 0)
->>>>>>> Local-Git
 		{
 			CheckStep();
 		}
 	}
+	
+
 	void CheckStep()
 	{
 		if (v > 0.1f)
@@ -1423,24 +1277,8 @@ public class Player_Controller : MonoBehaviour {
 			RaycastHit _hit;
 			if (Physics.SphereCast(footPos,0.1f, transform.forward,out _hit,0.3f))
 			{
-
-<<<<<<< HEAD
 				if (!Physics.Raycast(footPos + transform.up * 0.4f, transform.forward, 0.35f))
 				{
-					Debug.DrawRay(footPos + transform.up * 0.3f, transform.forward);
-
-=======
-	 void CheckStep()
-	{
-		if (v > 0.1f)
-		{
-			Vector3 footPos = footRaycast.transform.position;
-			RaycastHit _hit;
-			if (Physics.SphereCast(footPos,0.1f, transform.forward,out _hit,0.3f))
-			{
-				if (!Physics.Raycast(footPos + transform.up * 0.4f, transform.forward, 0.35f))
-				{
->>>>>>> Local-Git
 					rb.AddRelativeForce(0f, 240f * rb.mass * 9.81f*Time.deltaTime, 0f);
 				}
 			}
@@ -1525,10 +1363,7 @@ public class Player_Controller : MonoBehaviour {
 	public void CoDie(){
 		
 		sceneCam.enabled = true;
-<<<<<<< HEAD
-=======
 		sceneCam.GetComponent<AudioListener>().enabled = true;
->>>>>>> Local-Git
 		
 		if (netObj.isLocal) {
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
@@ -1550,14 +1385,11 @@ public class Player_Controller : MonoBehaviour {
 				joint.connectedBody = null;
 			}
 		}
-<<<<<<< HEAD
-=======
 		//disable the grapple
 		if (GetComponentInChildren<Harpoon_Gun>() != null)
 		{
 			Grapple(false);
 		}
->>>>>>> Local-Git
 		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
 		Destroy (_ragdollGO, 5f);
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
@@ -1596,27 +1428,12 @@ public class Player_Controller : MonoBehaviour {
 		rb.constraints = RigidbodyConstraints.None;
 		anim.SetBool ("Float", true);
 		anim.SetBool ("Jump", false);
-<<<<<<< HEAD
-		
-=======
 		anim.SetInteger("Walk State", 0);
 
->>>>>>> Local-Git
 		//yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - 0.5f) < 0.05f);
 		Vector3 _aimDirection = mainCam.transform.forward;
 		float _originalLookTime = anim.GetFloat("Look Speed");
 		Vector3 _originalForward = transform.forward;
-<<<<<<< HEAD
-
-		while (Mathf.Abs (anim.GetFloat("Look Speed") - 0.5f) >= 0.05f) {
-			transform.forward = Vector3.Slerp (_originalForward, _aimDirection, Mathf.Abs (anim.GetFloat("Look Speed")));
-			anim.SetFloat ("Look Speed", Mathf.Lerp(anim.GetFloat("Look Speed"),0.5f,0.5f));
-
-			yield return new WaitForSeconds (0.01f);
-		}
-		transform.forward = _aimDirection;
-		anim.SetFloat ("Look Speed",0.5f);
-=======
 	
 		float _counter = 0;
 		while (_counter < 1f)
@@ -1628,17 +1445,12 @@ public class Player_Controller : MonoBehaviour {
 			_counter+= 0.1f;
 		}
 		transform.forward = _aimDirection;
->>>>>>> Local-Git
 
 		if(netObj.isLocal){
 			breatheSound.Play ();
 		}
 		//print("Exited");
-<<<<<<< HEAD
-		walkSound.Stop ();
-=======
 		//walkSound.Stop ();
->>>>>>> Local-Git
 
 		lookFactor = 0.1f;
 
@@ -1659,15 +1471,6 @@ public class Player_Controller : MonoBehaviour {
 		float _counter = 0f;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		Vector3 newForwardVector = new Vector3(transform.forward.x, 0f, transform.forward.z);
-<<<<<<< HEAD
-		while (_counter < 1f && Mathf.Abs(transform.forward.y) > 0.1f)
-		{
-			transform.forward = Vector3.Lerp(transform.forward, newForwardVector, _counter);
-			yield return new WaitForEndOfFrame();
-			_counter += 0.1f;
-		}
-
-=======
 		Vector3 _originalForward = mainCam.transform.forward;
 		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/250f);
 		//print(_aimDirection);
@@ -1681,22 +1484,12 @@ public class Player_Controller : MonoBehaviour {
 			_counter += 0.1f;
 		}
 		
->>>>>>> Local-Git
 		transform.forward = newForwardVector;
 
 
 		breatheSound.Stop ();
-<<<<<<< HEAD
-		walkSound.Play ();
 		lookFactor = 3f;
 		enteringGravity = false;
-		//print("Entered");
-
-		//}
-=======
-		lookFactor = 3f;
-		enteringGravity = false;
->>>>>>> Local-Git
 	}
 	[MRPC]
 	public void RPC_SwitchWeapons(bool _primary){
@@ -1932,13 +1725,10 @@ public class Player_Controller : MonoBehaviour {
 		} else {
 			nameTextMesh.color = new Color (255f, 0f, 0f);
 			nameTextMesh.gameObject.SetActive (false);
-<<<<<<< HEAD
-=======
 		}
 		if (this.gameObject == gameController.localPlayer)
 		{
 			helmet.SetActive(false);
->>>>>>> Local-Git
 		}
 	}
 	

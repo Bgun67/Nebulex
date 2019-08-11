@@ -106,12 +106,6 @@ public class UI_Manager : MonoBehaviour
 
 	}
 
-<<<<<<< HEAD
-	public static int GetPieChoice(){
-		return pieChoice;
-	}
-
-=======
 public static int GetPieChoice(){
 		return pieChoice;
 	}
@@ -126,18 +120,13 @@ public static int GetPieChoice(){
 			
 		}
 	}
->>>>>>> Local-Git
 	void LateUpdate(){
 		pieChoice = -1;
 		if (Input.GetKeyDown (KeyCode.LeftControl)) {
 			isPieShown = true;
 
 		} 
-<<<<<<< HEAD
-		bool _isShown = false;
-=======
 		/*bool _isShown = false;
->>>>>>> Local-Git
 		for (int i = 0; i<pieQuadrants.Length; i++){
 			if(pieQuadrants [i].activeSelf == true){
 				_isShown = true;

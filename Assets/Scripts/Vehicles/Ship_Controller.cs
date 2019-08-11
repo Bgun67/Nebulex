@@ -84,11 +84,7 @@ public class Ship_Controller : MonoBehaviour {
 
 	void AddDamage(){
 		if (damageScript.currentHealth > 0) {
-<<<<<<< HEAD
-			damageScript.TakeDamage (100, 0);
-=======
 			damageScript.TakeDamage (100, 0, transform.position);
->>>>>>> Local-Git
 		}
 
 	}
@@ -132,10 +128,6 @@ public class Ship_Controller : MonoBehaviour {
 				EnableNightVision();
 			}
 		}
-<<<<<<< HEAD
-
-=======
->>>>>>> Local-Git
 
 
 	}
@@ -171,9 +163,6 @@ public class Ship_Controller : MonoBehaviour {
 		rb.AddRelativeForce (0f,moveY *deltaThrustForce* 2f,
 			moveZ *deltaThrustForce);
 		
-<<<<<<< HEAD
-		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.95f, 0.3f);
-=======
 		if(rb.useGravity){
 			if(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude < 300f){
 				//Balancing
@@ -218,7 +207,6 @@ public class Ship_Controller : MonoBehaviour {
 		//rb.useGravity = false;
 
 		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.85f, 0.3f);
->>>>>>> Local-Git
 		previousEnginePitch = engineSound.pitch;
 		if (MInput.useMouse)
 		{
@@ -232,8 +220,6 @@ public class Ship_Controller : MonoBehaviour {
 				MInput.GetAxis("Rotate Y")  * deltaThrustForce * torqueFactor,
 				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
 		}
-<<<<<<< HEAD
-=======
 	}
 	public void RPC_LandMode(bool on)
 	{
@@ -249,7 +235,6 @@ public class Ship_Controller : MonoBehaviour {
 			rb.angularDrag = 0.5f;
 			rb.drag = 0.1f;
 		}
->>>>>>> Local-Git
 	}
 
 
@@ -596,22 +581,14 @@ public class Ship_Controller : MonoBehaviour {
 	public void RPC_Die(int id){
 		print ("Running ship controller die");
 		Navigation.DeregisterTarget (this.transform);
-<<<<<<< HEAD
-		isAI = false;
-=======
 		DisableAI();
 
->>>>>>> Local-Git
 		Destroy(Instantiate (explosionEffect, this.transform.position, transform.rotation),5f);
 		Destroy(Instantiate (destroyedPrefabs [Random.Range (0, destroyedPrefabs.Length)], this.transform.position, transform.rotation),5f);
 		if (player != null) {
 			Exit ();
 			player = FindObjectOfType<Game_Controller> ().GetPlayerFromNetID (id);
-<<<<<<< HEAD
-			player.GetComponent<Damage> ().TakeDamage(1000,0);
-=======
 			player.GetComponent<Damage> ().TakeDamage(1000,0, transform.position, true);
->>>>>>> Local-Git
 		}
 
 

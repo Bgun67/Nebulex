@@ -21,8 +21,6 @@ public class MInput : MonoBehaviour {
 	public static InputLock inputLock;
 	public static bool useMouse = true;
 	public static float sensitivity = 1f;
-<<<<<<< HEAD
-=======
 
 	public static string[,] buttonMappings = new string[,]{
 		//Sort name(script name) || Controller Button
@@ -30,7 +28,6 @@ public class MInput : MonoBehaviour {
 		{"Sprint", "Fire1"},
 		{"Jump", "Jump"}
 	};
->>>>>>> Local-Git
 
 	public static float GetAxis(string _axisName){
 		if (inputLock == InputLock.LockAll)

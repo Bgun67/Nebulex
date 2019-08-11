@@ -602,8 +602,6 @@ public class Metwork:MonoBehaviour {
 							Debug.Log(evt.MessageData);
 							break;
 						}
-<<<<<<< HEAD
-=======
 
 						//Uncomment this if you want to deactivate the loading panel this way
 						/*Match_Scene_Manager _manager = this.GetComponent<Match_Scene_Manager>();
@@ -611,7 +609,6 @@ public class Metwork:MonoBehaviour {
 							_manager.loadingPanel.SetActive(false);
 						}*/
 
->>>>>>> Local-Git
 						pPeerType = MetworkPeerType.Disconnected;
 						//Outgoing connection failed. Inform the user.
 						Append("Connection failed");
@@ -1169,19 +1166,6 @@ public class Metwork:MonoBehaviour {
 		mMetwork.Connect(_room);
 		print("Connecting to " + _room + " ...");
 		roomName = _room;
-<<<<<<< HEAD
-		/*foreach (MetworkView _view in metViews.Values) {
-			try{
-				Debug.Log ("Metwork view: " + _view.viewID);
-			}
-			catch{
-				Debug.Log ("Unsucessful");
-			}
-		}
-		Debug.Log (metViews.Count);*/
-		//Debug.Log (GameObject.FindObjectsOfType<MetworkView> ().Length);
-=======
->>>>>>> Local-Git
 	}
 
 
@@ -1247,13 +1231,8 @@ public class Metwork:MonoBehaviour {
 				
 		
 	}
-<<<<<<< HEAD
 
 
-=======
-
-
->>>>>>> Local-Git
 	
 	#endregion
 }

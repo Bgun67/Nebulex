@@ -79,17 +79,10 @@ public class Game_Controller : MonoBehaviour {
 	public int scoreB;
 	[Header( "UI Objects")]
 	public Text UI_timeText;
-<<<<<<< HEAD
-	public Text UI_homeScoreText;
-	public Image UI_homeColour;
-	public Text UI_awayScoreText;
-	public Image UI_awayColour;
-=======
 	Text UI_homeScoreText;
 	Image UI_homeColour;
 	Text UI_awayScoreText;
 	Image UI_awayColour;
->>>>>>> Local-Git
 	public Text UI_fpsText;
 	public GameObject eventSystem;
 	public GameObject gameplayUI;
@@ -141,11 +134,7 @@ public class Game_Controller : MonoBehaviour {
 	[MRPC]
 	public void RPC_UpdateStatsArrayEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
 	{
-<<<<<<< HEAD
-		PlayerStats _stat = new PlayerStats();
-=======
 		PlayerStats _stat = statsArray[_index];
->>>>>>> Local-Git
 		_stat.name = _name;
 		_stat.kills = _kills;
 		_stat.deaths = _deaths;
@@ -157,14 +146,6 @@ public class Game_Controller : MonoBehaviour {
 
 	public void Start()
 	{
-<<<<<<< HEAD
-		_instance = GameObject.FindObjectOfType<Game_Controller>();
-		netView = this.GetComponent<MetworkView>();
-		GetLocalPlayer();
-		Physics.autoSimulation = false;
-
-		nextDreadnaughtTime = dreadNaughtSpawnWait;
-=======
 
 		instance = Instance;
 		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
@@ -178,7 +159,6 @@ public class Game_Controller : MonoBehaviour {
 		GetLocalPlayer();
 		
 		Physics.autoSimulation = false;
->>>>>>> Local-Git
 		//eventSystem.SetActive (false);
 		RPC_SetTeam();
 
@@ -187,10 +167,7 @@ public class Game_Controller : MonoBehaviour {
 		{
 			InvokeRepeating("GameUpdate", 1f, 1f);
 			InvokeRepeating("UpdateUI", 1f, 0.1f);
-<<<<<<< HEAD
-=======
 			InvokeRepeating("UpdateHost", 130f, 10f);
->>>>>>> Local-Git
 		}
 		if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
 		{
@@ -199,27 +176,16 @@ public class Game_Controller : MonoBehaviour {
 
 
 
-<<<<<<< HEAD
-
-		try
-		{
-			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/Match Settings.txt"));
-=======
 		try
 		{
 			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
->>>>>>> Local-Git
 			this.matchLength = int.Parse(matchSettings[0]);
 			initialTime = Time.time;//Network.time;
 			this.gameMode = matchSettings[1];
 		}
 		catch
 		{
-<<<<<<< HEAD
-			print("Failed");
-=======
 			Debug.LogError("Failed to read data from Match Settings.txt");
->>>>>>> Local-Git
 
 			string[] matchSettings = Profile.RestoreMatchFile();
 			this.matchLength = int.Parse(matchSettings[0]);
@@ -347,15 +313,6 @@ public class Game_Controller : MonoBehaviour {
 		{
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
-<<<<<<< HEAD
-		}
-		Vector3 shipDisplacement = (shipTwoTransform.position-shipOneTransform.position  )/2f;
-		if (Vector3.SqrMagnitude(shipDisplacement) == 0) {
-			sceneCam.transform.position = shipOneTransform.position + new Vector3 (0f, 700f, 0);
-		} else {
-			sceneCam.transform.position = shipOneTransform.position + shipDisplacement + new Vector3 (0f, Vector3.Magnitude (shipDisplacement * (4f / 3f) * 1.5f), 0f);
-=======
->>>>>>> Local-Git
 		}
 		
 
@@ -454,11 +411,7 @@ public class Game_Controller : MonoBehaviour {
 			UI_awayScoreText.text = scoreB.ToString();
 			UI_homeColour.color = new Color(0,1f,0);
 			UI_awayColour.color = new Color(1f,0f,0);
-<<<<<<< HEAD
-		} else if (localPlayer.GetComponent<Player_Controller> ().team == 1){
-=======
 		} else if (GetLocalTeam() == 1){
->>>>>>> Local-Git
 			UI_homeScoreText.text = scoreB.ToString();
 			UI_awayScoreText.text = scoreA.ToString();
 			UI_awayColour.color = new Color(0,1f,0);
@@ -617,16 +570,11 @@ public class Game_Controller : MonoBehaviour {
 		} else {
 			endTimeText.text = "Remaining Time: 0:00"; 
 		}
-<<<<<<< HEAD
-		eventSystem.SetActive(true);
-		SavePlayerScore();
-=======
 		endTimeText.text = "Next match in 20 sec";
 		eventSystem.SetActive(true);
 		SavePlayerScore();
 
 		Invoke("RestartGame", 20.0f);
->>>>>>> Local-Git
 
 
 	}
@@ -781,15 +729,6 @@ public class Game_Controller : MonoBehaviour {
 		GetLocalPlayer();
 		return statsArray[localPlayer.GetComponent<Metwork_Object>().netID].team;
 	}
-<<<<<<< HEAD
-	public void RestartGame()
-	{
-		print("Loading Spawn Scene");
-		FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
-		SceneManager.LoadScene("LobbyScene");
-	}
-	
-=======
 	void Update()
 	{
 		if (Input.GetKeyDown("0"))
@@ -874,7 +813,6 @@ public class Game_Controller : MonoBehaviour {
 		return Game_Controller.instance.statsArray[_player.GetComponent<Metwork_Object>().netID].team;
 	}
 
->>>>>>> Local-Git
 
 
 

@@ -10,10 +10,7 @@ public class Transistion : MonoBehaviour {
 	AsyncOperation loadOperation;
 	public MetworkView metView;
 	Network_Manager netManager;
-<<<<<<< HEAD
-=======
 	string mapSceneName;
->>>>>>> Local-Git
 
 	// Use this for initialization
 	void Start () {

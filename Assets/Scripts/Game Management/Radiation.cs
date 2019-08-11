@@ -38,11 +38,7 @@ public class Radiation : MonoBehaviour {
 
 			foreach (Ship_Hole hole in FindObjectsOfType<Ship_Hole>())
 			{
-<<<<<<< HEAD
-				hole.attachedCarrier.GetComponent<Damage>().TakeDamage((radiationPower + 40), 0);
-=======
 				hole.attachedCarrier.GetComponent<Damage>().TakeDamage((radiationPower + 40), 0, hole.transform.position);
->>>>>>> Local-Git
 			}
 			Player_Controller[] allPlayers = FindObjectsOfType<Player_Controller>();
 			foreach (Player_Controller player in allPlayers)

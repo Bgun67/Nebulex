@@ -297,8 +297,6 @@ public class PHPMasterServerConnect : MonoBehaviour
 
 		RegisterHost (this.gameName, this.comment);
 		Metwork.disconnectReason = DisconnectReason.Unexpected;
-<<<<<<< HEAD
-=======
 	}
 
 	public void UpdateHost(string _comment){
@@ -353,7 +351,6 @@ public class PHPMasterServerConnect : MonoBehaviour
 
 		Debug.Log("Returned from url: " + www.text);
 
->>>>>>> Local-Git
 	}
 
 	void OnMetPlayerConnected(MetworkPlayer _player){

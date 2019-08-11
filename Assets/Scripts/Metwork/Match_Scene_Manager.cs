@@ -192,16 +192,6 @@ public class MapClass
 			hostData[index].gameType,
 			maps[currentMapNum].sceneName
 		}));
-<<<<<<< HEAD
-		connection.gameType = hostData [index].gameType;
-		connection.gameName = hostData [index].gameName;
-		//unsecure, but should not fail
-		try { loadingPanel.SetActive(true);
-
-		}catch { }
-
-		Invoke("DeactivateLoadPanel", 8f);
-=======
 		connection.gameType = hostData[index].gameType;
 		connection.gameName = hostData[index].gameName;
 		//unsecure, but should not fail
@@ -214,7 +204,6 @@ public class MapClass
 		catch { 
 			Debug.LogWarning("Loading panel could not be activated");
 		}
->>>>>>> Local-Git
 
 		//Moved from 8 to 12 seconds to increase likelyhood of properly connecting
 		Invoke("DeactivateLoadPanel", 12f);
@@ -229,17 +218,8 @@ public class MapClass
 		//unsecure, but should not fail
 		loadingPanel.SetActive(false);
 	}
-<<<<<<< HEAD
-	void DeactivateLoadPanel()
-	{
-		//unsecure, but should not fail
-		loadingPanel.SetActive(false);
-	}
-	public void OnMetPlayerConnected(MetworkPlayer _player){
-=======
 	public void OnMetPlayerConnected(MetworkPlayer _player)
 	{
->>>>>>> Local-Git
 		//if (Metwork.player == null || _player.connectionID == Metwork.player.connectionID && (SceneManager.GetActiveScene().name == "MatchScene")) {
 		//	SceneManager.LoadScene ("LobbyScene");
 		//	Destroy (this);
@@ -290,10 +270,7 @@ public class MapClass
 
 		if (gameNameInput.text != "")
 		{
-<<<<<<< HEAD
-=======
 			connection.comment = maps[currentMapNum].sceneName;
->>>>>>> Local-Git
 			connection.gameName = gameNameInput.text;
 			if (testing)
 			{
@@ -316,11 +293,8 @@ public class MapClass
 			//Destroy the script, it no longer belongs
 			print("Starting Server");
 			//Destroy (this);
-<<<<<<< HEAD
-=======
 			//send server notifications
 			SendDiscordNotification(gameNameInput.text);
->>>>>>> Local-Git
 		}
 		else
 		{

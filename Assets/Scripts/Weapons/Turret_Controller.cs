@@ -16,11 +16,6 @@ public class Turret_Controller : MonoBehaviour
 	public MetworkView netView;
 	public GameObject explosionEffect;
 	public GameObject destroyedPrefab;
-<<<<<<< HEAD
-	public bool auto;
-
-	public virtual void Activate(GameObject pilot){
-=======
 	public LayerMask layerMask;
 	public bool auto;
 	public int team;
@@ -41,7 +36,6 @@ public class Turret_Controller : MonoBehaviour
 	}
 	public virtual void Activate(GameObject pilot)
 	{
->>>>>>> Local-Git
 		//Switch to the internal camera
 		print(pilot.name);
 		if (player == null)
@@ -178,14 +172,6 @@ public class Turret_Controller : MonoBehaviour
 
 	}
 	// Update is called once per frame
-<<<<<<< HEAD
-	void Update () {
-		if (auto && Metwork.isServer)
-		{
-			AutoAim();
-		}
-		if (player.GetComponent<Metwork_Object> ().isLocal) {
-=======
 	void Update()
 	{
 		if (player == null && auto && (Metwork.isServer || Metwork.peerType == MetworkPeerType.Disconnected))
@@ -195,7 +181,6 @@ public class Turret_Controller : MonoBehaviour
 		}
 		if (player != null && player.GetComponent<Metwork_Object>().isLocal)
 		{
->>>>>>> Local-Git
 			if (MInput.useMouse)
 			{
 				h = -MInput.GetMouseDelta("Mouse X");
@@ -206,18 +191,11 @@ public class Turret_Controller : MonoBehaviour
 				h = -MInput.GetAxis("Rotate Y");
 				v = -MInput.GetAxis("Rotate X");
 			}
-<<<<<<< HEAD
-			Look ();
-			if (Input.GetButton ("Fire1")) {
-				primary1.FireWeapon ();
-				primary2.FireWeapon ();
-=======
 			Look();
 			if (Input.GetButton("Fire1"))
 			{
 				primary1.FireWeapon();
 				primary2.FireWeapon();
->>>>>>> Local-Git
 			}
 			if (Input.GetButtonDown("Use Item"))
 			{
@@ -227,32 +205,6 @@ public class Turret_Controller : MonoBehaviour
 
 	}
 	[MRPC]
-<<<<<<< HEAD
-	public void RPC_Turn(float turn, float currentTime){
-		//StartCoroutine (AdjustView (turn,currentTime));
-		AdjustView(turn, currentTime);
-	}
-	public void AdjustView(float hTime, float time)
-	{
-		float lookTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
-		anim.Play("Aim Up/Down", 0, Mathf.Lerp(lookTime, time, 0.5f));
-
-
-		float turnTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
-		anim.Play("Turn", 1, Mathf.Lerp(turnTime, hTime, 0.5f));
-	}
-	/* public IEnumerator AdjustView(float hTime, float time){
-		float lookTime = anim.GetCurrentAnimatorStateInfo (0).normalizedTime;
-		if (lookTime < time) {
-			anim.SetFloat ("Look Speed", 1f);
-		} else if(lookTime>time) {
-			anim.SetFloat ("Look Speed", -1f);
-		}
-
-		yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (0).normalizedTime - time) < 0.05f);
-		anim.Play ("Aim Up/Down", 0, time);
-		anim.SetFloat ("Look Speed",0f);
-=======
 	public void RPC_Turn(float turn, float currentTime)
 	{
 		//StartCoroutine (AdjustView (turn,currentTime));
@@ -262,32 +214,19 @@ public class Turret_Controller : MonoBehaviour
 	{
 		float lookTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
 		anim.Play("Aim Up/Down", 0, Mathf.Lerp(lookTime, time, 0.5f));
->>>>>>> Local-Git
 
 
-<<<<<<< HEAD
-		yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - hTime) < 0.05f);
-		anim.Play ("Turn", 1, hTime);
-		anim.SetFloat ("Turn Speed",0f);
-	}*/
-	void Look(){
-=======
 		float turnTime = anim.GetCurrentAnimatorStateInfo(1).normalizedTime;
 		anim.Play("Turn", 1, Mathf.Lerp(turnTime, hTime, 0.5f));
 	}
 
 	void Look()
 	{
->>>>>>> Local-Git
 		if (anim == null)
 		{
 			return;
 		}
-<<<<<<< HEAD
-		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo (0).normalizedTime;
-=======
 		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
->>>>>>> Local-Git
 
 
 		if (v < 0f)

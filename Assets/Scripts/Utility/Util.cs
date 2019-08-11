@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-<<<<<<< HEAD
-=======
 using UnityEngine.UI;
->>>>>>> Local-Git
 using UnityEngine.AI;
 
 /*Michael Gunther: 2018-02-05
@@ -46,8 +43,6 @@ public class Util {
         result = Vector3.zero;
         return false;
     }
-<<<<<<< HEAD
-=======
 	public static void ShowMessage(string message)
 	{
 		float _destroyTime = GameObject.FindGameObjectsWithTag("Message").Length*3;
@@ -70,7 +65,6 @@ public class Util {
 
 	}
 
->>>>>>> Local-Git
 	public static Vector3 ParseToVector3(string inputString){
 		string[] tmpArray = inputString.Split (new char[]{','}, 3);
 		Vector3 returnVector = new Vector3 (float.Parse(tmpArray [0]), float.Parse(tmpArray [1]),float.Parse( tmpArray [2]));

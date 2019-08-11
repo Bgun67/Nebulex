@@ -8,16 +8,10 @@ public class Damage : MonoBehaviour {
 	public int originalHealth;
 	public int currentHealth;
 	public UnityEvent dieFunction;
-<<<<<<< HEAD
-	public Text UI_healthText;
-	public RectTransform UI_healthBar;
-	public RectTransform UI_healthBox;
-=======
 	public bool isVehicle = true;
 	//public Text UI_healthText;
 	//public RectTransform UI_healthBar;
 	//public RectTransform UI_healthBox;
->>>>>>> Local-Git
 
 	public Transform initialPosition;
 	[Tooltip ("Make Longer than the carcass destroy time")]
@@ -65,11 +59,7 @@ public class Damage : MonoBehaviour {
 		}
 
 		if (regen) {
-<<<<<<< HEAD
-			InvokeRepeating ("RegenHealth", 100f/originalHealth, 0.5f);
-=======
 			InvokeRepeating ("RegenHealth",regenTime, 100f/originalHealth);
->>>>>>> Local-Git
 		}
 		if (netObj == null) {
 			netObj = this.GetComponent<Metwork_Object> ();
@@ -124,46 +114,6 @@ public class Damage : MonoBehaviour {
 
 	
 
-<<<<<<< HEAD
-	public void TakeDamage(int damageAmount, int fromID)
-	{
-		
-		if (forwarder)
-		{
-			print("sendingDamage");
-
-			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID);
-			return;
-		}
-		if (!netObj.isLocal || isDead)
-		{
-			return;
-		}
-		if(damageAmount >= damageThreshold){
-			currentHealth -= damageAmount;
-		}
-
-		if (regen)
-		{
-			regenWait = Time.time + regenTime;
-		}
-		if (currentHealth < originalHealth * 0.3f)
-		{
-			ShowLowHealthEffect(true);
-		}
-		
-		if (currentHealth <= 0f)
-		{
-			if (fromID != 0)
-			{
-				if (this.tag == "Player")
-				{
-					gameController.AddKill(fromID);
-					gameController.AddDeath(netObj.owner);
-
-
-				}
-=======
 	public void TakeDamage(int damageAmount, int fromID, Vector3 _hitDirection, bool overrideTeam = false)
 	{
 		//print("Taking Damage");
@@ -205,31 +155,22 @@ public class Damage : MonoBehaviour {
 		{
 			currentHealth = 0;
 			
-				if (this.tag == "Player")
-				{
+			if (this.tag == "Player")
+			{
 					
-					gameController.AddKill(fromID);
-					gameController.AddDeath(netObj.owner);
-					Chat.LogToChat(gameController.statsArray[fromID].name + " killed " + gameController.statsArray[netObj.owner].name +"\n");
+				gameController.AddKill(fromID);
+				gameController.AddDeath(netObj.owner);
+				Chat.LogToChat(gameController.statsArray[fromID].name + " killed " + gameController.statsArray[netObj.owner].name +"\n");
 
->>>>>>> Local-Git
 
 			}
+			
 			for (int i = 1; i < assistArray.Length; i++)
 			{
 				if (i == fromID)
 				{
 					continue;
 				}
-<<<<<<< HEAD
-=======
-			for (int i = 1; i < assistArray.Length; i++)
-			{
-				if (i == fromID)
-				{
-					continue;
-				}
->>>>>>> Local-Git
 				int assistScore = assistArray[i];
 				assistScore = (int)Mathf.Clamp((assistScore / originalHealth) * 100, 0, 100);
 				if (assistScore >= 85)
@@ -265,14 +206,8 @@ public class Damage : MonoBehaviour {
 				{
 					break;
 				}
-<<<<<<< HEAD
-				print(damageScript.gameObject.name);
-				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID);
-
-=======
 				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID, _hitDirection);
 				j++;
->>>>>>> Local-Git
 			}
 
 
@@ -290,10 +225,6 @@ public class Damage : MonoBehaviour {
 		{
 			UpdateUI();
 		}
-<<<<<<< HEAD
-
-=======
->>>>>>> Local-Git
 
 	}
 	public void ShowLowHealthEffect(bool _show)

@@ -144,19 +144,11 @@ public class Soccer_Net : MonoBehaviour {
 		for (int i = 0; i < meshes.Length; i++) {
 			foreach(MeshRenderer _mesh in meshes[i].GetComponentsInChildren<MeshRenderer>()){
 			
-<<<<<<< HEAD
-			MeshRenderer _mesh = meshes[i].GetComponent<MeshRenderer> ();
-			if(_mesh != null){
-				_mesh.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
-				_mesh.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-				
-=======
 				if(_mesh != null){
 					_mesh.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 					_mesh.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 					
 				}
->>>>>>> Local-Git
 			}
 			
 		}

@@ -44,8 +44,6 @@ public class Network_Manager : MonoBehaviour {
 	void Update(){
 		if (Input.GetKeyDown (".")) {
 			PrematureStart();
-<<<<<<< HEAD
-=======
 		}
 	}
 	public void PrematureStart()
@@ -57,7 +55,6 @@ public class Network_Manager : MonoBehaviour {
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			netView.RPC("RPC_LoadScene", MRPCMode.AllBuffered, new object[] { "TransistionScene" });
->>>>>>> Local-Git
 		}
 		else
 		{

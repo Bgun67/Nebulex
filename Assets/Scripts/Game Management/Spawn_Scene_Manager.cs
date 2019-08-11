@@ -57,8 +57,6 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		PositionSceneCam();
 	}
 
-<<<<<<< HEAD
-=======
 	void PositionSceneCam()
 	{
 
@@ -101,7 +99,6 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		}
 	}
 
->>>>>>> Local-Git
 	public void Spawn(int index){
 		if (MInput.useMouse)
 		{
@@ -109,15 +106,10 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			Cursor.visible = false;
 		}
 		Player_Controller _player = gameController.localPlayer.GetComponent<Player_Controller>();
-<<<<<<< HEAD
-		_player.transform.position = spawnPositions [index].position;
-		_player.transform.rotation = Quaternion.LookRotation(spawnPositions [index].forward,Vector3.up);
-=======
 		_player.transform.rotation = Quaternion.LookRotation(spawnPositions [index].forward,Vector3.up);
 		//_player.transform.up = Vector3.up;
 		_player.transform.position = spawnPositions [index].position;
 
->>>>>>> Local-Git
 		_player.damageScript.initialPosition = null;
 		_player.damageScript.Reactivate();
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
