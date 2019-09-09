@@ -1194,7 +1194,10 @@ public class Metwork:MonoBehaviour {
 
 	}
 
-	public static IEnumerator RecoverConnection(bool _isServer, string _roomName){
+	public void StartRecoverConnection(bool _isServer, string _roomName){
+		StartCoroutine(RecoverConnection(_isServer, _roomName));
+	}
+	public IEnumerator RecoverConnection(bool _isServer, string _roomName){
 		
 		yield return new WaitForSeconds(0.1f);
 		for(int i = 0; i<5; i++){

@@ -23,6 +23,9 @@ public class Network_Manager : MonoBehaviour {
 
 	public string firstAlternateHost;
 
+	bool kickFailed = false;
+	float lastKickTime = 0;
+
 
 	public enum SceneMode
 	{
@@ -42,10 +45,31 @@ public class Network_Manager : MonoBehaviour {
 
 	}
 	void Update(){
-		if (Input.GetKeyDown (".")) {
+		/*if (Input.GetKeyDown (".")) {
 			PrematureStart();
+		}*/
+		if(Time.time - lastKickTime > 5f && (sceneMode == SceneMode.Game || sceneMode == SceneMode.Lobby)){
+			StartCoroutine(Watchdog_Kick());
 		}
 	}
+
+	IEnumerator Watchdog_Kick(){
+		lastKickTime = Time.time;
+		string url = PHPMasterServerConnect.instance.masterServerURL;
+		WWW www = new WWW(url);
+		yield return www;
+		if(www.error != null){
+			print("Watchdog Miss");
+			if(kickFailed){
+				Metwork._instance.StartRecoverConnection(Metwork.isServer,Metwork.roomName);
+				kickFailed = false;
+			}
+			else{
+				kickFailed = true;
+			}
+		}
+	}
+
 	public void PrematureStart()
 	{
 		minStartingPlayers = 1;
@@ -149,16 +173,7 @@ public class Network_Manager : MonoBehaviour {
 		}
 
 	}
-	//Deprecated
-	//void OnPlayerDisconnected(NetworkPlayer player){
-		/*if (Network.isServer) {
-			netView.RPC ("AddPlayer", RPCMode.AllBuffered, new object[]{ connections - 1 });
-			if (player.guid == firstAlternateHost) {
-				netView.RPC ("SetHostAlternates", RPCMode.AllBuffered, new object[]{Network.connections[0].guid});
-			}
-		}*/
-
-	//}
+	
 
 
 	[MRPC]
