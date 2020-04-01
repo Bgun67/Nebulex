@@ -514,6 +514,8 @@ public class Metwork:MonoBehaviour {
 					{
 						pPeerType = MetworkPeerType.Disconnected;
 						Debug.Log("Server Closed");
+						//TODO: Add something about disconnect reason
+						
 						//server shut down. reaction to "Shutdown" call or
 						//StopServer or the connection broke down
 						pIsServer = false;

@@ -55,7 +55,7 @@ public class Network_Manager : MonoBehaviour {
 
 	IEnumerator Watchdog_Kick(){
 		lastKickTime = Time.time;
-		string url = PHPMasterServerConnect.instance.masterServerURL;
+		string url = PHPMasterServerConnect.instance.masterServerURL+"WatchdogKick";
 		WWW www = new WWW(url);
 		yield return www;
 		if(www.error != null){

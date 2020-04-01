@@ -14,6 +14,8 @@ public class Game_Controller : MonoBehaviour {
 		public int assists = 0;
 		public int score = 0;
 		public int team = -1;
+		public bool isBot = false;
+		public bool isFilled = false;
 	}
 
 	[System.Serializable]
@@ -36,6 +38,8 @@ public class Game_Controller : MonoBehaviour {
 	}
 
 	public List<GameObject> playerObjects = new List<GameObject> ();
+	[HideInInspector]
+	public List<Com_Controller> bots = new List<Com_Controller>();
 
 
 
@@ -45,7 +49,7 @@ public class Game_Controller : MonoBehaviour {
 	public List<Transform> playerSpawnTransforms = new List<Transform> ();
 	public int currentTeamNum;
 	public string gameMode;
-	public Text lblWinners;
+
 	public bool finished = false;
 	public Damage carrierADmg;
 	public Damage carrierBDmg;
@@ -252,10 +256,11 @@ public class Game_Controller : MonoBehaviour {
 
 	}
 	public int GetLocalPlayer(){
-		foreach (Player_Controller player in FindObjectsOfType<Player_Controller>()) {
+		//foreach (Player_Controller player in FindObjectsOfType<Player_Controller>()) {
+		foreach (GameObject player in playerObjects) {
 			Metwork_Object _metObj = player.GetComponent<Metwork_Object>();
 			if (_metObj!=null && _metObj.isLocal) {
-				localPlayer = player.gameObject;
+				localPlayer = player;
 				return _metObj.netID;
 			}
 		}
@@ -274,13 +279,21 @@ public class Game_Controller : MonoBehaviour {
 	}
 
 	[MRPC]
-	public void RPC_AddPlayerStat(string name, int _owner){
-
+	public void RPC_AddPlayerStat(string name, int _owner, bool _isBot){
 		PlayerStats stat = statsArray[_owner];
 		stat.name = name;
 		stat.kills = 0;
 		stat.deaths = 0;
 		stat.score = 0;
+		stat.isBot = _isBot;
+		stat.isFilled = true;
+
+		//De (re)activate the bot here
+		int _botIndex = _owner > 64 ? _owner : _owner + 64;
+		if(GetBotFromPlayerID(_botIndex) != null)
+			GetBotFromPlayerID(_botIndex).gameObject.SetActive(_isBot);
+		
+		
 
 		//zero is left empty to comply with one indexed
 		statsArray[_owner] =  stat;
@@ -303,6 +316,7 @@ public class Game_Controller : MonoBehaviour {
 				}
 			}
 		}
+		
 	}
 	
 
@@ -525,15 +539,16 @@ public class Game_Controller : MonoBehaviour {
 		loserKillsText.text = "";
 		print ("Winners Length" + winners.Count);
 		print ("Losers Length" + losers.Count);
-
+		winners.Sort((x,y) => y.score.CompareTo(x.score));
+		losers.Sort((x,y) => y.score.CompareTo(x.score));
 
 		foreach (PlayerStats player in winners) {
 			winnerNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16)) + "\r\n";
-			winnerKillsText.text += player.kills.ToString() + "\r\n";
+			winnerKillsText.text += player.kills.ToString() + "\t"  + player.deaths.ToString() + "\t" + player.assists.ToString() + "\r\n";
 		}
 		foreach (PlayerStats player in losers) {
 			loserNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16))  + "\r\n";
-			loserKillsText.text += player.kills.ToString() + "\r\n";
+			loserKillsText.text += player.kills.ToString() + "\t"  + player.deaths.ToString() + "\t" + player.assists.ToString() + "\r\n";
 
 		}
 		//Hide the pause menu, all the players should be destroyed anyway so everything should be peachy
@@ -601,6 +616,17 @@ public class Game_Controller : MonoBehaviour {
 		print ("Failed to find Net Object " + _netID.ToString());
 		return GameObject.CreatePrimitive(PrimitiveType.Sphere);
 	}
+
+	public static Com_Controller GetBotFromPlayerID(int _playerID){
+		for (int i = 0; i < Instance.bots.Count; i++) {
+			if (Instance.bots[i].botID == _playerID) {
+				return Instance.bots[i];
+			}
+		}
+		print ("Failed to find Bot " + _playerID.ToString());
+		return null;
+	}
+
 	//safer than get gameobject but slower
 	public GameObject GetPlayerFromNetID(int _netID){
 		
@@ -689,6 +715,9 @@ public class Game_Controller : MonoBehaviour {
 				newScene = "Crater";
 				break;
 			case "Crater":
+			/*	newScene = "Kyrie";
+				break;
+			case "Kyrie":*/
 				newScene = "Fracture";
 				break;
 			case "Fracture":
@@ -731,7 +760,7 @@ public class Game_Controller : MonoBehaviour {
 	}
 	void Update()
 	{
-		if (Input.GetKeyDown("0"))
+		if (Input.GetKeyDown("0") && false)
 		{
 			GameClipMode = !GameClipMode;
 			if (GameClipMode)

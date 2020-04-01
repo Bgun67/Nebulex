@@ -17,6 +17,7 @@ public class Play_Area : MonoBehaviour
         foreach(Rigidbody _rb in rbs){
             _rb.AddForce(-(_rb.transform.position - this.transform.position) *  _rb.mass * 0.1f * 60f * Time.deltaTime);
         }
+        rbs.RemoveAll(x => x == null);
     }
     void OnTriggerExit(Collider other){
         Rigidbody _otherRb = other.transform.root.GetComponent<Rigidbody>();
@@ -30,12 +31,7 @@ public class Play_Area : MonoBehaviour
             rbs.Remove(_otherRb);
         }
     }
-    /*void OnTriggerStay(Collider other){
-        Rigidbody _otherRb = other.transform.root.GetComponent<Rigidbody>();
-        if(rbs.Contains(_otherRb)){
-            rbs.Remove(_otherRb);
-        }
-    }*/
+    
    
     
 }

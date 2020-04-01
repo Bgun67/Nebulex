@@ -39,6 +39,10 @@ public class Passenger_Enter : MonoBehaviour {
 	}
 	public void Exit()
 	{
+		if (UI_Manager.GetInstance.vehicleHealthBox != null)
+		{
+			UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(false);
+		}
 		player.airTime = player.suffocationTime;
 
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
@@ -64,6 +68,10 @@ public class Passenger_Enter : MonoBehaviour {
 	public void Activate(GameObject _player){
 		if (Time.time - lastTime < 2f) {
 			return;
+		}
+		if (UI_Manager.GetInstance.vehicleHealthBox != null)
+		{
+			UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(true);
 		}
 		if (player == null||!player.netObj.isLocal) {
 			player = _player.GetComponent<Player_Controller>();

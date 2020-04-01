@@ -22,22 +22,7 @@ public class StartFootage : MonoBehaviour
 	public GameObject plus;
 	public AudioClip[] sfxClips;
 	public WindowsVoice voice;
-	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-	static void CheckFirstTimeExecution()
-	{
-		#if !UnityEditor||UnityEditor64
-		try
-		{
-			string[] playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
-			CheckData(playerInfo);
-		}
-		catch
-		{
-			CheckData(Profile.RestoreDataFile());
-		}
-		#endif
-
-	}
+	
 	static void CheckData(string[] playerInfo)
 	{
 		//is first time

@@ -11,7 +11,8 @@ public class Kill_Area : MonoBehaviour {
 
 		}
 		catch{
-			Destroy (other.gameObject);
+			//TODO: Bullets don't need to be destroyed
+			//Destroy (other.gameObject);
 		}
 	}
 }

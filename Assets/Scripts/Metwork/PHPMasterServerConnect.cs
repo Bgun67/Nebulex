@@ -52,6 +52,10 @@ public class PHPMasterServerConnect : MonoBehaviour
         	_instance = this;
 			Metwork.onPlayerConnected += _instance.OnMetPlayerConnected;
 			Metwork.onPlayerDisconnected += _instance.OnMetPlayerDisconnected;
+			try{
+				masterServerURL = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/network.config");
+			}
+			catch{};
 		}
 
 	}
@@ -59,7 +63,7 @@ public class PHPMasterServerConnect : MonoBehaviour
     void OnDestroy () {
         if (registered) {
 			// Unregister without the CR
-	        string url = masterServerURL+"UnregisterHost.php";
+	        string url = masterServerURL+"UnregisterHost";
 	        url += "?gameType="+WWW.EscapeURL (gameType);
 	        url += "&gameName="+WWW.EscapeURL (gameName);
 	        new WWW (url);
@@ -92,10 +96,11 @@ public class PHPMasterServerConnect : MonoBehaviour
 	{
 		print ("Querying Harder");
 		atOnce = true;
-		string url = masterServerURL+"QueryMS.php?gameType="+WWW.EscapeURL(gameType);
+		string url = masterServerURL+"QueryMS?gameType="+WWW.EscapeURL(gameType);
     	Debug.Log ("looking for URL " + url);
     	WWW www = new WWW (url);
     	yield return www;
+		Debug.Log(www.text);
 
     	retries = 0;
 	    while (www.error != null && retries < maxRetries) {
@@ -117,35 +122,41 @@ public class PHPMasterServerConnect : MonoBehaviour
 			hostData = null;
 			GetComponent<Match_Scene_Manager> ().DisplayMatches ();
 		} else {
-			string[] hosts = new string[www.text.Split (";" [0]).Length];
-			hosts = www.text.Split (";" [0]);
-			hostData = new MHostData[hosts.Length];
-			var index = 0;
-			foreach (string host in hosts) {
-				if (host == "")
-					continue;
-				string[] data = host.Split ("," [0]);
-				hostData [index] = new MHostData ();
-				hostData [index].ip = new string[1];
-				hostData [index].ip [0] = data [0];
-				hostData [index].port = int.Parse (data [1]);
-				hostData [index].useNat = (data [2] == "1");
-				hostData [index].guid = data [3];
-				hostData [index].gameType = data [4];
-				hostData [index].gameName = data [5];
-				hostData [index].connectedPlayers = int.Parse (data [6]);
-				hostData [index].playerLimit = int.Parse (data [7]);
-				hostData [index].passwordProtected = (data [8] == "1");
-				hostData [index].comment = data [9];
+			Debug.Log("Received message");
+			try{
+				string[] hosts = new string[www.text.Split (new char[]{';'}, System.StringSplitOptions.RemoveEmptyEntries).Length];
+				hosts = www.text.Split (new char[]{';'}, System.StringSplitOptions.RemoveEmptyEntries);
+				hostData = new MHostData[hosts.Length];
+				var index = 0;
+				foreach (string host in hosts) {
+					if (host == "")
+						continue;
+					string[] data = host.Split ("," [0]);
+					hostData [index] = new MHostData ();
+					hostData [index].ip = new string[1];
+					hostData [index].ip [0] = data [0];
+					hostData [index].port = int.Parse (data [1]);
+					hostData [index].useNat = (data [2] == "1");
+					hostData [index].guid = data [3];
+					hostData [index].gameType = data [4];
+					hostData [index].gameName = data [5];
+					hostData [index].connectedPlayers = int.Parse (data [6]);
+					hostData [index].playerLimit = int.Parse (data [7]);
+					hostData [index].passwordProtected = (data [8] == "1");
+					hostData [index].comment = data [9];
 
 
-				index++;
+					index++;
+				}
 			}
-			try {
+			catch{
+				Debug.Log("Error");
+			}
+			//try {
 				GetComponent<Match_Scene_Manager> ().DisplayMatches ();
-			} catch {
-
-			}
+			//} catch {
+			//	Debug.Log("Failed to display matches");
+			//}
 		}
 
 		atOnce = false;
@@ -171,7 +182,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 
     private IEnumerator RegisterHostCR () {
 		Debug.Log("Attempting to register host: Try: " + retries.ToString());
-	    string url = masterServerURL+"RegisterHost.php";
+	    string url = masterServerURL+"RegisterHost";
 	    url += "?gameType="+WWW.EscapeURL (gameType);
 	    url += "&gameName="+WWW.EscapeURL (gameName);
 	    url += "&comment="+WWW.EscapeURL (comment);
@@ -220,7 +231,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 		
 		if (true) {
 			
-	        string url = masterServerURL+"UnregisterHost.php";
+	        string url = masterServerURL+"UnregisterHost";
 	        url += "?gameType="+WWW.EscapeURL (gameType);
 	        url += "&gameName="+WWW.EscapeURL (gameName);
 			Debug.Log (url);
@@ -259,7 +270,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 
 		print ("IEnumerator Server Initialized");
 
-		string url = masterServerURL+"RegisterHost.php";
+		string url = masterServerURL+"RegisterHost";
 		url += "?gameType="+WWW.EscapeURL (gameType);
 		url += "&gameName="+WWW.EscapeURL (gameName);
 		url += "&comment="+WWW.EscapeURL (comment);
@@ -314,7 +325,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 
 		print ("Updating Host");
 
-		string url = masterServerURL+"UpdateHost.php";
+		string url = masterServerURL+"UpdateHost";
 		url += "?gameType="+WWW.EscapeURL (gameType);
 		url += "&gameName="+WWW.EscapeURL (gameName);
 		url += "&comment="+WWW.EscapeURL (comment);
@@ -359,7 +370,8 @@ public class PHPMasterServerConnect : MonoBehaviour
 	// TODO update for the new Networking
 	IEnumerator CoOnPlayerConnected(MetworkPlayer player)
 	{
-		string url = masterServerURL+"UpdatePlayers.php";
+		//update players
+		string url = masterServerURL+"UpdateHost";
 	    url += "?gameType="+WWW.EscapeURL (gameType);
 	    url += "&gameName="+WWW.EscapeURL (gameName);
 		url += "&connectedPlayers="+(Metwork.players.Count);
@@ -386,7 +398,8 @@ public class PHPMasterServerConnect : MonoBehaviour
 	// TODO update for the new Networking
 	IEnumerator CoOnPlayerDisconnected(MetworkPlayer player)
 	{
-		string url = masterServerURL+"UpdatePlayers.php";
+		//updateplayers.php
+		string url = masterServerURL+"UpdateHost";
 	    url += "?gameType="+WWW.EscapeURL (gameType);
 	    url += "&gameName="+WWW.EscapeURL (gameName);
 		url += "&connectedPlayers="+Metwork.players.Count;

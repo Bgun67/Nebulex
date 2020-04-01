@@ -151,7 +151,7 @@ public class Fire : MonoBehaviour {
 				if (magAmmo > 0) {
 					fireDelay = Time.time + fireRate;
 					GameObject bullet = GetBullet ();
-					print(bullet.name);
+					
 					bullet.transform.position = shotSpawn.position;
 					bullet.transform.rotation = shotSpawn.rotation;
 					fired++;
@@ -279,9 +279,15 @@ public class Fire : MonoBehaviour {
 		{
 			shootSound.PlayOneShot(cockSound);
 		}
+		
 		transform.root.SendMessage ("UpdateUI");
 
 	}
+
+	void UpdateUI(){
+		return;
+	}
+
 	void CreateObjectPool(){
 		for (int i = 0; i < magSize; i++) {
 			GameObject _bullet = GameObject.Instantiate (bulletPrefab, new Vector3 (0f, 1000f, 0f), Quaternion.identity);
@@ -312,6 +318,8 @@ public class Fire : MonoBehaviour {
 		return(bullet);
 
 	}
+
+
 	void ReturnBullets(){
 		
 		foreach (GameObject _bullet in destroyedStack) {

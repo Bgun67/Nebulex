@@ -17,6 +17,7 @@ public class Drive : MonoBehaviour {
 	public GameObject[] destroyedPrefabs;
 	public AudioWrapper audioWrapper;
 	public AudioSource idleSound;
+	public float lastOccupiedTime = 0f;
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
@@ -29,10 +30,12 @@ public class Drive : MonoBehaviour {
 		netObj = GetComponent<Metwork_Object>();
 		driversSeat.Activate(_player);
 		netObj.owner = _player.GetComponent<Metwork_Object>().netID;
+		this.GetComponent<Damage>().healthShown = true;
 	}
 	void Exit()
 	{
-		
+		print("Exiting Shredder");
+			
 	}
 	// Update is called once per frame
 	void Update () {
@@ -51,10 +54,22 @@ public class Drive : MonoBehaviour {
 				idleSound.Play();
 				idleSound.loop = true;
 			}
+			lastOccupiedTime = Time.time;
+			
 		}
 		else{
+			this.GetComponent<Damage>().healthShown = false;
 			if(idleSound.isPlaying){
 				idleSound.loop = false;
+			}
+			
+			if(Vector3.Distance(this.GetComponent<Damage>().initialPosition.position,this.transform.position) > 4f){
+				if(Time.time - lastOccupiedTime > 10f && Time.frameCount % 10 == 0){
+					this.GetComponent<Damage>().TakeDamage(10, 0, Vector3.zero, true);
+				}
+			}
+			else{
+				lastOccupiedTime = Time.time;
 			}
 
 		}
@@ -114,7 +129,10 @@ public class Drive : MonoBehaviour {
 	[MRPC]
 	public void RPC_Die(int id){
 		Destroy(Instantiate (explosionEffect, this.transform.position, transform.rotation),5f);
-		Destroy(Instantiate (destroyedPrefabs [Random.Range (0, destroyedPrefabs.Length)], this.transform.position, transform.rotation),5f);
+		try{
+			Destroy(Instantiate (destroyedPrefabs [Random.Range (0, destroyedPrefabs.Length)], this.transform.position, transform.rotation),5f);
+		}
+		catch{}
 		this.GetComponent<Damage> ().Reset();
 		this.enabled = false;
 	}

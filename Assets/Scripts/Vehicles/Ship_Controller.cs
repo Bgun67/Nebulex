@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class Ship_Controller : MonoBehaviour {
 
 	//Components
-	Rigidbody rb;
+	protected Rigidbody rb;
 	public Metwork_Object netObj;
 	public GameObject mainCamera;
 	public GameObject player;
@@ -25,10 +25,10 @@ public class Ship_Controller : MonoBehaviour {
 	[Tooltip("Factor of the thrust that can rotate the ship")]
 	public float torqueFactor = 0.4f;
 	public float upAngle;
-	float moveX;
-	float moveY;
-	float moveZ;
-	float deltaThrustForce;
+	protected float moveX;
+	protected float moveY;
+	protected float moveZ;
+	protected float deltaThrustForce;
 
 	public Fire fireScript1;
 	public Fire fireScript2;
@@ -36,7 +36,7 @@ public class Ship_Controller : MonoBehaviour {
 	public bool isTransport = false;
 	public Transform target;
 	public AudioSource engineSound;
-	float previousEnginePitch;
+	protected float previousEnginePitch;
 	public Animator anim;
 	//Engine Exhaust
 	[Header("Engine Exhaust")]
@@ -147,7 +147,7 @@ public class Ship_Controller : MonoBehaviour {
 	}
 	
 
-	void Fly(){
+	protected virtual void Fly(){
 		rb.AddRelativeForce (0f,moveY *deltaThrustForce* 2f,
 			moveZ *deltaThrustForce);
 		

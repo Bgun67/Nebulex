@@ -116,8 +116,7 @@ public class Damage : MonoBehaviour {
 
 	public void TakeDamage(int damageAmount, int fromID, Vector3 _hitDirection, bool overrideTeam = false)
 	{
-		//print("Taking Damage");
-		
+
 		if (forwarder)
 		{
 			//print("sendingDamage");
@@ -129,15 +128,32 @@ public class Damage : MonoBehaviour {
 		{
 			return;
 		}
+
+		if(fromID > 64){
+			fromID = Game_Controller.GetBotFromPlayerID(fromID).botID - 64;
+		}
+
+		int thisID = 0;
+		if(this.GetComponent<Com_Controller>() != null){
+			thisID = this.GetComponent<Com_Controller>().botID - 64;
+		}
+		else{
+			thisID = netObj.owner;
+		}
+
 		if(this.tag == "Player"){
-			if (gameController.statsArray[fromID].team == gameController.statsArray[netObj.netID].team && !overrideTeam)
+			
+			
+			//From ID of 65 is a bot
+			if ((gameController.statsArray[fromID].team == gameController.statsArray[thisID].team) && !overrideTeam)
 			{
 				return;
 			}
-			UI_Manager.GetInstance.UpdateHitDirection(_hitDirection, this.transform);
+			if(this.gameObject == gameController.localPlayer){
+				UI_Manager.GetInstance.UpdateHitDirection(_hitDirection, this.transform);
+			}
 			
 		}
-
 		if(damageAmount >= damageThreshold){
 			currentHealth -= damageAmount;
 		}
@@ -155,38 +171,44 @@ public class Damage : MonoBehaviour {
 		{
 			currentHealth = 0;
 			
-				if (this.tag == "Player")
+			if (this.tag == "Player")
+			{	
+				int thisTeam = gameController.statsArray[thisID].team;
+				int fromTeam = gameController.statsArray[fromID].team;
+				if (fromTeam != thisTeam)
 				{
-					
 					gameController.AddKill(fromID);
-					gameController.AddDeath(netObj.owner);
-					Chat.LogToChat(gameController.statsArray[fromID].name + " killed " + gameController.statsArray[netObj.owner].name +"\n");
-
-
 				}
-			for (int i = 1; i < assistArray.Length; i++)
-			{
-				if (i == fromID)
+				gameController.AddDeath(thisID);
+				
+
+				Chat.LogToChat((fromTeam == 0 ? "<color=green>": "<color=red>") + gameController.statsArray[fromID].name + "</color> killed "+ (thisTeam == 0 ? "<color=green>": "<color=red>") + gameController.statsArray[thisID].name +"</color>\n");
+
+			
+				for (int i = 1; i < assistArray.Length; i++)
 				{
-					continue;
+					if (i == fromID)
+					{
+						continue;
+					}
+					int assistScore = assistArray[i];
+					assistScore = (int)Mathf.Clamp((assistScore / originalHealth) * 100, 0, 100);
+					if (assistScore >= 85)
+					{
+						gameController.AddKill(i);
+
+					}
+					else if (assistScore > 33)
+					{
+						gameController.AddAssist(i, assistScore);
+
+					}
+
 				}
-				int assistScore = assistArray[i];
-				assistScore = (int)Mathf.Clamp((assistScore / originalHealth) * 100, 0, 100);
-				if (assistScore >= 85)
+				for (int i = 0; i < assistArray.Length; i++)
 				{
-					gameController.AddKill(i);
-
+					assistArray[i] = 0;
 				}
-				else if (assistScore > 33)
-				{
-					gameController.AddAssist(i, assistScore);
-
-				}
-
-			}
-			for (int i = 0; i < assistArray.Length; i++)
-			{
-				assistArray[i] = 0;
 			}
 			if (dieFunction.GetPersistentEventCount() > 0)
 			{
@@ -323,6 +345,7 @@ public class Damage : MonoBehaviour {
 				UI_Manager.GetInstance.healthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
 				UI_Manager.GetInstance.healthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
 			}
+			//None of the below is ever called I think
 		} else {
 			//UI_healthText.text = "";
 			if (isVehicle)

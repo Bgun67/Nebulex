@@ -49,7 +49,7 @@ public class Pause_Menu : MonoBehaviour {
 			//Destroy(GameObject.Find("WebRtcNetworkFactory").gameObject);
 		}
 		catch{
-			Debug.LogError("Failed to find one or more network components when quitting");
+			Debug.LogWarning("Failed to find one or more network components when quitting");
 		}
 		MInput.inputLock = MInput.InputLock.None;
 		SceneManager.LoadScene ("Start Scene");

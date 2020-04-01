@@ -81,8 +81,8 @@ public class Player_Controller : MonoBehaviour {
 	public Minimap_Controller mmpController;
 	public MeshRenderer playerIcon;
 	public LayerMask iconMask;
-	bool minimapRunning;
-	float minimapPower = 6f;
+	bool minimapRunning = false;
+
 	public GameObject minimapUI;
 	public TextMesh nameTextMesh;
 	public Text UI_ammoText;
@@ -173,6 +173,15 @@ public class Player_Controller : MonoBehaviour {
 		if (gameController.localPlayer == null) {
 			gameController.GetLocalPlayer ();
 		}
+		//ICONS
+		GameObject[] _icons = GameObject.FindGameObjectsWithTag("Icon");
+				
+		foreach(GameObject _icon in _icons){
+			Material mat = _icon.GetComponent<MeshRenderer> ().material;
+			mat.color = new Color (1f, 1f, 0f, 0.0f);
+			_icon.GetComponent<MeshRenderer> ().material = mat;
+		}
+
 		//UI_Manager.onPieEvent += this.OnPieEvent;
 		if (netObj.isLocal) {
 			LoadPlayerData ();
@@ -181,13 +190,15 @@ public class Player_Controller : MonoBehaviour {
 				print (this.name);
 				gameController.netView.RPC ("RPC_AddPlayerStat", MRPCMode.AllBuffered, new object[] {
 					playerName,
-					this.netObj.owner
+					this.netObj.owner,
+					false
 
 				});
 			} else {
 				gameController.RPC_AddPlayerStat (
 					playerName,
-					this.netObj.owner
+					this.netObj.owner,
+					false
 				);
 			}
 		}
@@ -338,9 +349,7 @@ public class Player_Controller : MonoBehaviour {
 		h = Input.GetAxis ("Move X")*moveFactor;
 
 
-		if (minimapPower <= 12f) {
-			minimapPower += Time.deltaTime;
-		}
+
 		if (Input.GetButtonDown ("Pause")) {
 			Pause ();
 		}
@@ -496,11 +505,11 @@ public class Player_Controller : MonoBehaviour {
 			case 2:
 				break;
 			case 3:
-				/* 	if (minimapPower >= 6f)
-					{
-						minimapRunning = !minimapRunning;
-						StartCoroutine(ShowMinimap());
-					}*/
+				if (!minimapRunning)
+				{
+					minimapRunning = true;
+					StartCoroutine(ShowMinimap());
+				}
 				
 				break;
 			case 4:
@@ -899,9 +908,10 @@ public class Player_Controller : MonoBehaviour {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.35f + _scopeTransform.up * 0.01f;
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
-			mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,Mathf.Clamp(0.01f/(_distance),0f,0.5f));
-			mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation, fireScript.scopePosition.rotation, 0.1f);
-
+			if(mainCam.fieldOfView < 11){
+				mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
+				mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation, fireScript.scopePosition.rotation, 0.7f);
+			}
 			anim.SetBool ("Scope", true);
 			//StartCoroutine (Zoom (true));
 			Zoom(true);
@@ -918,7 +928,7 @@ public class Player_Controller : MonoBehaviour {
 			recoilString = "Recoil" + fireScript.recoilNumber;
 			if (Time.frameCount % 3f == 0) {
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
-					netView.RPC ("RPC_Aim", MRPCMode.All, new object[]{true });
+					netView.RPC ("RPC_Aim", MRPCMode.Others, new object[]{true });
 				} 
 			}
 
@@ -1068,7 +1078,8 @@ public class Player_Controller : MonoBehaviour {
 
 
 		float factor = Time.deltaTime * forceFactor;
-		if (Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
+		//TODO: I don't really know if this will break anything
+		if (false&&Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
 		{
 			jumpWait = Time.time + 5f;
 			rb.AddRelativeForce (new Vector3(0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f)*60f);
@@ -1076,72 +1087,75 @@ public class Player_Controller : MonoBehaviour {
 		}
 		else
 		{
-			rb.AddRelativeTorque(-v2 * factor/0.75f, h2*factor/2.5f, -h * factor/1.5f);
+			rb.AddRelativeTorque(-v2 * factor/2f, h2*factor/7f, -h * factor/1.5f);
 			
 			//transform.Rotate(Vector3.Lerp(Vector3.zero, new Vector3(-v2 * Time.deltaTime, h2 * Time.deltaTime, -h * Time.deltaTime),0.1f));
 			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 20f);
 		}
 
-		RaycastHit _hit = new RaycastHit();
-		RaycastHit _hit2 = new RaycastHit();
-		RaycastHit _hit3 = new RaycastHit();
-
-
-		//Raycast from three different spots
-		Physics.SphereCast(transform.position,0.1f,- transform.up * 5.4f,out _hit,5.4f, magBootsLayer,  QueryTriggerInteraction.Ignore);
-		Physics.Linecast(transform.position - transform.right * 0.1f,transform.position+ transform.right * 0.15f- transform.up * 5.4f, out _hit2, magBootsLayer, QueryTriggerInteraction.Ignore);
-		Physics.Linecast(transform.position + transform.right * 0.1f,transform.position- transform.right * 0.15f- transform.up * 5.4f, out _hit3, magBootsLayer,  QueryTriggerInteraction.Ignore);
-		//Hit distance is zero if no hit
-		_hit.distance = _hit.distance == 0 ? 100000f : _hit.distance;
-		_hit2.distance = _hit2.distance == 0 ? 100000f : _hit2.distance;
-		_hit3.distance = _hit3.distance == 0 ? 100000f : _hit3.distance;
+		
 
 		//Raycast down to find ground to lock on to
 		//Also check if the jump key is pressed
-		if(Input.GetButton("Jump") && Input.GetAxis("Move Y") <= 0.05f && ( _hit.distance <= 5.4f || _hit2.distance <= 5.4f || _hit3.distance <= 5.4f)){
-			
-			//Take the weighted average of the three distances;
-			Vector3 _hitNormal = _hit.normal; //(_hit.normal / _hit.distance + _hit2.normal / _hit2.distance + _hit3.normal / _hit3.distance)/3f; 
-			
-			if(Vector3.Dot(_hitNormal.normalized, previousNormal.normalized)> 0.4f){
+		if(Input.GetButton("Jump") && Input.GetAxis("Move Y") <= 0.05f){
+			RaycastHit _hit = new RaycastHit();
+			RaycastHit _hit2 = new RaycastHit();
+			RaycastHit _hit3 = new RaycastHit();
 
-				_hitNormal = Vector3.Slerp(previousNormal,_hitNormal, 0.5f);
 
-			}
-			else{
+			//Raycast from three different spots
+			Physics.SphereCast(transform.position,0.1f,- transform.up * 5.4f,out _hit,5.4f, magBootsLayer,  QueryTriggerInteraction.Ignore);
+			Physics.Linecast(transform.position - transform.right * 0.1f,transform.position+ transform.right * 0.15f- transform.up * 5.4f, out _hit2, magBootsLayer, QueryTriggerInteraction.Ignore);
+			Physics.Linecast(transform.position + transform.right * 0.1f,transform.position- transform.right * 0.15f- transform.up * 5.4f, out _hit3, magBootsLayer,  QueryTriggerInteraction.Ignore);
+			//Hit distance is zero if no hit
+			_hit.distance = _hit.distance == 0 ? 100000f : _hit.distance;
+			_hit2.distance = _hit2.distance == 0 ? 100000f : _hit2.distance;
+			_hit3.distance = _hit3.distance == 0 ? 100000f : _hit3.distance;
+
+			if( _hit.distance <= 5.4f || _hit2.distance <= 5.4f || _hit3.distance <= 5.4f){
+				//Take the weighted average of the three distances;
+				Vector3 _hitNormal = _hit.normal; //(_hit.normal / _hit.distance + _hit2.normal / _hit2.distance + _hit3.normal / _hit3.distance)/3f; 
 				
-				_hitNormal = Vector3.Slerp(_hitNormal, previousNormal, 0.95f);
-			}
-			
-			
-			float _hitDistance = 1f / (1f/_hit.distance + 1f/_hit2.distance + 1f/_hit3.distance);
-			Vector3 _hitPoint = _hit.point;//(_hit.point / _hit.distance + _hit2.point / _hit2.distance + _hit3.point / _hit3.distance) / (_hitDistance); 
-			
-			//print(_hit.point + " " + _hitPoint);
+				if(Vector3.Dot(_hitNormal.normalized, previousNormal.normalized)> 0.4f){
 
-			Vector3 _lerpedForward = Vector3.Slerp(transform.forward,Vector3.ProjectOnPlane(transform.forward, _hitNormal), 0.3f * (1f-_hitDistance/5.4f));
-			Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hitNormal,0.3f*( 1f-_hitDistance/5.4f));
-			previousNormal = _lerpedUp;
-			rb.transform.rotation = Quaternion.LookRotation(_lerpedForward,_lerpedUp);
-			
-			Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
-			Debug.DrawRay(_hit.point,_hitNormal, Color.green);
-			rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
-			rb.AddForceAtPosition((transform.up).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)), footRaycast.position);
-			
-			float lookUpDownTime = anim.GetFloat("Look Speed");	
-			anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 2f*Time.deltaTime, -1f, 1f));
-			if (Time.frameCount % 4==0) {
-				if (Metwork.peerType != MetworkPeerType.Disconnected) {
-					netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
+					_hitNormal = Vector3.Slerp(previousNormal,_hitNormal, 0.5f);
+
 				}
+				else{
+					
+					_hitNormal = Vector3.Slerp(_hitNormal, previousNormal, 0.95f);
+				}
+				
+				
+				float _hitDistance = 1f / (1f/_hit.distance + 1f/_hit2.distance + 1f/_hit3.distance);
+				Vector3 _hitPoint = _hit.point;//(_hit.point / _hit.distance + _hit2.point / _hit2.distance + _hit3.point / _hit3.distance) / (_hitDistance); 
+				
+				//print(_hit.point + " " + _hitPoint);
+
+				Vector3 _lerpedForward = Vector3.Slerp(transform.forward,Vector3.ProjectOnPlane(transform.forward, _hitNormal), 0.3f * (1f-_hitDistance/5.4f));
+				Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hitNormal,0.3f*( 1f-_hitDistance/5.4f));
+				previousNormal = _lerpedUp;
+				rb.transform.rotation = Quaternion.LookRotation(_lerpedForward,_lerpedUp);
+				
+				Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
+				Debug.DrawRay(_hit.point,_hitNormal, Color.green);
+				rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
+				rb.AddForceAtPosition((transform.up).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)), footRaycast.position);
+				
+				float lookUpDownTime = anim.GetFloat("Look Speed");	
+				anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 0.5f*Time.deltaTime, -1f, 1f));
+				if (Time.frameCount % 4==0) {
+					if (Metwork.peerType != MetworkPeerType.Disconnected) {
+						netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
+					}
+				}
+				rb.angularDrag = 20f;
+				//Add torque to compensate for extra friction
+				rb.AddRelativeTorque(0, h2*factor/3f* 20f, 0);
+				//Add left/right force (to convert the roll force to side-side)
+				
+				rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 18f,0,0);
 			}
-			rb.angularDrag = 20f;
-			//Add torque to compensate for extra friction
-			rb.AddRelativeTorque(0, h2*factor/3f* 20f, 0);
-			//Add left/right force (to convert the roll force to side-side)
-			
-			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 18f,0,0);
 			
 		}
 		else{
@@ -1171,7 +1185,7 @@ public class Player_Controller : MonoBehaviour {
 
 			
 
-			Vector3 _rotateAmount = Vector3.Lerp(previousRot,new Vector3(-v2 * 0.75f, h2*2.5f, -h * 1.5f) * 5f * Time.deltaTime * 30f, 0.05f);
+			Vector3 _rotateAmount = Vector3.Lerp(previousRot,new Vector3(-v2 * 2f, h2*2f, -h * 1.5f) * 5f * Time.deltaTime * 30f, 0.05f);
 			rb.transform.Rotate(_rotateAmount);
 			previousRot = _rotateAmount;
 
@@ -1325,6 +1339,9 @@ public class Player_Controller : MonoBehaviour {
 	public virtual void Attack(){
 		if (!grappleActive)
 		{
+			fireScript.shotSpawn.transform.forward = this.mainCam.transform.forward 
+													//+ anim.[recoilString].normalizedTime * mainCam.transform.up
+													+ fireScript.recoilAmount * 0.25f * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f);
 			fireScript.FireWeapon();
 		}
 		UpdateUI ();
@@ -1397,12 +1414,13 @@ public class Player_Controller : MonoBehaviour {
 			_rb.useGravity = rb.useGravity;
 		}
 		try{
-		GameObject droppedWeapon = (GameObject)Instantiate (fireScript.gameObject, position, rotation);
-		droppedWeapon.AddComponent<Rigidbody> ().useGravity = rb.useGravity;
-		droppedWeapon.GetComponent<Fire> ().enabled = false;
+			GameObject droppedWeapon = (GameObject)Instantiate (fireScript.gameObject, position, rotation);
+			droppedWeapon.AddComponent<Rigidbody> ().useGravity = rb.useGravity;
+			droppedWeapon.GetComponent<Fire> ().enabled = false;
+			droppedWeapon.transform.localScale = this.fireScript.gameObject.transform.lossyScale;
 
-		Destroy (droppedWeapon, 20f);
-		//droppedWeapon.GetComponent<Activater> ().enabled = true;
+			Destroy (droppedWeapon, 20f);
+			//droppedWeapon.GetComponent<Activater> ().enabled = true;
 		}
 		catch{}
 
@@ -1451,7 +1469,7 @@ public class Player_Controller : MonoBehaviour {
 		//print("Exited");
 		//walkSound.Stop ();
 
-		lookFactor = 0.1f;
+		lookFactor = 1f;
 
 	}
 	public IEnumerator EnterGravity(){
@@ -1487,7 +1505,7 @@ public class Player_Controller : MonoBehaviour {
 
 
 		breatheSound.Stop ();
-		lookFactor = 3f;
+		lookFactor = 1f;
 		enteringGravity = false;
 	}
 	[MRPC]
@@ -1745,23 +1763,21 @@ public class Player_Controller : MonoBehaviour {
 	}
 	
 	public IEnumerator ShowMinimap(){
-		
-		while (minimapRunning) {
-			if (minimapPower > 0) {
-				Collider[] allColliders = Physics.OverlapSphere (transform.position, 80f, iconMask);
-				foreach (Collider collider in allColliders) {
-					Material mat = collider.GetComponent<MeshRenderer> ().material;
-					mat.color = new Color (1f, 0f, 0f, 1f);
-					collider.GetComponent<MeshRenderer> ().material = mat;
+		int _iterations = 20;
+		for(int i = 0; i < _iterations; i++) {
+			GameObject[] _icons = GameObject.FindGameObjectsWithTag("Icon");
+				
+			foreach(GameObject _icon in _icons){
+				Material mat = _icon.GetComponent<MeshRenderer> ().material;
+				mat.color = new Color (1f, 1f, 0f, 1f-(float)i/(_iterations-1f));
+				_icon.GetComponent<MeshRenderer> ().material = mat;
 
-				}
-				yield return new WaitForSeconds (2f);
-				minimapPower -= 2f;
-			} else {
-				minimapRunning = false;
-				break;
 			}
+			yield return new WaitForSeconds (5f/_iterations);
+			
 		}
+		yield return new WaitForSeconds (2f);
+		minimapRunning = false;
 	}
 	//Admin only
 	public void RegisterModerator(){

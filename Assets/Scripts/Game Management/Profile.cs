@@ -7,15 +7,15 @@ using UnityEngine.SceneManagement;
 public class Profile : MonoBehaviour {
 	public InputField nameInput;
 	public Toggle mouseToggle;
-	public string[] playerInfo;
+	public string[] playerInfo = new string[5];
 	public Text playerScore;
 	public Text playerKills;
 	public Text playerDeaths;
 	public Text playerKD;
 	// Use this for initialization
 	void Start () {
-		/*try
-		{*/
+		try
+		{
 			playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
 			print("Info Length" + playerInfo.Length);
 			nameInput.text = playerInfo[0];
@@ -24,20 +24,28 @@ public class Profile : MonoBehaviour {
 			playerDeaths.text = playerInfo[3];
 			if (float.Parse(playerInfo[3]) < 1)
 			{
-				playerKD.text = "<color=yellow>inf</color>";
+				playerKD.text = "<color=yellow>N/A</color>";
 			}
 			else
 			{
 				playerKD.text = (float.Parse(playerInfo[2]) / float.Parse(playerInfo[3])).ToString();
 			}
-		/*}
+		}
 		catch
 		{
-			RestoreDataFile();
-		}*/
+			
+			playerInfo = RestoreDataFile();
+		}
+
+		GameObject.FindObjectOfType<Player_Controller>().anim.SetFloat("Look Speed", 0.5f);
 
 	}
 	public void SaveChanges(){
+		//Strip Characters
+		nameInput.text = nameInput.text.Replace("[", "");
+		nameInput.text = nameInput.text.Replace("]", "");
+		nameInput.text = nameInput.text.Replace("%", "");
+
 		playerInfo [0] = nameInput.text;
 		print ("Info Length 2:" + playerInfo.Length);
 

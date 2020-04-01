@@ -211,6 +211,8 @@ public class MapClass
 
 
 	}
+
+
 	void DeactivateLoadPanel()
 	{
 		//TODO: Reload the scene when the network connection fails! or make workaround! 
@@ -218,6 +220,49 @@ public class MapClass
 		//unsecure, but should not fail
 		loadingPanel.SetActive(false);
 	}
+
+	//Direct Connection without matchmaking
+	public void DirectConnect()
+	{
+
+		if (testing)
+		{
+			//Network.Connect (localIP, 12345);//hostData [index].port);
+		}
+		else
+		{
+			//Network.Connect (hostData [index].guid);
+			Metwork.Connect(gameNameInput.text);
+
+		}
+
+		Metwork.onConnectedToServer += OnConnectedToMetServer;
+		Metwork.onPlayerConnected += OnMetPlayerConnected;
+		/*System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
+			"1200",
+			hostData[index].gameType,
+			maps[currentMapNum].sceneName
+		}));
+		connection.gameType = hostData[index].gameType;*/
+		connection.gameName = gameNameInput.text;
+		//unsecure, but should not fail
+		try
+		{
+			loadingPanel.SetActive(true);
+			
+
+		}
+		catch { 
+			Debug.LogWarning("Loading panel could not be activated");
+		}
+
+		//Moved from 8 to 12 seconds to increase likelyhood of properly connecting
+		Invoke("DeactivateLoadPanel", 12f);
+
+
+
+	}
+
 	public void OnMetPlayerConnected(MetworkPlayer _player)
 	{
 		//if (Metwork.player == null || _player.connectionID == Metwork.player.connectionID && (SceneManager.GetActiveScene().name == "MatchScene")) {
@@ -252,7 +297,9 @@ public class MapClass
 
 	public void OnValueChanged()
 	{
-
+		if(gameNameInput.text.Contains("%") || gameNameInput.text.Contains("[")){
+			gameNameInput.text = gameNameInput.text.Substring(0, gameNameInput.text.Length - 1);
+		}
 		if (gameNameInput.text.Contains("\n"))
 		{
 			gameNameInput.text = gameNameInput.text.Substring(0, gameNameInput.text.Length - 1);

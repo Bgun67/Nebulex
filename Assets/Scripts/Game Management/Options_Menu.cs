@@ -39,13 +39,13 @@ public class Options_Menu : MonoBehaviour {
 		QualitySettings.SetQualityLevel(int.Parse(optionsInfo[3]));
 		if (optionsInfo[4] == "True")
 		{
-			//Screen.fullScreenMode = FullScreenMode.FullScreenWindow;//ExclusiveFullScreen;
-			//Screen.fullScreen = true;
+			Screen.fullScreenMode = FullScreenMode.FullScreenWindow;//ExclusiveFullScreen;
+			Screen.fullScreen = true;
 		}
 		else
 		{
-			//Screen.fullScreen = false;
-			//Screen.fullScreenMode = FullScreenMode.Windowed;
+			Screen.fullScreen = false;
+			Screen.fullScreenMode = FullScreenMode.Windowed;
 		}
 	}
 	void Reset () {
@@ -74,14 +74,14 @@ public class Options_Menu : MonoBehaviour {
 	public void FullScreenClicked() {
 		if (!Screen.fullScreen)
 		{
-		//	Screen.fullScreenMode = FullScreenMode.FullScreenWindow;//ExclusiveFullScreen;
-		//	Screen.fullScreen = true;
+			Screen.fullScreenMode = FullScreenMode.FullScreenWindow;//ExclusiveFullScreen;
+			Screen.fullScreen = true;
 
 		}
 		else
 		{
-		//	Screen.fullScreen = false;
-		//	Screen.fullScreenMode = FullScreenMode.Windowed;
+			Screen.fullScreen = false;
+			Screen.fullScreenMode = FullScreenMode.Windowed;
 		}
 		UpdateFullScreenText();
 		SaveData();

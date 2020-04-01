@@ -5360,6 +5360,7 @@ GameObject:
   - component: {fileID: 8041895074031273141}
   - component: {fileID: 6917874473628185441}
   - component: {fileID: 2530025815721161191}
+  - component: {fileID: 6700130319162490612}
   m_Layer: 0
   m_Name: Shredder
   m_TagString: Untagged
@@ -5439,15 +5440,15 @@ MonoBehaviour:
   force: 2000
   maxSpeed: 35
   speed: 0
-  dust: {fileID: 689502547}
+  dust: {fileID: 0}
   driversSeat: {fileID: 92930782}
   netObj: {fileID: 0}
   explosionEffect: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b,
     type: 3}
-  destroyedPrefabs:
-  - {fileID: 1318701348548840, guid: 817304952a4f89848bf77650ec0d9619, type: 3}
+  destroyedPrefabs: []
   audioWrapper: {fileID: 8041895074031273141}
   idleSound: {fileID: 2530025815721161191}
+  lastOccupiedTime: 0
 --- !u!54 &1624334508412601636
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5696,6 +5697,53 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6700130319162490612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818775966775253199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9675075717bc5804093cf2271977e735, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalHealth: 500
+  currentHealth: 500
+  dieFunction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3002443564247858667}
+        m_MethodName: Die
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  isVehicle: 1
+  initialPosition: {fileID: 0}
+  resetTime: 10
+  gameController: {fileID: 0}
+  regen: 1
+  regenTime: 1
+  healthShown: 0
+  indicateLowHealth: 0
+  lowHealthEffect: {fileID: 0}
+  isDead: 0
+  forwarder: 0
+  forwardedDamage: {fileID: 0}
+  forwardedScale: 1
+  impactPrefab: {fileID: 0}
+  impactDamageFactor: -1
+  damageThreshold: 0
+  netObj: {fileID: 0}
 --- !u!1 &4818775966775253201
 GameObject:
   m_ObjectHideFlags: 0
