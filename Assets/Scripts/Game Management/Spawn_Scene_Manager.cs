@@ -26,20 +26,26 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		}
 		sceneCam = gameController.sceneCam;
 		eventSystem.SetActive (true);
-		sceneCam.transform.position = Vector3.Lerp(Vector3.zero, sceneCam.transform.position, 0.5f);
+		//sceneCam.transform.position = Vector3.Lerp(Vector3.zero, sceneCam.transform.position, 0.5f);
+		sceneCam.GetComponent<Camera>().orthographic = true;
+		sceneCam.GetComponent<Camera>().orthographicSize = 5f;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		GameObject[] spawnPoints;
-	
+
 		spawnPoints = GameObject.FindGameObjectsWithTag ("Spawn Point " + gameController.GetLocalTeam());
+		
+		
+
 		if (spawnPoints.Length < 1) {
 			spawnPoints = GameObject.FindGameObjectsWithTag ("Spawn Point 1");
 		}
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
+		Bounds _bounds = new Bounds(spawnPoints[0].transform.position, Vector3.one);
 
 		
 		for (int i = 0; i< spawnButtons.Length; i++) {
@@ -48,56 +54,23 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 				continue;
 			}
 			spawnPositions[i] = spawnPoints[i].transform;
+			_bounds.Encapsulate(spawnPoints[i].transform.position);
+
 			//TODO: Unsafe code implementation
 			Vector3 buttonPos = gameController.sceneCam.GetComponent<Camera>().WorldToScreenPoint (spawnPoints[i].transform.position);
 			buttonPos.z = 0f;
 			spawnButtons [i].SetActive (true);
 			spawnButtons[i].transform.position = buttonPos;
 		}
-		PositionSceneCam();
-	}
-
-	void PositionSceneCam()
-	{
-
+		sceneCam.GetComponent<Camera>().orthographicSize = Mathf.Lerp(sceneCam.GetComponent<Camera>().orthographicSize,Mathf.Max(_bounds.extents.x,_bounds.extents.z)*1.5f, 0.3f);
+		_bounds.center = new Vector3(_bounds.center.x, 1500f, _bounds.center.z);
+		sceneCam.transform.position = _bounds.center;
 		
-		GameObject[] spawn0Points = GameObject.FindGameObjectsWithTag("Spawn Point 0");
-		Vector3 max = spawn0Points[0].transform.position;
-		Vector3 min = spawn0Points[0].transform.position;
-		FindMax(min, max, spawn0Points, out min, out max);
-		FindMax(min, max, GameObject.FindGameObjectsWithTag("Spawn Point 1"), out min, out max);
-
-		Vector3 center = Vector3.Lerp(min, max, 0.5f);
-		center.y = 0f;
-
-		sceneCam.transform.position = Vector3.Lerp(sceneCam.transform.position, center + Vector3.up * (max - center).magnitude / Mathf.Min(Screen.height, Screen.width)*2300f, 0.1f);
+		
 
 	}
-	void FindMax(Vector3 initialMin, Vector3 initialMax, GameObject[] arrayToSearch, out Vector3 finalMin, out Vector3 finalMax)
-	{
-		finalMax = initialMax;
-		finalMin = initialMin;
-		foreach (GameObject spawnPoint in arrayToSearch)
-		{
-			Vector3 _pos = spawnPoint.transform.position;
-			if (_pos.x > finalMax.x)
-			{
-				finalMax.x = _pos.x;
-			}
-			if (_pos.x < finalMin.x)
-			{
-				finalMin.x = _pos.x;
-			}
-			if (_pos.z > finalMax.z)
-			{
-				finalMax.z = _pos.z;
-			}
-			if (_pos.z < finalMin.z)
-			{
-				finalMin.z = _pos.z;
-			}
-		}
-	}
+
+
 
 	public void Spawn(int index){
 		if (MInput.useMouse)

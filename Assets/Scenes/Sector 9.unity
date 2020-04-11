@@ -144,7 +144,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!4 &26071799 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4132394559212446, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -322,7 +322,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!1 &68672375 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100038, guid: c394cd37bcb2deb4792f0f1511bd6861,
@@ -5093,7 +5093,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!4 &197904092 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4132394559212446, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -5148,7 +5148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &199822588
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5465,7 +5465,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!198 &239045509 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198738857325103548, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -6414,7 +6414,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &320646858 stripped
 MonoBehaviour:
@@ -7735,7 +7735,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!1001 &370275374
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8413,7 +8413,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &396828165
 MonoBehaviour:
@@ -9028,7 +9028,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &417175544
 MonoBehaviour:
@@ -9342,7 +9342,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &525235335
 MonoBehaviour:
@@ -11882,7 +11882,7 @@ PrefabInstance:
     - target: {fileID: 2300024, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b43b4da38191f2a4a99d290376962fd2, type: 2}
+      objectReference: {fileID: 2100000, guid: 937667f197df43847876d84283f118bc, type: 2}
     - target: {fileID: 2300026, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -11919,9 +11919,100 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5baa2aca7453d0648accea6957088a44, type: 2}
+    - target: {fileID: 2300046, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b43b4da38191f2a4a99d290376962fd2, type: 2}
+    - target: {fileID: 2300048, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b43b4da38191f2a4a99d290376962fd2, type: 2}
+    - target: {fileID: 2300054, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5a6380a5d6cfcbe4abcd40e23cf0f364, type: 2}
     m_RemovedComponents:
     - {fileID: 2300050, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
+--- !u!1 &612629578 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100058, guid: c394cd37bcb2deb4792f0f1511bd6861,
+    type: 3}
+  m_PrefabInstance: {fileID: 612629577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &612629579 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100056, guid: c394cd37bcb2deb4792f0f1511bd6861,
+    type: 3}
+  m_PrefabInstance: {fileID: 612629577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &612629580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100052, guid: c394cd37bcb2deb4792f0f1511bd6861,
+    type: 3}
+  m_PrefabInstance: {fileID: 612629577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &612629581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100048, guid: c394cd37bcb2deb4792f0f1511bd6861,
+    type: 3}
+  m_PrefabInstance: {fileID: 612629577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &612629582
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612629578}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300054, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
+--- !u!65 &612629583
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612629579}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1185559, y: 1.8458285, z: 0.17403577}
+  m_Center: {x: 0.45454565, y: 0.09090825, z: 2.4075453}
+--- !u!64 &612629584
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612629580}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300048, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
+--- !u!64 &612629585
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612629581}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300046, guid: c394cd37bcb2deb4792f0f1511bd6861, type: 3}
 --- !u!1 &615603004 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1471997464991134, guid: 3b6178521aee95d468e55780d603b2ad,
@@ -11985,7 +12076,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!1 &641736700
 GameObject:
   m_ObjectHideFlags: 0
@@ -12153,7 +12244,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &649163489 stripped
 MonoBehaviour:
@@ -12241,7 +12332,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &654588590 stripped
 MonoBehaviour:
@@ -13296,7 +13387,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &739078717 stripped
 MonoBehaviour:
@@ -15011,6 +15102,12 @@ ParticleSystem:
     type: 3}
   m_PrefabInstance: {fileID: 670917537}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &767940448 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400046, guid: c394cd37bcb2deb4792f0f1511bd6861,
+    type: 3}
+  m_PrefabInstance: {fileID: 612629577}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &772403680
 GameObject:
   m_ObjectHideFlags: 0
@@ -15108,7 +15205,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &776623120 stripped
 MonoBehaviour:
@@ -15395,7 +15492,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &859371912
 MonoBehaviour:
@@ -18329,7 +18426,7 @@ MonoBehaviour:
   targetImage: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144, type: 3}
   arrowImage: {fileID: 21300000, guid: 2a09e1df1ddf32243861804afe6929b1, type: 3}
   targetsToRegister:
-  - _transform: {fileID: 0}
+  - _transform: {fileID: 767940448}
     _name: Space Station
     _distance: 150
     _colour: {r: 1, g: 0.49803922, b: 0, a: 1}
@@ -18443,7 +18540,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!198 &962658926 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198738857325103548, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -18481,7 +18578,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &974639208
 MonoBehaviour:
@@ -19352,7 +19449,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!198 &1075716345 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198659550789455852, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -21044,7 +21141,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!1 &1286329672 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100020, guid: c394cd37bcb2deb4792f0f1511bd6861,
@@ -21778,7 +21875,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!198 &1429038625 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198257939106751428, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -21872,7 +21969,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1441133768
 MonoBehaviour:
@@ -22038,7 +22135,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1521347632 stripped
 MonoBehaviour:
@@ -22096,7 +22193,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1527275786 stripped
 MonoBehaviour:
@@ -22141,7 +22238,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1527781736
 MonoBehaviour:
@@ -22340,7 +22437,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!95 &1622612987 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 9500000, guid: 3749c36f930dcfb4b94920195e13a28d,
@@ -22874,7 +22971,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!4 &1662705744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4685542585440240, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -23277,7 +23374,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!198 &1781210763 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198659550789455852, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -24398,7 +24495,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!1001 &1858745367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26161,7 +26258,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!1 &2022374479 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1422727278368344, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -26235,7 +26332,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!198 &2027071211 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198659550789455852, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -57181,7 +57278,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &2131065764
 MonoBehaviour:
@@ -57259,7 +57356,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &2141664979
 MonoBehaviour:

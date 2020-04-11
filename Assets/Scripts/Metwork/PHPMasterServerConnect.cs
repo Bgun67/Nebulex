@@ -50,12 +50,13 @@ public class PHPMasterServerConnect : MonoBehaviour
         } else {
 		    DontDestroyOnLoad (gameObject);
         	_instance = this;
-			Metwork.onPlayerConnected += _instance.OnMetPlayerConnected;
-			Metwork.onPlayerDisconnected += _instance.OnMetPlayerDisconnected;
 			try{
 				masterServerURL = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/network.config");
 			}
 			catch{};
+			Metwork.onPlayerConnected += _instance.OnMetPlayerConnected;
+			Metwork.onPlayerDisconnected += _instance.OnMetPlayerDisconnected;
+			
 		}
 
 	}

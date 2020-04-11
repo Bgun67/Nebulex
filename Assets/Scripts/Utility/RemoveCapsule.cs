@@ -29,7 +29,7 @@ public class RemoveCapsule : MonoBehaviour {
 			//	}
 			//}
 			//print ("Complete");
-			//ApproximateCylinder(this.transform, 2.1f, 1f, 16f, 16, this.gameObject);
+			ApproximateCylinder(this.transform, 2.1f, 1f, 16f, 16, this.gameObject);
 		}
 	}
 

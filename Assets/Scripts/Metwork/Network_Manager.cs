@@ -42,6 +42,7 @@ public class Network_Manager : MonoBehaviour {
 		Metwork.onPlayerConnected += this.OnMetPlayerConnected;
 		Metwork.onPlayerDisconnected += this.OnMetPlayerDisconnected;
 		SceneManager.sceneLoaded += OnSceneLoaded;
+		lastKickTime = Time.time;
 
 	}
 	void Update(){

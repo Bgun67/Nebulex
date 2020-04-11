@@ -99,9 +99,9 @@ public class MapClass
 			for (int i = 0; i < hostData.Length; i++)
 			{
 				if(hostData[i].comment != this.maps[currentMapNum].sceneName){
-					continue;
+					//continue;
 				}
-				hostButtons[i].GetComponentInChildren<Text>().text = hostData[i].gameName + " " + hostData[i].gameType + " " + hostData[i].connectedPlayers + "/" + hostData[i].playerLimit;
+				hostButtons[i].GetComponentInChildren<Text>().text = hostData[i].gameName + " " + hostData[i].gameType + " : "+ hostData[i].comment + " " + hostData[i].connectedPlayers + "/" + hostData[i].playerLimit;
 				hostButtons[i].gameObject.SetActive(true);
 			}
 

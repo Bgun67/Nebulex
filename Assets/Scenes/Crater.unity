@@ -206,14 +206,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fighter_Ship_1 (2.0)
       objectReference: {fileID: 0}
-    - target: {fileID: 1292683462611556, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1642427334415460, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4071027763749786, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1013.3333
@@ -385,6 +377,25 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 1292683462611556, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114499367465509590, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: targetImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144,
+        type: 3}
+    - target: {fileID: 1642427334415460, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fd4277a41aaffc849923fa007298d2d8, type: 2}
     - target: {fileID: 23947473271621128, guid: 6874c8884960c9348994830e6fb1e7ad,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -410,17 +421,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[4]
       value: 
       objectReference: {fileID: 2100000, guid: 5c37838b3b18d0b4fb9f6db417fd9afa, type: 2}
-    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: fd4277a41aaffc849923fa007298d2d8, type: 2}
-    - target: {fileID: 114499367465509590, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: targetImage
-      value: 
-      objectReference: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -1022,7 +1022,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &95438759
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2369,7 +2369,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &174868639
 MonoBehaviour:
@@ -3005,7 +3005,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &213127043
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4581,7 +4581,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &239799230
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5566,7 +5566,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &384005672
 MonoBehaviour:
@@ -39804,7 +39804,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &540136986
 MonoBehaviour:
@@ -40129,7 +40129,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &597453539
 MonoBehaviour:
@@ -40629,7 +40629,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &604509613
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -40812,7 +40812,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &634834099
 MonoBehaviour:
@@ -41460,11 +41460,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1683813926893388, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
+    - target: {fileID: 1588855270228332, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1588855270228332, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
+    - target: {fileID: 1683813926893388, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -42477,7 +42477,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &671305796
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -42934,7 +42934,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &672338850
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -43479,7 +43479,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &693556292
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -44878,7 +44878,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &796971939
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -44936,7 +44936,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &799122739 stripped
 MonoBehaviour:
@@ -45135,7 +45135,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &818231309
 MonoBehaviour:
@@ -45940,7 +45940,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &881323749
 MonoBehaviour:
@@ -47336,7 +47336,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &920383080
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -48451,7 +48451,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &980890767
 MonoBehaviour:
@@ -54364,14 +54364,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fighter_Ship_1 (2.1)
       objectReference: {fileID: 0}
-    - target: {fileID: 1292683462611556, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1642427334415460, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4071027763749786, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1050.4333
@@ -54560,6 +54552,25 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 1292683462611556, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114499367465509590, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: targetImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144,
+        type: 3}
+    - target: {fileID: 1642427334415460, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fd4277a41aaffc849923fa007298d2d8, type: 2}
     - target: {fileID: 23947473271621128, guid: 6874c8884960c9348994830e6fb1e7ad,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -54585,17 +54596,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[4]
       value: 
       objectReference: {fileID: 2100000, guid: 5c37838b3b18d0b4fb9f6db417fd9afa, type: 2}
-    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: fd4277a41aaffc849923fa007298d2d8, type: 2}
-    - target: {fileID: 114499367465509590, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: targetImage
-      value: 
-      objectReference: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -55173,7 +55173,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &1147193286
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -55555,7 +55555,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1208971083
 MonoBehaviour:
@@ -55630,7 +55630,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1211066866
 MonoBehaviour:
@@ -56773,7 +56773,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1303467765
 MonoBehaviour:
@@ -56897,7 +56897,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1309777581
 MonoBehaviour:
@@ -59442,7 +59442,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &1443407780
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -60176,7 +60176,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 3000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 400
   m_Depth: 1
   m_CullingMask:
@@ -61177,7 +61177,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &1509641858
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -61305,14 +61305,6 @@ PrefabInstance:
     - target: {fileID: 1844531578879706, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
       propertyPath: m_Name
       value: Fighter_Ship_1 (0)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1292683462611556, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1642427334415460, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4071027763749786, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -61485,6 +61477,35 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 1292683462611556, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114499367465509590, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: targetImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144,
+        type: 3}
+    - target: {fileID: 1642427334415460, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5614d8d18b941ec41b54810f65bfcd75, type: 2}
+    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fd4277a41aaffc849923fa007298d2d8, type: 2}
     - target: {fileID: 23947473271621128, guid: 6874c8884960c9348994830e6fb1e7ad,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -61510,27 +61531,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[4]
       value: 
       objectReference: {fileID: 2100000, guid: 5c37838b3b18d0b4fb9f6db417fd9afa, type: 2}
-    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: m_Materials.Array.data[2]
-      value: 
-      objectReference: {fileID: 2100000, guid: 5614d8d18b941ec41b54810f65bfcd75, type: 2}
-    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: fd4277a41aaffc849923fa007298d2d8, type: 2}
-    - target: {fileID: 114499367465509590, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: targetImage
-      value: 
-      objectReference: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -68573,7 +68573,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &1846850801
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -68635,14 +68635,6 @@ PrefabInstance:
     - target: {fileID: 1844531578879706, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
       propertyPath: m_Name
       value: Fighter_Ship_1 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1292683462611556, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1642427334415460, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4071027763749786, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -68828,10 +68820,41 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.90000284
       objectReference: {fileID: 0}
+    - target: {fileID: 4718491050518024, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489301092791470, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058493395014952, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4292053981609394, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
       propertyPath: m_RootOrder
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 1292683462611556, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114499367465509590, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: targetImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144,
+        type: 3}
+    - target: {fileID: 1642427334415460, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fd4277a41aaffc849923fa007298d2d8, type: 2}
     - target: {fileID: 23947473271621128, guid: 6874c8884960c9348994830e6fb1e7ad,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -68857,29 +68880,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[4]
       value: 
       objectReference: {fileID: 2100000, guid: 5c37838b3b18d0b4fb9f6db417fd9afa, type: 2}
-    - target: {fileID: 4058493395014952, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_RootOrder
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 4718491050518024, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_RootOrder
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4489301092791470, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_RootOrder
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 23382442340709644, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: fd4277a41aaffc849923fa007298d2d8, type: 2}
-    - target: {fileID: 114499367465509590, guid: 6874c8884960c9348994830e6fb1e7ad,
-        type: 3}
-      propertyPath: targetImage
-      value: 
-      objectReference: {fileID: 21300000, guid: 6fcbec5455ea4c44987b29226564e144,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -69048,7 +69048,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1881946383
 MonoBehaviour:
@@ -69178,7 +69178,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &1898267582
 MonoBehaviour:
@@ -69665,7 +69665,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &1899100413
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -70373,11 +70373,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1683813926893388, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
+    - target: {fileID: 1588855270228332, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1588855270228332, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
+    - target: {fileID: 1683813926893388, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -72353,7 +72353,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &1989080430
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -72515,7 +72515,7 @@ MonoBehaviour:
   velocitySnapDist: 0.5
   rotForceFactor: 30
   velocityLerp: 0.2
-  sendRate: 20
+  sendRate: 30
   isTwoPlane: 0
 --- !u!114 &2021919625
 MonoBehaviour:
@@ -74002,7 +74002,7 @@ MonoBehaviour:
   rotationLerp: 0.2
   snapLerp: 0.2
   lerpRate: 20
-  sendRate: 15
+  sendRate: 30
 --- !u!135 &2128244314
 SphereCollider:
   m_ObjectHideFlags: 0

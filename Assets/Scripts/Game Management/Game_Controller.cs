@@ -715,19 +715,19 @@ public class Game_Controller : MonoBehaviour {
 				newScene = "Crater";
 				break;
 			case "Crater":
-			/*	newScene = "Kyrie";
-				break;
-			case "Kyrie":*/
 				newScene = "Fracture";
 				break;
 			case "Fracture":
 				newScene = "Space";
 				break;
 			case "Space":
+				newScene = "Sector 19";
+				break;
+			case "Sector 19":
 				newScene = "LHX Ultima Base";
 				break;
 			default:
-				newScene = "LobbyScene";
+				newScene = "MatchScene";
 				break;
 		}
 		

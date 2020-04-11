@@ -150,6 +150,7 @@ public class Com_Controller : MonoBehaviour {
 			agent.updateRotation = false;
 			agent.updateUpAxis = false;
 			agent.enabled = false;
+			anim.SetBool("Float", true);
 		}
 		else{
 			agent.enabled = true;
@@ -455,7 +456,7 @@ public class Com_Controller : MonoBehaviour {
 				heardPlayer = player.transform;
 			}
 		}
-		if (heardPlayer != null && Vector3.Distance(heardPlayer.transform.position, this.transform.position) < 150f)
+		if (heardPlayer != null && Vector3.Distance(heardPlayer.transform.position, this.transform.position) < 50f)
 		{
 			_targetPlayer = new TargetPlayer();
 			_targetPlayer._transform = heardPlayer.transform;

@@ -130,6 +130,7 @@ public class Player_Controller : MonoBehaviour {
 	public Vector3 primaryLocalPosition;
 	public Vector3 primaryLocalRotation;
 	int primaryNetView = -1;
+	float muzzleClimb = 0f;
 
 	[Header("Secondary")]
 	public GameObject secondaryWeapon;
@@ -347,6 +348,11 @@ public class Player_Controller : MonoBehaviour {
 		z = Input.GetAxis ("Move Y") * moveFactor;
 		v = Input.GetAxis ("Move Z")*moveFactor;
 		h = Input.GetAxis ("Move X")*moveFactor;
+
+		muzzleClimb -= Time.deltaTime;
+		if(muzzleClimb < 0){
+			muzzleClimb = 0f;
+		}
 
 
 
@@ -908,9 +914,12 @@ public class Player_Controller : MonoBehaviour {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.35f + _scopeTransform.up * 0.01f;
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
-			if(mainCam.fieldOfView < 11){
+			if(mainCam.fieldOfView < 11 && anim.GetCurrentAnimatorStateInfo(3).IsName("Aim"+fireScript.aimAnimNumber.ToString())){
+				print("Aim");
 				mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
-				mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation, fireScript.scopePosition.rotation, 0.7f);
+				//fireScript.transform.rotation *= Quaternion.FromToRotation(fireScript.scopePosition.forward, mainCam.transform.forward);
+				fireScript.transform.rotation = Quaternion.RotateTowards(fireScript.scopePosition.rotation, mainCam.transform.rotation, 0.7f);// * Quaternion.Inverse((fireScript.scopePosition.rotation * Quaternion.Inverse(fireScript.transform.rotation)));
+				//mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation, fireScript.scopePosition.rotation, 0.7f);
 			}
 			anim.SetBool ("Scope", true);
 			//StartCoroutine (Zoom (true));
@@ -1090,10 +1099,10 @@ public class Player_Controller : MonoBehaviour {
 			rb.AddRelativeTorque(-v2 * factor/2f, h2*factor/7f, -h * factor/1.5f);
 			
 			//transform.Rotate(Vector3.Lerp(Vector3.zero, new Vector3(-v2 * Time.deltaTime, h2 * Time.deltaTime, -h * Time.deltaTime),0.1f));
-			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 20f);
+			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 15f);
 		}
 
-		
+		bool _magBootsLock = false;
 
 		//Raycast down to find ground to lock on to
 		//Also check if the jump key is pressed
@@ -1154,11 +1163,17 @@ public class Player_Controller : MonoBehaviour {
 				rb.AddRelativeTorque(0, h2*factor/3f* 20f, 0);
 				//Add left/right force (to convert the roll force to side-side)
 				
-				rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 18f,0,0);
+				rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f,0,0);
+				_magBootsLock = true;
+			}
+			else{
+				_magBootsLock = false;
 			}
 			
 		}
-		else{
+		
+		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
+		if(!_magBootsLock && Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) < 3f){
 			//Return to zero-g defaults
 			//rb.constraints = RigidbodyConstraints.None;
 			rb.angularDrag = 1f;
@@ -1340,8 +1355,12 @@ public class Player_Controller : MonoBehaviour {
 		if (!grappleActive)
 		{
 			fireScript.shotSpawn.transform.forward = this.mainCam.transform.forward 
-													//+ anim.[recoilString].normalizedTime * mainCam.transform.up
-													+ fireScript.recoilAmount * 0.25f * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f);
+													+ muzzleClimb * fireScript.recoilAmount * mainCam.transform.up * 2f
+													+ fireScript.recoilAmount * (0.3f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
+													;
+			if(muzzleClimb < 0.6f){
+				muzzleClimb += 0.05f;
+			}
 			fireScript.FireWeapon();
 		}
 		UpdateUI ();
@@ -1447,6 +1466,11 @@ public class Player_Controller : MonoBehaviour {
 		anim.SetBool ("Jump", false);
 		anim.SetInteger("Walk State", 0);
 
+		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
+		while(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f){
+			yield return new WaitForSeconds(0.5f);
+		}
+
 		//yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - 0.5f) < 0.05f);
 		Vector3 _aimDirection = mainCam.transform.forward;
 		float _originalLookTime = anim.GetFloat("Look Speed");
@@ -1455,6 +1479,7 @@ public class Player_Controller : MonoBehaviour {
 		float _counter = 0;
 		while (_counter < 1f)
 		{
+			
 			transform.forward = Vector3.Slerp (_originalForward, _aimDirection,_counter);
 			anim.SetFloat ("Look Speed",Mathf.Lerp(_originalLookTime ,0.5f,_counter));
 			rb.AddForce(Vector3.Lerp(Vector3.zero,Vector3.up * 9.81f,  _counter), ForceMode.Acceleration);
@@ -1487,6 +1512,12 @@ public class Player_Controller : MonoBehaviour {
 
 		float _counter = 0f;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
+		while(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f){
+			yield return new WaitForSeconds(0.5f);
+		}
+
 		Vector3 newForwardVector = new Vector3(transform.forward.x, 0f, transform.forward.z);
 		Vector3 _originalForward = mainCam.transform.forward;
 		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/250f);
@@ -1526,6 +1557,7 @@ public class Player_Controller : MonoBehaviour {
 			fireScript = primaryWeapon.GetComponent<Fire> ();
 			primarySelected = true;
 		}
+		
 		if(netObj.isLocal){
 			UI_Manager._instance.ChangeWeapon (primarySelected);
 		}
