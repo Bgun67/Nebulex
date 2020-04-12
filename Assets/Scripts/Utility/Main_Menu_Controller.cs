@@ -6,17 +6,29 @@ using UnityEngine.SceneManagement;
 public class Main_Menu_Controller : MonoBehaviour {
 
 	public GameObject creditsPanel;
+	float volume = 0f;
 	// Use this for initialization
 	void Reset(){
 		creditsPanel = GameObject.Find("Credits Panel");
 	}
 	void Start () {
-		DontDestroyOnLoad (this.gameObject);
+		if(FindObjectsOfType<Main_Menu_Controller>().Length > 1){
+			Destroy(this.gameObject);
+		}
+		else{
+			volume = this.GetComponent<AudioSource>().volume;
+			DontDestroyOnLoad (this.gameObject);
+		}
 	}
 	void Update()
 	{
+		this.GetComponent<AudioSource>().volume = volume;
 		if (SceneManager.GetActiveScene().name == "LobbyScene")
 		{
+			volume = Mathf.Lerp(volume, 0f, 0.05f);
+		}
+		
+		if(volume < 0.05f){
 			Destroy(this.gameObject);
 		}
 	}
