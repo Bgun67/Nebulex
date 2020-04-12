@@ -34,15 +34,14 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GameObject[] spawnPoints;
+		List<Spawn_Point> _allSpawns = new List<Spawn_Point>(FindObjectsOfType<Spawn_Point>());
+		_allSpawns.RemoveAll(x => x.team != gameController.GetLocalTeam());
 
-		spawnPoints = GameObject.FindGameObjectsWithTag ("Spawn Point " + gameController.GetLocalTeam());
-		
-		
-
-		if (spawnPoints.Length < 1) {
-			spawnPoints = GameObject.FindGameObjectsWithTag ("Spawn Point 1");
+		Spawn_Point[] spawnPoints = _allSpawns.ToArray();
+		if(spawnPoints.Length < 1){
+			spawnPoints = FindObjectsOfType<Spawn_Point>();
 		}
+		
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 		Bounds _bounds = new Bounds(spawnPoints[0].transform.position, Vector3.one);

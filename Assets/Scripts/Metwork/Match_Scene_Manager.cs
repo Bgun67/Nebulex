@@ -98,10 +98,8 @@ public class MapClass
 		{
 			for (int i = 0; i < hostData.Length; i++)
 			{
-				if(hostData[i].comment != this.maps[currentMapNum].sceneName){
-					//continue;
-				}
-				hostButtons[i].GetComponentInChildren<Text>().text = hostData[i].gameName + " " + hostData[i].gameType + " : "+ hostData[i].comment + " " + hostData[i].connectedPlayers + "/" + hostData[i].playerLimit;
+				string _mapDisplayedName = new List<MapClass>(maps).Find(x => x.sceneName == hostData[i].comment).displayedName;
+				hostButtons[i].GetComponentInChildren<Text>().text = hostData[i].gameName + " " + hostData[i].gameType + " : "+ _mapDisplayedName + " " + hostData[i].connectedPlayers + "/" + hostData[i].playerLimit;
 				hostButtons[i].gameObject.SetActive(true);
 			}
 
@@ -190,8 +188,10 @@ public class MapClass
 		System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
 			"1200",
 			hostData[index].gameType,
-			maps[currentMapNum].sceneName
+			hostData[index].comment
 		}));
+
+
 		connection.gameType = hostData[index].gameType;
 		connection.gameName = hostData[index].gameName;
 		//unsecure, but should not fail

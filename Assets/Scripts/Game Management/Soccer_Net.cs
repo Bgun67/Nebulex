@@ -13,7 +13,7 @@ public class Soccer_Net : MonoBehaviour {
 	bool gravOn;
 	public float untouchedTime;
 	public Soccer_Ball ball;
-	public GameObject[] spawns;
+	
 	// Use this for initialization
 	void Start () {
 		gameController = FindObjectOfType<Game_Controller> ();
@@ -49,7 +49,8 @@ public class Soccer_Net : MonoBehaviour {
 				player.GetComponent<Player_Controller> ().suffocationTime = 20000f;
 			}
 			StartCoroutine (CheckForSwitch ());
-			foreach (GameObject go in GameObject.FindGameObjectsWithTag("Spawn Point 0")) {
+			//TODO: Finish deprecating spawn points
+			/*foreach (GameObject go in GameObject.FindGameObjectsWithTag("Spawn Point 0")) {
 				go.SetActive (false);
 			}
 			foreach (GameObject go in GameObject.FindGameObjectsWithTag("Spawn Point 1")) {
@@ -57,7 +58,7 @@ public class Soccer_Net : MonoBehaviour {
 			}
 			foreach (GameObject go in spawns) {
 				go.SetActive (true);
-			}
+			}*/
 
 			//Hide all the reflection probes blend modes
 			MeshRenderer[] meshes = GameObject.FindObjectsOfType<MeshRenderer>();
@@ -201,9 +202,9 @@ public class Soccer_Net : MonoBehaviour {
 
 		if (_team == 0) {
 			
-			gameController.scoreA+= 20;
+			gameController.scoreB+= 20;
 		} else {
-			gameController.scoreB+=20;
+			gameController.scoreA+=20;
 		}
 		StartCoroutine (ResetBall ());
 

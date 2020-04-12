@@ -2450,9 +2450,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 165263617}
+  - component: {fileID: 165263618}
   m_Layer: 0
   m_Name: PlayerSpawn (6)
-  m_TagString: Spawn Point 0
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2471,6 +2472,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 50
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &165263618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165263616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb912feae5cd57343b2c1f9821fe4d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedGames:
+  - Destruction
+  - Team Deathmatch
+  - Capture The Flag
+  - Meltdown
+  - AstroBall
+  team: 0
 --- !u!1 &166472681 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100206, guid: b542535952b5f9441bf0b2a3f977ebf4,
@@ -11949,9 +11969,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 931230929}
+  - component: {fileID: 931230930}
   m_Layer: 0
   m_Name: PlayerSpawn (7)
-  m_TagString: Spawn Point 0
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11971,6 +11992,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 51
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &931230930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931230928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb912feae5cd57343b2c1f9821fe4d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedGames:
+  - Destruction
+  - Team Deathmatch
+  - Capture The Flag
+  - Meltdown
+  - AstroBall
+  team: 0
 --- !u!1 &932114542 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100400, guid: b542535952b5f9441bf0b2a3f977ebf4,
@@ -18835,9 +18875,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1494426145}
+  - component: {fileID: 1494426146}
   m_Layer: 0
   m_Name: PlayerSpawn (4)
-  m_TagString: Spawn Point 0
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18856,6 +18897,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1494426146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494426144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb912feae5cd57343b2c1f9821fe4d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedGames:
+  - Destruction
+  - Team Deathmatch
+  - Capture The Flag
+  - Meltdown
+  - AstroBall
+  team: 0
 --- !u!1 &1496989094 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100294, guid: 6534f1ce1ed278749a15c2d90c108ca9,

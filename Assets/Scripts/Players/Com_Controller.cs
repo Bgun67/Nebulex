@@ -121,7 +121,10 @@ public class Com_Controller : MonoBehaviour {
 
 			nameTextMesh.text = "Bot " + (this.botID - 64).ToString();
 
-			GameObject[] _spawnPoints = GameObject.FindGameObjectsWithTag("Spawn Point " + gameController.statsArray[botID - 64].team);
+			List<Spawn_Point> _allSpawns = new List<Spawn_Point>(FindObjectsOfType<Spawn_Point>());
+			_allSpawns.RemoveAll(x => x.team != gameController.statsArray[botID - 64].team);
+
+			Spawn_Point[] _spawnPoints = _allSpawns.ToArray();
 			patrolIndex = Random.Range(0, (botID - 64) % patrolPositions.Length);
 			damageScript.initialPosition = _spawnPoints[(botID - 64) % _spawnPoints.Length].transform;
 			//Randomize the starting position, so we don't get bot collision

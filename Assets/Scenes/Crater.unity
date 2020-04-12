@@ -45188,9 +45188,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 819167907}
+  - component: {fileID: 819167908}
   m_Layer: 0
   m_Name: Spawn Point B (1)
-  m_TagString: Spawn Point 1
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45209,6 +45210,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 60
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &819167908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819167906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb912feae5cd57343b2c1f9821fe4d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedGames:
+  - Destruction
+  - Team Deathmatch
+  - Capture The Flag
+  - Meltdown
+  - AstroBall
+  team: 1
 --- !u!1 &822143033 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1422727278368344, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -45888,9 +45908,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 878182739}
+  - component: {fileID: 878182740}
   m_Layer: 0
   m_Name: Spawn Point A
-  m_TagString: Spawn Point 0
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45909,6 +45930,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 57
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &878182740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878182738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb912feae5cd57343b2c1f9821fe4d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedGames:
+  - Destruction
+  - Team Deathmatch
+  - Capture The Flag
+  - Meltdown
+  - AstroBall
+  team: 0
 --- !u!1 &881323747 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1500021049238046, guid: b9f1228e890c95646bb37da2c7c813c7,
@@ -47490,9 +47530,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 941302455}
+  - component: {fileID: 941302456}
   m_Layer: 0
   m_Name: Spawn Point B
-  m_TagString: Spawn Point 1
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47511,6 +47552,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 59
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &941302456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941302454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb912feae5cd57343b2c1f9821fe4d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedGames:
+  - Destruction
+  - Team Deathmatch
+  - Capture The Flag
+  - Meltdown
+  - AstroBall
+  team: 1
 --- !u!1001 &945023589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58054,9 +58114,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1376613289}
+  - component: {fileID: 1376613290}
   m_Layer: 0
   m_Name: Spawn Point A (1)
-  m_TagString: Spawn Point 0
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58075,6 +58136,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 58
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1376613290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376613288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb912feae5cd57343b2c1f9821fe4d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedGames:
+  - Destruction
+  - Team Deathmatch
+  - Capture The Flag
+  - Meltdown
+  - AstroBall
+  team: 0
 --- !u!1001 &1377226159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -68820,18 +68900,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.90000284
       objectReference: {fileID: 0}
-    - target: {fileID: 4718491050518024, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_RootOrder
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4489301092791470, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_RootOrder
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 4058493395014952, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
-      propertyPath: m_RootOrder
-      value: 16
-      objectReference: {fileID: 0}
     - target: {fileID: 4292053981609394, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -68880,6 +68948,18 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[4]
       value: 
       objectReference: {fileID: 2100000, guid: 5c37838b3b18d0b4fb9f6db417fd9afa, type: 2}
+    - target: {fileID: 4718491050518024, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489301092791470, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058493395014952, guid: 6874c8884960c9348994830e6fb1e7ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}

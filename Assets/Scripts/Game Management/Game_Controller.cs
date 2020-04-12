@@ -216,7 +216,7 @@ public class Game_Controller : MonoBehaviour {
 		{
 			radiationField.SetActive(true);
 			radiationField.GetComponent<Radiation>().carrier = shipOneTransform.gameObject;
-			foreach (GameObject position in GameObject.FindGameObjectsWithTag("Spawn Point 1"))
+			/*foreach (GameObject position in GameObject.FindGameObjectsWithTag("Spawn Point 1"))
 			{
 				position.tag = "Untagged";
 
@@ -235,7 +235,7 @@ public class Game_Controller : MonoBehaviour {
 				}
 
 
-			}
+			}*/
 			shipTwoTransform.gameObject.SetActive(false);
 			shipTwoTransform = shipOneTransform;
 
