@@ -14,6 +14,12 @@ ModelImporter:
     100016: Bone
     100018: Bone_001
     100020: Cube_004
+    100022: Bone.001
+    100024: Cube.001
+    100026: Cube.002
+    100028: Cube.003
+    100030: Cube.004
+    100032: Cylinder.001
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -25,6 +31,12 @@ ModelImporter:
     400016: Bone
     400018: Bone_001
     400020: Cube_004
+    400022: Bone.001
+    400024: Cube.001
+    400026: Cube.002
+    400028: Cube.003
+    400030: Cube.004
+    400032: Cylinder.001
     2300000: //RootNode
     2300002: Cube
     2300004: Cube_001
@@ -32,6 +44,11 @@ ModelImporter:
     2300008: Cylinder_001
     2300010: Cube_002
     2300012: Cube_003
+    2300014: Cube.001
+    2300016: Cube.002
+    2300018: Cube.003
+    2300020: Cube.004
+    2300022: Cylinder.001
     3300000: //RootNode
     3300002: Cube
     3300004: Cube_001
@@ -39,6 +56,11 @@ ModelImporter:
     3300008: Cylinder_001
     3300010: Cube_002
     3300012: Cube_003
+    3300014: Cube.001
+    3300016: Cube.002
+    3300018: Cube.003
+    3300020: Cube.004
+    3300022: Cylinder.001
     4300000: Cube
     4300002: Cylinder
     4300004: Cube_001
@@ -46,11 +68,22 @@ ModelImporter:
     4300008: Cube_002
     4300010: Cube_003
     4300012: Cube_004
+    4300014: Cube.004
+    4300016: Cube.003
+    4300018: Cube.002
+    4300020: Cube.001
+    4300022: Cylinder.001
     7400000: Default Take
     7400002: Open_Lift_Fan
+    7400004: Armature|Open Lift Fan
     9500000: //RootNode
     13700000: Cube_004
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cockpit_Display
+    second: {fileID: 2100000, guid: 45a64416a6c91d048a575f295cdd2dab, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -65,7 +98,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: HUD
-    second: {fileID: 2100000, guid: 8dbc3dfc55414394caed801f30bc54d9, type: 2}
+    second: {fileID: 2100000, guid: d1d75597445567a40870324aab5e5cdd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -79,8 +112,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 810997005143c94499fd8548bbe6b997, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Material__Fighter_Texture_png
     second: {fileID: 2100000, guid: fe04211685751494c8e456708ba4a283, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 3abe6cbfb4642db4cb76fda56d986880, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -124,6 +167,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -148,6 +192,9 @@ ModelImporter:
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

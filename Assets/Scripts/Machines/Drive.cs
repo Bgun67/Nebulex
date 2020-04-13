@@ -81,16 +81,22 @@ public class Drive : MonoBehaviour {
 		Vector3 relativeSpeed = transform.InverseTransformDirection(rb.velocity);
 		speed = transform.InverseTransformDirection(rb.velocity).z;
 		//rb.velocity = transform.TransformDirection(new Vector3(relativeSpeed.x, relativeSpeed.y,Mathf.Clamp(speed, -maxSpeed, maxSpeed)));
-		if (speed < maxSpeed)
+
+		foreach (WheelCollider wheel in wheels)
 		{
-			foreach (WheelCollider wheel in wheels)
+			if (speed < maxSpeed)
 			{
 				wheel.motorTorque = force * Input.GetAxis("Move Z");
 			}
+			else
+			{
+				wheel.motorTorque = 0;
+			}
 		}
-		wheels[0].steerAngle = 20f*Input.GetAxis("Move X");
-		wheels[1].steerAngle = 20f*Input.GetAxis("Move X");
-		rb.AddRelativeForce(Vector3.down * speed*0.5f * rb.mass);
+
+		wheels[0].steerAngle = 30f*Input.GetAxis("Move X");
+		wheels[1].steerAngle = 30f*Input.GetAxis("Move X");
+		rb.AddRelativeForce(-transform.up * speed*0.5f * rb.mass);
 		WheelHit hit;
 		if (wheels[2].GetGroundHit(out hit))
 		{

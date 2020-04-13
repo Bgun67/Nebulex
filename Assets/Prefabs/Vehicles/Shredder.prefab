@@ -4859,7 +4859,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253187}
-  m_Mesh: {fileID: 4300004, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300026, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509379
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4936,7 +4936,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253189}
-  m_Mesh: {fileID: 4300002, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300044, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509381
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5013,7 +5013,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253191}
-  m_Mesh: {fileID: 4300006, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300028, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509383
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5091,7 +5091,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253193}
-  m_Mesh: {fileID: 4300010, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300046, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509385
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5136,27 +5136,27 @@ WheelCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253193}
-  m_Center: {x: 0.32, y: 0, z: -1}
+  m_Center: {x: 0.12, y: 0, z: -1}
   m_Radius: 1.05
   m_SuspensionSpring:
-    spring: 700
-    damper: 100
+    spring: 9000
+    damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.5
+  m_SuspensionDistance: 0.75
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 1
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
+    m_ExtremumValue: 2
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteValue: 2
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.1
-    m_AsymptoteValue: 0.75
+    m_AsymptoteSlip: 0.8
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &4818775966775253195
@@ -5244,27 +5244,27 @@ WheelCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253195}
-  m_Center: {x: 0.32, y: 0, z: 1}
+  m_Center: {x: 0.12, y: 0, z: 1}
   m_Radius: 1.05
   m_SuspensionSpring:
-    spring: 700
-    damper: 100
+    spring: 9000
+    damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.5
+  m_SuspensionDistance: 0.75
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 1
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
+    m_ExtremumValue: 2
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteValue: 2
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.1
-    m_AsymptoteValue: 0.75
+    m_AsymptoteSlip: 0.8
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &4818775966775253197
@@ -5306,7 +5306,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253197}
-  m_Mesh: {fileID: 4300024, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300042, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509391
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5437,7 +5437,7 @@ MonoBehaviour:
   - {fileID: 1325458179276179276}
   rb: {fileID: 0}
   centerOfMass: {fileID: 730246833051067215}
-  force: 2000
+  force: 500
   maxSpeed: 35
   speed: 0
   dust: {fileID: 0}
@@ -5784,7 +5784,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253201}
-  m_Mesh: {fileID: 4300020, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300038, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509395
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5830,26 +5830,26 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253201}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 1
   m_SuspensionSpring:
-    spring: 35000
+    spring: 9000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.3
+  m_SuspensionDistance: 0.75
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 1
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
+    m_ExtremumValue: 2
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteValue: 2
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_ExtremumSlip: 0.4
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 0.8
+    m_AsymptoteValue: 2
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &4818775966775253203
@@ -5891,7 +5891,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253203}
-  m_Mesh: {fileID: 4300022, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300040, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509389
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5969,7 +5969,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253205}
-  m_Mesh: {fileID: 4300016, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300034, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509399
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6015,26 +6015,26 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253205}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 1
   m_SuspensionSpring:
-    spring: 35000
+    spring: 9000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.3
+  m_SuspensionDistance: 0.75
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 1
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
+    m_ExtremumValue: 2
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteValue: 2
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_ExtremumSlip: 0.4
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 0.8
+    m_AsymptoteValue: 2
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &4818775966775253207
@@ -6077,7 +6077,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253207}
-  m_Mesh: {fileID: 4300018, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300036, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509393
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6123,26 +6123,26 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253207}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 1
   m_SuspensionSpring:
-    spring: 35000
+    spring: 9000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.3
+  m_SuspensionDistance: 0.75
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 1
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
+    m_ExtremumValue: 2
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteValue: 2
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_ExtremumSlip: 0.4
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 0.8
+    m_AsymptoteValue: 2
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &4818775966775253209
@@ -6184,7 +6184,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253209}
-  m_Mesh: {fileID: 4300012, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300030, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509403
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6261,7 +6261,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818775966775253211}
-  m_Mesh: {fileID: 4300014, guid: 808812a267aeb994089635803b692f27, type: 3}
+  m_Mesh: {fileID: 4300032, guid: 808812a267aeb994089635803b692f27, type: 3}
 --- !u!23 &4818775966777509397
 MeshRenderer:
   m_ObjectHideFlags: 0
