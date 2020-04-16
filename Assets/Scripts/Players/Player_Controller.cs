@@ -54,6 +54,7 @@ public class Player_Controller : MonoBehaviour {
 	public Animator knifeAnim;
 	bool counterKnife;
 	public Transform flagPosition;
+	public Rigidbody shipRB;
 
 	/// <summary>
 	/// The player's team. 0 being team A and 1 being team B
@@ -1279,6 +1280,8 @@ public class Player_Controller : MonoBehaviour {
 
 		walkState = WalkState.Walking;
 	}
+
+	/* old Implementation
 	public void MovePlayer(){
 		if (walkState == WalkState.Running)
 		{
@@ -1295,9 +1298,43 @@ public class Player_Controller : MonoBehaviour {
 		{
 			CheckStep();
 		}
-	}
+	}*/
 
-	 void CheckStep()
+	//Updated to 
+	public void MovePlayer()
+	{
+		Vector3 groundVelocity = Vector3.zero;
+		if (shipRB)
+		{
+			groundVelocity = Vector3.Project(rb.velocity, shipRB.transform.up);
+			groundVelocity += shipRB.GetPointVelocity(rb.position);
+			transform.rotation *= Quaternion.Euler(shipRB.angularVelocity*Mathf.Rad2Deg * Time.deltaTime);
+		}
+		else
+		{
+			groundVelocity = Vector3.Project(rb.velocity, Vector3.up);
+		}
+		float _speed = 1f;
+		switch (walkState)
+		{
+			case WalkState.Walking:_speed = 1f;
+				break;
+				case WalkState.Running:_speed = 1.25f;
+				break;
+				case WalkState.Crouching:_speed = 0.75f;
+				break;
+		}
+
+		rb.velocity = groundVelocity + transform.TransformVector(h * 3f * _speed, 0f, v * _speed * 4f);
+
+		//rb.drag = Mathf.Clamp(1 + rb.velocity.y/4, 0f, 1f);
+		this.transform.Rotate (0f, h2 * Time.deltaTime*180f, 0f);
+		if (Time.frameCount % 4 == 0)
+		{
+			CheckStep();
+		}
+	}
+	void CheckStep()
 	{
 		if (v > 0.1f)
 		{
@@ -1498,16 +1535,14 @@ public class Player_Controller : MonoBehaviour {
 
 	}
 	public IEnumerator EnterGravity(){
-		//print("Entering Gravity");
 		if (enteringGravity)
 		{
 			yield return null;
 		}
 		enteringGravity = true;
-		//StopCoroutine("ExitGravity()");
 		anim.SetBool ("Float", false);
 		
-		rb.angularVelocity = Vector3.zero;
+		//rb.angularVelocity = Vector3.zero;
 		rb.angularDrag = 20f;
 
 		float _counter = 0f;
@@ -1518,16 +1553,15 @@ public class Player_Controller : MonoBehaviour {
 			yield return new WaitForSeconds(0.5f);
 		}
 
-		Vector3 newForwardVector = new Vector3(transform.forward.x, 0f, transform.forward.z);
+		Vector3 newForwardVector = Vector3.ProjectOnPlane(transform.forward, shipRB.transform.up);//new Vector3(transform.forward.x, 0f, transform.forward.z);
 		Vector3 _originalForward = mainCam.transform.forward;
 		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/250f);
-		//print(_aimDirection);
-		//print(Vector3.SignedAngle(newForwardVector, mainCam.transform.forward, transform.right) / 125f);
+		
 		while (_counter < 1f)
 		{
 			transform.forward = Vector3.Lerp(_originalForward, newForwardVector, _counter);
 			anim.SetFloat ("Look Speed",Mathf.Lerp(0.5f,_aimDirection,_counter));
-			rb.AddForce(Vector3.Lerp(Vector3.up * 9.81f, Vector3.zero, _counter), ForceMode.Acceleration);
+			rb.AddForce(Vector3.Lerp(shipRB.transform.up * 9.81f, Vector3.zero, _counter), ForceMode.Acceleration);
 			yield return new WaitForEndOfFrame();
 			_counter += 0.1f;
 		}
