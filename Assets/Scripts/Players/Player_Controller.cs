@@ -913,7 +913,8 @@ public class Player_Controller : MonoBehaviour {
 		}
 		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading) {
 			Transform _scopeTransform = fireScript.scopePosition;
-			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.022f;
+			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f*_scopeTransform.lossyScale.x/0.3303206f + _scopeTransform.up * 0.022f*_scopeTransform.lossyScale.x/0.3303206f;
+
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
 			if(mainCam.fieldOfView < 11 && anim.GetCurrentAnimatorStateInfo(3).IsName("Aim"+fireScript.aimAnimNumber.ToString())){
 				fireScript.transform.rotation = Quaternion.RotateTowards(fireScript.scopePosition.rotation, mainCam.transform.rotation, 0.7f);
@@ -1553,7 +1554,12 @@ public class Player_Controller : MonoBehaviour {
 			yield return new WaitForSeconds(0.5f);
 		}
 
-		Vector3 newForwardVector = Vector3.ProjectOnPlane(transform.forward, shipRB.transform.up);//new Vector3(transform.forward.x, 0f, transform.forward.z);
+		Vector3 newForwardVector;
+		if(shipRB){
+			newForwardVector = Vector3.ProjectOnPlane(transform.forward, shipRB.transform.up);//new Vector3(transform.forward.x, 0f, transform.forward.z);
+		}else{
+			newForwardVector = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+		}
 		Vector3 _originalForward = mainCam.transform.forward;
 		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/250f);
 		
@@ -1561,7 +1567,13 @@ public class Player_Controller : MonoBehaviour {
 		{
 			transform.forward = Vector3.Lerp(_originalForward, newForwardVector, _counter);
 			anim.SetFloat ("Look Speed",Mathf.Lerp(0.5f,_aimDirection,_counter));
-			rb.AddForce(Vector3.Lerp(shipRB.transform.up * 9.81f, Vector3.zero, _counter), ForceMode.Acceleration);
+			if(shipRB){
+				rb.AddForce(Vector3.Lerp(shipRB.transform.up * 9.81f, Vector3.zero, _counter), ForceMode.Acceleration);
+			}
+			else{
+				rb.AddForce(Vector3.Lerp(Vector3.up * 9.81f, Vector3.zero, _counter), ForceMode.Acceleration);
+			}
+
 			yield return new WaitForEndOfFrame();
 			_counter += 0.1f;
 		}
