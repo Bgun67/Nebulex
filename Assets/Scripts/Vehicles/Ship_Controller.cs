@@ -43,6 +43,9 @@ public class Ship_Controller : MonoBehaviour {
 	public ParticleSystem[] bottomThrusters;
 	public ParticleSystem[] rearThrusters;
 	public Transform[] passengerSeats;
+	bool holdPosition = false;
+	Vector3 holdLocation;
+	bool distanceNotified = false;
 
 	 float emptyTime; 
 	Damage damageScript;
@@ -266,6 +269,8 @@ public class Ship_Controller : MonoBehaviour {
 
 	public void DisableAI(){
 		this.isAI = false;
+		holdPosition = false;
+		distanceNotified = true;
 		this.target = null;
 		Navigation.DeregisterTarget(this.transform);
 	}
@@ -280,9 +285,9 @@ public class Ship_Controller : MonoBehaviour {
 				return;
 			}
 		} else {
-			Vector3 closest = new Vector3 (float.MaxValue, float.MaxValue, float.MaxValue);
-			Vector3 middle = new Vector3 (float.MaxValue, float.MaxValue, float.MaxValue);
-			Vector3 farthest = new Vector3 (float.MaxValue, float.MaxValue, float.MaxValue);
+			Vector3 closest = route [0];//new Vector3 (float.MaxValue, float.MaxValue, float.MaxValue);
+			Vector3 middle = route [0];//new Vector3 (float.MaxValue, float.MaxValue, float.MaxValue);
+			Vector3 farthest = route [0];//new Vector3 (float.MaxValue, float.MaxValue, float.MaxValue);
 
 
 
@@ -300,8 +305,12 @@ public class Ship_Controller : MonoBehaviour {
 			}
 
 
-
-			nextPosition = route [route.IndexOf (closest) + 1];
+			if(route.Count > route.IndexOf (closest)+1){
+				nextPosition = route [route.IndexOf (closest) + 1];
+			}
+			else{
+				nextPosition = route [route.IndexOf (closest)];
+			}
 		}
 
 		float angle = Vector2.SignedAngle (new Vector2 (transform.forward.x, transform.forward.z), new Vector2 ((nextPosition - transform.position).x, (nextPosition - transform.position).z));//Vector3.SignedAngle ((nextPosition-this.transform.position), transform.forward, Vector3.forward);
@@ -328,9 +337,19 @@ public class Ship_Controller : MonoBehaviour {
 
 
 		float forward = 1f - (Mathf.Clamp(new Vector2(rb.velocity.x, rb.velocity.z).magnitude / (new Vector2((this.transform.position - nextPosition).x, (this.transform.position - nextPosition).z).magnitude), -1f,1f));
-		//print (forward);
-		rb.AddForce (forward * thrust*Time.deltaTime * 60f * (nextPosition - transform.position).normalized);
-		rb.AddForce (gravityFactor * thrust * Vector3.up * Time.deltaTime * 45f);
+
+		//Slow down when approaching the target
+		float slowFactor = 1f;
+		if(Vector3.Distance(route[route.Count - 1],this.transform.position) < 15f){
+			slowFactor = 0.3f;
+			rb.velocity = Vector3.Lerp (rb.velocity, Vector3.zero, 0.05f);
+			if(!distanceNotified){
+				distanceNotified = true;
+				WindowsVoice.Speak("Ten meters out.");
+			}
+		}
+		rb.AddForce (slowFactor * forward * thrust*Time.deltaTime * 60f * (nextPosition - transform.position).normalized);
+		rb.AddForce (slowFactor * gravityFactor * thrust * Vector3.up * Time.deltaTime * 45f);
 
 
 		float upAngle = Vector2.SignedAngle (new Vector2 (transform.up.x, transform.up.y), Vector2.up);
@@ -339,6 +358,7 @@ public class Ship_Controller : MonoBehaviour {
 		float rightAngle = Vector2.SignedAngle (new Vector2 (transform.up.z, transform.up.y), Vector2.up);
 		rb.AddRelativeTorque (rightAngle*rightAngle*Time.deltaTime * 60f*Mathf.Sign(rightAngle)*-0.1f,0f, 0f);
 
+		
 
 		rb.velocity = Vector3.Lerp (rb.velocity, Vector3.zero, 0.005f);
 
@@ -359,7 +379,16 @@ public class Ship_Controller : MonoBehaviour {
 
 		Raycaster caster = this.GetComponent<Raycaster> ();
 		caster.origin = this.transform.position;
-		caster.target = target.position;
+		if(Vector3.Distance(this.transform.position,target.position) <6f && !holdPosition){
+			holdPosition = true;
+			holdLocation = this.transform.position;
+		}
+		if(holdPosition){
+			caster.target = holdLocation;
+		}
+		else{
+			caster.target = target.position;
+		}
 		caster.resolution = Mathf.Ceil(Mathf.Max(new float[]{Mathf.Abs((caster.target - caster.origin).x),Mathf.Abs((caster.target - caster.origin).y),Mathf.Abs((caster.target - caster.origin).z)}) /4f);
 		caster.Cast();
 
@@ -547,7 +576,8 @@ public class Ship_Controller : MonoBehaviour {
 	}
 
 	public void Die(){
-		if(Metwork.peerType  != MetworkPeerType.Disconnected){
+
+		if(Metwork.peerType != MetworkPeerType.Disconnected){
 			if (player != null) {
 				netObj.netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{ player.GetComponent<Metwork_Object> ().netID });
 			} else {

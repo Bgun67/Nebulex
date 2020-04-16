@@ -912,13 +912,13 @@ public class Player_Controller : MonoBehaviour {
 		}
 		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading) {
 			Transform _scopeTransform = fireScript.scopePosition;
-			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.35f + _scopeTransform.up * 0.01f;
+			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.022f;
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
 			if(mainCam.fieldOfView < 11 && anim.GetCurrentAnimatorStateInfo(3).IsName("Aim"+fireScript.aimAnimNumber.ToString())){
-				print("Aim");
+				fireScript.transform.rotation = Quaternion.RotateTowards(fireScript.scopePosition.rotation, mainCam.transform.rotation, 0.7f);
 				mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
 				//fireScript.transform.rotation *= Quaternion.FromToRotation(fireScript.scopePosition.forward, mainCam.transform.forward);
-				fireScript.transform.rotation = Quaternion.RotateTowards(fireScript.scopePosition.rotation, mainCam.transform.rotation, 0.7f);// * Quaternion.Inverse((fireScript.scopePosition.rotation * Quaternion.Inverse(fireScript.transform.rotation)));
+				// * Quaternion.Inverse((fireScript.scopePosition.rotation * Quaternion.Inverse(fireScript.transform.rotation)));
 				//mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation, fireScript.scopePosition.rotation, 0.7f);
 			}
 			anim.SetBool ("Scope", true);

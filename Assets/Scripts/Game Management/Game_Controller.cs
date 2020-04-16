@@ -198,6 +198,10 @@ public class Game_Controller : MonoBehaviour {
 			this.gameMode = matchSettings[1];
 		}
 		currentTime = matchLength;
+		
+		foreach(Spawn_Point spawn in FindObjectsOfType<Spawn_Point>()){
+			spawn.DeactivateSpawn();
+		}
 
 		if (gameMode == GameType.TeamDeathmatch)
 		{
