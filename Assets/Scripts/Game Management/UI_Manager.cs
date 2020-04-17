@@ -106,10 +106,13 @@ public class UI_Manager : MonoBehaviour
 
 	}
 
-public static int GetPieChoice(){
+	public static int GetPieChoice(){
 		return pieChoice;
 	}
 	void Update(){
+		if (Input.GetButtonDown("Pause")){
+			Pause();
+		}
 		for(int i = 0; i < damageIndicators.Length; i++){
 			Vector3 _projectedDirection = Vector3.ProjectOnPlane(hitDirections[i].normal, hitDirections[i].transform.up);
 			float _angle = -Vector3.SignedAngle(hitDirections[i].transform.forward, _projectedDirection, hitDirections[i].transform.up);
@@ -126,25 +129,19 @@ public static int GetPieChoice(){
 			isPieShown = true;
 
 		} 
-		/*bool _isShown = false;
-		for (int i = 0; i<pieQuadrants.Length; i++){
-			if(pieQuadrants [i].activeSelf == true){
-				_isShown = true;
-			}
-		}*/
-		
 		if (Input.GetKeyUp(KeyCode.LeftControl)) {
 			isPieShown = false;
 
 			pieChoice = selectedSegment;
-			//pieChoice = selectedSegment;
-			//if (selectedSegment != -1 && onPieEvent != null) {
-			//	onPieEvent.Invoke (selectedSegment);
-			//}
 		}
 		LaunchPie ();
 	}
-
+	public void Pause()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		UI_Manager._instance.pauseMenu.gameObject.SetActive(true);
+		UI_Manager._instance.pauseMenu.Pause(this.gameObject);
+	}
 	void LaunchPie(){
 		for (int i = 0; i<pieQuadrants.Length; i++){
 		//	pieQuadrants [i].SetActive (false);
@@ -316,16 +313,9 @@ public static int GetPieChoice(){
 			
 		}
 
-		//StartCoroutine(CoHitDirection());
 		
 	}
-	//IEnumerator CoHitDirection(){
-	//	hitDirection.enabled = (true);
-		
-	//	yield return new WaitForSeconds (2.5f);
-	//	hitDirection.enabled = (false);
 
-	//}
 
 	void OnDestroy(){
 		UI_Manager._instance = null;
