@@ -91,6 +91,7 @@ public class MetworkPlayer{
 
 public class Metwork:MonoBehaviour {
 	public static Metwork _instance;
+	public static bool isTransferringServer = false;
 
 	//Our fancy matching server (On OpenShift remember?) //wss://because-why-not.com:12777/chatapp
 	public static string uSignalingUrl = "ws://nebulex-server.herokuapp.com/chatapp";//"ws://sample-bean.herokuapp.com";//"ws://nebulex-nebulex.193b.starter-ca-central-1.openshiftapps.com/chatapp";//wss://because-why-not.com:12777/chatapp";
@@ -378,8 +379,14 @@ public class Metwork:MonoBehaviour {
 
 
 		pIsServer = false;
-		mConnections = new List<ConnectionId>();
-		Cleanup(_keepInstance);
+		if(!isTransferringServer){
+			mConnections = new List<ConnectionId>();
+			Cleanup(_keepInstance);
+		}
+		else{
+			Cleanup(true);
+		}
+		
 		SetGuiState(true);
 
 		if (metViews.Count < 1) {
@@ -395,7 +402,7 @@ public class Metwork:MonoBehaviour {
 	/// </summary>
 	private static void Cleanup(bool _keepInstance = false)
 	{
-		if (player != null) {
+		if (player != null && !isTransferringServer) {
 			player = null;
 		}
 		if (mMetwork != null) {
@@ -405,10 +412,13 @@ public class Metwork:MonoBehaviour {
 			if(!_keepInstance){
 				Destroy(Metwork._instance.gameObject);
 			}
-			Metwork.reliableQueue.Clear();
-			Metwork.players.Clear();
+			if(!isTransferringServer){
+				Metwork.reliableQueue.Clear();
+				Metwork.players.Clear();
+			}
 			mMetwork.Dispose ();
 			mMetwork = null;
+			
 		}
 
 		
@@ -493,9 +503,12 @@ public class Metwork:MonoBehaviour {
 						Debug.Log("Server started. Address: " + address);
 						pPeerType = MetworkPeerType.Connected;
 						//Add the current MetworkPlayer to the list
-						players.Clear();
-						player = new MetworkPlayer(1, true, int.Parse(evt.ConnectionId.ToString()));
-						players.Add (player);
+						if(!isTransferringServer){
+							players.Clear();
+						
+							player = new MetworkPlayer(1, true, int.Parse(evt.ConnectionId.ToString()));
+							players.Add (player);
+						}
 						if (onServerInitialized != null) {
 							onServerInitialized.Invoke ();
 						}
@@ -514,7 +527,7 @@ public class Metwork:MonoBehaviour {
 					{
 						pPeerType = MetworkPeerType.Disconnected;
 						Debug.Log("Server Closed");
-						//TODO: Add something about disconnect reason
+						//TODO: Add something about disconnect reason				
 						
 						//server shut down. reaction to "Shutdown" call or
 						//StopServer or the connection broke down
@@ -530,11 +543,15 @@ public class Metwork:MonoBehaviour {
 						Append("New local connection! ID: " + evt.ConnectionId);
 
 						//if server -> send announcement to everyone and use the local id as username
-						if(pIsServer)
+						//TODO: Figure out if the player is actually new or returning
+						//TODO: Set the server off isTransferringServer
+						Debug.Log("Adding New Connection");
+						if(pIsServer && !(isTransferringServer && players.Count - 1 > mConnections.Count))
 						{
+							Debug.Log("Not transferring connection");
 							int _playerID = -1;
 							//Select the lowest unused MetworkPlayer ID
-							for (int k = 2; k < 1000; k++) {
+							for (int k = 1; k < 1000; k++) {//k=2
 								if (!players.Exists (x => x.connectionID == k)) {
 									_playerID = k;
 									break;
@@ -1176,9 +1193,65 @@ public class Metwork:MonoBehaviour {
 	/// </summary>
 	public static void Disconnect()
 	{
-
+		Debug.Log("Shutting Down Server");
+		if(Metwork.isServer){
+			FindObjectOfType<PHPMasterServerConnect> ().UnregisterHost ();
+			//TODO: Enable this
+			
+			Metwork._instance.TransferServer();
+		}
+		Debug.Log("Resetting Network");
 		Metwork._instance.Reset();
 		SetGuiState(true);
+	}
+
+	public void TransferServer(){
+	
+		
+		MetworkPlayer _newServerPlayer = players.Find(x=> x.connectionID != player.connectionID);
+		int _id = -1;
+		Debug.Log("Anything");
+		if(_newServerPlayer != null){
+			Debug.Log("Goes");
+			_id = _newServerPlayer.connectionID;
+		}
+		else{
+			//There are no other players in the match
+			return;
+		}
+		
+		//Here I want to start the new server
+		GameObject.FindObjectOfType<Metwork>().GetComponent<MetworkView> ().RPC ("RPC_TransferServer", MRPCMode.OthersBuffered, new object[] {
+			//TODO: Guarantee that this player exists!
+			_id,
+			roomName
+		});
+		
+	}
+	[MRPC]
+	public void RPC_TransferServer(int _player, string _roomName){
+		if(!isServer){
+			isTransferringServer = true;
+			Invoke("StopTransferringServer", 11f);
+		
+			//TODO: Confirm if we are the player that needs to take over the server
+			if(_player == player.connectionID){//player.connectionID){
+				Invoke("DelayedInitializeServer", 5f);
+			}
+			else{
+				Invoke("DelayedConnect", 5f);
+			}
+			print ("Connecting to new server");
+		}
+	}
+	public void DelayedInitializeServer(){
+		Metwork.InitializeServer(roomName);
+	}
+	public void DelayedConnect(){
+		Metwork.Connect(roomName);
+	}
+	void StopTransferringServer(){
+		isTransferringServer = false;
 	}
 
 

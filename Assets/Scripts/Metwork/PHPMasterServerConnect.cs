@@ -240,13 +240,13 @@ public class PHPMasterServerConnect : MonoBehaviour
 	        yield return www;
 	
 	        retries = 0;
-	        while ((www.error != null || www.text != "succeeded") && retries < maxRetries) {
+	        while ((www.error != null || www.text.ToLower() != "succeeded") && retries < maxRetries) {
 				Debug.Log ("Had an error " + www.error + " or text was not succeeded " + www.text);
 	            retries ++;
 	            www = new WWW (url);
 	            yield return www;
 	        }
-			if ((www.error != null || www.text != "succeeded")) {
+			if ((www.error != null || www.text.ToLower() != "succeeded")) {
 				Debug.Log ("Had an error " + www.error + " or text was not succeeded " + www.text);
 				SendMessage ("OnUnregisterHostFailed");
 			} else {
@@ -254,6 +254,10 @@ public class PHPMasterServerConnect : MonoBehaviour
 			}
 			registered = false;
     	}
+	}
+
+	void OnUnregisterHostFailed(){
+
 	}
 
 	//public void OnServerInitialized(){
