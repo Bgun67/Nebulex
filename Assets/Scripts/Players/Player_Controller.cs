@@ -90,7 +90,6 @@ public class Player_Controller : MonoBehaviour {
 	bool keypadPushed;
 	
 	public Blackout_Effects blackoutShader;
-	public Pause_Menu pauseMenu;
 
 	public GameObject helmet;
 
@@ -356,10 +355,6 @@ public class Player_Controller : MonoBehaviour {
 		}
 
 
-
-		if (Input.GetButtonDown ("Pause")) {
-			Pause ();
-		}
 		if (Input.GetButtonDown ("Use Item")) {
 			UseItem ();
 			
@@ -804,7 +799,7 @@ public class Player_Controller : MonoBehaviour {
 		GameObject otherPlayer = Game_Controller.GetGameObjectFromNetID(otherPlayerInt);
 
 		print("other player: " + otherPlayer.name);
-		rb.MovePosition(otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition);
+		//rb.MovePosition(otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition);
 		if (counterKnife)
 		{
 			otherPlayer.GetComponent<Player_Controller>().netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
@@ -822,12 +817,7 @@ public class Player_Controller : MonoBehaviour {
 		print ("Reactivating player");
 		this.gameObject.SetActive (true);
 	}
-	public void Pause()
-	{
-		Cursor.lockState = CursorLockMode.None;
-		UI_Manager._instance.pauseMenu.gameObject.SetActive(true);
-		UI_Manager._instance.pauseMenu.Pause(this.gameObject);
-	}
+	
 	[MRPC]
 	public void RPC_Sit(bool sitMode){
 		anim.SetBool ("Sitting", sitMode);
@@ -878,7 +868,7 @@ public class Player_Controller : MonoBehaviour {
 			{
 				break;
 			}
-			transform.position = Vector3.Lerp(transform.position, _otherPlayer.transform.position-transform.forward*1.1f, i/1.1f);
+			rb.MovePosition(Vector3.Lerp(transform.position, _otherPlayer.transform.position-transform.forward*1.1f, 0.3f));
 			yield return new WaitForEndOfFrame();
 			i += Time.deltaTime;
 		}
@@ -895,7 +885,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 	[MRPC]
 	public void RPC_Knife(){
-		anim.SetTrigger ("Knife");
+		anim.SetBool ("Knife",true);
 		Invoke("StopKnife", 0.2f);
 	}
 	public void StopKnife()

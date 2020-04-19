@@ -414,9 +414,6 @@ public class Game_Controller : MonoBehaviour {
 	}
 
 	public void UpdateUI(){
-
-
-
 		int minutes = Mathf.FloorToInt(currentTime / 60f );
 		int seconds =Mathf.FloorToInt( currentTime % 60);
 
@@ -519,7 +516,6 @@ public class Game_Controller : MonoBehaviour {
 			if (player.team == winningTeam) {
 				player.score += 50;
 				winners.Add (player);
-				print ("We have a winner");
 			}
 			//Tie
 			else if(winningTeam == -1){
@@ -530,10 +526,8 @@ public class Game_Controller : MonoBehaviour {
 				else{
 					losers.Add (player);
 				}
-				print ("We have a tie");
 			} else {
 				losers.Add (player);
-				print ("loser");
 			}
 
 		}
@@ -541,8 +535,7 @@ public class Game_Controller : MonoBehaviour {
 		winnerKillsText.text = "";
 		loserNamesText.text = "";
 		loserKillsText.text = "";
-		print ("Winners Length" + winners.Count);
-		print ("Losers Length" + losers.Count);
+
 		winners.Sort((x,y) => y.score.CompareTo(x.score));
 		losers.Sort((x,y) => y.score.CompareTo(x.score));
 
@@ -600,10 +593,14 @@ public class Game_Controller : MonoBehaviour {
 	public void SavePlayerScore(){
 		string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Player Data.txt"));
 		int previousScore = int.Parse( data [1]);
+		int previousKills = int.Parse( data [2]);
+		int previousDeaths = int.Parse( data [3]);
 		data [1] =( previousScore+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].score).ToString();
-		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Player Data.txt", Util.ThiccWatermelon(data));
-			
+		data [2] =( previousKills+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].kills).ToString();
+		data [3] =( previousDeaths+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].deaths).ToString();
 
+		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Player Data.txt", Util.ThiccWatermelon(data));
+		
 	}
 	public void RPC_EndGame(){
 
