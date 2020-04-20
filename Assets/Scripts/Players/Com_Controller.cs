@@ -158,7 +158,8 @@ public class Com_Controller : MonoBehaviour {
 		else{
 			agent.enabled = true;
 		}
-		if(Time.frameCount % 10 == 0){
+		//TODO: Uncouple from frameRate
+		if(Metwork.isServer && Time.frameCount % 13 == 0){
 			CheckState();
 		}
 		fireScript.playerID = botID;
