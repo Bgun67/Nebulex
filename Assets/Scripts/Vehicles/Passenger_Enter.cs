@@ -44,6 +44,7 @@ public class Passenger_Enter : MonoBehaviour {
 			UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(false);
 		}
 		player.airTime = player.suffocationTime;
+		transform.root.SendMessage("Exit");
 
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Drive : MonoBehaviour {
 	public WheelCollider[] wheels;
+	public Transform FRWheelMesh;
+	public Transform FLWheelMesh;
 	public Rigidbody rb;
 	public Transform centerOfMass;
 	public float force  = 100f;
@@ -17,25 +19,55 @@ public class Drive : MonoBehaviour {
 	public GameObject[] destroyedPrefabs;
 	public AudioWrapper audioWrapper;
 	public AudioSource idleSound;
+	Animator anim;
 	public float lastOccupiedTime = 0f;
+
+	public GameObject underbodyLight;
+	public GameObject headlight;
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
 		netObj = GetComponent<Metwork_Object>();
 		rb.centerOfMass = centerOfMass.localPosition;
 		main = dust.main;
+		anim = GetComponent<Animator>();
 	}
 	public void Activate(GameObject _player)
 	{
+		anim = GetComponent<Animator>();
+
+		anim.SetBool("LightsOn", true);
 		netObj = GetComponent<Metwork_Object>();
+		headlight.SetActive(true);
+
+		underbodyLight.SetActive(false);
 		driversSeat.Activate(_player);
 		netObj.owner = _player.GetComponent<Metwork_Object>().netID;
 		this.GetComponent<Damage>().healthShown = true;
 	}
-	void Exit()
+	public void Exit()
+	{
+		if(Metwork.peerType  != MetworkPeerType.Disconnected){
+			if (driversSeat.player != null) {
+				netObj.netView.RPC ("RPC_Exit", MRPCMode.AllBuffered, new object[]{ driversSeat.player.GetComponent<Metwork_Object> ().netID });
+			} else {
+				netObj.netView.RPC ("RPC_Exit", MRPCMode.AllBuffered, new object[]{0});
+			}
+		}
+		else{
+			if (driversSeat.player != null) {
+				RPC_Exit (driversSeat.player.GetComponent<Metwork_Object> ().netID);
+			} else {
+				RPC_Exit (0);
+			}
+		}
+	}
+	public void RPC_Exit(int id)
 	{
 		print("Exiting Shredder");
-			
+		anim.SetBool("LightsOn", false);
+		headlight.SetActive(false);
+		underbodyLight.SetActive(true);
 	}
 	// Update is called once per frame
 	void Update () {
@@ -94,8 +126,22 @@ public class Drive : MonoBehaviour {
 			}
 		}
 
-		wheels[0].steerAngle = 30f*Input.GetAxis("Move X");
-		wheels[1].steerAngle = 30f*Input.GetAxis("Move X");
+		float steerAngle = 30f*Input.GetAxis("Move X");
+		wheels[0].steerAngle = steerAngle;
+		wheels[1].steerAngle = steerAngle;
+
+		Quaternion wheelRotation1;
+		Quaternion wheelRotation2;
+		Vector3 wheelPosition1;
+		Vector3 wheelPosition2;
+		wheels[0].GetWorldPose(out wheelPosition1, out wheelRotation1);
+		wheels[1].GetWorldPose(out wheelPosition2, out wheelRotation2);
+
+		FRWheelMesh.rotation = wheelRotation1;
+		FLWheelMesh.rotation = wheelRotation2;
+		FRWheelMesh.localPosition = Vector3.Lerp(FRWheelMesh.localPosition,transform.InverseTransformPoint(wheelPosition1),0.3f);
+		FLWheelMesh.localPosition = Vector3.Lerp(FLWheelMesh.localPosition,transform.InverseTransformPoint(wheelPosition2),0.3f);
+
 		rb.AddRelativeForce(-transform.up * speed*0.5f * rb.mass);
 		WheelHit hit;
 		if (wheels[2].GetGroundHit(out hit))
@@ -104,10 +150,6 @@ public class Drive : MonoBehaviour {
 			//main.startColor = Color.red;
 			//print (main.startColor);
 		}
-		//rb.AddRelativeTorque(0f,40f*rb.mass*Input.GetAxis("Move X"),0f);//-2.8f*rb.mass*Input.GetAxis("Move X")*(Mathf.Abs(speed)+1f));
-		//transform.Rotate(0f,2f*Input.GetAxis("Move X"), 0f);
-
-
 	}
 	public void Die(){
 		print("dying");
@@ -139,6 +181,8 @@ public class Drive : MonoBehaviour {
 			Destroy(Instantiate (destroyedPrefabs [Random.Range (0, destroyedPrefabs.Length)], this.transform.position, transform.rotation),5f);
 		}
 		catch{}
+		underbodyLight.SetActive(true);
+		headlight.SetActive(false);
 		this.GetComponent<Damage> ().Reset();
 		this.enabled = false;
 	}
