@@ -73,17 +73,21 @@ public class Network_Manager : MonoBehaviour {
 
 	public void PrematureStart()
 	{
+		//Grab the map loaded by the server, here they are just the ones loaded by the player
+		string[] _matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+		string _map = _matchSettings[2];
+
 		minStartingPlayers = 1;
 		//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
 		//must be connected anyway
 		print("We Starting");
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
-			netView.RPC("RPC_LoadScene", MRPCMode.AllBuffered, new object[] { "TransistionScene" });
+			netView.RPC("RPC_LoadScene", MRPCMode.AllBuffered, new object[] { "TransistionScene", _map});
 		}
 		else
 		{
-			RPC_LoadScene("TransistionScene");
+			RPC_LoadScene("TransistionScene", _map);
 		}
 		sceneMode = SceneMode.Game;
 		print("Invoked RPC");
@@ -95,7 +99,8 @@ public class Network_Manager : MonoBehaviour {
 			print ("Is Server: " + Metwork.isServer);
 			print ("# of players: " + Metwork.players.Count);
 			//The server is not counted in connections so a +1 is required to include them
-			if (Metwork.players.Count >= minStartingPlayers && Metwork.isServer) {
+			//I think this code is unreachable so I'm removing it
+			/*if (Metwork.players.Count >= minStartingPlayers && Metwork.isServer) {
 				print("Min Starting Players " + minStartingPlayers);
 				print("Metwork Players amount " + Metwork.players.Count);
 				//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
@@ -104,7 +109,7 @@ public class Network_Manager : MonoBehaviour {
 				netView.RPC ("RPC_LoadScene", MRPCMode.AllBuffered, new object[]{ "TransistionScene" });
 				sceneMode = SceneMode.Game;
 				print ("Invoked RPC");
-			}
+			}*/
 
 
 		} else if (_scene.name == "Space" ||
@@ -119,7 +124,9 @@ public class Network_Manager : MonoBehaviour {
 	void OnMetPlayerConnected(MetworkPlayer player){
 
 		if (Metwork.isServer) {
-
+			//Grab the map loaded by the server
+			string[] _matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+			string _map = _matchSettings[2];
 			//TODO: Update
 			//netView.RPC ("SetPlayerNumber", player, new object[]{Metwork.players.IndexOf(player) + 2});
 			//netView.RPC ("AddPlayer", RPCMode.AllBuffered, new object[]{ connections + 1 });
@@ -132,18 +139,18 @@ public class Network_Manager : MonoBehaviour {
 				//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
 				//must be connected anyway
 				print ("We Starting");
-				netView.RPC ("RPC_LoadScene", MRPCMode.AllBuffered, new object[]{ "TransistionScene" });
+				netView.RPC ("RPC_LoadScene", MRPCMode.AllBuffered, new object[]{ "TransistionScene",_map });
 				sceneMode = SceneMode.Game;
 
 			} else if(sceneMode == SceneMode.Lobby ){
 				//Load the player into our lobby
-				netView.RPC ("RPC_LoadScene", player, new object[]{ "LobbyScene" });
+				netView.RPC ("RPC_LoadScene", player, new object[]{ "LobbyScene",_map });
 				print ("Loading Player into Lobby Scene");
 			}
 			else
 			{
 				//Load the player into our game
-				netView.RPC("RPC_LoadScene", player, new object[] { "TransistionScene" });
+				netView.RPC("RPC_LoadScene", player, new object[] { "TransistionScene",_map });
 				print("Loading Player into Transistion Scene");
 			}
 
@@ -158,7 +165,12 @@ public class Network_Manager : MonoBehaviour {
 	
 
 	[MRPC]
-	void RPC_LoadScene(string _sceneName){
+	void RPC_LoadScene(string _sceneName, string _map){
+		//Change the map to the map loaded by the server
+		string[] _matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
+		_matchSettings[2] = _map;
+		System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(_matchSettings));
+
 		print("Loading scene " + _sceneName);
 		//sceneMode = SceneMode.Game;
 		SceneManager.LoadScene (_sceneName);
@@ -274,7 +286,7 @@ public class Network_Manager : MonoBehaviour {
 		catch{
 		}
 		print ("Breaking the host");
-		conn.UnregisterHost ();
+		//conn.UnregisterHost ();
 		//Network.Disconnect ();
 		Metwork.Disconnect();
 		print ("Completed break");

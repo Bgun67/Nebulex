@@ -1252,6 +1252,10 @@ public class Metwork:MonoBehaviour {
 	}
 	void StopTransferringServer(){
 		isTransferringServer = false;
+		if(Metwork.isServer){
+			//Reshow the host to potential new players
+			StartCoroutine(GameObject.FindObjectOfType<PHPMasterServerConnect>().OnServerInitialized());
+		}
 	}
 
 
