@@ -111,6 +111,10 @@ public class Game_Controller : MonoBehaviour {
 
 	#endregion
 
+	public void ServerTransferred(){
+		
+	}
+
 	[MRPC]
 	public void RPC_UpdateMatchInfo()
 	{

@@ -90,7 +90,7 @@ public class Com_Controller : MonoBehaviour {
 		//Program in jerseys, smooth lerp, reduce lag, 
 		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
 		{
-			InvokeRepeating("CheckState", Random.Range(0.1f, 0.5f), 0.2f);
+			//InvokeRepeating("CheckState", Random.Range(0.1f, 0.5f), 0.2f);
 			
 			
 
@@ -157,6 +157,9 @@ public class Com_Controller : MonoBehaviour {
 		}
 		else{
 			agent.enabled = true;
+		}
+		if(Time.frameCount % 10 == 0){
+			CheckState();
 		}
 		fireScript.playerID = botID;
 

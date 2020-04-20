@@ -1255,6 +1255,10 @@ public class Metwork:MonoBehaviour {
 		if(Metwork.isServer){
 			//Reshow the host to potential new players
 			StartCoroutine(GameObject.FindObjectOfType<PHPMasterServerConnect>().OnServerInitialized());
+			Game_Controller _gameController = GameObject.FindObjectOfType<Game_Controller>();
+			if(_gameController != null){
+				_gameController.ServerTransferred();
+			}
 		}
 	}
 
