@@ -71,7 +71,7 @@ LightmapSettings:
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
-    m_BakeBackend: 0
+    m_BakeBackend: 1
     m_PVRSampling: 1
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
@@ -676,11 +676,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_Font: {fileID: 12800000, guid: e1828a3ff4557d440b44d8cf96d0ea8d, type: 3}
+    m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -688,16 +688,18 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "<size=32>Credits</size>\n\n<b>Game By:</b> <Color=Cyan>diPolar</Color>
-    and<color=orange> Satanic Orange</color>\n\n<b>Models:</b>\nBig Thanks to ChaiwitJ
-    ! for player model and SRR-3 Model (Used With Modification)\nhttps://www.blendswap.com/blends/view/47274\nGradgrind
+  m_Text: "<size=32>Credits</size>\n<b>Game By:</b> <Color=Cyan>diPolar</Color> and<color=orange>
+    Satanic Orange</color>\n\n<b>Models:</b>\nBig Thanks to ChaiwitJ ! for player
+    model and SRR-3 Model (Used With Modification)\nhttps://www.blendswap.com/blends/view/47274\nGradgrind
     Space Station: By Vostok (Modified)\nHangar: By Davidlopez1232\nResidential Space
     Station: By WangMandingo\nWeapon Concept GR-25: By benja\nRobot Eye Grenade: By
-    z1Rome\nMetal Box: By blender_noob17\n\nThese models released under the licenses
-    of their respective artists. The artists listed have no other affiliation. \n\n<b>Music:</b>
-    \nOppressive Ambience: By Punch Deck\nDestabilized: By Punch Deck\n\n<b> Images
-    </b>\n\"Artists Impression of the deep blue planet\" \r\nOriginal image by ESA/Hubble
-    (M. Kornmesser), background modified by diPolar"
+    z1Rome\nMetal Box: By blender_noob17\nSci-Fi Pistol: By Rjjonesy99\nPBR Handgun:
+    By daniel123ayala\n\nThese models released under the licenses of their respective
+    artists. The artists listed have no other affiliation. \n\n<b>Music and Sound:</b>
+    \nOppressive Ambience: By Punch Deck\nDestabilized: By Punch Deck\nAdditional
+    sound effects from https://www.zapsplat.com\n\n<b> Images </b>\n\"Artists Impression
+    of the deep blue planet\" \r\nOriginal image by ESA/Hubble (M. Kornmesser), background
+    modified by diPolar"
 --- !u!222 &352105154
 CanvasRenderer:
   m_ObjectHideFlags: 0

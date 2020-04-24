@@ -62,6 +62,7 @@ public class Drive : MonoBehaviour {
 			}
 		}
 	}
+	[MRPC]
 	public void RPC_Exit(int id)
 	{
 		print("Exiting Shredder");

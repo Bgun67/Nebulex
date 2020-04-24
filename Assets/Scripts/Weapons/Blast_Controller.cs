@@ -14,6 +14,7 @@ public class Blast_Controller : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		StartCoroutine(CastDamageRays());
+		Destroy(this.gameObject, 10f);
 	}
 
 	IEnumerator CastDamageRays(){

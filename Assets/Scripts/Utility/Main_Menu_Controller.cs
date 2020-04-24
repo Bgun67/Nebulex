@@ -34,12 +34,12 @@ public class Main_Menu_Controller : MonoBehaviour {
 	}
 	public void ShowCredits()
 	{
-		creditsPanel = GameObject.Find("Credits Panel");
+		//creditsPanel = GameObject.Find("Credits Panel");
 		creditsPanel.SetActive(true);
 	}
 	public void HideCredits()
 	{
-		creditsPanel = GameObject.Find("Credits Panel");
+		//creditsPanel = GameObject.Find("Credits Panel");
 		creditsPanel.SetActive(false);
 	}
 
