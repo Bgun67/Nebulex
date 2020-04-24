@@ -112,7 +112,7 @@ public class Plasma_Cannon : MonoBehaviour {
 
 		//Indicate the cannon is discharging
 		chargeState = PlasmaCannonChargeState.Discharging;
-		ship.chargeCannonLight.enabled = false;
+		ship.pilotAR.ChargeCannon(false);
 
 
 		//While the cannon is not connected to the power core and the cannon is not full discharged
@@ -144,8 +144,8 @@ public class Plasma_Cannon : MonoBehaviour {
 		fire = false;
 		chargePercentage = 0;
 		chargeState = PlasmaCannonChargeState.Discharged;
-		ship.chargeCannonLight.enabled = false;
-		ship.fireCannonLight.enabled = false;
+		ship.pilotAR.ChargeCannon( false);
+		ship.pilotAR.FireCannon( false);
 
 		yield return new WaitForSeconds (0f);
 

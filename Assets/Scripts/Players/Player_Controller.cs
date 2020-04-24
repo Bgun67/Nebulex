@@ -23,12 +23,14 @@ public class Player_Controller : MonoBehaviour {
 	public float maxStepHeight;
 	public Game_Controller gameController;
 	WalkState walkState = WalkState.Walking;
+	public bool useGravity;
 	//to be used for running crouching and walking
 	public float moveSpeed = 20f;
 	float lookFactor = 1f;
 	float moveFactor = 1f;
 	public float currentStepHeight;
 	public bool enteringGravity = false;
+	bool exitingGravity = false;
 	float jumpWait;
 	float jumpHeldTime;
 	public MetworkView netView;
@@ -45,8 +47,6 @@ public class Player_Controller : MonoBehaviour {
 	public int kills;
 
 	public Camera sceneCam;
-
-
 
 	public string playerName = "Fred";
 	public GameObject ragdoll;
@@ -286,7 +286,7 @@ public class Player_Controller : MonoBehaviour {
 	void Update () {
 
 		//Play thruster sounds
-		if(!walkSound.isPlaying && !rb.useGravity){
+		if(!walkSound.isPlaying && !useGravity){
 			float _soundVolume = 0f;
 			float _deltaV = (rb.velocity.sqrMagnitude - previousVelocity.sqrMagnitude) / Time.deltaTime;
 			float _deltaRot = Mathf.Abs(Input.GetAxis("Move X"));
@@ -377,7 +377,7 @@ public class Player_Controller : MonoBehaviour {
 			UpdateUI ();
 		} 	
 
-		if (rb.useGravity) {
+		if (useGravity) {
 			MouseLook();
 			if (Input.GetButton("Jump")){
 				Hop();
@@ -448,10 +448,12 @@ public class Player_Controller : MonoBehaviour {
 			} else if(walkState != WalkState.Crouching) {
 				walkState = WalkState.Walking;
 			}
-			
 
 
-			MovePlayer ();
+			if (!enteringGravity)
+			{
+				MovePlayer();
+			}
 			AnimateMovement ();
 
             if (airTime < suffocationTime)
@@ -460,7 +462,10 @@ public class Player_Controller : MonoBehaviour {
             }
 
         } else {
-			SpaceMove ();
+			if (!exitingGravity)
+			{
+				SpaceMove();
+			}
 			LoseAir ();
 
 		}
@@ -1074,7 +1079,7 @@ public class Player_Controller : MonoBehaviour {
 
 	public void SpaceMove(){
 		
-		rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		
 
 
@@ -1271,35 +1276,39 @@ public class Player_Controller : MonoBehaviour {
 
 		walkState = WalkState.Walking;
 	}
-
-	/* old Implementation
-	public void MovePlayer(){
-		if (walkState == WalkState.Running)
+	[MRPC]
+	public void RPC_ExitVehicle()
+	{
+		airTime = suffocationTime;
+		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
-			rb.AddRelativeForce(h*Time.deltaTime * forceFactor * 18f, 0f,Time.deltaTime * forceFactor * 27f);
+
+			netView.RPC("RPC_Sit", MRPCMode.AllBuffered, new object[] { false });
 		}
 		else
 		{
-			rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 18f, 0f, v * Time.deltaTime * forceFactor * 18f);
+			RPC_Sit(false);
 		}
-		//rb.drag = Mathf.Clamp(1 + rb.velocity.y/4, 0f, 1f);
+		inVehicle = false;
+		//player.rb.isKinematic = false;
+		ExitGravity();
+		CapsuleCollider[] capsules = GetComponents<CapsuleCollider>();
+		capsules[0].enabled = true;
+		capsules[1].enabled = true;
+	}
 
-		this.transform.Rotate (0f, h2 * Time.deltaTime*180f, 0f);
-		if (Time.frameCount % 4 == 0)
-		{
-			CheckStep();
-		}
-	}*/
 
 	//Updated to 
 	public void MovePlayer()
 	{
 		Vector3 groundVelocity = Vector3.zero;
+		float groundAngle = 0f;
 		if (shipRB)
 		{
 			groundVelocity = Vector3.Project(rb.velocity, shipRB.transform.up);
 			groundVelocity += shipRB.GetPointVelocity(rb.position);
-			transform.rotation *= Quaternion.Euler(shipRB.angularVelocity*Mathf.Rad2Deg * Time.deltaTime);
+			groundAngle = Vector3.Dot(shipRB.angularVelocity, shipRB.transform.up) * Mathf.Rad2Deg * Time.deltaTime;
+			//rb.MoveRotation(Quaternion.Euler(shipRB.angularVelocity*Mathf.Rad2Deg * Time.deltaTime));
 		}
 		else
 		{
@@ -1315,11 +1324,18 @@ public class Player_Controller : MonoBehaviour {
 				case WalkState.Crouching:_speed = 0.75f;
 				break;
 		}
-
+		rb.AddRelativeForce(-transform.up * 9.81f, ForceMode.Acceleration);
 		rb.velocity = groundVelocity + transform.TransformVector(h * 3f * _speed, 0f, v * _speed * 4f);
 
-		//rb.drag = Mathf.Clamp(1 + rb.velocity.y/4, 0f, 1f);
-		this.transform.Rotate (0f, h2 * Time.deltaTime*180f, 0f);
+		transform.Rotate(Vector3.up, h2 * Time.deltaTime * 180f+groundAngle); //*Quaternion.AngleAxis(h2 * Time.deltaTime*180f,shipRB.transform.up);
+
+		if (shipRB)
+		{
+			Vector3 previousForward = Vector3.ProjectOnPlane(transform.forward, shipRB.transform.up);
+			Vector3 _up =shipRB.transform.up;
+			rb.transform.rotation = Quaternion.LookRotation(previousForward, _up);
+		}
+
 		if (Time.frameCount % 4 == 0)
 		{
 			CheckStep();
@@ -1458,11 +1474,11 @@ public class Player_Controller : MonoBehaviour {
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
 
 			_rb.velocity = Vector3.ClampMagnitude(rb.velocity, 20f);
-			_rb.useGravity = rb.useGravity;
+			_rb.useGravity = useGravity;
 		}
 		try{
 			GameObject droppedWeapon = (GameObject)Instantiate (fireScript.gameObject, position, rotation);
-			droppedWeapon.AddComponent<Rigidbody> ().useGravity = rb.useGravity;
+			droppedWeapon.AddComponent<Rigidbody> ().useGravity = useGravity;
 			droppedWeapon.GetComponent<Fire> ().enabled = false;
 			droppedWeapon.transform.localScale = this.fireScript.gameObject.transform.lossyScale;
 
@@ -1487,8 +1503,10 @@ public class Player_Controller : MonoBehaviour {
 
 	//Called by grav controller when entering / exiting gravity;
 	public IEnumerator ExitGravity(){
+		exitingGravity = true;
 		//print("Exiting Gravity");
 		rb.angularDrag = 1f;
+		rb.drag = 1f;
 		rb.constraints = RigidbodyConstraints.None;
 		anim.SetBool ("Float", true);
 		anim.SetBool ("Jump", false);
@@ -1523,6 +1541,7 @@ public class Player_Controller : MonoBehaviour {
 		//walkSound.Stop ();
 
 		lookFactor = 1f;
+		exitingGravity = false;
 
 	}
 	public IEnumerator EnterGravity(){
@@ -1531,13 +1550,13 @@ public class Player_Controller : MonoBehaviour {
 			yield return null;
 		}
 		enteringGravity = true;
+		rb.drag = 0f;
+
 		anim.SetBool ("Float", false);
 		
-		//rb.angularVelocity = Vector3.zero;
-		rb.angularDrag = 20f;
+		rb.angularVelocity = Vector3.zero;
 
 		float _counter = 0f;
-		rb.constraints = RigidbodyConstraints.FreezeRotation;
 
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
 		while(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f){

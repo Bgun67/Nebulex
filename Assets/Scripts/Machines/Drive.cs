@@ -47,6 +47,10 @@ public class Drive : MonoBehaviour {
 	}
 	public void Exit()
 	{
+		foreach (WheelCollider wheel in wheels)
+		{
+				wheel.motorTorque = 0;
+		}
 		if(Metwork.peerType  != MetworkPeerType.Disconnected){
 			if (driversSeat.player != null) {
 				netObj.netView.RPC ("RPC_Exit", MRPCMode.AllBuffered, new object[]{ driversSeat.player.GetComponent<Metwork_Object> ().netID });
@@ -62,6 +66,7 @@ public class Drive : MonoBehaviour {
 			}
 		}
 	}
+	[MRPC]
 	public void RPC_Exit(int id)
 	{
 		print("Exiting Shredder");

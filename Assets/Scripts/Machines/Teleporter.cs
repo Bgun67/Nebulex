@@ -16,7 +16,6 @@ public class Teleporter : MonoBehaviour {
 		if (other.tag == "Player") {
 			if (gate == 1) {
 				other.transform.position = gate2.position;
-				//other.GetComponent<Rigidbody> ().useGravity = false;
 			} else {
 				other.transform.position = gate1.position;
 

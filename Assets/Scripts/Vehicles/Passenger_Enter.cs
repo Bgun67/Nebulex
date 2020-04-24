@@ -43,24 +43,17 @@ public class Passenger_Enter : MonoBehaviour {
 		{
 			UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(false);
 		}
-		player.airTime = player.suffocationTime;
+		
 		transform.root.SendMessage("Exit");
-
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 
-			player.netView.RPC("RPC_Sit", MRPCMode.AllBuffered, new object[] { false });
+			player.netView.RPC("RPCExitVehicle", MRPCMode.AllBuffered, new object[] { });
 		}
 		else
 		{
-			player.RPC_Sit(false);
+			player.RPC_ExitVehicle();
 		}
-		player.inVehicle = false;
-		//player.rb.isKinematic = false;
-		player.ExitGravity();
-		CapsuleCollider[] capsules = player.GetComponents<CapsuleCollider>();
-		capsules[0].enabled = true;
-		capsules[1].enabled = true;
 		player = null;
 		lastTime = Time.time;
 		print("Disconnecting");

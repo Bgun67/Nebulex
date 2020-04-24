@@ -195,7 +195,6 @@ public class Ship_Controller : MonoBehaviour {
 			}
 			rb.AddRelativeForce(0f, 0f, deltaThrustForce*0.4f);
 		}
-		//rb.useGravity = false;
 
 		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.85f, 0.3f);
 		previousEnginePitch = engineSound.pitch;
@@ -521,12 +520,12 @@ public class Ship_Controller : MonoBehaviour {
 		if (rb.useGravity)
 		{
 			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
-			player.GetComponent<Rigidbody>().useGravity = true;
+			player.GetComponent<Player_Controller>().useGravity = true;
 		}
 		else
 		{
 			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
-			player.GetComponent<Rigidbody>().useGravity = false;
+			player.GetComponent<Player_Controller>().useGravity = false;
 		}
 		player.GetComponent<Player_Controller> ().inVehicle = false;
 

@@ -377,12 +377,12 @@ public class Bomber_Controller : MonoBehaviour
 		if (rb.useGravity)
 		{
 			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
-			player.GetComponent<Rigidbody>().useGravity = true;
+			player.GetComponent<Player_Controller>().useGravity = true;
 		}
 		else
 		{
 			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
-			player.GetComponent<Rigidbody>().useGravity = false;
+			player.GetComponent<Player_Controller>().useGravity = false;
 		}
 		player.GetComponent<Player_Controller> ().inVehicle = false;
 

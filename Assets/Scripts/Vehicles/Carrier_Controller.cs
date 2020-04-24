@@ -17,27 +17,24 @@ public class Carrier_Controller : MonoBehaviour {
 	public bool hasPower = true;
 	public Plasma_Cannon cannon;
 	//public ParticleSystem plasmaParticles;
-	public Light fireCannonLight;
-	public Light chargeCannonLight;
 	public Transform pilotPosition;
 
 	public GameObject explosionPrefab;
 	public GameObject subExplosionPrefab;
-
+	[HideInInspector]
 	public Rigidbody rb;
 
 	public float steering = 0f;
-	float thrust = 1E7f;
+	public float thrust = 1E7f;
 	public float throttle = 1f;
 	public float vertical;
-	public float exitWait;
+	float exitWait;
 
 	public bool shieldActive;
-	//Carrier Bridge Systems
-	public LineRenderer predictedPath;
 
-	public Vector3 previousVelocity = Vector3.zero;
-	public Vector3 acceleration;
+	Vector3 previousVelocity = Vector3.zero;
+	Vector3 acceleration;
+	[HideInInspector]
 	public GameObject pilot;
 
 	Metwork_Object netObj;
@@ -45,19 +42,18 @@ public class Carrier_Controller : MonoBehaviour {
 
 	public bool threeAxis;
 	public bool destroyAfterDeath;
-	public float lastTime;
+	float lastTime;
+
+	[HideInInspector]
+	public PilotAR pilotAR;
 
 	public Light[] lights;
-	public Animator leftGauge;
-	public Animator centerGauge;
-	public Animator rightGauge;
-	bool reverse = false;
 
 	public void Start(){
 		netObj = this.GetComponent<Metwork_Object>();
+		pilotAR = GetComponentInChildren<PilotAR>();
+		rb = GetComponent<Rigidbody>();
 		InvokeRepeating ("SendControls", 0f, 1f);
-
-
 	}
 
 	public void Activate(GameObject player){
@@ -72,7 +68,7 @@ public class Carrier_Controller : MonoBehaviour {
 		player.GetComponent<Player_Controller> ().inVehicle = true;
 		exitWait = Time.time + 2f;
 		if (playerNetObj.isLocal) {
-			predictedPath.enabled = true;
+			pilotAR.gameObject.SetActive( true);
 		}
 
 	}
@@ -85,7 +81,7 @@ public class Carrier_Controller : MonoBehaviour {
 		pilot.GetComponent<Player_Controller> ().inVehicle = false;
 		pilot = null;
 		playerNetObj = null;
-		predictedPath.enabled = false;
+		pilotAR.gameObject.SetActive( false);
 		
 	}
 	[MRPC]
@@ -112,8 +108,7 @@ public class Carrier_Controller : MonoBehaviour {
 		
 		if (pilot != null && playerNetObj.isLocal)
 		{
-
-			DrawPredictedPath ();
+			pilotAR.DrawPredictedPath (rb);
 		}
 	}
 
@@ -122,10 +117,9 @@ public class Carrier_Controller : MonoBehaviour {
 		if (pilot != null && playerNetObj.isLocal)
 		{
 			pilot.GetComponent<Rigidbody>().velocity = rb.GetPointVelocity(pilotPosition.position);
-			if (Time.frameCount % 3f == 0)
-			{
-				pilot.transform.forward = this.transform.forward;
-			}
+			pilot.GetComponent<Rigidbody>().MovePosition(pilotPosition.position);
+			pilot.GetComponent<Rigidbody>().MoveRotation(pilotPosition.rotation);
+			
 			if (Input.GetKey(KeyCode.LeftShift))
 			{
 				thrust = 1.5E7f;
@@ -137,9 +131,13 @@ public class Carrier_Controller : MonoBehaviour {
 
 			throttle = Mathf.Clamp(throttle + Input.GetAxis("Move Z") / 10f, -1f, 1f);
 			steering = Mathf.Clamp(steering + Input.GetAxis("Move X") / 10f, -1f, 1f);
+			if (pilotAR)
+			{
+				pilotAR.ShowGauges(throttle, steering);
+			}
+
 			if (threeAxis)
 			{
-
 				vertical = Input.GetAxis("Move Y");
 			}
 			if (Input.GetButtonDown("Use Item") && Time.time > exitWait)
@@ -169,38 +167,7 @@ public class Carrier_Controller : MonoBehaviour {
 				}
 			}
 
-			//try {
-			if (throttle > 0)
-			{
-				if (reverse)
-				{
-					reverse = false;
-					leftGauge.GetComponent<MeshRenderer>().material.color = new Color(0.286f, 0.49f, 1f);
-					centerGauge.GetComponent<MeshRenderer>().material.color = new Color(0.286f, 0.49f, 1f);
-					rightGauge.GetComponent<MeshRenderer>().material.color = new Color(0.286f, 0.49f, 1f);
-				}
-				leftGauge.SetFloat("Throttle", (steering + throttle) * 0.5f);
-				centerGauge.SetFloat("Throttle", throttle);
-				rightGauge.SetFloat("Throttle", (throttle - steering) * 0.5f);
-			}
-			else
-			{
-				if (!reverse)
-				{
-					leftGauge.GetComponent<MeshRenderer>().material.color = new Color(1f, 0.294f, 0.293f);
-					centerGauge.GetComponent<MeshRenderer>().material.color = new Color(1f, 0.294f, 0.293f);
-					rightGauge.GetComponent<MeshRenderer>().material.color = new Color(1f, 0.294f, 0.293f);
-
-					reverse = true;
-				}
-				leftGauge.SetFloat("Throttle", (steering - throttle) * 0.5f);
-				centerGauge.SetFloat("Throttle", -throttle);
-				rightGauge.SetFloat("Throttle", (-throttle - steering) * 0.5f);
-			}
-			//} catch {
-
-			//}
-
+			
 		}
 		if (!Metwork.isServer && Metwork.peerType != MetworkPeerType.Disconnected) {
 			return;
@@ -217,45 +184,37 @@ public class Carrier_Controller : MonoBehaviour {
 			numEngines += 1f;
 			rotEngines += 1f;
 			portEngine.SetThrottle(throttle + steering);
-			//rb.AddRelativeTorque (thrust * (throttle + steering) * 100f * Time.smoothDeltaTime * 30f * Vector3.up);
 		}
 
-		if (middleEngine.isRunning) {
+		if (middleEngine!=null&&middleEngine.isRunning) {
 			//Add a force to the number 2 engine
-			//rb.AddRelativeForce (throttle * thrust * Time.smoothDeltaTime * 30f * Vector3.forward);
 			numEngines += 1f;
 		}
 
 		if (starboardEngine.isRunning) {
 			//Add a force to the number 1 engine (Change to force at position)
-			//rb.AddRelativeForce (thrust * throttle * Time.smoothDeltaTime * 30f * Vector3.forward);
-			//rb.AddRelativeTorque (thrust * (-throttle + steering) * 100f * Time.smoothDeltaTime * 30f * Vector3.up);
 			numEngines += 1f;
 			rotEngines -= 1f;
 			starboardEngine.SetThrottle(throttle - steering);
 		}
 		if (threeAxis) {
 			rb.AddRelativeForce (vertical * thrust * Time.smoothDeltaTime * 30f * Vector3.up);
-
 		}
 
 		//Here we simplify three forces and two moments to one force and one moment to make it easier on our physics engine
 		rb.AddRelativeForce (thrust * throttle * numEngines * Time.smoothDeltaTime * 30f * Vector3.forward);
-		rb.AddRelativeTorque (thrust * (rotEngines * throttle + steering) * 200f * Time.smoothDeltaTime * 30f * Vector3.up);
-
-
-
+		rb.AddRelativeTorque (thrust * (rotEngines * throttle + steering) * Time.smoothDeltaTime * 50f * Vector3.up);
 
 	}
 	[MRPC]
 	public void RPC_Fire(){
 		cannon.fire = !cannon.fire;
-		fireCannonLight.enabled = cannon.fire;
+		pilotAR.FireCannon(cannon.fire);
 	}
 	[MRPC]
 	public void RPC_ChargeCannon(){
 		cannon.charge = !cannon.charge;
-		chargeCannonLight.enabled = cannon.charge;
+		pilotAR.ChargeCannon(cannon.fire);
 	}
 
 	public void OnDie(){
@@ -296,49 +255,19 @@ public class Carrier_Controller : MonoBehaviour {
 		//gameObject.SetActive (false);
 	}
 
-	void DrawPredictedPath(){
-        float startTime = 0f;
-        float endTime = 10f;
-        int timeSteps = 100;
-        float stepWidth = (startTime - endTime) / timeSteps;
-
-        float velocity = rb.velocity.magnitude;
-        Vector3 rotVelocity = rb.angularVelocity;
-        Vector3 previousPosition = predictedPath.transform.position;
-        Vector3 currentForward = -rb.velocity;
-
-        predictedPath.positionCount = timeSteps;
-        predictedPath.SetPosition(0, previousPosition);
-
-        for (int i = 1; i < timeSteps; i++)
-        {
-			
-            float sine = Mathf.Sin(i * stepWidth * rotVelocity.y);
-            float cosine = Mathf.Cos(i * stepWidth * rotVelocity.y);
-
-            //Rotate the forward vector
-            currentForward = new Vector3(currentForward.x * cosine - currentForward.z * sine, 0, (currentForward.x * sine + currentForward.z * cosine));
-
-            predictedPath.SetPosition(i, predictedPath.GetPosition(i - 1) + (i * stepWidth * velocity * currentForward));
-        }
-    }
+	
 	public void ShutdownGravity(){
-		print ("RPC invokes");
 		this.GetComponentInChildren<Gravity_Controller>().useGravity = false;
 		this.GetComponentInChildren<Gravity_Controller>().ignoreInternalObjects = false;
 		Time.timeScale = 0.5f;
 		hasPower = false;
 		Invoke ("IgnoreInternal", 1f);
-		print ("Completed");
-
 	}
 
 	public void ReactivateGravity(){
 		this.GetComponentInChildren<Gravity_Controller>().useGravity = true;
 		this.GetComponentInChildren<Gravity_Controller>().ignoreInternalObjects = false;
-		//Time.timeScale = 0.5f;
 		hasPower = true;
-
 		Invoke ("IgnoreInternal", 1f);
 	}
 	#region shield
@@ -378,16 +307,13 @@ public class Carrier_Controller : MonoBehaviour {
 	#endregion
 	void IgnoreInternal(){
 		Time.timeScale = 1f;
-
 		this.GetComponentInChildren<Gravity_Controller>().ignoreInternalObjects = true;
-
 	}
 	public void ShutdownPower(){
 		print ("RPC invokes");
 		StartCoroutine (TurnOffLights ());
 		this.hasPower = false;
 		print ("Completed");
-
 	}
 
 	IEnumerator TurnOffLights(){

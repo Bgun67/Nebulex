@@ -29,11 +29,13 @@ public class Gravity_Controller : MonoBehaviour {
 			rb.useGravity = useGravity;
 
 			if (other.tag == "Player") {
+				rb.useGravity = false;
 				if (useGravity)
 				{
 					if (!other.GetComponent<Player_Controller>().enteringGravity)
 					{
 						other.GetComponent<Player_Controller>().shipRB = rootRB;
+						other.GetComponent<Player_Controller>().useGravity = useGravity;
 						other.GetComponent<Player_Controller>().StopCoroutine("ExitGravity");
 						other.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
 
@@ -60,11 +62,14 @@ public class Gravity_Controller : MonoBehaviour {
 		Rigidbody rb = other.transform.root.GetComponent<Rigidbody> ();
 		if (rb != null) {
 			rb.useGravity = useGravity;
+			
 			if (other.tag == "Player") {
-				
+				rb.useGravity = false;
+
 				if (useGravity) {
 						other.GetComponent<Player_Controller>().shipRB = rootRB;
-						other.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
+					other.GetComponent<Player_Controller>().useGravity = useGravity;
+					other.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
 				} else {
 
 				}			
@@ -84,6 +89,7 @@ public class Gravity_Controller : MonoBehaviour {
 				
 				if (useGravity) {
 					other.GetComponent<Player_Controller>().shipRB = null;
+					other.GetComponent<Player_Controller>().useGravity = false;
 					other.GetComponent<Player_Controller> ().StartCoroutine ("ExitGravity");
 				} else {
 
