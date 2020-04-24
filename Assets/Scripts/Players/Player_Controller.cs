@@ -143,6 +143,8 @@ public class Player_Controller : MonoBehaviour {
 	public GameObject grenadePrefab;
 	public GameObject grenadeModelPrefab;
 	GameObject grenadeModel;
+	bool throwingGrenade = false;
+
 	public Transform grenadeSpawn;
 	[Header("Grapple")]
 	public bool grappleActive;
@@ -613,6 +615,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 	}
 	void ThrowGrenade(){
+		throwingGrenade = true;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ThrowGrenade", MRPCMode.AllBuffered, new object[]{ });
 		} else {
@@ -629,19 +632,25 @@ public class Player_Controller : MonoBehaviour {
 		grenadeModel = (GameObject)Instantiate (grenadeModelPrefab, grenadeSpawn);
 	}
 
-	public void SpawnGrenade(){
+	public void SpawnGrenade(float _dropGrenadeFactor = 1f){
+		throwingGrenade = false;
 		Destroy (grenadeModel);
 
 
 		if (!netObj.isLocal) {
 			return;
 		}
+		
+		if(MInput.GetButton ("Left Trigger")){
+			//If we are scoped, drop the grenade beside us
+			_dropGrenadeFactor = 0.05f;
+		}
 
 		Rigidbody _grenade = ((GameObject)Instantiate (grenadePrefab, grenadeSpawn.position, grenadeSpawn.rotation)).GetComponent<Rigidbody> ();
 
 		Destroy (_grenade.gameObject, 20f);
 
-		_grenade.AddForce (mainCam.transform.forward * 400f);
+		_grenade.AddForce (mainCam.transform.forward * 400f * _dropGrenadeFactor);
 
 		int _grenadeView = 0;
 
@@ -674,6 +683,9 @@ public class Player_Controller : MonoBehaviour {
 	}
 	[MRPC]
 	void RPC_SpawnGrenade(int _grenadeView, Vector3 _velocity, Vector3 _position, Quaternion _rotation){
+		if(grenadeModel != null){
+			Destroy (grenadeModel);
+		}
 		Rigidbody _grenade = ((GameObject)Instantiate (grenadePrefab, _position + _velocity * 0.05f, _rotation)).GetComponent<Rigidbody> ();
 		
 
@@ -906,7 +918,7 @@ public class Player_Controller : MonoBehaviour {
 			moveFactor = 0.75f;
 			return;
 		}
-		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading) {
+		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading  && !throwingGrenade) {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f*_scopeTransform.lossyScale.x/0.3303206f + _scopeTransform.up * 0.022f*_scopeTransform.lossyScale.x/0.3303206f;
 
@@ -1416,6 +1428,9 @@ public class Player_Controller : MonoBehaviour {
 	#endregion
 	#region Region2
 	public void Die(){
+		if(throwingGrenade){
+			SpawnGrenade();
+		}
 		//sceneCam.enabled = true;
 		if(Metwork.peerType  != MetworkPeerType.Disconnected){
 			netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{ });

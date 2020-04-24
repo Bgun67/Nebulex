@@ -159,7 +159,7 @@ public class Com_Controller : MonoBehaviour {
 			agent.enabled = true;
 		}
 		//TODO: Uncouple from frameRate
-		if(Metwork.isServer && Time.frameCount % 13 == 0){
+		if((Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer) && Time.frameCount % 13 == 0){
 			CheckState();
 		}
 		fireScript.playerID = botID;

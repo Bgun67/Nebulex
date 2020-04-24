@@ -16,7 +16,8 @@ public class Loadout_Controller : MonoBehaviour {
 
 
 		{"FN-227", new Vector3(-0.125f,-0.168f,0.07f)},
-		{"Q-338", new Vector3(0f,0.11f,-0.09f)},
+		{"Q-338", new Vector3(-0.125f,-0.168f,0.07f)},
+		//{"Q-338", new Vector3(0f,0.11f,-0.09f)},
 
 		{"Thunderstroke", new Vector3(-0.276f,-0.064f,0.364f)},
 		{"ATX-Heavy", new Vector3(-0.26f,0.08f,0.94f)},
@@ -39,7 +40,9 @@ public class Loadout_Controller : MonoBehaviour {
 
 
 		{"FN-227", new Vector3(14.4f,-13.2f,-8.2f)},
-		{"Q-338", new Vector3(9.92f,77.481f,59.078f)},
+		{"Q-338", new Vector3(14.4f,-13.2f,-8.2f)},
+		//{"Q-338", new Vector3(9.92f,77.481f,59.078f)},
+		
 
 		{"Thunderstroke", new Vector3(-0.311f,-9.989f,-8.383f)},
 		{"ATX-Heavy", new Vector3(21.191f,-8.791f,-7.971f)},

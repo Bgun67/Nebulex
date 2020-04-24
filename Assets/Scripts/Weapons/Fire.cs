@@ -203,7 +203,7 @@ public class Fire : MonoBehaviour {
 				} else {
 					if (triggerClick != null)
 					{
-						shootSound.PlayOneShot(triggerClick);
+						shootSound.PlayOneShot(triggerClick, 0.3f);
 					}
 					StartCoroutine (Reload ());
 
@@ -277,7 +277,7 @@ public class Fire : MonoBehaviour {
 		}
 		if (cockSound != null&&transform.parent!=null)
 		{
-			shootSound.PlayOneShot(cockSound);
+			shootSound.PlayOneShot(cockSound, 0.3f);
 		}
 		
 		transform.root.SendMessage ("UpdateUI");
