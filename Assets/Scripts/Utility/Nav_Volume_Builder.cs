@@ -23,7 +23,8 @@ public class NavBlock{
 [ExecuteInEditMode]
 public class Nav_Volume_Builder : MonoBehaviour
 {
-    public bool build = false;
+    public bool visualize = false;
+    bool visualizeChecked = false;
     public bool buildCubemesh;
     public Bounds bounds;
     public int numCubes;
@@ -359,8 +360,8 @@ public class Nav_Volume_Builder : MonoBehaviour
                 FindRoute(this.transform.position, endTransform.transform.position);
         }
 
-        if(build){
-            build = false;
+        if(visualize && !visualizeChecked){
+            visualizeChecked = true;
 
             while(transform.childCount > 0){
                 DestroyImmediate(transform.GetChild(0).gameObject);
@@ -370,8 +371,17 @@ public class Nav_Volume_Builder : MonoBehaviour
                 GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 plane.transform.position = block.m_bounds.center;
                 plane.transform.localScale = block.m_bounds.size *0.8f;
+                plane.GetComponent<MeshRenderer>().material = cubeMaterial;
                 
                 plane.transform.SetParent(this.transform);
+            }
+            
+        }
+        if(!visualize && visualizeChecked){
+            visualizeChecked = false;
+
+            while(transform.childCount > 0){
+                DestroyImmediate(transform.GetChild(0).gameObject);
             }
             
         }

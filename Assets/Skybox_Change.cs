@@ -6,6 +6,8 @@ public class Skybox_Change : MonoBehaviour
 {
     public int i = 0;
     public List<Cubemap> textures;
+    public Cubemap cubemap;
+    public Camera skyboxCam;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,9 +16,10 @@ public class Skybox_Change : MonoBehaviour
 
     void ChangeSkybox()
     {
-        RenderSettings.skybox.SetTexture("_Tex", textures[i]);
-        i++;
-        if(i>textures.Count-1)
-            i=0;
+        skyboxCam.RenderToCubemap(cubemap);
+        //RenderSettings.skybox.SetTexture("_Tex", textures[i]);
+        //i++;
+        //if(i>textures.Count-1)
+            //i=0;
     }
 }

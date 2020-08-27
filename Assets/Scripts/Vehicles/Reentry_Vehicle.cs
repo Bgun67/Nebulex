@@ -6,19 +6,35 @@ public class Reentry_Vehicle : Ship_Controller
 {
 
     public List<Cubemap> skyboxTextures;
+	public Vector3 cg;
 	
+	//void Start(){
+		//InvokeRepeating("InvokeSky", 30f, 30f);
+	//}
+	void InvokeSky(){
+		DeOrbit(Vector3.one);
+	}
     void CorrectPitch(){
         return;
     }
 	//TODO: Move to updated code to main script
     protected override void Fly(){
+		rb.centerOfMass = cg;
 		rb.AddRelativeForce (0f,moveY *deltaThrustForce* 2f,
 			moveZ *deltaThrustForce);
 		
 		if(rb.useGravity){
-			
-			rb.AddRelativeForce(rb.mass * 9.81f * Mathf.Clamp(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude * (1+Mathf.Sin(Vector3.SignedAngle(rb.velocity, transform.forward, transform.right))) * 0.002f,0, 2.0f) * 50f * Time.deltaTime * Vector3.up);
-			rb.AddForce(Mathf.Sin(Vector3.Angle(rb.velocity, transform.forward))*-rb.velocity);
+			//Lift
+			rb.AddForce(rb.mass * 9.81f * Mathf.Clamp(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude * (1+Mathf.Sin(Vector3.SignedAngle(rb.velocity, transform.forward, transform.right))) * 0.002f,0, 1000.0f) * 10f * Time.deltaTime * Vector3.Cross(rb.velocity, transform.right).normalized);
+			//Drag due to off angle
+			//rb.AddForce(Mathf.Sin(Vector3.Angle(rb.velocity, transform.forward))*rb.velocity.magnitude*-rb.velocity);
+			//Restoring force due to sideslip
+			rb.AddRelativeTorque(new Vector3(
+				-Vector3.SignedAngle(rb.velocity, transform.forward, transform.right)*0.1f,
+				-Vector3.SignedAngle(rb.velocity, transform.forward, transform.up),
+				//Pitch/roll coupling
+				-Vector3.SignedAngle(rb.velocity, transform.forward, transform.up)*0.1f
+			)*0.5f*rb.velocity.sqrMagnitude);
 		}
 		else
 		{
@@ -71,7 +87,7 @@ public class Reentry_Vehicle : Ship_Controller
 			while(i < skyboxTextures.Count){ 
 				RenderSettings.skybox.SetTexture("_Tex", skyboxTextures[i]);
 				i++;
-				yield return new WaitForSeconds(1f);
+				yield return new WaitForSeconds(0.5f);
 			}
 		}
     }

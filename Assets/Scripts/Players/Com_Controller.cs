@@ -156,7 +156,9 @@ public class Com_Controller : MonoBehaviour {
 			anim.SetBool("Float", true);
 		}
 		else{
-			agent.enabled = true;
+			if(!agent.enabled){
+				agent.enabled = true;
+			}
 		}
 		//TODO: Uncouple from frameRate
 		if((Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer) && Time.frameCount % 13 == 0){
@@ -487,7 +489,8 @@ public class Com_Controller : MonoBehaviour {
 		//Reset the patrol target
 		if(!isInSpace){
 			//agent.destination = patrolPositions[patrolIndex].position;
-			agent.CalculatePath(agent.destination, path);
+			//TEST: Move the agent calculate position farther
+			//agent.CalculatePath(agent.destination, path);
 		}
 		else{
 			spaceDestination = patrolPositions[patrolIndex].position;
@@ -507,6 +510,7 @@ public class Com_Controller : MonoBehaviour {
 			//Reset the patrol target
 			if(!isInSpace){
 				agent.destination = patrolPositions[patrolIndex].position;
+				agent.CalculatePath(agent.destination, path);
 			}
 			else{
 				spaceDestination = patrolPositions[patrolIndex].position;
