@@ -520,12 +520,12 @@ public class Ship_Controller : MonoBehaviour {
 		if (rb.useGravity)
 		{
 			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
-			player.GetComponent<Player_Controller>().useGravity = true;
+			player.GetComponent<Player_Controller>().rb.useGravity = true;
 		}
 		else
 		{
 			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
-			player.GetComponent<Player_Controller>().useGravity = false;
+			player.GetComponent<Player_Controller>().rb.useGravity = false;
 		}
 		player.GetComponent<Player_Controller> ().inVehicle = false;
 

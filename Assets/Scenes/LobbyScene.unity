@@ -16502,6 +16502,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 198659550789455852, guid: b9f1228e890c95646bb37da2c7c813c7,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.05490196
+      objectReference: {fileID: 0}
     - target: {fileID: 114518248454381344, guid: b9f1228e890c95646bb37da2c7c813c7,
         type: 3}
       propertyPath: UI_healthText
@@ -16605,11 +16610,6 @@ PrefabInstance:
       propertyPath: mat
       value: 
       objectReference: {fileID: 2100000, guid: 495bcb5d1827a124cba88d62a986e82f, type: 2}
-    - target: {fileID: 198659550789455852, guid: b9f1228e890c95646bb37da2c7c813c7,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.a
-      value: 0.05490196
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1228e890c95646bb37da2c7c813c7, type: 3}
 --- !u!1 &1314153829 stripped
@@ -38278,7 +38278,7 @@ Transform:
   m_GameObject: {fileID: 2063264997}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -806.0502, y: 0.8129461, z: -163.90332}
-  m_LocalScale: {x: 2.5032487, y: 2.5032494, z: 2.5032494}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 961588654}
   - {fileID: 206747617}
@@ -38919,16 +38919,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gameplay UI
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494425811226821, guid: f56231951baa15d41a100fb884d0d68d,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -10.099976
-      objectReference: {fileID: 0}
-    - target: {fileID: 2079494426507240282, guid: f56231951baa15d41a100fb884d0d68d,
-        type: 3}
-      propertyPath: eventSystem
-      value: 
-      objectReference: {fileID: 1982494483}
     - target: {fileID: 2079494427318759908, guid: f56231951baa15d41a100fb884d0d68d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -39044,6 +39034,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -10.099976
       objectReference: {fileID: 0}
+    - target: {fileID: 2079494425811226821, guid: f56231951baa15d41a100fb884d0d68d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -10.099976
+      objectReference: {fileID: 0}
+    - target: {fileID: 2079494426507240282, guid: f56231951baa15d41a100fb884d0d68d,
+        type: 3}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 1982494483}
     - target: {fileID: 2079494425515469621, guid: f56231951baa15d41a100fb884d0d68d,
         type: 3}
       propertyPath: m_Color.a

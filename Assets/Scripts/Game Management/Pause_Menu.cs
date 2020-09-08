@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Pause_Menu : MonoBehaviour {
 	public GameObject confirmQuitPanel;
 	public GameObject confirmRecallPanel;
+	public GameObject settingsPanel;
 	public GameObject eventSystem;
 	public GameObject player;
 
@@ -25,7 +26,8 @@ public class Pause_Menu : MonoBehaviour {
 	}
 	public void Options()
 	{
-		SceneManager.LoadScene("Options", LoadSceneMode.Additive);
+		//SceneManager.LoadScene("Options", LoadSceneMode.Additive);
+		settingsPanel.SetActive(true);
 	}
 	public void Quit(){
 		confirmQuitPanel.SetActive (true);
@@ -55,10 +57,12 @@ public class Pause_Menu : MonoBehaviour {
 		SceneManager.LoadScene ("Start Scene");
 	}
 	public void Resume(){
+		settingsPanel.SetActive(false);
 		this.gameObject.SetActive(false);
 		MInput.inputLock = MInput.InputLock.None;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
+		UI_Manager._instance.isPaused = false;
 
 		//eventSystem.SetActive (false);
 	}

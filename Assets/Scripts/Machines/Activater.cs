@@ -43,7 +43,7 @@ public class Activater : MonoBehaviour
 	public void ActivateScript(GameObject player)
 	{
 
-
+		print("activainh");
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			netView.RPC("RPC_ActivateScript", MRPCMode.AllBuffered, new object[] { player.GetComponent<Metwork_Object>().netID });

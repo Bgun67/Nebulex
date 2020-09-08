@@ -288,7 +288,8 @@ public class Player_Controller : MonoBehaviour {
 	void Update () {
 
 		//Play thruster sounds
-		if(!walkSound.isPlaying && !useGravity){
+		//TODO: Modify this so that we can hear other players on rotation
+		if(!walkSound.isPlaying && !rb.useGravity){
 			float _soundVolume = 0f;
 			float _deltaV = (rb.velocity.sqrMagnitude - previousVelocity.sqrMagnitude) / Time.deltaTime;
 			float _deltaRot = Mathf.Abs(Input.GetAxis("Move X"));
@@ -379,14 +380,14 @@ public class Player_Controller : MonoBehaviour {
 			UpdateUI ();
 		} 	
 
-		if (useGravity) {
+		if (rb.useGravity) {
 			MouseLook();
 			if (Input.GetButton("Jump")){
 				Hop();
 			}
 			if (z > 0f) {
 				jumpHeldTime+=Time.deltaTime;
-				if (jumpHeldTime > 0.75f)
+				if (jumpHeldTime > 0.1f)
 				{
 					Jump();
 				}
@@ -1096,8 +1097,11 @@ public class Player_Controller : MonoBehaviour {
 
 
 		float factor = Time.deltaTime * forceFactor;
-		//TODO: I don't really know if this will break anything
-		if (false&&Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
+		float strafeFactor = Input.GetButton("Ctrl") ? 0f:1f;
+		float rollFactor = Input.GetButton("Ctrl") ? 1f:0f;
+
+		//TODO: Tie this into the jetpack fuel
+		if (false && Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
 		{
 			jumpWait = Time.time + 5f;
 			rb.AddRelativeForce (new Vector3(0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f)*60f);
@@ -1105,10 +1109,12 @@ public class Player_Controller : MonoBehaviour {
 		}
 		else
 		{
-			rb.AddRelativeTorque(-v2 * factor/2f, h2*factor/7f, -h * factor/1.5f);
+	
+			rb.AddRelativeTorque(-v2 * factor/2f, h2*factor/7f, -h * factor/1.5f * rollFactor);
 			
 			//transform.Rotate(Vector3.Lerp(Vector3.zero, new Vector3(-v2 * Time.deltaTime, h2 * Time.deltaTime, -h * Time.deltaTime),0.1f));
-			rb.AddRelativeForce(0f, z * Time.deltaTime * forceFactor * 20f, v * Time.deltaTime * forceFactor * 15f);
+			rb.AddRelativeForce(h * Time.deltaTime * forceFactor* strafeFactor * 40f, z * Time.deltaTime * forceFactor * 40f, v * Time.deltaTime * forceFactor * 40f);
+			
 		}
 
 		bool _magBootsLock = false;
@@ -1209,7 +1215,7 @@ public class Player_Controller : MonoBehaviour {
 
 			
 
-			Vector3 _rotateAmount = Vector3.Lerp(previousRot,new Vector3(-v2 * 2f, h2*2f, -h * 1.5f) * 5f * Time.deltaTime * 30f, 0.05f);
+			Vector3 _rotateAmount = Vector3.Lerp(previousRot,new Vector3(-v2 * 2f, h2*2f, -h * 1.5f * rollFactor) * 5f * Time.deltaTime * 30f, 0.05f);
 			rb.transform.Rotate(_rotateAmount);
 			previousRot = _rotateAmount;
 
@@ -1411,8 +1417,8 @@ public class Player_Controller : MonoBehaviour {
 		if (!grappleActive)
 		{
 			fireScript.shotSpawn.transform.forward = this.mainCam.transform.forward 
-													+ muzzleClimb * fireScript.recoilAmount * mainCam.transform.up * 2f
-													+ fireScript.recoilAmount * (0.3f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
+													+ muzzleClimb * fireScript.recoilAmount * mainCam.transform.up * 0.3f
+													+ fireScript.recoilAmount * (0.2f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
 													;
 			if(muzzleClimb < 0.6f){
 				muzzleClimb += 0.05f;
@@ -1489,11 +1495,11 @@ public class Player_Controller : MonoBehaviour {
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
 
 			_rb.velocity = Vector3.ClampMagnitude(rb.velocity, 20f);
-			_rb.useGravity = useGravity;
+			_rb.useGravity = rb.useGravity;
 		}
 		try{
 			GameObject droppedWeapon = (GameObject)Instantiate (fireScript.gameObject, position, rotation);
-			droppedWeapon.AddComponent<Rigidbody> ().useGravity = useGravity;
+			droppedWeapon.AddComponent<Rigidbody> ().useGravity = rb.useGravity;
 			droppedWeapon.GetComponent<Fire> ().enabled = false;
 			droppedWeapon.transform.localScale = this.fireScript.gameObject.transform.lossyScale;
 
@@ -1521,7 +1527,7 @@ public class Player_Controller : MonoBehaviour {
 		exitingGravity = true;
 		//print("Exiting Gravity");
 		rb.angularDrag = 1f;
-		rb.drag = 1f;
+		rb.drag = 0.3f;
 		rb.constraints = RigidbodyConstraints.None;
 		anim.SetBool ("Float", true);
 		anim.SetBool ("Jump", false);

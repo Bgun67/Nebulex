@@ -68,6 +68,7 @@ public class UI_Manager : MonoBehaviour
 	}
 	public PieState pieState = PieState.Center;
 	private bool isPieShown = false;
+	public bool isPaused = false;
 	public int selectedSegment = -1;
 	public static int pieChoice = -1;
 
@@ -111,7 +112,13 @@ public class UI_Manager : MonoBehaviour
 	}
 	void Update(){
 		if (Input.GetButtonDown("Pause")){
-			Pause();
+			if(!isPaused){
+				Pause();
+			}
+			else{
+				Resume();
+			}
+
 		}
 		for(int i = 0; i < damageIndicators.Length; i++){
 			Vector3 _projectedDirection = Vector3.ProjectOnPlane(hitDirections[i].normal, hitDirections[i].transform.up);
@@ -125,11 +132,11 @@ public class UI_Manager : MonoBehaviour
 	}
 	void LateUpdate(){
 		pieChoice = -1;
-		if (Input.GetKeyDown (KeyCode.LeftControl)) {
+		if (Input.GetButtonDown ("MMB")) {
 			isPieShown = true;
 
 		} 
-		if (Input.GetKeyUp(KeyCode.LeftControl)) {
+		if (Input.GetButtonUp("MMB")) {
 			isPieShown = false;
 
 			pieChoice = selectedSegment;
@@ -138,9 +145,14 @@ public class UI_Manager : MonoBehaviour
 	}
 	public void Pause()
 	{
+		isPaused = true;
 		Cursor.lockState = CursorLockMode.None;
 		UI_Manager._instance.pauseMenu.gameObject.SetActive(true);
 		UI_Manager._instance.pauseMenu.Pause(this.gameObject);
+	}
+	public void Resume()
+	{
+		UI_Manager._instance.pauseMenu.Resume();
 	}
 	void LaunchPie(){
 		for (int i = 0; i<pieQuadrants.Length; i++){

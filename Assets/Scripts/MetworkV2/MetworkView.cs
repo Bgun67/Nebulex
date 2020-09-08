@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Text;
 using System.Reflection;
 using System;
+using System.IO;
 using UnityEngine.SceneManagement;
 
 
@@ -17,6 +18,7 @@ public class MetworkView : MonoBehaviour {
 	const int VECTOR3 = 3;
 	const int BOOL = 4;
 	const int QUATERNION = 5;
+	const int BYTES = 6;
 
 
 	public int viewID = -1;
@@ -90,53 +92,56 @@ public class MetworkView : MonoBehaviour {
 	/// <param name="_args">Arguments</param>
 	public void RPC(string _function, MetworkPlayer _player, params object[] _args ){
 		//The RPC data pack follows this format currently:
-		//0: DestinationNumber%
-		//1:SourceNumber%
-		//2: MetViewID%
-		//3: Function name%
-		//4: MRPCMode number%
-		//5: number of arguments%
-		//6: argType 1 number%
-		//7: arg1 value%
-		//8: argType 2 number%
-		//9: arg2 value %
-		//&&% (The finishing character)
+		//byte range: name (dataType)
+		//0-3: Destination Number (int)
+		//4-7: Source Number (int)
+		//8-11: Metview ID(int)
+		//12-15: MRPCMode (int)
+		//16-19: Function name length IN BYTES (int)
+		//20-20+n: Function name (utf8 string)
+		//something - something + 4: Number of arguments (int)
+		//After that it's
+		//4 bytes: argType number (int)
+		//4 bytes: arg Length in bytes (int)
+		//n bytes: argument (bytes)
 
 		//Here we determine the destination of the packet
 		//In the case of AllBuffered, All, Others and OthersBuffered, the playernumber of the player the message originates from will be sent
-
-
-		//If the packet is going to a specific player, the MRPCMode will be set and the destination player will be used
 		int _playerNumber = _player.connectionID;
 
-		StringBuilder _data = new StringBuilder ("");
-		_data.Append (_playerNumber.ToString());
-		_data.Append ("%");
-		_data.Append (Metwork.player.connectionID.ToString());
-		_data.Append ("%");
-		_data.Append (viewID);
-		_data.Append ("%");
-		_data.Append (_function);
-		_data.Append ("%");
-		_data.Append ((int)MRPCMode.Player);
-		_data.Append ("%");
-		_data.Append (_args.Length);
-		_data.Append ("%");
+		//If the packet is going to a specific player, the MRPCMode will be set and the destination player will be used
+		//However, this will be covered in the other function
+		MemoryStream _data = new MemoryStream();
+		_data.Append(Metwork.BitGetBytes(_playerNumber));
+		_data.Append(Metwork.BitGetBytes(Metwork.player.connectionID));
+		_data.Append(Metwork.BitGetBytes(viewID));
+		_data.Append(Metwork.BitGetBytes((int)MRPCMode.Player));
+		_data.Append(Metwork.BitGetBytes(Encoding.UTF8.GetBytes(_function).Length));
+		_data.Append(Encoding.UTF8.GetBytes(_function));
+		_data.Append(Metwork.BitGetBytes(_args.Length));
+
 		for(int i = 0; i< _args.Length; i++){
 			int _typeNum = GetTypeNum(_args[i]);
-			_data.Append (_typeNum.ToString());
-			_data.Append ("%");
-			if(_typeNum == QUATERNION){
-				_data.Append(_args[i].ToString(true));
-			}else{
-				_data.Append (_args[i].ToString());
+			_data.Append (Metwork.BitGetBytes(_typeNum));
+			byte[] _objData;
+			if(_typeNum == VECTOR3){
+				_objData = _args[i].GetBytes(false);
 			}
-			_data.Append ("%");
+			else if(_typeNum == QUATERNION){
+				_objData = _args[i].GetBytes(true);
+			}
+			else if(_typeNum == BYTES){
+				_objData = (byte[])_args[i];
+			}
+			else{
+				//TODO: Fix;
+				_objData = GetBytes(_args[i], _typeNum);
+			}
+			_data.Append(Metwork.BitGetBytes(_objData.Length));
+			_data.Append(_objData);
 		}
-		_data.Append ("&&");
-		_data.Append ("%");
 
-		Metwork.SendData (_data.ToString (), MRPCMode.Player);
+		Metwork.SendData (_data.ToArray (), MRPCMode.Player);
 	}
 
 	/// <summary>
@@ -147,54 +152,56 @@ public class MetworkView : MonoBehaviour {
 	/// <param name="_args">Arguments</param>
 	public void RPC(string _function, MRPCMode _mode, params object[] _args ){
 		//The RPC data pack follows this format currently:
-		//0: DestinationNumber%
-		//1:SourceNumber%
-		//2: MetViewID%
-		//3: Function name%
-		//4: MRPCMode number%
-		//5: number of arguments%
-		//6: argType 1 number%
-		//7: arg1 value%
-		//8: argType 2 number%
-		//9: arg2 value %
-		//&&% (The finishing character)
+		//byte range: name (dataType)
+		//0-3: Destination Number (int)
+		//4-7: Source Number (int)
+		//8-11: Metview ID(int)
+		//12-15: MRPCMode (int)
+		//16-19: Function name length (int)
+		//20-20+n: Function name (utf8 string)
+		//something - something + 4: Number of arguments (int)
+		//After that it's
+		//4 bytes: argType number (int)
+		//4 bytes: arg Length in bytes (int)
+		//n bytes: argument (bytes)
 
 		//Here we determine the destination of the packet
 		//In the case of AllBuffered, All, Others and OthersBuffered, the playernumber of the player the message originates from will be sent
 		int _playerNumber = Metwork.player.connectionID;
+		//TODO: Fix Endianness
 
 		//If the packet is going to a specific player, the MRPCMode will be set and the destination player will be used
 		//However, this will be covered in the other function
+		MemoryStream _data = new MemoryStream();
+		_data.Append(Metwork.BitGetBytes(_playerNumber));
+		_data.Append(Metwork.BitGetBytes(Metwork.player.connectionID));
+		_data.Append(Metwork.BitGetBytes(viewID));
+		_data.Append(Metwork.BitGetBytes((int)_mode));
+		_data.Append(Metwork.BitGetBytes(Encoding.UTF8.GetBytes(_function).Length));
+		_data.Append(Encoding.UTF8.GetBytes(_function));
+		_data.Append(Metwork.BitGetBytes(_args.Length));
 
-		StringBuilder _data = new StringBuilder ("");
-		_data.Append (_playerNumber.ToString());
-		_data.Append ("%");
-		_data.Append (Metwork.player.connectionID.ToString());
-		_data.Append ("%");
-		_data.Append (viewID);
-		_data.Append ("%");
-		_data.Append (_function);
-		_data.Append ("%");
-		_data.Append ((int)_mode);
-		_data.Append ("%");
-		_data.Append (_args.Length);
-		_data.Append ("%");
 		for(int i = 0; i< _args.Length; i++){
 			int _typeNum = GetTypeNum(_args[i]);
-			_data.Append (_typeNum.ToString());
-			_data.Append ("%");
-			if(_typeNum == QUATERNION){
-				_data.Append(_args[i].ToString(true));
+			_data.Append (Metwork.BitGetBytes(_typeNum));
+			byte[] _objData;
+			if(_typeNum == VECTOR3){
+				_objData = _args[i].GetBytes(false);
+			}
+			else if(_typeNum == QUATERNION){
+				_objData = _args[i].GetBytes(true);
+			}
+			else if(_typeNum == BYTES){				
+				_objData = (byte[])_args[i];
 			}
 			else{
-			_data.Append (_args[i].ToString());
+				//TODO: Fix;
+				_objData = GetBytes(_args[i], _typeNum);
 			}
-			_data.Append ("%");
+			_data.Append(Metwork.BitGetBytes(_objData.Length));
+			_data.Append(_objData);
 		}
-		_data.Append ("&&");
-		_data.Append ("%");
-
-		Metwork.SendData (_data.ToString (), _mode);
+		Metwork.SendData (_data.ToArray (), _mode);
 
 		//The send can't send itself messages, so we'll do this manually
 		if(Metwork.isServer){
@@ -204,7 +211,7 @@ public class MetworkView : MonoBehaviour {
 
 
 					//Invoke the RPC
-				this.RecieveRPC (_data.ToString().Split(new char[]{'%'},StringSplitOptions.RemoveEmptyEntries));
+				this.RecieveRPC (_data.ToArray());
 					
 					
 					break;
@@ -215,35 +222,42 @@ public class MetworkView : MonoBehaviour {
 	/// <summary>
 	/// Internal use only
 	/// </summary>
-	public void RecieveRPC(string[] _data){
+	public void RecieveRPC(byte[] _data){
 		//The RPC data pack follows this format currently:
-		//0: DestinationNumber%
-		//1:SourceNumber%
-		//2: MetViewID%
-		//3: Function name%
-		//4: MRPCMode number%
-		//5: number of arguments%
-		//6: argType 1 number%
-		//7: arg1 value%
-		//8: argType 2 number%
-		//9: arg2 value %
-		//&&% (The finishing character)
-
-		//Split the payload into segments
-		//string[] _data = _message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries);
+		//byte range: name (dataType)
+		//0-3: Destination Number (int)
+		//4-7: Source Number (int)
+		//8-11: Metview ID(int)
+		//12-15: MRPCMode (int)
+		//16-19: Function name length (int)
+		//20-20+n: Function name (utf8 string)
+		//something - something + 4: Number of arguments (int)
+		//After that it's
+		//4 bytes: argType number (int)
+		//4 bytes: arg Length in bytes (int)
+		//n bytes: argument (bytes)
 
 		//Debug.Log (_message);
+		int _functionNameLength = Metwork.TryToInt32(_data.Sub(16,4),0);
+		string _functionName = Encoding.UTF8.GetString(_data, 20, _functionNameLength);
+		
+		
 
 		bool _hasInvoked = false;
 		//How the fuck I invoke this method:
 		for(int i = 0; i< methods.Count; i++) {
-			if (methods[i].Name != _data [3]) {
+			if (methods[i].Name != _functionName) {
 				continue;
 			}
-			int _numArgs = int.Parse (_data [5]);
+			int _numArgs = Metwork.TryToInt32(_data.Sub(20 + _functionNameLength,4),0);
+			int bytePosition = 20 + _functionNameLength + 4;
 			object[] _arguments = new object[_numArgs];
+
 			for (int j = 0; j < _numArgs; j++) {
-				_arguments [j] = ConvertFromString (_data [7 + j * 2], _data [6 + j * 2]);
+				int _argLength = Metwork.TryToInt32(_data.Sub(bytePosition+4, 4),0);
+				//That should probably be 8
+				_arguments [j] = ConvertFromString (_data.Sub(bytePosition+8, _argLength),_data.Sub(bytePosition, 4));
+				bytePosition += 8 + _argLength;
 			}
 
 			methods[i].Invoke (scripts[i], _arguments);
@@ -252,7 +266,7 @@ public class MetworkView : MonoBehaviour {
 
 		if (!_hasInvoked) {
 			#if(UNITY_EDITOR || UNITY_EDITOR_64)
-			Debug.Log ("Function " + _data [3] + " does not exist");
+			Debug.Log ("Function " + _functionName + " does not exist");
 			#endif
 		}
 
@@ -272,6 +286,8 @@ public class MetworkView : MonoBehaviour {
 			return VECTOR3;
 		if (_object.GetType () == typeof(Quaternion))
 			return QUATERNION;
+		if(_object.GetType() == typeof(byte[]))
+			return BYTES;
 		
 		Debug.LogError ("Cannot use RPC with type: " + _object.GetType().ToString ());
 		return -1;
@@ -280,26 +296,26 @@ public class MetworkView : MonoBehaviour {
 
 	
 
-	object ConvertFromString(string _string, string _typeNum){
+	object ConvertFromString(byte[] _string, byte[] _typeNum){
 		//print (_typeNum);
-		int _type = int.Parse (_typeNum);
+		int _type = Metwork.TryToInt32(_typeNum,0);
 
 		switch (_type) {
 			case BOOL:
-				return bool.Parse (_string);
+				return BitConverter.ToBoolean(_string,0);
 			case STRING:
-				return _string;
+				return Encoding.UTF8.GetString(_string,0, _string.Length);
 			case INT:
-				return int.Parse (_string);
+				return Metwork.TryToInt32(_string,0);
 			case FLOAT:
-				return float.Parse (_string);
+				return Metwork.TryToSingle(_string,0);
 			case VECTOR3:
-				//Trim the brackets off the start and the end
-				string[] _components = _string.Split (new char[]{ ' ',',','(',')' }, StringSplitOptions.RemoveEmptyEntries);
-				return new Vector3 (float.Parse (_components [0]), float.Parse (_components [1]), float.Parse (_components [2]));
+				//Trim the brackets off the start and the en
+				return new Vector3 (Metwork.TryToSingle(_string.Sub(0,4),0), Metwork.TryToSingle(_string.Sub(4,4),0),Metwork.TryToSingle(_string.Sub(8,4),0));
 			case QUATERNION:
-				_components = _string.Split (new char[]{' ',',','(',')' }, StringSplitOptions.RemoveEmptyEntries);
-				return new Quaternion (float.Parse (_components [0]), float.Parse (_components [1]), float.Parse (_components [2]),float.Parse (_components [3]));
+				return new Quaternion (Metwork.TryToSingle(_string.Sub(0,4),0), Metwork.TryToSingle(_string.Sub(4,4),0),Metwork.TryToSingle(_string.Sub(8,4),0),Metwork.TryToSingle(_string.Sub(12,4),0) );
+			case BYTES:
+				return (byte[])_string;
 		}
 
 		return null;
@@ -311,92 +327,92 @@ public class MetworkView : MonoBehaviour {
 	/// Unpacks the message and returns the MetworkView viewID.
 	/// </summary>
 	/// <returns>View ID the message is for</returns>
-	public static int UnpackViewID(string _message){
+	public static int UnpackViewID(byte[] _buffer){
 		//The RPC data pack follows this format currently:
-		//0: DestinationNumber%
-		//1:SourceNumber%
-		//2: MetViewID%
-		//3: Function name%
-		//4: MRPCMode number%
-		//5: number of arguments%
-		//6: argType 1 number%
-		//7: arg1 value%
-		//8: argType 2 number%
-		//9: arg2 value %
-		//&&% (The finishing character)
+		//byte range: name (dataType)
+		//0-3: Destination Number (int)
+		//4-7: Source Number (int)
+		//8-11: Metview ID(int)
+		//12-15: MRPCMode (int)
+		//16-19: Function name length (int)
+		//20-20+n: Function name (utf8 string)
+		//something - something + 4: Number of arguments (int)
+		//After that it's
+		//4 bytes: argType number (int)
+		//4 bytes: arg Length in bytes (int)
+		//n bytes: argument (bytes)
 
-		//print (Split (_message, 2)[0].ToString());
-		//return (int)Split (_message, 2)[0];
-
-		//print (_message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries) [2]);
+		
 		//Return the first payload segment
-		return int.Parse(_message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries)[2]);
+		return Metwork.TryToInt32(_buffer.Sub(8,4),0);
 	}
 	/// <summary>
 	/// Unpacks the message and returns the MRPCMode.
 	/// </summary>
 	/// <returns>MRPCMode the message is sent as</returns>
-	public static MRPCMode UnpackMRPCMode(string _message){
+	public static MRPCMode UnpackMRPCMode(byte[] _buffer){
 		//The RPC data pack follows this format currently:
-		//0: DestinationNumber%
-		//1:SourceNumber%
-		//2: MetViewID%
-		//3: Function name%
-		//4: MRPCMode number%
-		//5: number of arguments%
-		//6: argType 1 number%
-		//7: arg1 value%
-		//8: argType 2 number%
-		//9: arg2 value %
-		//&&% (The finishing character)
+		//byte range: name (dataType)
+		//0-3: Destination Number (int)
+		//4-7: Source Number (int)
+		//8-11: Metview ID(int)
+		//12-15: MRPCMode (int)
+		//16-19: Function name length (int)
+		//20-20+n: Function name (utf8 string)
+		//something - something + 4: Number of arguments (int)
+		//After that it's
+		//4 bytes: argType number (int)
+		//4 bytes: arg Length in bytes (int)
+		//n bytes: argument (bytes)
 
-		//print (_message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries) [4]);
 		//Return the first payload segment
-		return (MRPCMode)int.Parse(_message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries)[4]);
+		return (MRPCMode)Metwork.TryToInt32(_buffer.Sub(12,4),0);
 	}
 	/// <summary>
 	/// Unpacks the message and returns the destination number
 	/// </summary>
 	/// <returns>The destination number of the message</returns>
-	public static int UnpackDestinationNumber(string _message){
+	public static int UnpackDestinationNumber(byte[] _buffer){
 		//The RPC data pack follows this format currently:
-		//0: DestinationNumber%
-		//1:SourceNumber%
-		//2: MetViewID%
-		//3: Function name%
-		//4: MRPCMode number%
-		//5: number of arguments%
-		//6: argType 1 number%
-		//7: arg1 value%
-		//8: argType 2 number%
-		//9: arg2 value %
-		//&&% (The finishing character)
+		//byte range: name (dataType)
+		//0-3: Destination Number (int)
+		//4-7: Source Number (int)
+		//8-11: Metview ID(int)
+		//12-15: MRPCMode (int)
+		//16-19: Function name length (int)
+		//20-20+n: Function name (utf8 string)
+		//something - something + 4: Number of arguments (int)
+		//After that it's
+		//4 bytes: argType number (int)
+		//4 bytes: arg Length in bytes (int)
+		//n bytes: argument (bytes)
 
-		//print (_message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries) [0]);
+
 		//Return the first payload segment
-		return int.Parse(_message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries)[0]);
+		return Metwork.TryToInt32(_buffer.Sub(0,4),0);
 	}
 	/// <summary>
 	/// Unpacks the message and returns the destination number
 	/// </summary>
 	/// <returns>The destination number of the message</returns>
-	public static int UnpackSourceNumber(string _message){
+	public static int UnpackSourceNumber(byte[] _buffer){
 		//The RPC data pack follows this format currently:
-		//0: DestinationNumber%
-		//1:SourceNumber%
-		//2: MetViewID%
-		//3: Function name%
-		//4: MRPCMode number%
-		//5: number of arguments%
-		//6: argType 1 number%
-		//7: arg1 value%
-		//8: argType 2 number%
-		//9: arg2 value %
-		//&&% (The finishing character)
+		//byte range: name (dataType)
+		//0-3: Destination Number (int)
+		//4-7: Source Number (int)
+		//8-11: Metview ID(int)
+		//12-15: MRPCMode (int)
+		//16-19: Function name length (int)
+		//20-20+n: Function name (utf8 string)
+		//something - something + 4: Number of arguments (int)
+		//After that it's
+		//4 bytes: argType number (int)
+		//4 bytes: arg Length in bytes (int)
+		//n bytes: argument (bytes)
 
-		//print (_message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries) [1]);
+
 		//Return the first payload segment
-		return int.Parse(_message.Split (new char[]{ '%' }, System.StringSplitOptions.RemoveEmptyEntries)[1]);
+		return Metwork.TryToInt32(_buffer.Sub(4,4),0);
 	}
 
 	public static byte[] Split(byte[] bytes, int segment){
@@ -429,6 +445,29 @@ public class MetworkView : MonoBehaviour {
 
 
 	}
+
+	public static byte[] GetBytes(object _data, int _typeNum){
+		switch (_typeNum){
+			case INT:
+				int  _int = (int) _data;
+				return Metwork.BitGetBytes(_int);
+			case STRING:
+				string  _string = (string) _data;
+				return Encoding.UTF8.GetBytes(_string);
+			case FLOAT:
+				float  _float = (float) _data;
+				return Metwork.BitGetBytes(_float);
+			case BOOL:
+				bool  _bool = (bool) _data;
+				return BitConverter.GetBytes(_bool);
+			case BYTES:
+				return (byte[])_data;
+			default:
+				Debug.Log("Could not Get bytes for data type: " + _typeNum.ToString());
+				return (byte[])_data;
+		}
+	}
+	
 	
 		
 }

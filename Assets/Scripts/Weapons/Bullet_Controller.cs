@@ -10,12 +10,14 @@ public class Bullet_Controller : MonoBehaviour {
 	public bool isExplosive = false;
 	public float explosionForce;
 	public GameObject blastSystem;
+	TrailRenderer trail;
 	public int fromID;
 Rigidbody rb;
 
 	// Use this for initialization
 	void OnEnable () {
-		//Invoke ("DisableBullet", range);
+		if(trail == null)
+			trail = this.GetComponent<TrailRenderer>();
 	}
 	
 
@@ -100,6 +102,8 @@ Rigidbody rb;
 		rb.velocity = Vector3.zero;
 		rb.angularVelocity = Vector3.zero;
 		rb.useGravity = false;
+		if(trail != null)
+			trail.Clear();
 	}
 
 }

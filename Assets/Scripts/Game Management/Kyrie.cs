@@ -13,7 +13,7 @@ public class Kyrie : Map_Manager
     {
         foreach( Player_Controller _player in players){
             
-            if(!_player.useGravity){
+            if(!_player.rb.useGravity){
                 //TODO: Update these
                 _player.airTime = 36000f;
                 _player.suffocationTime = 36000f;

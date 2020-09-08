@@ -34,6 +34,7 @@ public class Drive : MonoBehaviour {
 	}
 	public void Activate(GameObject _player)
 	{
+		print("activating");
 		anim = GetComponent<Animator>();
 
 		anim.SetBool("LightsOn", true);

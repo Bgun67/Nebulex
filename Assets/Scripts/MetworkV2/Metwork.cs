@@ -13,6 +13,7 @@ using Byn.Net;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using Byn.Common;
+using System.IO;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class MRPC :Attribute{}
@@ -89,12 +90,12 @@ public class MetworkPlayer{
 }
 
 
-public class Metwork:MonoBehaviour {
+public class Metwork : MonoBehaviour {
 	public static Metwork _instance;
 	public static bool isTransferringServer = false;
 
 	//Our fancy matching server (On OpenShift remember?) //wss://because-why-not.com:12777/chatapp
-	public static string uSignalingUrl = "ws://nebulex-server.herokuapp.com/chatapp";//"ws://sample-bean.herokuapp.com";//"ws://nebulex-nebulex.193b.starter-ca-central-1.openshiftapps.com/chatapp";//wss://because-why-not.com:12777/chatapp";
+	public static string uSignalingUrl = "wss://nebulex-server.herokuapp.com/chatapp";//"ws://sample-bean.herokuapp.com";//"ws://nebulex-nebulex.193b.starter-ca-central-1.openshiftapps.com/chatapp";//wss://because-why-not.com:12777/chatapp";
 
 	public static string uIceServer = "stun:stun.l.google.com:19302";
 	public static string uIceServerUser = "testuser13";
@@ -192,21 +193,19 @@ public class Metwork:MonoBehaviour {
 		public MRPCMode mode;
 		public int source;
 		public int destination;
-		public string[] segments;
-		public string msg;
+		public byte[] msg;
 
-		public BufferedMessage (int _viewID, MRPCMode _mode, int _destination,int _source,string[] _segments, string _msg){
+		public BufferedMessage (int _viewID, MRPCMode _mode, int _destination,int _source, byte[] _msg){
 			this.viewID = _viewID;
 			this.mode = _mode;
 			this.destination = _destination;
 			this.source = _source;
-			this.segments = _segments;
 			this.msg = _msg;
 		}
 	}
 
 	private List<BufferedMessage> reliableBuffer = new List<BufferedMessage>(10000);
-	private static Queue<string> reliableQueue = new Queue<string>(10000);
+	private static Queue<byte[]> reliableQueue = new Queue<byte[]>(10000);
 
 	/// <summary>
 	/// Will setup webrtc and create the Metwork object
@@ -586,20 +585,21 @@ public class Metwork:MonoBehaviour {
 
                             while(reliableQueue.Count > 1)
                             {
-                                string _msg = reliableQueue.Dequeue();
+								//TODO: Fix this
+                                byte[] _msg = reliableQueue.Dequeue();
 
-								string[] _msgSegments = _msg.Split (new char[]{ '%' }, StringSplitOptions.RemoveEmptyEntries);
-								_msgSegments [0] = _playerID.ToString ();
-								_msgSegments[4] = ((int)MRPCMode.Player).ToString();
-                                
-								_msg = "";
-								for (int i = 0; i < _msgSegments.Length; i++) {
-									_msg += _msgSegments [i] + "%";
-								}
-								_msg += "&&%";
+								byte[] _tmp = BitGetBytes(_playerID);
+								_msg[0] = _tmp[0];
+								_msg[1] = _tmp[1];
+								_msg[2] = _tmp[2];
+								_msg[3] = _tmp[3];
 
-                                
-                                
+								 _tmp = BitGetBytes((int)MRPCMode.Player);
+								_msg[12] = _tmp[0];
+								_msg[13] = _tmp[1];
+								_msg[14] = _tmp[2];
+								_msg[15] = _tmp[3];                              
+                                                                
                                 SendData(_msg, MRPCMode.Player);
                             }
 
@@ -687,37 +687,45 @@ public class Metwork:MonoBehaviour {
 
 	private static void HandleIncommingMessage(ref NetworkEvent evt)
 	{
-		MessageDataBuffer buffer = (MessageDataBuffer)evt.MessageData;
+		MessageDataBuffer mdb = (MessageDataBuffer)evt.MessageData;
 
-		string msg = Encoding.UTF8.GetString(buffer.Buffer, 0, buffer.ContentLength);
+		
+
+		//string msg = Encoding.UTF8.GetString(buffer.Buffer, 0, buffer.ContentLength);
+		byte[] buffer = mdb.Buffer;
 
 		//The RPC data pack follows this format currently:
-		//0: DestinationNumber%
-		//1:SourceNumber%
-		//2: MetViewID%
-		//3: Function name%
-		//4: MRPCMode number%
-		//5: number of arguments%
-		//6: argType 1 number%
-		//7: arg1 value%
-		//8: argType 2 number%
-		//9: arg2 value %
-		//&&% (The finishing character)
-		string[] _segments = msg.Split(new char[]{'%'}, StringSplitOptions.RemoveEmptyEntries);
-
-		//print (msg);
+		//byte range: name (dataType)
+		//0-3: Destination Number (int)
+		//4-7: Source Number (int)
+		//8-11: Metview ID(int)
+		//12-15: MRPCMode (int)
+		//16-19: Function name length (int)
+		//20-20+n: Function name (utf8 string)
+		//something - something + 4: Number of arguments (int)
+		//After that it's
+		//4 bytes: argType number (int)
+		//4 bytes: arg Length in bytes (int)
+		//n bytes: argument (bytes)
 
 		//Find the correct MetworkView to apply the RPC
-		int _viewID = int.Parse(_segments[2]);
+		//TODO: this may not exist, see other todo, try printing it out to see if the metview ID matches
+		//Otherwise check the player metView IDs
+		int _viewID = TryToInt32(buffer.Sub(8,4),0);//_segments[2]);
+
 		//Unpack the MRPCMode
-		MRPCMode _mode = (MRPCMode) int.Parse(_segments[4]);
+		MRPCMode _mode = (MRPCMode) TryToInt32(buffer.Sub(12,4),0);
 		//Unpack the destination number
-		int _destination = int.Parse(_segments[0]);
+		int _destination = TryToInt32(buffer.Sub(0,4),0);
+		if(Time.time % 10 == 0){
+			Debug.Log("Destination: " + _destination);
+			Debug.Log("Player ConnectionID: " + player.connectionID);
+		}
 		//Unpack the source number
-		int _source = int.Parse(_segments[1]);
+		int _source = TryToInt32(buffer.Sub(4,4),0);
 
 		if (!Metwork.metViews.ContainsKey (_viewID)) {
-			Metwork._instance.reliableBuffer.Add (new BufferedMessage (_viewID, _mode, _destination, _source, _segments, msg));
+			Metwork._instance.reliableBuffer.Add (new BufferedMessage (_viewID, _mode, _destination, _source,  buffer));
 		}
 
 		//Debug.Log ("Handling incoming message: " + msg);
@@ -727,21 +735,21 @@ public class Metwork:MonoBehaviour {
 		if (pIsServer)
 		{
 			//we use the server side connection id to identify the client
-			string idAndMessage = msg; // evt.ConnectionId + ":" + 
+			//string idAndMessage = msg; // evt.ConnectionId + ":" + 
 			//SendString(idAndMessage);
-			Append(idAndMessage);
+			//Append(idAndMessage);
 
 			switch (_mode) {
 			case MRPCMode.All:
 					//Forward the message and recieve it
 					//If we sent the message, don't forward it
 					//if (_source != 0) {
-				SendData (msg, _mode);
+				SendData (buffer, _mode);
 					//}
 					
 					//Invoke the RPC
 				if (Metwork.metViews.ContainsKey (_viewID)) {
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (buffer);
 				}
 										
 					break;
@@ -749,14 +757,14 @@ public class Metwork:MonoBehaviour {
 					//Forward the message and recieve it
 					//If we sent the message, don't forward it
 					
-				SendData (msg, _mode);
+				SendData (buffer, _mode);
 
                     //Store the message for any new players
-                    reliableQueue.Enqueue(msg);
+                    reliableQueue.Enqueue(buffer);
 
 					//Invoke the RPC
 				if (Metwork.metViews.ContainsKey (_viewID)) {
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (buffer);
 				}
 
 					break;
@@ -764,12 +772,12 @@ public class Metwork:MonoBehaviour {
 					//Forward the data
 					//If we sent the message, don't forward it
 					//if (_source != 0) {
-						SendData (msg, _mode);
+						SendData (buffer, _mode);
 					//}
 					//If the origin was this player, do NOT recieve
 					if (_destination != 0) {
 					if (Metwork.metViews.ContainsKey (_viewID)) {
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (buffer);
 					}
 						
 
@@ -779,17 +787,17 @@ public class Metwork:MonoBehaviour {
 					//Forward the data
 					//If we sent the message, don't forward it
 					//if (_source != 0) {
-						SendData (msg, _mode);
+						SendData (buffer, _mode);
 
                     //Store the message for any new players
-                    reliableQueue.Enqueue(msg);
+                    reliableQueue.Enqueue(buffer);
                     //}
                     //If the origin was this player, do NOT recieve
                     if (_destination != 0) {
 						
 						//Invoke the RPC
 					if (Metwork.metViews.ContainsKey (_viewID)) {
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (buffer);
 					}
 																	
 
@@ -799,14 +807,14 @@ public class Metwork:MonoBehaviour {
 					//Forward the data
 					//If we sent the message, don't forward it
 					//if (_source != 0) {
-						SendData (msg, _mode);
+						SendData (buffer, _mode);
 					//}
 					//If the destination was this player, recieve the msg
 					if (_destination == 0) {
 						
 						//Invoke the RPC
 					if (Metwork.metViews.ContainsKey (_viewID)) {
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (buffer);
 					}
 
 
@@ -817,7 +825,7 @@ public class Metwork:MonoBehaviour {
 					
 					//Invoke the RPC
 				if (Metwork.metViews.ContainsKey (_viewID)) {
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (buffer);
 				}
 							
 					break;
@@ -833,9 +841,9 @@ public class Metwork:MonoBehaviour {
 				//Recieve the msg
 				try {
 					//Invoke the RPC
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (buffer);
 				} catch {
-					Debug.LogError ("Unable to invoke msg: " + msg);
+					Debug.LogError ("Unable to invoke msg: ");// + msg);
 				}
 				break;
 			case MRPCMode.AllBuffered:
@@ -844,7 +852,7 @@ public class Metwork:MonoBehaviour {
 				//metViews [_viewID].RecieveRPC (_segments);
 				//try {
 					//Invoke the RPC
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (buffer);
 				//} catch {
 				//	Debug.Log ("Metviews Count: " + metViews.Count);
 				//	Debug.Log ("ViewID: " + _viewID);
@@ -856,7 +864,7 @@ public class Metwork:MonoBehaviour {
 				if (_destination != player.connectionID) {
 					try {
 						//Invoke the RPC
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (buffer);
 					} catch {
 						//Debug.LogError ("Unable to invoke msg: " + msg);
 					}
@@ -868,9 +876,9 @@ public class Metwork:MonoBehaviour {
 				if (_destination != player.connectionID) {
 					try {
 						//Invoke the RPC
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (buffer);
 					} catch {
-						Debug.LogError ("Unable to invoke msg: " + msg);
+						Debug.LogError ("Unable to invoke msg: ");// + msg);
 					}
 
 				}
@@ -880,9 +888,9 @@ public class Metwork:MonoBehaviour {
 				if (_destination == player.connectionID) {
 					try {
 						//Invoke the RPC
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (buffer);
 					} catch {
-						Debug.LogError ("Unable to invoke msg: " + msg);
+					//	Debug.LogError ("Unable to invoke msg: ");// + msg);
 					}
 
 				}
@@ -902,15 +910,11 @@ public class Metwork:MonoBehaviour {
 		}
 
 		//return the buffer so the Metwork can reuse it
-		buffer.Dispose();
+		mdb.Dispose();
 	}
 
 	private static void HandleIncommingMessage(BufferedMessage bMsg)
 	{
-		
-
-
-
 		//Find the correct MetworkView to apply the RPC
 		int _viewID = bMsg.viewID;
 		//Unpack the MRPCMode
@@ -920,11 +924,8 @@ public class Metwork:MonoBehaviour {
 		//Unpack the source number
 		int _source = bMsg.source;
 
-		string[] _segments = bMsg.segments;
-		string msg = bMsg.msg;
-
 		if (!Metwork.metViews.ContainsKey (_viewID)) {
-			Metwork._instance.reliableBuffer.Add (new BufferedMessage (_viewID, _mode, _destination, _source, _segments, msg));
+			Metwork._instance.reliableBuffer.Add (new BufferedMessage (_viewID, _mode, _destination, _source, bMsg.msg));
 		}
 
 
@@ -935,23 +936,23 @@ public class Metwork:MonoBehaviour {
 		if (pIsServer)
 		{
 			//we use the server side connection id to identify the client
-			string idAndMessage = msg; // evt.ConnectionId + ":" + 
+			//string idAndMessage = msg; // evt.ConnectionId + ":" + 
 			//SendString(idAndMessage);
-			Append(idAndMessage);
+			//Append(idAndMessage);
 
 			switch (_mode) {
 			case MRPCMode.All:
 				
 
 				//Invoke the RPC
-				metViews [_viewID].RecieveRPC (_segments);
+				metViews [_viewID].RecieveRPC (bMsg.msg);
 
 				break;
 			case MRPCMode.AllBuffered:
 				
 
 				//Invoke the RPC
-				metViews [_viewID].RecieveRPC (_segments);
+				metViews [_viewID].RecieveRPC (bMsg.msg);
 
 				break;
 			case MRPCMode.Others:
@@ -959,7 +960,7 @@ public class Metwork:MonoBehaviour {
 				//If the origin was this player, do NOT recieve
 				if (_destination != 0) {
 
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (bMsg.msg);
 
 
 				}
@@ -970,7 +971,7 @@ public class Metwork:MonoBehaviour {
 				if (_destination != 0) {
 
 					//Invoke the RPC
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (bMsg.msg);
 
 
 				}
@@ -981,7 +982,7 @@ public class Metwork:MonoBehaviour {
 				if (_destination == 0) {
 
 					//Invoke the RPC
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (bMsg.msg);
 
 
 				}
@@ -990,7 +991,7 @@ public class Metwork:MonoBehaviour {
 				//Recieve the message (we are the server)
 
 				//Invoke the RPC
-				metViews [_viewID].RecieveRPC (_segments);
+				metViews [_viewID].RecieveRPC (bMsg.msg);
 
 				break;
 			default:
@@ -1005,9 +1006,9 @@ public class Metwork:MonoBehaviour {
 				//Recieve the msg
 				try {
 					//Invoke the RPC
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (bMsg.msg);
 				} catch {
-					Debug.LogError ("Unable to invoke msg: " + msg);
+					Debug.LogError ("Unable to invoke msg: ");// + msg);
 				}
 				break;
 			case MRPCMode.AllBuffered:
@@ -1016,11 +1017,11 @@ public class Metwork:MonoBehaviour {
 				//metViews [_viewID].RecieveRPC (_segments);
 				try {
 					//Invoke the RPC
-					metViews [_viewID].RecieveRPC (_segments);
+					metViews [_viewID].RecieveRPC (bMsg.msg);
 				} catch {
 					Debug.Log ("Metviews Count: " + metViews.Count);
 					Debug.Log ("ViewID: " + _viewID);
-					Debug.LogError ("Unable to invoke msg: " + msg);
+					Debug.LogError ("Unable to invoke msg: ");// + msg);
 				}
 				break;
 			case MRPCMode.Others:
@@ -1028,7 +1029,7 @@ public class Metwork:MonoBehaviour {
 				if (_destination != player.connectionID) {
 					try {
 						//Invoke the RPC
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (bMsg.msg);
 					} catch {
 						//Debug.LogError ("Unable to invoke msg: " + msg);
 					}
@@ -1040,9 +1041,9 @@ public class Metwork:MonoBehaviour {
 				if (_destination != player.connectionID) {
 					try {
 						//Invoke the RPC
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (bMsg.msg);
 					} catch {
-						Debug.LogError ("Unable to invoke msg: " + msg);
+						Debug.LogError ("Unable to invoke msg: ");// + msg);
 					}
 
 				}
@@ -1052,9 +1053,9 @@ public class Metwork:MonoBehaviour {
 				if (_destination == player.connectionID) {
 					try {
 						//Invoke the RPC
-						metViews [_viewID].RecieveRPC (_segments);
+						metViews [_viewID].RecieveRPC (bMsg.msg);
 					} catch {
-						Debug.LogError ("Unable to invoke msg: " + msg);
+						Debug.LogError ("Unable to invoke msg: ");// + msg);
 					}
 
 				}
@@ -1103,7 +1104,7 @@ public class Metwork:MonoBehaviour {
 	/// </summary>
 	/// <param name="msg">String containing the data to send</param>
 	/// <param name="_mode">How to send the data</param>
-	public static void SendData(string msg, MRPCMode _mode)
+	public static void SendData(byte[] msg, MRPCMode _mode)
 	{
 		if (mMetwork == null || mConnections.Count == 0)
 		{
@@ -1115,18 +1116,18 @@ public class Metwork:MonoBehaviour {
 			switch (_mode){
 				case MRPCMode.All:
 				case MRPCMode.Others:
-					msgData = Encoding.UTF8.GetBytes (msg);
+					
 					for (int i = 0; i < mConnections.Count; i++) {
-						mMetwork.SendData (mConnections[i], msgData, 0, msgData.Length, false);
+						mMetwork.SendData (mConnections[i], msg, 0, msg.Length, false);
 					}
 					break;
 				case MRPCMode.OthersBuffered:
 				case MRPCMode.AllBuffered:
 				case MRPCMode.Player:
 				case MRPCMode.Server:
-					msgData = Encoding.UTF8.GetBytes (msg);
+					
 					for (int i = 0; i < mConnections.Count; i++) {
-						mMetwork.SendData (mConnections[i], msgData, 0, msgData.Length, true);
+						mMetwork.SendData (mConnections[i], msg, 0, msg.Length, true);
 					}
 					break;
 				default:
@@ -1318,7 +1319,63 @@ public class Metwork:MonoBehaviour {
 		
 	}
 
+	
 
 	
 	#endregion
+
+	public static int TryToInt32(byte[] _bytes, int _index){
+		if(_bytes.Length != 4){
+			Debug.Log("Wrong number of bytes converting Int32");
+			return 0;
+		}
+		if(BitConverter.IsLittleEndian){
+			Array.Reverse(_bytes);
+		}
+		return BitConverter.ToInt32(_bytes,_index);
+	}
+	public static float TryToSingle(byte[] _bytes, int _index){
+		if(_bytes.Length != 4){
+			Debug.Log("Wrong number of bytes converting single, got: " + _bytes.Length.ToString() + " expected: " + sizeof(float));
+			return 0;
+		}
+		if(BitConverter.IsLittleEndian){
+			Array.Reverse(_bytes);
+		}
+		return BitConverter.ToSingle(_bytes,_index);
+	}
+	public static byte[] BitGetBytes(int _value){
+		
+		byte[] _bytes = BitConverter.GetBytes(_value);
+		if(BitConverter.IsLittleEndian){
+			Array.Reverse(_bytes);
+		}
+		return _bytes;
+	}
+	public static byte[] BitGetBytes(float _value){
+		
+		byte[] _bytes = BitConverter.GetBytes(_value);
+		if(BitConverter.IsLittleEndian){
+			Array.Reverse(_bytes);
+		}
+		return _bytes;
+	}
+}
+
+public static class ExtensionMethods{
+	public static T[] Sub<T>(this T[] _data, int _startIndex, int _length){
+		T[] _result = new T[_length];
+		Array.Copy(_data, _startIndex, _result, 0, _length);
+    	return _result;
+	} 
+	public static void Append(this MemoryStream stream, byte value)
+    {
+        stream.Append(new[] { value });
+    }
+
+    public static void Append(this MemoryStream stream, byte[] values)
+    {
+        stream.Write(values, 0, values.Length);
+    }
+	
 }

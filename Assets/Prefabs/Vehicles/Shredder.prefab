@@ -5299,6 +5299,8 @@ GameObject:
   - component: {fileID: 6917874473628185441}
   - component: {fileID: 2530025815721161191}
   - component: {fileID: 6700130319162490612}
+  - component: {fileID: 8738461916780640623}
+  - component: {fileID: 8738071950000473367}
   m_Layer: 0
   m_Name: Shredder
   m_TagString: Untagged
@@ -5690,6 +5692,46 @@ MonoBehaviour:
   impactDamageFactor: -1
   damageThreshold: 0
   netObj: {fileID: 0}
+--- !u!114 &8738461916780640623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818775966775253199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewID: 60000
+--- !u!114 &8738071950000473367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818775966775253199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcf06763714ae049b53c3a709b19882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actualPosition: {x: 0, y: 0, z: 0}
+  isLocal: 0
+  netID: 60000
+  owner: 0
+  rb: {fileID: 0}
+  netView: {fileID: 8738461916780640623}
+  rotationLerp: 0.2
+  snapLerp: 0.2
+  lerpRate: 20
+  snapDistance: 0
+  velocitySnapDist: 0.5
+  rotForceFactor: 30
+  velocityLerp: 0.2
+  sendRate: 15
+  isTwoPlane: 0
 --- !u!1 &4818775966775253201
 GameObject:
   m_ObjectHideFlags: 0

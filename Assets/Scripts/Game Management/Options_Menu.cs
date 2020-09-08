@@ -36,7 +36,7 @@ public class Options_Menu : MonoBehaviour {
 		AudioListener.volume = float.Parse(optionsInfo[0]);
 		MInput.useMouse = (optionsInfo[1] == "True");
 		MInput.sensitivity = float.Parse(optionsInfo[2]);
-		QualitySettings.SetQualityLevel(int.Parse(optionsInfo[3]));
+		//QualitySettings.SetQualityLevel(int.Parse(optionsInfo[3]));
 		if (optionsInfo[4] == "True")
 		{
 			Screen.fullScreenMode = FullScreenMode.FullScreenWindow;//ExclusiveFullScreen;
@@ -125,11 +125,11 @@ public class Options_Menu : MonoBehaviour {
 		string[] names = QualitySettings.names;
 		if (QualitySettings.GetQualityLevel() < names.Length-1)
 		{
-			QualitySettings.IncreaseLevel(true);
+			//QualitySettings.IncreaseLevel(true);
 		}
 		else
 		{
-			QualitySettings.SetQualityLevel(0);
+			//QualitySettings.SetQualityLevel(0);
 		}
 		UpdateQualityText();
 		SaveData();

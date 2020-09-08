@@ -71,7 +71,7 @@ public class LadderController : MonoBehaviour {
 				player.inVehicle = true;
 				player.onLadder = true;
 				player.ladder = this;
-				player.useGravity = false;
+				player.rb.useGravity = false;
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
 					player.GetComponent<MetworkView> ().RPC ("RPC_ClimbLadder", MRPCMode.AllBuffered, new object[]{ });
 				} else {
@@ -118,7 +118,7 @@ public class LadderController : MonoBehaviour {
 
 		_player.inVehicle = false;
 
-		_player.useGravity = true;
+		_player.rb.useGravity = true;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			player.GetComponent<MetworkView> ().RPC ("RPC_LeaveLadder", MRPCMode.AllBuffered, new object[]{ });
 		} else {
