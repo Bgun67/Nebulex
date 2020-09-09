@@ -147,10 +147,13 @@ public class Damage : MonoBehaviour {
 			//From ID of 65 is a bot
 			if ((gameController.statsArray[fromID].team == gameController.statsArray[thisID].team) && !overrideTeam)
 			{
+				
 				return;
 			}
 			if(this.gameObject == gameController.localPlayer){
+				
 				UI_Manager.GetInstance.UpdateHitDirection(_hitDirection, this.transform);
+				GlobalSound.HurtSound();
 			}
 			
 		}
@@ -239,6 +242,7 @@ public class Damage : MonoBehaviour {
 		{
 			if (fromID != 0)
 			{
+				GlobalSound.SendRemoteSound(GlobalSound.JukeBox.HitEnemy, fromID);
 				assistArray[fromID] += damageAmount;
 			}
 		}
