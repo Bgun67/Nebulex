@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274497311065008}
   m_LocalRotation: {x: -0.031817522, y: -0.00770907, z: -0.031673394, w: 0.998962}
-  m_LocalPosition: {x: -0.75833124, y: 0.08641214, z: -0.021082567}
+  m_LocalPosition: {x: -0.026247015, y: 0.10762826, z: 0.72031724}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4555555215612494}
@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360750746239572}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7180888, y: 0.14578383, z: -0.75440043}
+  m_LocalPosition: {x: 0.014, y: 0.167, z: -0.013}
   m_LocalScale: {x: 0.4285485, y: 0.4285484, z: 0.4285484}
   m_Children: []
   m_Father: {fileID: 4555555215612494}
@@ -155,7 +155,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565418576223526}
   m_LocalRotation: {x: -0.7223793, y: 0.39809844, z: 0.3299908, w: 0.45912078}
-  m_LocalPosition: {x: -0.7243636, y: -0.0028918432, z: -0.777946}
+  m_LocalPosition: {x: 0.0077205985, y: 0.018324282, z: -0.036546096}
   m_LocalScale: {x: 0.99999976, y: 1, z: 0.99999994}
   m_Children: []
   m_Father: {fileID: 4555555215612494}
@@ -232,7 +232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1586936629837550}
   m_LocalRotation: {x: -0.025813576, y: -0.0087587675, z: -0.049791604, w: 0.99838763}
-  m_LocalPosition: {x: -0.74700373, y: 0.08799995, z: -0.031001583}
+  m_LocalPosition: {x: -0.01491951, y: 0.10921607, z: 0.7103983}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4467599483552278}
@@ -4998,6 +4998,7 @@ Transform:
   - {fileID: 4893021308517778}
   - {fileID: 4212418953722512}
   - {fileID: 4718596372042736}
+  - {fileID: 1313016542506554109}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5033,6 +5034,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpawn: {fileID: 4886952805170746}
+  rhTarget: {fileID: 0}
+  lhTarget: {fileID: 1313016542506554109}
   reloadTime: 3
   fireRate: 700
   magSize: 32
@@ -5178,3 +5181,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewID: -1
+--- !u!1 &6030712896637106093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1313016542506554109}
+  m_Layer: 0
+  m_Name: LH Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1313016542506554109
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6030712896637106093}
+  m_LocalRotation: {x: -0.99973077, y: -0, z: -0, w: -0.02320481}
+  m_LocalPosition: {x: 0, y: 0, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4555555215612494}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: -182.659, y: 0, z: 0}

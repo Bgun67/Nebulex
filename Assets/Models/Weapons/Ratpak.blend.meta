@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 1aacbda0d2430a146938fbc80062a117
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Cube
     100002: Cube_000
@@ -10,6 +10,10 @@ ModelImporter:
     100008: //RootNode
     100010: Cube_002
     100012: Cylinder
+    100014: Cube.000
+    100016: Cube.001
+    100018: Cube.002
+    100020: Cube.066
     400000: Cube
     400002: Cube_000
     400004: Cube_001
@@ -17,31 +21,53 @@ ModelImporter:
     400008: //RootNode
     400010: Cube_002
     400012: Cylinder
+    400014: Cube.000
+    400016: Cube.001
+    400018: Cube.002
+    400020: Cube.066
     2100000: SRR-227
     2100002: SRR-227__M4_texture_jpg
     2100004: gun_001__ao5_png
     2100006: SRR-227_001__M4_texture_jpg_001
     2100008: SRR-227__Ratpack_Albedo_jpg
     2100010: unnamed
+    2100012: No Name
+    2100014: gun.001
+    2100016: SRR-227.001
     2300000: Cube
     2300002: Cube_000
     2300004: Cube_001
     2300006: Cube_066
     2300008: Cube_002
     2300010: Cylinder
+    2300012: Cube.000
+    2300014: Cube.001
+    2300016: Cube.002
+    2300018: Cube.066
     3300000: Cube
     3300002: Cube_000
     3300004: Cube_001
     3300006: Cube_066
     3300008: Cube_002
     3300010: Cylinder
+    3300012: Cube.000
+    3300014: Cube.001
+    3300016: Cube.002
+    3300018: Cube.066
     4300000: Cube
     4300002: Cube_001
     4300004: Cube_000
     4300006: Cube_066
     4300008: Cylinder
     4300010: Cube_002
+    4300012: Cube.002
+    4300014: Cube.001
+    4300016: Cube.000
+    4300018: Cube.066
     7400000: Default Take
+    7400002: Cube.001|Walk
+    7400004: Cube.000|Walk
+    7400006: Cube.066|Walk.001
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -77,6 +103,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 1
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -94,11 +121,16 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -113,7 +145,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

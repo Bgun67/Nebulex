@@ -120,7 +120,7 @@ public class MInput : MonoBehaviour {
 
 		default:
 			Debug.LogError ("MInput: " + _axisName + " does not exist!");
-			return false;
+			return Input.GetButton(_axisName);
 		}
 
 	}
@@ -146,7 +146,7 @@ public class MInput : MonoBehaviour {
 
 		default:
 			Debug.LogError ("MInput: " + _axisName + " does not exist!");
-			return false;
+			return Input.GetButtonDown(_axisName);
 		}
 
 	}

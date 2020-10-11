@@ -12,6 +12,13 @@ ModelImporter:
     100012: Cylinder_002
     100014: //RootNode
     100016: Cylinder_001
+    100018: Cube.000
+    100020: Cube.001
+    100022: Cube.002
+    100024: Cube.003
+    100026: Cylinder.001
+    100028: Cylinder.002
+    100030: Sun
     400000: Cube
     400002: Cube_000
     400004: Cube_001
@@ -21,6 +28,13 @@ ModelImporter:
     400012: Cylinder_002
     400014: //RootNode
     400016: Cylinder_001
+    400018: Cube.000
+    400020: Cube.001
+    400022: Cube.002
+    400024: Cube.003
+    400026: Cylinder.001
+    400028: Cylinder.002
+    400030: Sun
     2300000: Cube
     2300002: Cube_000
     2300004: Cube_001
@@ -29,6 +43,12 @@ ModelImporter:
     2300010: Cylinder
     2300012: Cylinder_002
     2300014: Cylinder_001
+    2300016: Cube.000
+    2300018: Cube.001
+    2300020: Cube.002
+    2300022: Cube.003
+    2300024: Cylinder.001
+    2300026: Cylinder.002
     3300000: Cube
     3300002: Cube_000
     3300004: Cube_001
@@ -37,6 +57,12 @@ ModelImporter:
     3300010: Cylinder
     3300012: Cylinder_002
     3300014: Cylinder_001
+    3300016: Cube.000
+    3300018: Cube.001
+    3300020: Cube.002
+    3300022: Cube.003
+    3300024: Cylinder.001
+    3300026: Cylinder.002
     4300000: Cube_003
     4300002: Cube_002
     4300004: Cube
@@ -45,10 +71,103 @@ ModelImporter:
     4300010: Cube_000
     4300012: Cylinder
     4300014: Cylinder_001
+    4300016: Cylinder.001
+    4300018: Cube.003
+    4300020: Cube.002
+    4300022: Cylinder.002
+    4300024: Cube.001
+    4300026: Cube.000
     7400000: Default Take
+    7400002: Cylinder.001|Cube.000Action
+    7400004: Cylinder.001|Cube.001Action
+    7400006: Cylinder.001|Cube.002Action
+    7400008: Cylinder.001|Cube.003Action
+    7400010: Cylinder.001|CubeAction
+    7400012: Cylinder.001|Cylinder.001Action
+    7400014: Cylinder.001|Cylinder.002Action
+    7400016: Cylinder.001|CylinderAction
+    7400018: Cylinder.001|SunAction
+    7400020: Sun|Cube.000Action
+    7400022: Sun|Cube.001Action
+    7400024: Sun|Cube.002Action
+    7400026: Sun|Cube.003Action
+    7400028: Sun|CubeAction
+    7400030: Sun|Cylinder.001Action
+    7400032: Sun|Cylinder.002Action
+    7400034: Sun|CylinderAction
+    7400036: Sun|SunAction
+    7400038: Cube.003|Cube.000Action
+    7400040: Cube.003|Cube.001Action
+    7400042: Cube.003|Cube.002Action
+    7400044: Cube.003|Cube.003Action
+    7400046: Cube.003|CubeAction
+    7400048: Cube.003|Cylinder.001Action
+    7400050: Cube.003|Cylinder.002Action
+    7400052: Cube.003|CylinderAction
+    7400054: Cube.003|SunAction
+    7400056: Cube.002|Cube.000Action
+    7400058: Cube.002|Cube.001Action
+    7400060: Cube.002|Cube.002Action
+    7400062: Cube.002|Cube.003Action
+    7400064: Cube.002|CubeAction
+    7400066: Cube.002|Cylinder.001Action
+    7400068: Cube.002|Cylinder.002Action
+    7400070: Cube.002|CylinderAction
+    7400072: Cube.002|SunAction
+    7400074: Cube|Cube.000Action
+    7400076: Cube|Cube.001Action
+    7400078: Cube|Cube.002Action
+    7400080: Cube|Cube.003Action
+    7400082: Cube|CubeAction
+    7400084: Cube|Cylinder.001Action
+    7400086: Cube|Cylinder.002Action
+    7400088: Cube|CylinderAction
+    7400090: Cube|SunAction
+    7400092: Cylinder.002|Cube.000Action
+    7400094: Cylinder.002|Cube.001Action
+    7400096: Cylinder.002|Cube.002Action
+    7400098: Cylinder.002|Cube.003Action
+    7400100: Cylinder.002|CubeAction
+    7400102: Cylinder.002|Cylinder.001Action
+    7400104: Cylinder.002|Cylinder.002Action
+    7400106: Cylinder.002|CylinderAction
+    7400108: Cylinder.002|SunAction
+    7400110: Cube.001|Cube.000Action
+    7400112: Cube.001|Cube.001Action
+    7400114: Cube.001|Cube.002Action
+    7400116: Cube.001|Cube.003Action
+    7400118: Cube.001|CubeAction
+    7400120: Cube.001|Cylinder.001Action
+    7400122: Cube.001|Cylinder.002Action
+    7400124: Cube.001|CylinderAction
+    7400126: Cube.001|SunAction
+    7400128: Cube.000|Cube.000Action
+    7400130: Cube.000|Cube.001Action
+    7400132: Cube.000|Cube.002Action
+    7400134: Cube.000|Cube.003Action
+    7400136: Cube.000|CubeAction
+    7400138: Cube.000|Cylinder.001Action
+    7400140: Cube.000|Cylinder.002Action
+    7400142: Cube.000|CylinderAction
+    7400144: Cube.000|SunAction
+    7400146: Cylinder|Cube.000Action
+    7400148: Cylinder|Cube.001Action
+    7400150: Cylinder|Cube.002Action
+    7400152: Cylinder|Cube.003Action
+    7400154: Cylinder|CubeAction
+    7400156: Cylinder|Cylinder.001Action
+    7400158: Cylinder|Cylinder.002Action
+    7400160: Cylinder|CylinderAction
+    7400162: Cylinder|SunAction
     9500000: //RootNode
+    10800000: Sun
     2186277476908879412: ImportLogs
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FN_Grip
+    second: {fileID: 2100000, guid: 14769e7df35dfb54fb79b801df01ec29, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -57,8 +176,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: FN_Hammer
+    second: {fileID: 2100000, guid: ae715f6e6c9e6e74991e54f5c60821d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: FN_Hammer__Glock_17C_cropped_jpg
     second: {fileID: 2100000, guid: 2f021b572f302b841834d22c7098e1b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FN_Sight
+    second: {fileID: 2100000, guid: 051df055840ddbc4ebacc9b8d66ad775, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -68,7 +197,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Fn_Slide
-    second: {fileID: 2100000, guid: 2f021b572f302b841834d22c7098e1b9, type: 2}
+    second: {fileID: 2100000, guid: 56aefea8d397dc14186b925e6cc3daa9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -79,6 +208,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Grey_Barrel
     second: {fileID: 2100000, guid: 661fc931f6458f34e92b639b36421cfe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 3abe6cbfb4642db4cb76fda56d986880, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -122,6 +256,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -140,12 +275,15 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
     previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -160,7 +298,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

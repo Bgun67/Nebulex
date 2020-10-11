@@ -14,7 +14,7 @@ public class Metwork_Transfrom : MonoBehaviour
 	public bool isLocal;
 	[Tooltip("Which player owns this object?")]
 	public int owner;
-
+	[HideInInspector]
 	public MetworkView netView;
 	//Metwork_Manager manager;
 

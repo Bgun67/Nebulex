@@ -41,6 +41,13 @@ public class UDBox : MonoBehaviour
         textBox.text = options[optionIndex];
         InvokeMethod();
     }
+    ///Set index will NOT invoke the attached method
+    public int index{
+        set{
+            optionIndex = value;
+            textBox.text = options[optionIndex];
+        }
+    }
 
     void InvokeMethod(){
         // this is to turn off the value and call set in the editor

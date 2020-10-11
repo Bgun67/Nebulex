@@ -35,6 +35,7 @@ public class Com_Controller : MonoBehaviour {
 	public Damage damageScript;
 	Player_Controller[] players;
 	Com_Controller[] bots;
+	const int NUM_BOTS = 16;
 	public TargetPlayer targetPlayer;
 	Transform currentCover;
 
@@ -43,6 +44,7 @@ public class Com_Controller : MonoBehaviour {
 	[Range(0f,1f)]
 	public float lockOnRate = 0.4f;
 	public Transform head;
+	public Transform rightHandPosition;
 	public BotState botState;
     NavMeshAgent agent;
 
@@ -164,6 +166,9 @@ public class Com_Controller : MonoBehaviour {
 		if((Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer) && Time.frameCount % 13 == 0){
 			CheckState();
 		}
+
+		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;
+		this.GetComponent<Player_IK>().lhTarget = fireScript.lhTarget;
 		fireScript.playerID = botID;
 
 		int localTeam = gameController.GetLocalTeam();
@@ -207,7 +212,7 @@ public class Com_Controller : MonoBehaviour {
 		}
 
 		
-		if((Time.frameCount + botID) % 50 == 0 && (lastSpaceDestination - spaceDestination).magnitude > 5f){
+		if(Time.frameCount % NUM_BOTS == botID-65 && (lastSpaceDestination - spaceDestination).magnitude > 5f){
 			Nav_Volume_Builder._instance.FindRoute(this.transform.position, spaceDestination);
 			lastSpaceDestination = spaceDestination;
 			//Perform Deep copy

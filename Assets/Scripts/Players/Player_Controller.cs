@@ -15,6 +15,12 @@ public class Player_Controller : MonoBehaviour {
 	public Animator anim;
 
 	public LayerMask magBootsLayer;
+	//Access to the left and right foot data
+	[HideInInspector]
+	public RaycastHit lfHit;
+	[HideInInspector]
+	public RaycastHit rfHit;
+
 	Vector3 previousNormal = new Vector3(0,1,0);
 	public bool onLadder = false;
 	public float forceFactor;
@@ -122,6 +128,7 @@ public class Player_Controller : MonoBehaviour {
 	public Fire fireScript;
 	public string[] loadoutSettings;
 	public Transform finger;
+	public Transform rightHandPosition;
 	public GameObject magGO;
 	public bool primarySelected = true;
 	[Header("Primary")]
@@ -286,6 +293,10 @@ public class Player_Controller : MonoBehaviour {
 	// Update is called once per frame
 	//was update
 	void Update () {
+		//Gather Raycast data from under the left and right feet
+		Physics.Raycast(footRaycast.transform.position - footRaycast.transform.right * 0.2f, -footRaycast.transform.up,out lfHit,1f,magBootsLayer,QueryTriggerInteraction.Ignore);
+		Physics.Raycast(footRaycast.transform.position + footRaycast.transform.right * 0.2f, -footRaycast.transform.up,out rfHit,1f,magBootsLayer,QueryTriggerInteraction.Ignore);
+		
 
 		//Play thruster sounds
 		//TODO: Modify this so that we can hear other players on rotation
@@ -642,7 +653,7 @@ public class Player_Controller : MonoBehaviour {
 			return;
 		}
 		
-		if(MInput.GetButton ("Left Trigger")){
+		if(MInput.GetButton ("Ctrl")){
 			//If we are scoped, drop the grenade beside us
 			_dropGrenadeFactor = 0.05f;
 		}
@@ -652,6 +663,7 @@ public class Player_Controller : MonoBehaviour {
 		Destroy (_grenade.gameObject, 20f);
 
 		_grenade.AddForce (mainCam.transform.forward * 400f * _dropGrenadeFactor);
+		
 
 		int _grenadeView = 0;
 
@@ -992,7 +1004,7 @@ public class Player_Controller : MonoBehaviour {
 			mainCam.fieldOfView = Mathf.Lerp(i,10f,0.5f);
 		}else
 		{
-			mainCam.fieldOfView = Mathf.Lerp(i, 60f, 0.5f);
+			mainCam.fieldOfView = Mathf.Lerp(i, 90f, 0.5f);
 		}
 	}
 	[MRPC]
@@ -1116,7 +1128,7 @@ public class Player_Controller : MonoBehaviour {
 			rb.AddRelativeForce(h * Time.deltaTime * forceFactor* strafeFactor * 40f, z * Time.deltaTime * forceFactor * 40f, v * Time.deltaTime * forceFactor * 40f);
 			
 		}
-
+		anim.SetBool("Float", true);
 		bool _magBootsLock = false;
 
 		//Raycast down to find ground to lock on to
@@ -1309,6 +1321,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 		inVehicle = false;
 		//player.rb.isKinematic = false;
+		//TODO: This may suffer an IEnumerator problem
 		ExitGravity();
 		CapsuleCollider[] capsules = GetComponents<CapsuleCollider>();
 		capsules[0].enabled = true;
@@ -1435,7 +1448,7 @@ public class Player_Controller : MonoBehaviour {
 	#region Region2
 	public void Die(){
 		if(throwingGrenade){
-			SpawnGrenade();
+			SpawnGrenade(0.25f);
 		}
 		//sceneCam.enabled = true;
 		if(Metwork.peerType  != MetworkPeerType.Disconnected){
@@ -1647,6 +1660,8 @@ public class Player_Controller : MonoBehaviour {
 
 		anim.Play ("Aim" + fireScript.aimAnimNumber, 3);
 		anim.Play (recoilString, 2, 0f);
+		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;
+		this.GetComponent<Player_IK>().lhTarget = fireScript.lhTarget;
 
 
 	}

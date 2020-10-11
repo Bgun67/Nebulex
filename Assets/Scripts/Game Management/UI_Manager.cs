@@ -148,7 +148,7 @@ public class UI_Manager : MonoBehaviour
 		isPaused = true;
 		Cursor.lockState = CursorLockMode.None;
 		UI_Manager._instance.pauseMenu.gameObject.SetActive(true);
-		UI_Manager._instance.pauseMenu.Pause(this.gameObject);
+		UI_Manager._instance.pauseMenu.Pause();
 	}
 	public void Resume()
 	{

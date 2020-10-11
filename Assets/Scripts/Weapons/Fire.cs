@@ -14,6 +14,8 @@ public class Fire : MonoBehaviour {
 	[Header("Gun Info")]
 	float fireDelay;
 	public Transform shotSpawn;
+	public Transform rhTarget;
+	public Transform lhTarget;
 	public float reloadTime;
 	[Tooltip("Rounds Per Minute")]
 	public float fireRate;

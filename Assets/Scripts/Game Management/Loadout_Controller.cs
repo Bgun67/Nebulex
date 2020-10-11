@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class Loadout_Controller : MonoBehaviour {
-	public static Dictionary<string, Vector3> gunLocalPositions = new Dictionary<string,Vector3>()
+	/*public static Dictionary<string, Vector3> gunLocalPositions = new Dictionary<string,Vector3>()
 	{
 		{"SRR-3", new Vector3(2.285f,-1.224f,3.107f)}, //new Vector3(-0.067f,0.241f,-0.22f)
 		{"Oynix-93", new Vector3(-0.207f,0.222f,0.417f)},
@@ -51,6 +51,52 @@ public class Loadout_Controller : MonoBehaviour {
 
 
 		{"SIT", new Vector3(11.55f,-9.26f,-7.1f)}
+	};*/
+	public static Dictionary<string, Vector3> gunLocalPositions = new Dictionary<string,Vector3>()
+	{
+		{"SRR-3", Vector3.zero}, //new Vector3(-0.067f,0.241f,-0.22f)
+		{"Oynix-93", Vector3.zero},
+		{"Ratpak", Vector3.zero},//new Vector3(-0.149f,0.161f,0.301f)
+		{"NTO-MSQ0", Vector3.zero},
+		{"Biron",Vector3.zero},
+
+
+		{"FN-227", Vector3.zero},
+		{"Q-338", Vector3.zero},
+		//{"Q-338", new Vector3(0f,0.11f,-0.09f)},
+
+		{"Thunderstroke", Vector3.zero},
+		{"ATX-Heavy", Vector3.zero},
+
+		{"MT0A3", Vector3.zero},
+
+
+		{"SIT", Vector3.zero}
+
+
+	};
+	public static Dictionary<string, Vector3> gunLocalRotations = new Dictionary<string,Vector3>()
+	{
+		{"SRR-3", Vector3.zero}, //new Vector3(168.4f,263.9f,196.296f)
+		{"Oynix-93", Vector3.zero},
+		{"Ratpak", Vector3.zero},//new Vector3(6.4f,79.98f,15.4f)
+		{"NTO-MSQ0", Vector3.zero},
+		{"Biron", Vector3.zero},
+
+
+
+		{"FN-227", Vector3.zero},
+		{"Q-338", Vector3.zero},
+		//{"Q-338", new Vector3(9.92f,77.481f,59.078f)},
+		
+
+		{"Thunderstroke", Vector3.zero},
+		{"ATX-Heavy", Vector3.zero},
+
+		{"MT0A3", Vector3.zero},
+
+
+		{"SIT", Vector3.zero}
 	};
 
 

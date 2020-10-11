@@ -1,0 +1,2983 @@
+fileFormatVersion: 2
+guid: 439763b79ac363a41a485cc82e15c7f2
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: breast.L
+    100004: breast.L_end
+    100006: breast.R
+    100008: breast.R_end
+    100010: clavicle.L
+    100012: clavicle.R
+    100014: eye.L
+    100016: eye.L_end
+    100018: eye.R
+    100020: eye.R_end
+    100022: finger1-1.L
+    100024: finger1-1.R
+    100026: finger1-2.L
+    100028: finger1-2.R
+    100030: finger1-3.L
+    100032: finger1-3.L_end
+    100034: finger1-3.R
+    100036: finger1-3.R_end
+    100038: finger2-1.L
+    100040: finger2-1.R
+    100042: finger2-2.L
+    100044: finger2-2.R
+    100046: finger2-3.L
+    100048: finger2-3.L_end
+    100050: finger2-3.R
+    100052: finger2-3.R_end
+    100054: finger3-1.L
+    100056: finger3-1.R
+    100058: finger3-2.L
+    100060: finger3-2.R
+    100062: finger3-3.L
+    100064: finger3-3.L_end
+    100066: finger3-3.R
+    100068: finger3-3.R_end
+    100070: finger4-1.L
+    100072: finger4-1.R
+    100074: finger4-2.L
+    100076: finger4-2.R
+    100078: finger4-3.L
+    100080: finger4-3.L_end
+    100082: finger4-3.R
+    100084: finger4-3.R_end
+    100086: finger5-1.L
+    100088: finger5-1.R
+    100090: finger5-2.L
+    100092: finger5-2.R
+    100094: finger5-3.L
+    100096: finger5-3.L_end
+    100098: finger5-3.R
+    100100: finger5-3.R_end
+    100102: foot.L
+    100104: foot.R
+    100106: head
+    100108: jaw
+    100110: levator02.L
+    100112: levator02.R
+    100114: levator03.L
+    100116: levator03.R
+    100118: levator04.L
+    100120: levator04.R
+    100122: levator05.L
+    100124: levator05.L_end
+    100126: levator05.R
+    100128: levator05.R_end
+    100130: levator06.L
+    100132: levator06.L_end
+    100134: levator06.R
+    100136: levator06.R_end
+    100138: lowerarm01.L
+    100140: lowerarm01.R
+    100142: lowerarm02.L
+    100144: lowerarm02.R
+    100146: lowerleg01.L
+    100148: lowerleg01.R
+    100150: lowerleg02.L
+    100152: lowerleg02.R
+    100154: metacarpal1.L
+    100156: metacarpal1.R
+    100158: metacarpal2.L
+    100160: metacarpal2.R
+    100162: metacarpal3.L
+    100164: metacarpal3.R
+    100166: metacarpal4.L
+    100168: metacarpal4.R
+    100170: neck01
+    100172: neck02
+    100174: neck03
+    100176: oculi01.L
+    100178: oculi01.L_end
+    100180: oculi01.R
+    100182: oculi01.R_end
+    100184: oculi02.L
+    100186: oculi02.R
+    100188: orbicularis03.L
+    100190: orbicularis03.L_end
+    100192: orbicularis03.R
+    100194: orbicularis03.R_end
+    100196: orbicularis04.L
+    100198: orbicularis04.L_end
+    100200: orbicularis04.R
+    100202: orbicularis04.R_end
+    100204: oris01
+    100206: oris01_end
+    100208: oris02
+    100210: oris03.L
+    100212: oris03.L_end
+    100214: oris03.R
+    100216: oris03.R_end
+    100218: oris04.L
+    100220: oris04.R
+    100222: oris05
+    100224: oris05_end
+    100226: oris06
+    100228: oris06.L
+    100230: oris06.R
+    100232: oris07.L
+    100234: oris07.L_end
+    100236: oris07.R
+    100238: oris07.R_end
+    100240: pelvis.L
+    100242: pelvis.R
+    100244: risorius02.L
+    100246: risorius02.R
+    100248: risorius03.L
+    100250: risorius03.L_end
+    100252: risorius03.R
+    100254: risorius03.R_end
+    100256: root
+    100258: shoulder01.L
+    100260: shoulder01.R
+    100262: special01
+    100264: special03
+    100266: special04
+    100268: special05.L
+    100270: special05.R
+    100272: special06.L
+    100274: special06.R
+    100276: spine01
+    100278: spine02
+    100280: spine03
+    100282: spine04
+    100284: spine05
+    100286: temporalis01.L
+    100288: temporalis01.R
+    100290: temporalis02.L
+    100292: temporalis02.R
+    100294: toe1-1.L
+    100296: toe1-1.L_end
+    100298: toe1-1.R
+    100300: toe1-1.R_end
+    100302: tongue00
+    100304: tongue01
+    100306: tongue02
+    100308: tongue03
+    100310: tongue04
+    100312: tongue04_end
+    100314: tongue05.L
+    100316: tongue05.L_end
+    100318: tongue05.R
+    100320: tongue05.R_end
+    100322: tongue06.L
+    100324: tongue06.L_end
+    100326: tongue06.R
+    100328: tongue06.R_end
+    100330: tongue07.L
+    100332: tongue07.L_end
+    100334: tongue07.R
+    100336: tongue07.R_end
+    100338: upperarm01.L
+    100340: upperarm01.R
+    100342: upperarm02.L
+    100344: upperarm02.R
+    100346: upperleg01.L
+    100348: upperleg01.R
+    100350: upperleg02.L
+    100352: upperleg02.R
+    100354: wrist.L
+    100356: wrist.R
+    100358: Hannah_Grives_Fatigues
+    400000: //RootNode
+    400002: breast.L
+    400004: breast.L_end
+    400006: breast.R
+    400008: breast.R_end
+    400010: clavicle.L
+    400012: clavicle.R
+    400014: eye.L
+    400016: eye.L_end
+    400018: eye.R
+    400020: eye.R_end
+    400022: finger1-1.L
+    400024: finger1-1.R
+    400026: finger1-2.L
+    400028: finger1-2.R
+    400030: finger1-3.L
+    400032: finger1-3.L_end
+    400034: finger1-3.R
+    400036: finger1-3.R_end
+    400038: finger2-1.L
+    400040: finger2-1.R
+    400042: finger2-2.L
+    400044: finger2-2.R
+    400046: finger2-3.L
+    400048: finger2-3.L_end
+    400050: finger2-3.R
+    400052: finger2-3.R_end
+    400054: finger3-1.L
+    400056: finger3-1.R
+    400058: finger3-2.L
+    400060: finger3-2.R
+    400062: finger3-3.L
+    400064: finger3-3.L_end
+    400066: finger3-3.R
+    400068: finger3-3.R_end
+    400070: finger4-1.L
+    400072: finger4-1.R
+    400074: finger4-2.L
+    400076: finger4-2.R
+    400078: finger4-3.L
+    400080: finger4-3.L_end
+    400082: finger4-3.R
+    400084: finger4-3.R_end
+    400086: finger5-1.L
+    400088: finger5-1.R
+    400090: finger5-2.L
+    400092: finger5-2.R
+    400094: finger5-3.L
+    400096: finger5-3.L_end
+    400098: finger5-3.R
+    400100: finger5-3.R_end
+    400102: foot.L
+    400104: foot.R
+    400106: head
+    400108: jaw
+    400110: levator02.L
+    400112: levator02.R
+    400114: levator03.L
+    400116: levator03.R
+    400118: levator04.L
+    400120: levator04.R
+    400122: levator05.L
+    400124: levator05.L_end
+    400126: levator05.R
+    400128: levator05.R_end
+    400130: levator06.L
+    400132: levator06.L_end
+    400134: levator06.R
+    400136: levator06.R_end
+    400138: lowerarm01.L
+    400140: lowerarm01.R
+    400142: lowerarm02.L
+    400144: lowerarm02.R
+    400146: lowerleg01.L
+    400148: lowerleg01.R
+    400150: lowerleg02.L
+    400152: lowerleg02.R
+    400154: metacarpal1.L
+    400156: metacarpal1.R
+    400158: metacarpal2.L
+    400160: metacarpal2.R
+    400162: metacarpal3.L
+    400164: metacarpal3.R
+    400166: metacarpal4.L
+    400168: metacarpal4.R
+    400170: neck01
+    400172: neck02
+    400174: neck03
+    400176: oculi01.L
+    400178: oculi01.L_end
+    400180: oculi01.R
+    400182: oculi01.R_end
+    400184: oculi02.L
+    400186: oculi02.R
+    400188: orbicularis03.L
+    400190: orbicularis03.L_end
+    400192: orbicularis03.R
+    400194: orbicularis03.R_end
+    400196: orbicularis04.L
+    400198: orbicularis04.L_end
+    400200: orbicularis04.R
+    400202: orbicularis04.R_end
+    400204: oris01
+    400206: oris01_end
+    400208: oris02
+    400210: oris03.L
+    400212: oris03.L_end
+    400214: oris03.R
+    400216: oris03.R_end
+    400218: oris04.L
+    400220: oris04.R
+    400222: oris05
+    400224: oris05_end
+    400226: oris06
+    400228: oris06.L
+    400230: oris06.R
+    400232: oris07.L
+    400234: oris07.L_end
+    400236: oris07.R
+    400238: oris07.R_end
+    400240: pelvis.L
+    400242: pelvis.R
+    400244: risorius02.L
+    400246: risorius02.R
+    400248: risorius03.L
+    400250: risorius03.L_end
+    400252: risorius03.R
+    400254: risorius03.R_end
+    400256: root
+    400258: shoulder01.L
+    400260: shoulder01.R
+    400262: special01
+    400264: special03
+    400266: special04
+    400268: special05.L
+    400270: special05.R
+    400272: special06.L
+    400274: special06.R
+    400276: spine01
+    400278: spine02
+    400280: spine03
+    400282: spine04
+    400284: spine05
+    400286: temporalis01.L
+    400288: temporalis01.R
+    400290: temporalis02.L
+    400292: temporalis02.R
+    400294: toe1-1.L
+    400296: toe1-1.L_end
+    400298: toe1-1.R
+    400300: toe1-1.R_end
+    400302: tongue00
+    400304: tongue01
+    400306: tongue02
+    400308: tongue03
+    400310: tongue04
+    400312: tongue04_end
+    400314: tongue05.L
+    400316: tongue05.L_end
+    400318: tongue05.R
+    400320: tongue05.R_end
+    400322: tongue06.L
+    400324: tongue06.L_end
+    400326: tongue06.R
+    400328: tongue06.R_end
+    400330: tongue07.L
+    400332: tongue07.L_end
+    400334: tongue07.R
+    400336: tongue07.R_end
+    400338: upperarm01.L
+    400340: upperarm01.R
+    400342: upperarm02.L
+    400344: upperarm02.R
+    400346: upperleg01.L
+    400348: upperleg01.R
+    400350: upperleg02.L
+    400352: upperleg02.R
+    400354: wrist.L
+    400356: wrist.R
+    400358: Hannah_Grives_Fatigues
+    7400000: Look Up/Down
+    7400002: Look Up/Down.001
+    7400004: Hannah_Grives_Fatigues|Hannah_Grives_FatiguesAction
+    7400006: Hannah_Grives_Fatigues|Look Up/Down
+    7400008: Float
+    7400010: Close Mouth
+    7400012: Close Mouth.002
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: "\nClip 'Float' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'upperleg02.L' is inbetween humanoid transforms and
+      has rotation animation that will be discarded.\n\t'lowerleg02.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'upperleg02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'lowerleg02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'Hannah_Grives_Fatigues|Float' has import animation warnings that might lower
+      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
+      quality.\n\t'upperleg02.L' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\t'lowerleg02.L' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'upperleg02.R' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'lowerleg02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'Hannah_Grives_Fatigues|Look Up/Down' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'spine01' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n"
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Hannah_Grives_Fatigues|Look Up/Down
+      takeName: Hannah_Grives_Fatigues|Look Up/Down
+      firstFrame: 0
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 00000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Hannah_Grives_Fatigues
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L/toe1-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L/toe1-1.L/toe1-1.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/pelvis.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R/toe1-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R/toe1-1.R/toe1-1.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.L/breast.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.R/breast.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L/finger1-3.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L/finger1-3.L/finger1-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L/finger2-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L/finger2-3.L/finger2-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L/finger3-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L/finger3-3.L/finger3-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L/finger4-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L/finger4-3.L/finger4-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L/finger5-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L/finger5-3.L/finger5-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R/finger1-3.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R/finger1-3.R/finger1-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R/finger2-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R/finger2-3.R/finger2-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R/finger3-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R/finger3-3.R/finger3-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R/finger4-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R/finger4-3.R/finger4-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R/finger5-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R/finger5-3.R/finger5-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02/oris01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02/oris01/oris01_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L/oris07.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L/oris07.L/oris07.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R/oris07.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R/oris07.R/oris07.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue04
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue04/tongue04_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.L/tongue07.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.R/tongue07.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.L/tongue06.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.R/tongue06.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.L/tongue05.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.R/tongue05.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L/levator05.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L/levator05.L/levator05.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R/levator05.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R/levator05.R/levator05.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L/oris03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L/oris03.L/oris03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R/oris03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R/oris03.R/oris03.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06/oris05
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06/oris05/oris05_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.L/levator06.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.R/levator06.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/eye.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/eye.L/eye.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis03.L/orbicularis03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis04.L/orbicularis04.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/eye.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/eye.R/eye.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis03.R/orbicularis03.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis04.R/orbicularis04.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L/oculi01.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L/oculi01.L/oculi01.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R/oculi01.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R/oculi01.R/oculi01.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L/risorius03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L/risorius03.L/risorius03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R/risorius03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R/risorius03.R/risorius03.R_end
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Float
+      takeName: Float
+      firstFrame: 0
+      lastFrame: 200
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Hannah_Grives_Fatigues
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L/toe1-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L/toe1-1.L/toe1-1.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/pelvis.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R/toe1-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R/toe1-1.R/toe1-1.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.L/breast.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.R/breast.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L/finger1-3.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L/finger1-3.L/finger1-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L/finger2-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L/finger2-3.L/finger2-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L/finger3-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L/finger3-3.L/finger3-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L/finger4-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L/finger4-3.L/finger4-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L/finger5-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L/finger5-3.L/finger5-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R/finger1-3.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R/finger1-3.R/finger1-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R/finger2-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R/finger2-3.R/finger2-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R/finger3-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R/finger3-3.R/finger3-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R/finger4-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R/finger4-3.R/finger4-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R/finger5-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R/finger5-3.R/finger5-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02/oris01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02/oris01/oris01_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L/oris07.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L/oris07.L/oris07.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R/oris07.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R/oris07.R/oris07.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue04
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue04/tongue04_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.L/tongue07.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.R/tongue07.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.L/tongue06.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.R/tongue06.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.L/tongue05.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.R/tongue05.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L/levator05.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L/levator05.L/levator05.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R/levator05.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R/levator05.R/levator05.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L/oris03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L/oris03.L/oris03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R/oris03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R/oris03.R/oris03.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06/oris05
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06/oris05/oris05_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.L/levator06.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.R/levator06.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/eye.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/eye.L/eye.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis03.L/orbicularis03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis04.L/orbicularis04.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/eye.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/eye.R/eye.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis03.R/orbicularis03.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis04.R/orbicularis04.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L/oculi01.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L/oculi01.L/oculi01.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R/oculi01.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R/oculi01.R/oculi01.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L/risorius03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L/risorius03.L/risorius03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R/risorius03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R/risorius03.R/risorius03.R_end
+        weight: 0
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Close Mouth.002
+      takeName: Close Mouth.002
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Hannah_Grives_Fatigues
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L/toe1-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.L/upperleg01.L/upperleg02.L/lowerleg01.L/lowerleg02.L/foot.L/toe1-1.L/toe1-1.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/pelvis.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R/toe1-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/pelvis.R/upperleg01.R/upperleg02.R/lowerleg01.R/lowerleg02.R/foot.R/toe1-1.R/toe1-1.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.L/breast.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/breast.R/breast.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L/finger1-3.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/finger1-1.L/finger1-2.L/finger1-3.L/finger1-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L/finger2-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal1.L/finger2-1.L/finger2-2.L/finger2-3.L/finger2-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L/finger3-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal2.L/finger3-1.L/finger3-2.L/finger3-3.L/finger3-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L/finger4-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal3.L/finger4-1.L/finger4-2.L/finger4-3.L/finger4-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L/finger5-3.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.L/shoulder01.L/upperarm01.L/upperarm02.L/lowerarm01.L/lowerarm02.L/wrist.L/metacarpal4.L/finger5-1.L/finger5-2.L/finger5-3.L/finger5-3.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R/finger1-3.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/finger1-1.R/finger1-2.R/finger1-3.R/finger1-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R/finger2-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal1.R/finger2-1.R/finger2-2.R/finger2-3.R/finger2-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R/finger3-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal2.R/finger3-1.R/finger3-2.R/finger3-3.R/finger3-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R/finger4-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal3.R/finger4-1.R/finger4-2.R/finger4-3.R/finger4-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R/finger5-3.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/clavicle.R/shoulder01.R/upperarm01.R/upperarm02.R/lowerarm01.R/lowerarm02.R/wrist.R/metacarpal4.R/finger5-1.R/finger5-2.R/finger5-3.R/finger5-3.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02/oris01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris02/oris01/oris01_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L/oris07.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.L/oris07.L/oris07.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R/oris07.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/special04/oris06.R/oris07.R/oris07.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue04
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue04/tongue04_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.L/tongue07.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue03/tongue07.R/tongue07.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.L/tongue06.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue02/tongue06.R/tongue06.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.L/tongue05.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/jaw/tongue00/tongue01/tongue05.R/tongue05.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L/levator05.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.L/levator03.L/levator04.L/levator05.L/levator05.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R/levator05.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/levator02.R/levator03.R/levator04.R/levator05.R/levator05.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L/oris03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.L/oris03.L/oris03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R/oris03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris04.R/oris03.R/oris03.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06/oris05
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special01/oris06/oris05/oris05_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.L/levator06.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special03/levator06.R/levator06.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/eye.L
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/eye.L/eye.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis03.L/orbicularis03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis04.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.L/special05.L/orbicularis04.L/orbicularis04.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/eye.R
+        weight: 1
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/eye.R/eye.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis03.R/orbicularis03.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis04.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/special06.R/special05.R/orbicularis04.R/orbicularis04.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L/oculi01.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.L/oculi02.L/oculi01.L/oculi01.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R/oculi01.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis01.R/oculi02.R/oculi01.R/oculi01.R_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L/risorius03.L
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.L/risorius02.L/risorius03.L/risorius03.L_end
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R/risorius03.R
+        weight: 0
+      - path: Hannah_Grives_Fatigues/root/spine05/spine04/spine03/spine02/spine01/neck01/neck02/neck03/head/temporalis02.R/risorius02.R/risorius03.R/risorius03.R_end
+        weight: 0
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human:
+    - boneName: root
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: upperleg01.L
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: upperleg01.R
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: lowerleg01.L
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: lowerleg01.R
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: foot.L
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: foot.R
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: spine04
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: spine03
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: neck02
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: clavicle.L
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: clavicle.R
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: upperarm01.L
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: upperarm01.R
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: lowerarm01.L
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: lowerarm01.R
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: wrist.L
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: wrist.R
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: toe1-1.L
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: toe1-1.R
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: eye.L
+      humanName: LeftEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: eye.R
+      humanName: RightEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: jaw
+      humanName: Jaw
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger1-1.L
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger1-2.L
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger1-3.L
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: metacarpal1.L
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger2-1.L
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger2-2.L
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: metacarpal2.L
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger3-1.L
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger3-2.L
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: metacarpal3.L
+      humanName: Left Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger4-1.L
+      humanName: Left Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger4-2.L
+      humanName: Left Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: metacarpal4.L
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger5-1.L
+      humanName: Left Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger5-2.L
+      humanName: Left Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger1-1.R
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger1-2.R
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger1-3.R
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: metacarpal1.R
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger2-1.R
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger2-2.R
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: metacarpal2.R
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger3-1.R
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger3-2.R
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: metacarpal3.R
+      humanName: Right Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger4-1.R
+      humanName: Right Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger4-2.R
+      humanName: Right Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: metacarpal4.R
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger5-1.R
+      humanName: Right Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: finger5-2.R
+      humanName: Right Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: spine02
+      humanName: UpperChest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Aim_Up_Down(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hannah_Grives_Fatigues
+      parentName: Aim_Up_Down(Clone)
+      position: {x: -0, y: 0.81489736, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: root
+      parentName: Hannah_Grives_Fatigues
+      position: {x: -0, y: 0.1345343, z: 0.1004229}
+      rotation: {x: 0.99776345, y: -0, z: 0, w: 0.06684354}
+      scale: {x: 1, y: 0.99999994, z: 0.9999861}
+    - name: pelvis.L
+      parentName: root
+      position: {x: -0, y: 0.081101835, z: 0.000000009778887}
+      rotation: {x: 0.003955988, y: 0.07399742, z: 0.72695845, w: 0.68267137}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
+    - name: upperleg01.L
+      parentName: pelvis.L
+      position: {x: -0.000000049360096, y: 0.10555397, z: 0.000000081025064}
+      rotation: {x: -0.46623635, y: 0.5353977, z: 0.5063421, w: -0.4894799}
+      scale: {x: 1.0000001, y: 0.99999994, z: 1}
+    - name: upperleg02.L
+      parentName: upperleg01.L
+      position: {x: -0.000000017345883, y: 0.0869637, z: -0.00000006891787}
+      rotation: {x: 0.09973235, y: 0.009964734, z: 0.041787494, w: 0.9940865}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: lowerleg01.L
+      parentName: upperleg02.L
+      position: {x: 0.00000016738795, y: 0.3604094, z: -0.00000008033385}
+      rotation: {x: 0.05056847, y: 0.0018117494, z: -0.0028241563, w: 0.998715}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: lowerleg02.L
+      parentName: lowerleg01.L
+      position: {x: -0.0000001246226, y: 0.20493601, z: -0.000000050640665}
+      rotation: {x: -0.000000011626982, y: -7.858035e-10, z: -3.2014216e-10, w: 1}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: foot.L
+      parentName: lowerleg02.L
+      position: {x: -0.000000021012966, y: 0.20493592, z: -0.00000014470425}
+      rotation: {x: -0.5455666, y: -0.022001538, z: 0.024328997, w: 0.8374253}
+      scale: {x: 0.99999994, y: 1, z: 0.9999999}
+    - name: toe1-1.L
+      parentName: foot.L
+      position: {x: 0.000000070547685, y: 0.12219792, z: -9.313226e-10}
+      rotation: {x: -0.29094076, y: -0.0038843697, z: 0.035158567, w: 0.956087}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+    - name: toe1-1.L_end
+      parentName: toe1-1.L
+      position: {x: -0, y: 0.07316735, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: pelvis.R
+      parentName: root
+      position: {x: -0, y: 0.081101835, z: 0.000000009778887}
+      rotation: {x: 0.003955988, y: -0.07399742, z: -0.72695845, w: 0.68267137}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
+    - name: upperleg01.R
+      parentName: pelvis.R
+      position: {x: 0.000000049360096, y: 0.10555397, z: 0.000000081025064}
+      rotation: {x: 0.46621573, y: 0.53541535, z: 0.50632375, w: 0.48949936}
+      scale: {x: 1, y: 1, z: 1}
+    - name: upperleg02.R
+      parentName: upperleg01.R
+      position: {x: -0.000000037718564, y: 0.08696264, z: -0.00000002561137}
+      rotation: {x: 0.09973306, y: -0.009962075, z: -0.041740224, w: 0.9940885}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: lowerleg01.R
+      parentName: upperleg02.R
+      position: {x: 0.000000056132194, y: 0.3604099, z: -0.00000006026676}
+      rotation: {x: 0.050568454, y: -0.0018120902, z: 0.0028146685, w: 0.998715}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: lowerleg02.R
+      parentName: lowerleg01.R
+      position: {x: 0.00000012734381, y: 0.2049359, z: -0.000000039523}
+      rotation: {x: -0.00000049436863, y: 3.783498e-10, z: 4.3655748e-10, w: 1}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: foot.R
+      parentName: lowerleg02.R
+      position: {x: -0.00000008889765, y: 0.20493588, z: 0.000000068335794}
+      rotation: {x: -0.54556614, y: 0.022001518, z: -0.02432895, w: 0.8374256}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: toe1-1.R
+      parentName: foot.R
+      position: {x: 0.00000005477341, y: 0.122197844, z: -0.00000017881393}
+      rotation: {x: -0.29094058, y: 0.0038824216, z: -0.035158012, w: 0.95608705}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
+    - name: toe1-1.R_end
+      parentName: toe1-1.R
+      position: {x: -0, y: 0.07316744, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: spine05
+      parentName: root
+      position: {x: -0, y: 0.081101835, z: 0.000000009778887}
+      rotation: {x: -0.82548594, y: 0, z: -0, w: 0.5644227}
+      scale: {x: 1, y: 1, z: 1}
+    - name: spine04
+      parentName: spine05
+      position: {x: 0.0000000013963596, y: 0.082844175, z: 0.00000002561137}
+      rotation: {x: 0.36814296, y: -0, z: -0, w: 0.9297692}
+      scale: {x: 1, y: 1, z: 1}
+    - name: spine03
+      parentName: spine04
+      position: {x: 0.000000008230599, y: 0.073162615, z: -0.000000029802322}
+      rotation: {x: -0.10837531, y: 0, z: -0, w: 0.99411005}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: spine02
+      parentName: spine03
+      position: {x: 0.000000002098698, y: 0.0866296, z: 0.000000022351742}
+      rotation: {x: -0.06698248, y: 0.0004560224, z: 0.0067912675, w: 0.997731}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: breast.L
+      parentName: spine02
+      position: {x: 0.000000072745024, y: 0.17630999, z: 0.000000014461387}
+      rotation: {x: -0.15398279, y: 0.58218586, z: 0.76892483, w: 0.21471757}
+      scale: {x: 1.0000001, y: 1.0000004, z: 1.0000002}
+    - name: breast.L_end
+      parentName: breast.L
+      position: {x: -0, y: 0.21677756, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: breast.R
+      parentName: spine02
+      position: {x: 0.000000072745024, y: 0.17630999, z: 0.000000014461387}
+      rotation: {x: 0.1619973, y: 0.5800632, z: 0.7717547, w: -0.20415254}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: breast.R_end
+      parentName: breast.R
+      position: {x: -0, y: 0.21677756, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: spine01
+      parentName: spine02
+      position: {x: 0.00000007158087, y: 0.17630999, z: 0.0000000070108057}
+      rotation: {x: 0.12377899, y: -0.0008426204, z: -0.0067542037, w: 0.9922865}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: clavicle.L
+      parentName: spine01
+      position: {x: -0.026230402, y: 0.10018886, z: 0.0324839}
+      rotation: {x: -0.08720964, y: 0.06313725, z: 0.56848466, w: 0.8156184}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: shoulder01.L
+      parentName: clavicle.L
+      position: {x: -0.000000012340024, y: 0.08533682, z: 0.000000086118234}
+      rotation: {x: -0.04137621, y: -0.04324487, z: 0.3297378, w: 0.94217354}
+      scale: {x: 1, y: 0.99999994, z: 0.9999999}
+    - name: upperarm01.L
+      parentName: shoulder01.L
+      position: {x: -0.000000016589183, y: 0.06706885, z: -0.000000015832484}
+      rotation: {x: -0.0154303145, y: -0.010642192, z: -0.1291882, w: 0.991443}
+      scale: {x: 1, y: 0.9999999, z: 0.9999998}
+    - name: upperarm02.L
+      parentName: upperarm01.L
+      position: {x: -0.000000088941306, y: 0.07507133, z: 0.000000057742}
+      rotation: {x: 0.062159665, y: 0.06488681, z: -0.02517166, w: 0.99563664}
+      scale: {x: 1, y: 0.99999994, z: 1.0000001}
+    - name: lowerarm01.L
+      parentName: upperarm02.L
+      position: {x: 0.00000014854595, y: 0.18652429, z: -0.0000000721775}
+      rotation: {x: 0.008878371, y: 0.010124016, z: -0.016712693, w: 0.9997697}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: lowerarm02.L
+      parentName: lowerarm01.L
+      position: {x: -0.000000019092113, y: 0.11946148, z: -0.000000052154064}
+      rotation: {x: 0.00000001548324, y: -0.00000009614452, z: 0.0000000026193452,
+        w: 1}
+      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999999}
+    - name: wrist.L
+      parentName: lowerarm02.L
+      position: {x: -0.000000016298145, y: 0.1194615, z: -0.000000050175004}
+      rotation: {x: 0.08870009, y: 0.02118911, z: 0.06842627, w: 0.9934794}
+      scale: {x: 1, y: 0.99999976, z: 0.99999994}
+    - name: finger1-1.L
+      parentName: wrist.L
+      position: {x: -0.0038124411, y: 0.04048279, z: 0.02058839}
+      rotation: {x: -0.14048234, y: 0.9221811, z: 0.35915992, w: -0.029170942}
+      scale: {x: 1, y: 1.0000002, z: 0.99999994}
+    - name: finger1-2.L
+      parentName: finger1-1.L
+      position: {x: -0.000000061816536, y: 0.031379737, z: 0.000000084750354}
+      rotation: {x: 0.015749875, y: -0.37918538, z: 0.0063309683, w: 0.92516506}
+      scale: {x: 0.9999999, y: 1.0000001, z: 0.99999976}
+    - name: finger1-3.L
+      parentName: finger1-2.L
+      position: {x: -0.00000007584458, y: 0.036963917, z: 0.000000053434633}
+      rotation: {x: 0.025535539, y: -0.1362921, z: -0.026250796, w: 0.98999155}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: finger1-3.L_end
+      parentName: finger1-3.L
+      position: {x: -0, y: 0.028225744, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: metacarpal1.L
+      parentName: wrist.L
+      position: {x: -0.000000011641532, y: 0.03312978, z: 0.000000018626451}
+      rotation: {x: 0.04349076, y: -0.4934743, z: -0.068503916, w: 0.86596704}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: finger2-1.L
+      parentName: metacarpal1.L
+      position: {x: 0.00000010523945, y: 0.075908005, z: 0.00000008195639}
+      rotation: {x: -0.009522679, y: 0.00010842077, z: 0.03107935, w: 0.99947155}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: finger2-2.L
+      parentName: finger2-1.L
+      position: {x: -0.000000041909516, y: 0.026341533, z: -0.000000054948032}
+      rotation: {x: -0.016480489, y: 0.030949922, z: 0.01954967, w: 0.99919385}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: finger2-3.L
+      parentName: finger2-2.L
+      position: {x: 0.000000017695129, y: 0.023540823, z: -0.000000070780516}
+      rotation: {x: 0.048834268, y: -0.04132168, z: 0.041707505, w: 0.99707985}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: finger2-3.L_end
+      parentName: finger2-3.L
+      position: {x: -0, y: 0.027248563, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: metacarpal2.L
+      parentName: wrist.L
+      position: {x: -0.000000011641532, y: 0.03312978, z: 0.000000018626451}
+      rotation: {x: -0.06980798, y: -0.5397435, z: -0.041556608, w: 0.8379003}
+      scale: {x: 1, y: 1, z: 1}
+    - name: finger3-1.L
+      parentName: metacarpal2.L
+      position: {x: 0.000000027939677, y: 0.07131078, z: -0.000000039115548}
+      rotation: {x: 0.026014738, y: -0.091101095, z: 0.025931133, w: 0.99516404}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: finger3-2.L
+      parentName: finger3-1.L
+      position: {x: -0.0000000037252903, y: 0.034396067, z: -0.000000031664968}
+      rotation: {x: 0.008664328, y: 0.037208613, z: -0.03062124, w: 0.9988007}
+      scale: {x: 1, y: 1, z: 1}
+    - name: finger3-3.L
+      parentName: finger3-2.L
+      position: {x: 0.0000000013969839, y: 0.028012173, z: 0.00000010058284}
+      rotation: {x: 0.049152866, y: -0.048964914, z: 0.039249383, w: 0.9968179}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: finger3-3.L_end
+      parentName: finger3-3.L
+      position: {x: -0, y: 0.027350884, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: metacarpal3.L
+      parentName: wrist.L
+      position: {x: 0.0015796795, y: 0.036074493, z: -0.021960035}
+      rotation: {x: -0.061664812, y: -0.5315885, z: -0.05209691, w: 0.8431471}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: finger4-1.L
+      parentName: metacarpal3.L
+      position: {x: -0.000000018626451, y: 0.060498603, z: -0.00000008940697}
+      rotation: {x: 0.024570623, y: -0.17195179, z: 0.025919626, w: 0.98445773}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: finger4-2.L
+      parentName: finger4-1.L
+      position: {x: -0.000000011175871, y: 0.030292302, z: -0.000000039115548}
+      rotation: {x: 0.0035551894, y: 0.043467198, z: -0.042764314, w: 0.9981329}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: finger4-3.L
+      parentName: finger4-2.L
+      position: {x: -0.0000000018626451, y: 0.025199799, z: 0.000000027939677}
+      rotation: {x: 0.043580018, y: -0.05289313, z: 0.04333521, w: 0.99670714}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
+    - name: finger4-3.L_end
+      parentName: finger4-3.L
+      position: {x: -0, y: 0.027092338, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: metacarpal4.L
+      parentName: wrist.L
+      position: {x: 0.0015796795, y: 0.036074493, z: -0.021960035}
+      rotation: {x: -0.074413575, y: -0.60608995, z: 0.01486607, w: 0.79176795}
+      scale: {x: 0.99999976, y: 0.9999998, z: 0.9999999}
+    - name: finger5-1.L
+      parentName: metacarpal4.L
+      position: {x: 0.000000059604645, y: 0.05466198, z: 0.000000026077032}
+      rotation: {x: 0.02970214, y: -0.06723101, z: -0.024342768, w: 0.9969982}
+      scale: {x: 1, y: 0.9999999, z: 0.9999998}
+    - name: finger5-2.L
+      parentName: finger5-1.L
+      position: {x: 0.000000011175871, y: 0.021782879, z: 0}
+      rotation: {x: 0.005016289, y: 0.02094438, z: -0.024746312, w: 0.99946177}
+      scale: {x: 0.9999998, y: 0.9999999, z: 1}
+    - name: finger5-3.L
+      parentName: finger5-2.L
+      position: {x: -0.000000027939677, y: 0.015836498, z: 0.000000014901161}
+      rotation: {x: -0.004375935, y: -0.012048655, z: 0.012402918, w: 0.999841}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: finger5-3.L_end
+      parentName: finger5-3.L
+      position: {x: -0, y: 0.020148924, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: clavicle.R
+      parentName: spine01
+      position: {x: 0.026230399, y: 0.10018886, z: 0.0324839}
+      rotation: {x: -0.08720906, y: -0.06313638, z: -0.5684848, w: 0.81561846}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: shoulder01.R
+      parentName: clavicle.R
+      position: {x: -0.00000004703179, y: 0.08533681, z: -0.00000001169974}
+      rotation: {x: -0.041375704, y: 0.04324426, z: -0.32973826, w: 0.94217336}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: upperarm01.R
+      parentName: shoulder01.R
+      position: {x: -0.000000079977326, y: 0.06706885, z: 0.00000008288771}
+      rotation: {x: -0.015431177, y: 0.010642711, z: 0.1291953, w: 0.99144197}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: upperarm02.R
+      parentName: upperarm01.R
+      position: {x: 0.000000102911144, y: 0.07507133, z: 0.000000040978193}
+      rotation: {x: 0.062159855, y: -0.06488747, z: 0.025162423, w: 0.9956368}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1}
+    - name: lowerarm01.R
+      parentName: upperarm02.R
+      position: {x: -0.00000010523945, y: 0.18652415, z: 0.000000023283064}
+      rotation: {x: 0.008878629, y: -0.010124092, z: 0.016715271, w: 0.9997696}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: lowerarm02.R
+      parentName: lowerarm01.R
+      position: {x: 0.000000040512532, y: 0.11946127, z: -0.000000052386895}
+      rotation: {x: -0.0000000060535976, y: -0.00000015931438, z: -0.000000018044375,
+        w: 1}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
+    - name: wrist.R
+      parentName: lowerarm02.R
+      position: {x: -0.0000000144355, y: 0.11946151, z: -0.000000039231963}
+      rotation: {x: 0.088700846, y: -0.021190032, z: -0.06842463, w: 0.9934794}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: finger1-1.R
+      parentName: wrist.R
+      position: {x: 0.003812465, y: 0.040482834, z: 0.020588301}
+      rotation: {x: 0.14049672, y: 0.9221772, z: 0.35916096, w: 0.02921129}
+      scale: {x: 0.9999998, y: 0.9999999, z: 0.9999998}
+    - name: finger1-2.R
+      parentName: finger1-1.R
+      position: {x: 0.00000005098991, y: 0.03137993, z: -0.000000012340024}
+      rotation: {x: 0.015744505, y: 0.37903616, z: -0.0063329176, w: 0.9252263}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: finger1-3.R
+      parentName: finger1-2.R
+      position: {x: -0.000000032247044, y: 0.03696394, z: 0.00000011007069}
+      rotation: {x: 0.025545653, y: 0.13633837, z: 0.02624361, w: 0.9899851}
+      scale: {x: 1, y: 1.0000001, z: 0.9999999}
+    - name: finger1-3.R_end
+      parentName: finger1-3.R
+      position: {x: -0, y: 0.028225778, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: metacarpal1.R
+      parentName: wrist.R
+      position: {x: -0.000000055413693, y: 0.033129767, z: 0.00000008195639}
+      rotation: {x: 0.043492604, y: 0.49347433, z: 0.06850493, w: 0.8659669}
+      scale: {x: 0.9999998, y: 0.99999964, z: 0.99999994}
+    - name: finger2-1.R
+      parentName: metacarpal1.R
+      position: {x: 0.00000006798655, y: 0.07590809, z: 0.000000023748726}
+      rotation: {x: -0.009527405, y: -0.000108450564, z: -0.031078177, w: 0.99947155}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: finger2-2.R
+      parentName: finger2-1.R
+      position: {x: 0.000000041909516, y: 0.0263414, z: 0.000000013038516}
+      rotation: {x: -0.016480293, y: -0.030949753, z: -0.019548556, w: 0.99919385}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: finger2-3.R
+      parentName: finger2-2.R
+      position: {x: -0.00000012107193, y: 0.02354074, z: -0.00000003259629}
+      rotation: {x: 0.048832677, y: 0.041322395, z: -0.04170638, w: 0.99707997}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: finger2-3.R_end
+      parentName: finger2-3.R
+      position: {x: -0, y: 0.027248634, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: metacarpal2.R
+      parentName: wrist.R
+      position: {x: -0.000000055413693, y: 0.033129767, z: 0.00000008195639}
+      rotation: {x: -0.069808364, y: 0.53974444, z: 0.041555513, w: 0.83789974}
+      scale: {x: 1, y: 1, z: 1}
+    - name: finger3-1.R
+      parentName: metacarpal2.R
+      position: {x: -0, y: 0.07131072, z: -0.0000000055879354}
+      rotation: {x: 0.026012521, y: 0.091100246, z: -0.025929766, w: 0.9951642}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: finger3-2.R
+      parentName: finger3-1.R
+      position: {x: 0.00000009685755, y: 0.03439587, z: 0.00000007357448}
+      rotation: {x: 0.008665307, y: -0.037208393, z: 0.0306219, w: 0.9988007}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: finger3-3.R
+      parentName: finger3-2.R
+      position: {x: -0.000000053085387, y: 0.02801199, z: -0.000000020489097}
+      rotation: {x: 0.04914978, y: 0.04896353, z: -0.039248586, w: 0.9968182}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+    - name: finger3-3.R_end
+      parentName: finger3-3.R
+      position: {x: -0, y: 0.027351025, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: metacarpal3.R
+      parentName: wrist.R
+      position: {x: -0.0015796609, y: 0.036074493, z: -0.021960106}
+      rotation: {x: -0.061666515, y: 0.53158844, z: 0.05209745, w: 0.843147}
+      scale: {x: 0.99999976, y: 0.9999998, z: 0.9999999}
+    - name: finger4-1.R
+      parentName: metacarpal3.R
+      position: {x: -0, y: 0.060498405, z: 0.000000074505806}
+      rotation: {x: 0.024570718, y: 0.17195131, z: -0.025917724, w: 0.98445785}
+      scale: {x: 1, y: 1, z: 1}
+    - name: finger4-2.R
+      parentName: finger4-1.R
+      position: {x: -0.000000067055225, y: 0.030292245, z: -0.00000013317913}
+      rotation: {x: 0.0035558878, y: -0.043466303, z: 0.042762958, w: 0.99813294}
+      scale: {x: 1, y: 1, z: 1}
+    - name: finger4-3.R
+      parentName: finger4-2.R
+      position: {x: 0.000000048428774, y: 0.02519971, z: 0.00000012293458}
+      rotation: {x: 0.043574948, y: 0.05288894, z: -0.04333282, w: 0.99670774}
+      scale: {x: 0.99999994, y: 0.99999976, z: 1}
+    - name: finger4-3.R_end
+      parentName: finger4-3.R
+      position: {x: -0, y: 0.027092282, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: metacarpal4.R
+      parentName: wrist.R
+      position: {x: -0.0015796609, y: 0.036074493, z: -0.021960106}
+      rotation: {x: -0.074413866, y: 0.6060906, z: -0.014866093, w: 0.79176754}
+      scale: {x: 0.9999998, y: 0.99999976, z: 0.9999999}
+    - name: finger5-1.R
+      parentName: metacarpal4.R
+      position: {x: 0.000000014901161, y: 0.054661863, z: 0.00000016950071}
+      rotation: {x: 0.029704235, y: 0.06723141, z: 0.024345012, w: 0.996998}
+      scale: {x: 0.9999999, y: 1, z: 1}
+    - name: finger5-2.R
+      parentName: finger5-1.R
+      position: {x: 0.000000057742, y: 0.021782756, z: -0.000000052154064}
+      rotation: {x: 0.0050134244, y: -0.020944541, z: 0.024747653, w: 0.9994617}
+      scale: {x: 0.9999998, y: 0.99999994, z: 1}
+    - name: finger5-3.R
+      parentName: finger5-2.R
+      position: {x: 9.313226e-10, y: 0.015836341, z: -0.000000020489097}
+      rotation: {x: -0.00437553, y: 0.012048728, z: -0.012402327, w: 0.999841}
+      scale: {x: 0.9999999, y: 1, z: 0.99999994}
+    - name: finger5-3.R_end
+      parentName: finger5-3.R
+      position: {x: -0, y: 0.02014892, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: neck01
+      parentName: spine01
+      position: {x: -1.2965716e-10, y: 0.16595347, z: 0.000000059608126}
+      rotation: {x: -0.009466817, y: 0.0012310607, z: -0.0000061542164, w: 0.99995446}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: neck02
+      parentName: neck01
+      position: {x: 0.000000030573574, y: 0.03911816, z: -0.0000000054710654}
+      rotation: {x: -0.06771687, y: -0.000028325065, z: -0.00017377455, w: 0.99770457}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+    - name: neck03
+      parentName: neck02
+      position: {x: -0.000000026024281, y: 0.04654057, z: 0.00000006001983}
+      rotation: {x: 0.47537053, y: -0.000585265, z: 0.00082754233, w: 0.8797851}
+      scale: {x: 1, y: 1, z: 1}
+    - name: head
+      parentName: neck03
+      position: {x: -0.000000014049874, y: 0.03807235, z: -0.00000018374271}
+      rotation: {x: -0.48824063, y: 0.001517544, z: -0.0013701273, w: 0.8727067}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+    - name: jaw
+      parentName: head
+      position: {x: -0.000082035825, y: 0.003531821, z: 0.01803507}
+      rotation: {x: 0.9579709, y: -0.00065241585, z: 0.0021787412, w: 0.2868564}
+      scale: {x: 0.9999999, y: 1, z: 1.0000007}
+    - name: special04
+      parentName: jaw
+      position: {x: -5.0738802e-11, y: 0.096444584, z: -0.000000093111446}
+      rotation: {x: -0.00000005991421, y: 0.7143988, z: -0.69973874, w: 0.00000005868472}
+      scale: {x: 1, y: 0.9999999, z: 0.99999994}
+    - name: oris02
+      parentName: special04
+      position: {x: -5.573675e-11, y: 0.031118002, z: 0.000000025672566}
+      rotation: {x: 0.000000026965314, y: 0.9834723, z: 0.18105896, w: -0.0000001304315}
+      scale: {x: 1, y: 0.9999997, z: 1}
+    - name: oris01
+      parentName: oris02
+      position: {x: 1.6969737e-10, y: 0.015057493, z: 0.000000037301728}
+      rotation: {x: -0.10896261, y: 0.000000008105312, z: 8.884613e-10, w: 0.99404585}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oris01_end
+      parentName: oris01
+      position: {x: -0, y: 0.014636905, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oris06.L
+      parentName: special04
+      position: {x: -5.573675e-11, y: 0.031118002, z: 0.000000025672566}
+      rotation: {x: 0.1673748, y: 0.20978382, z: -0.42898676, w: 0.86252356}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oris07.L
+      parentName: oris06.L
+      position: {x: -4.656613e-10, y: 0.012868347, z: -0.00000006961636}
+      rotation: {x: 0.19232422, y: -0.040711865, z: 0.30749223, w: 0.9310223}
+      scale: {x: 0.9999999, y: 1.0000001, z: 0.9999999}
+    - name: oris07.L_end
+      parentName: oris07.L
+      position: {x: -0, y: 0.015172445, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oris06.R
+      parentName: special04
+      position: {x: -5.573675e-11, y: 0.031118002, z: 0.000000025672566}
+      rotation: {x: 0.16737571, y: -0.2097812, z: 0.42898533, w: 0.8625247}
+      scale: {x: 0.99999994, y: 1, z: 1.0000001}
+    - name: oris07.R
+      parentName: oris06.R
+      position: {x: -0.00000005122274, y: 0.012868293, z: -0.000000106869265}
+      rotation: {x: 0.1923234, y: 0.0407102, z: -0.30748934, w: 0.9310235}
+      scale: {x: 0.9999999, y: 1.0000001, z: 0.99999994}
+    - name: oris07.R_end
+      parentName: oris07.R
+      position: {x: -0, y: 0.01517245, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue00
+      parentName: jaw
+      position: {x: -5.0738802e-11, y: 0.096444584, z: -0.000000093111446}
+      rotation: {x: 0.00000010554575, y: 0.09761324, z: 0.9952244, w: 0.0000001234449}
+      scale: {x: 1, y: 0.9999995, z: 0.9999923}
+    - name: tongue01
+      parentName: tongue00
+      position: {x: 1.614868e-10, y: 0.06297419, z: 0.00000011551724}
+      rotation: {x: 0.89310193, y: -0.000000019138369, z: -0.00000011606987, w: -0.44985437}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: tongue02
+      parentName: tongue01
+      position: {x: -8.385517e-11, y: 0.03150002, z: 0.00000004403331}
+      rotation: {x: -0.09326978, y: -1.0207206e-12, z: 0.0000000081536635, w: 0.9956409}
+      scale: {x: 1, y: 0.99999994, z: 1.0000001}
+    - name: tongue03
+      parentName: tongue02
+      position: {x: 2.54721e-10, y: 0.020995498, z: -0.0000000068949637}
+      rotation: {x: -0.21101497, y: -5.71763e-14, z: 0.000000018447178, w: 0.97748286}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: tongue04
+      parentName: tongue03
+      position: {x: -2.017333e-10, y: 0.010769118, z: -0.0000002032229}
+      rotation: {x: 0.0000031664968, y: 6.8833823e-15, z: -2.7367475e-13, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue04_end
+      parentName: tongue04
+      position: {x: -0, y: 0.010769008, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue07.L
+      parentName: tongue03
+      position: {x: -2.0171909e-10, y: 0.010769028, z: 0.00000003519569}
+      rotation: {x: -0.48238727, y: -0.4940914, z: -0.39217257, w: 0.6077638}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue07.L_end
+      parentName: tongue07.L
+      position: {x: -0, y: 0.012051939, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue07.R
+      parentName: tongue03
+      position: {x: -2.0171909e-10, y: 0.010769028, z: 0.00000003519569}
+      rotation: {x: -0.482387, y: 0.49409088, z: 0.39217064, w: 0.60776573}
+      scale: {x: 1, y: 0.9999998, z: 0.9999999}
+    - name: tongue07.R_end
+      parentName: tongue07.R
+      position: {x: -0, y: 0.0120519465, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue06.L
+      parentName: tongue02
+      position: {x: 2.54721e-10, y: 0.020995498, z: -0.0000000068949637}
+      rotation: {x: -0.576121, y: -0.40990683, z: -0.40975544, w: 0.57633454}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: tongue06.L_end
+      parentName: tongue06.L
+      position: {x: -0, y: 0.017249893, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue06.R
+      parentName: tongue02
+      position: {x: 2.54721e-10, y: 0.020995498, z: -0.0000000068949637}
+      rotation: {x: -0.5761217, y: 0.4099054, z: 0.40975347, w: 0.5763362}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue06.R_end
+      parentName: tongue06.R
+      position: {x: -0, y: 0.01724997, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue05.L
+      parentName: tongue01
+      position: {x: -8.385517e-11, y: 0.03150002, z: 0.00000004403331}
+      rotation: {x: -0.5237988, y: -0.4566564, z: -0.40049174, w: 0.5972488}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: tongue05.L_end
+      parentName: tongue05.L
+      position: {x: -0, y: 0.020438345, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tongue05.R
+      parentName: tongue01
+      position: {x: -8.385517e-11, y: 0.03150002, z: 0.00000004403331}
+      rotation: {x: -0.52379906, y: 0.4566557, z: 0.40049115, w: 0.59724945}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: tongue05.R_end
+      parentName: tongue05.R
+      position: {x: -0, y: 0.020438403, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: levator02.L
+      parentName: head
+      position: {x: -0.0027067189, y: 0.018927, z: 0.11480147}
+      rotation: {x: 0.31639606, y: -0.40414232, z: 0.81538695, w: 0.26778093}
+      scale: {x: 0.99999994, y: 0.9999998, z: 1}
+    - name: levator03.L
+      parentName: levator02.L
+      position: {x: -0.000000010244548, y: 0.02659834, z: -0.000000047963113}
+      rotation: {x: 0.3772338, y: -0.0000032913927, z: 0.0000008215914, w: 0.9261181}
+      scale: {x: 1.0000001, y: 0.99999994, z: 1.0000001}
+    - name: levator04.L
+      parentName: levator03.L
+      position: {x: 0.0000000037252903, y: 0.019720262, z: 0.000000022351742}
+      rotation: {x: 0.10401512, y: -0.046567522, z: 0.09886889, w: 0.98855317}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: levator05.L
+      parentName: levator04.L
+      position: {x: -0.00000001094304, y: 0.018174743, z: 0.000000005529728}
+      rotation: {x: 0.18510258, y: -0.31014085, z: 0.061699226, w: 0.93045306}
+      scale: {x: 0.9999998, y: 0.9999999, z: 0.99999994}
+    - name: levator05.L_end
+      parentName: levator05.L
+      position: {x: -0, y: 0.009494003, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: levator02.R
+      parentName: head
+      position: {x: 0.0027062243, y: 0.018927, z: 0.11482608}
+      rotation: {x: -0.32082477, y: -0.40335178, z: 0.81573534, w: -0.2625923}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: levator03.R
+      parentName: levator02.R
+      position: {x: 0.000000027939677, y: 0.026262218, z: 0.0000000060535967}
+      rotation: {x: 0.38094705, y: 0.000003285728, z: -0.0000019606591, w: 0.92459685}
+      scale: {x: 1, y: 1, z: 1}
+    - name: levator04.R
+      parentName: levator03.R
+      position: {x: -0.000000013038516, y: 0.019614168, z: 0.000000033527613}
+      rotation: {x: 0.10000123, y: 0.044951677, z: -0.096539386, w: 0.9892721}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: levator05.R
+      parentName: levator04.R
+      position: {x: -0.00000004656613, y: 0.018175162, z: -0.00000006193295}
+      rotation: {x: 0.18043594, y: 0.3136996, z: -0.06084756, w: 0.93023276}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: levator05.R_end
+      parentName: levator05.R
+      position: {x: -0, y: 0.009494075, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: special01
+      parentName: head
+      position: {x: 0.000273403, y: -0.00063376804, z: -0.060105804}
+      rotation: {x: -0.0009883952, y: 0.68394625, z: 0.72953176, w: 0.00014268911}
+      scale: {x: 0.99999994, y: 1.0000001, z: 1}
+    - name: oris04.L
+      parentName: special01
+      position: {x: 3.783498e-10, y: 0.1752268, z: -0.0000002059403}
+      rotation: {x: 0.74305665, y: 0.6155872, z: -0.15565346, w: -0.2114034}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: oris03.L
+      parentName: oris04.L
+      position: {x: -0.00000007473864, y: 0.016313385, z: -0.000000053085387}
+      rotation: {x: 0.3356376, y: -0.0000024317835, z: 0.00000094495647, w: 0.9419912}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oris03.L_end
+      parentName: oris03.L
+      position: {x: -0, y: 0.007170266, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oris04.R
+      parentName: special01
+      position: {x: 3.783498e-10, y: 0.1752268, z: -0.0000002059403}
+      rotation: {x: 0.7393132, y: -0.61809385, z: 0.16839197, w: -0.207413}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oris03.R
+      parentName: oris04.R
+      position: {x: -0.000000019324943, y: 0.016077757, z: 0.000000063795596}
+      rotation: {x: 0.37249509, y: 0.0000025300583, z: -0.0000005092983, w: 0.9280342}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: oris03.R_end
+      parentName: oris03.R
+      position: {x: -0, y: 0.0069689644, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oris06
+      parentName: special01
+      position: {x: 3.783498e-10, y: 0.1752268, z: -0.0000002059403}
+      rotation: {x: -0.66339165, y: -0.004865112, z: -0.004313294, w: 0.74824417}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: oris05
+      parentName: oris06
+      position: {x: 0.0000000019790605, y: 0.0059969425, z: -0.0000000032832759}
+      rotation: {x: 0.16189866, y: -0.004244883, z: -0.0129612, w: 0.9867132}
+      scale: {x: 0.99999994, y: 1, z: 1.0000001}
+    - name: oris05_end
+      parentName: oris05
+      position: {x: -0, y: 0.008239434, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: special03
+      parentName: head
+      position: {x: -0.000082035825, y: 0.003531821, z: 0.01803507}
+      rotation: {x: 0.00032061, y: 0.7170196, z: 0.6970529, w: 0.00009885782}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.9999998}
+    - name: levator06.L
+      parentName: special03
+      position: {x: 0.005889899, y: 0.10633238, z: -0.0056581767}
+      rotation: {x: 0.9429567, y: 0.26828796, z: 0.19421251, w: -0.03370274}
+      scale: {x: 0.99999934, y: 0.99999964, z: 0.99999994}
+    - name: levator06.L_end
+      parentName: levator06.L
+      position: {x: -0, y: 0.023291519, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: levator06.R
+      parentName: special03
+      position: {x: -0.005903362, y: 0.106389806, z: -0.0056526293}
+      rotation: {x: 0.9417572, y: -0.27230027, z: -0.1943376, w: -0.034334123}
+      scale: {x: 0.9999995, y: 0.9999997, z: 0.9999999}
+    - name: levator06.R_end
+      parentName: levator06.R
+      position: {x: -0, y: 0.02327333, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: special06.L
+      parentName: head
+      position: {x: 4.5110937e-10, y: 0.15145119, z: -0.0000000645814}
+      rotation: {x: 0.7743108, y: -0.09539142, z: 0.12031394, w: 0.6138956}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1}
+    - name: special05.L
+      parentName: special06.L
+      position: {x: 0.00000005378388, y: 0.0677243, z: -0.00000006996561}
+      rotation: {x: 0.5367373, y: -0.0175544, z: 0.01117008, w: 0.84349287}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: eye.L
+      parentName: special05.L
+      position: {x: -0.00000002514571, y: 0.101581104, z: -0.000000022351742}
+      rotation: {x: 0.108828194, y: 0.7816514, z: -0.61019504, w: 0.06956731}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+    - name: eye.L_end
+      parentName: eye.L
+      position: {x: -0, y: 0.039902292, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: orbicularis03.L
+      parentName: special05.L
+      position: {x: -0.00000002514571, y: 0.101581104, z: -0.000000022351742}
+      rotation: {x: -0.11769344, y: -0.6781456, z: 0.7236057, w: -0.0515905}
+      scale: {x: 0.9999999, y: 0.99999976, z: 0.99999994}
+    - name: orbicularis03.L_end
+      parentName: orbicularis03.L
+      position: {x: -0, y: 0.038918052, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: orbicularis04.L
+      parentName: special05.L
+      position: {x: -0.00000002514571, y: 0.101581104, z: -0.000000022351742}
+      rotation: {x: 0.09679521, y: 0.8639941, z: -0.48682722, w: 0.084522985}
+      scale: {x: 1, y: 0.99999964, z: 1}
+    - name: orbicularis04.L_end
+      parentName: orbicularis04.L
+      position: {x: -0, y: 0.039834227, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: special06.R
+      parentName: head
+      position: {x: 4.5110937e-10, y: 0.15145119, z: -0.0000000645814}
+      rotation: {x: 0.77485, y: 0.09259804, z: -0.11679065, w: 0.6143232}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
+    - name: special05.R
+      parentName: special06.R
+      position: {x: -0.00000004854519, y: 0.06772429, z: -0.000000009895302}
+      rotation: {x: 0.53624624, y: 0.017627373, z: -0.011202103, w: 0.84380317}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: eye.R
+      parentName: special05.R
+      position: {x: -0.0000000027939677, y: 0.101107955, z: -0.000000077299774}
+      rotation: {x: -0.10891532, y: 0.7820006, z: -0.60974866, w: -0.06942039}
+      scale: {x: 1, y: 1, z: 1}
+    - name: eye.R_end
+      parentName: eye.R
+      position: {x: -0, y: 0.039902292, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: orbicularis03.R
+      parentName: special05.R
+      position: {x: -0.0000000027939677, y: 0.101107955, z: -0.000000077299774}
+      rotation: {x: 0.11774789, y: -0.6785592, z: 0.72321934, w: 0.051446326}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: orbicularis03.R_end
+      parentName: orbicularis03.R
+      position: {x: -0, y: 0.0389181, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: orbicularis04.R
+      parentName: special05.R
+      position: {x: -0.0000000027939677, y: 0.101107955, z: -0.000000077299774}
+      rotation: {x: -0.09688952, y: 0.864272, z: -0.48633584, w: -0.08440281}
+      scale: {x: 1.0000001, y: 0.9999998, z: 1}
+    - name: orbicularis04.R_end
+      parentName: orbicularis04.R
+      position: {x: -0, y: 0.03983423, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: temporalis01.L
+      parentName: head
+      position: {x: -0.063239224, y: 0.042376745, z: 0.06687235}
+      rotation: {x: 0.34350798, y: 0.7125276, z: 0.6107469, w: 0.035985474}
+      scale: {x: 1, y: 1, z: 1}
+    - name: oculi02.L
+      parentName: temporalis01.L
+      position: {x: -0.00000007264316, y: 0.019510238, z: -0.000000010244548}
+      rotation: {x: -0.022593604, y: 0.9581459, z: 0.28532037, w: 0.006182952}
+      scale: {x: 1, y: 1.0000002, z: 1.0000001}
+    - name: oculi01.L
+      parentName: oculi02.L
+      position: {x: -0.000000115484, y: 0.03301295, z: -0.00000009639189}
+      rotation: {x: -0.0261777, y: -0.1544225, z: -0.28657398, w: 0.9451687}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: oculi01.L_end
+      parentName: oculi01.L
+      position: {x: -0, y: 0.017824065, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: temporalis01.R
+      parentName: head
+      position: {x: 0.062626265, y: 0.04236994, z: 0.06744172}
+      rotation: {x: -0.34631434, y: 0.7139226, z: 0.60771734, w: -0.032567423}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+    - name: oculi02.R
+      parentName: temporalis01.R
+      position: {x: -0.000000018626451, y: 0.019548321, z: -0.00000010803342}
+      rotation: {x: 0.015556503, y: 0.95716304, z: 0.2891021, w: -0.0041130013}
+      scale: {x: 1, y: 1.0000002, z: 1.0000001}
+    - name: oculi01.R
+      parentName: oculi02.R
+      position: {x: -0.0000000037252903, y: 0.032970615, z: 0.0000000144355}
+      rotation: {x: -0.021530038, y: 0.15413603, z: 0.29287836, w: 0.94339854}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: oculi01.R_end
+      parentName: oculi01.R
+      position: {x: -0, y: 0.017931635, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: temporalis02.L
+      parentName: head
+      position: {x: -0.06316432, y: 0.01870385, z: 0.06408097}
+      rotation: {x: 0.08267136, y: 0.75639045, z: 0.60694563, w: -0.22946881}
+      scale: {x: 0.99999994, y: 0.9999997, z: 0.9999999}
+    - name: risorius02.L
+      parentName: temporalis02.L
+      position: {x: -0.00000008381903, y: 0.020631818, z: -0.00000008381903}
+      rotation: {x: -0.7018582, y: -0.0000022540537, z: -0.0000016983852, w: 0.7123167}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: risorius03.L
+      parentName: risorius02.L
+      position: {x: 0.000000055879354, y: 0.029487187, z: -0.000000018626451}
+      rotation: {x: -0.44698864, y: 0.0641549, z: 0.032160796, w: 0.89165634}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: risorius03.L_end
+      parentName: risorius03.L
+      position: {x: -0, y: 0.02517743, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: temporalis02.R
+      parentName: head
+      position: {x: 0.06257875, y: 0.01870385, z: 0.06465293}
+      rotation: {x: -0.08543131, y: 0.75533885, z: 0.60656327, w: 0.23290719}
+      scale: {x: 0.9999999, y: 0.99999976, z: 0.99999994}
+    - name: risorius02.R
+      parentName: temporalis02.R
+      position: {x: 0.00000008381903, y: 0.020631809, z: -0.000000033527613}
+      rotation: {x: -0.70185745, y: 0.000002574378, z: 0.0000021050023, w: 0.7123174}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: risorius03.R
+      parentName: risorius02.R
+      position: {x: -0.0000000037252903, y: 0.029487204, z: -0.00000005401671}
+      rotation: {x: -0.44698948, y: -0.064154685, z: -0.03216118, w: 0.8916559}
+      scale: {x: 1, y: 1, z: 1.0000001}
+    - name: risorius03.R_end
+      parentName: risorius03.R
+      position: {x: -0, y: 0.025177432, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

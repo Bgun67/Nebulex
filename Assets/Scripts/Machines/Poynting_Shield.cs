@@ -5,6 +5,8 @@ using UnityEngine;
 public class Poynting_Shield : MonoBehaviour {
 	public GameObject explosionEffect;
 	public MeshCollider collider;
+	public bool useCloak = false;
+	public ReflectionProbe cloakProbe;
 	//public Rigidbody rb;
 	void Reset()
 	{
@@ -49,6 +51,13 @@ public class Poynting_Shield : MonoBehaviour {
 			}
 		}
 	}
+	void Update(){
+		if(useCloak){
+			Cloak();
+		}else{
+			this.GetComponent<MeshRenderer>().material.shader = Shader.Find("Unlit/Shield");
+		}
+	}
 	public void ReactivateShieldActivater(){
 		StartCoroutine(ReactivateShield());
 	}
@@ -87,5 +96,10 @@ public class Poynting_Shield : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 		}
 		collider.enabled = true;
+	}
+
+	void Cloak(){
+		this.GetComponent<MeshRenderer>().material.shader = Shader.Find("Unlit/Cloak");
+		this.GetComponent<MeshRenderer>().material.SetTexture("_reflectionProbe", cloakProbe.texture);
 	}
 }

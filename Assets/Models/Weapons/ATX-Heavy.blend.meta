@@ -10,6 +10,10 @@ ModelImporter:
     100008: Cube_003
     100010: Cylinder
     100012: Cylinder_001
+    100014: Cube.001
+    100016: Cube.002
+    100018: Cube.003
+    100020: Cylinder.001
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -17,28 +21,45 @@ ModelImporter:
     400008: Cube_003
     400010: Cylinder
     400012: Cylinder_001
+    400014: Cube.001
+    400016: Cube.002
+    400018: Cube.003
+    400020: Cylinder.001
     2100000: unnamed
     2100002: Material
     2100004: None__RTX-Heavy-Albedo_png
     2100006: Material__RTX-Heavy-Albedo_png
+    2100008: No Name
     2300000: Cube
     2300002: Cube_001
     2300004: Cube_002
     2300006: Cube_003
     2300008: Cylinder
     2300010: Cylinder_001
+    2300012: Cube.001
+    2300014: Cube.002
+    2300016: Cube.003
+    2300018: Cylinder.001
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
     3300006: Cube_003
     3300008: Cylinder
     3300010: Cylinder_001
+    3300012: Cube.001
+    3300014: Cube.002
+    3300016: Cube.003
+    3300018: Cylinder.001
     4300000: Cube_003
     4300002: Cube_002
     4300004: Cylinder_001
     4300006: Cylinder
     4300008: Cube_001
     4300010: Cube
+    4300012: Cube.003
+    4300014: Cube.002
+    4300016: Cylinder.001
+    4300018: Cube.001
     7400000: Default Take
     9500000: //RootNode
     2186277476908879412: ImportLogs
@@ -76,6 +97,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -94,12 +116,15 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
     previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -114,7 +139,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

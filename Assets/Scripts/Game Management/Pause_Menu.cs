@@ -13,9 +13,9 @@ public class Pause_Menu : MonoBehaviour {
 	// Use this for initialization
 	void OnEnable(){
 	}
-	public void Pause (GameObject _player) {
+	public void Pause () {
 		this.gameObject.SetActive (true);
-		player = _player;
+		player = FindObjectOfType<Game_Controller>().localPlayer;
 		//eventSystem.SetActive (true);
 
 		MInput.inputLock = MInput.InputLock.LockAll;
@@ -39,9 +39,10 @@ public class Pause_Menu : MonoBehaviour {
 	}
 	public void KillPlayer(){
 		MInput.inputLock = MInput.InputLock.None;
-		player.GetComponent<Damage> ().TakeDamage (200, 0, transform.position);
+		print(player.GetComponent<Damage>().currentHealth);
+		player.GetComponent<Damage> ().TakeDamage (200, 0, player.transform.position + player.transform.forward, true);
 		confirmRecallPanel.SetActive(false);
-		this.gameObject.SetActive (false);
+		Resume();
 	}
 	public void GoToMainMenu(){
 		try{
