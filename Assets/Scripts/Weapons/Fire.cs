@@ -14,7 +14,10 @@ public class Fire : MonoBehaviour {
 	[Header("Gun Info")]
 	float fireDelay;
 	public Transform shotSpawn;
+	//This is rarely used and many need to be removed
 	public Transform rhTarget;
+	[Tooltip("An offset to be applied to the position of the right hand to accomodate longer/shorter guns")]
+	public Vector3 rhOffset;
 	public Transform lhTarget;
 	public float reloadTime;
 	[Tooltip("Rounds Per Minute")]
@@ -202,7 +205,8 @@ public class Fire : MonoBehaviour {
 
 					}
 
-				} else {
+				} 
+				if (magAmmo <= 0) {
 					if (triggerClick != null)
 					{
 						shootSound.PlayOneShot(triggerClick, 0.3f);

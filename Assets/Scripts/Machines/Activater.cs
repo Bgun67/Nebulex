@@ -138,7 +138,7 @@ public class Activater : MonoBehaviour
 		string useKey = "";
 			if (MInput.useMouse)
 			{
-				useKey = "G";
+				useKey = "R";
 			}
 			else
 			{

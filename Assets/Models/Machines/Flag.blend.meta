@@ -1,41 +1,104 @@
 fileFormatVersion: 2
 guid: 5646f7dece57bd545ad5053c5265128a
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Circle
-    100002: //RootNode
-    100004: Plane
-    100006: Armature
-    100008: Bone
-    100010: Bone_001
-    100012: Bone_002
-    100014: Bone_003
-    100016: Bone_004
-    400000: Circle
-    400002: //RootNode
-    400004: Plane
-    400006: Armature
-    400008: Bone
-    400010: Bone_001
-    400012: Bone_002
-    400014: Bone_003
-    400016: Bone_004
-    2100000: unnamed
-    2100002: None__Joy_Oil_gas_station_blueprints_jpg
-    2300000: Circle
-    2300002: Plane
-    3300000: Circle
-    3300002: Plane
-    4300000: Plane
-    4300002: Circle
-    7400000: Default Take
-    7400002: ArmatureAction
-    9500000: //RootNode
-    13700000: Plane
+  serializedVersion: 20101
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Circle
+  - first:
+      1: 100002
+    second: //RootNode
+  - first:
+      1: 100004
+    second: Plane
+  - first:
+      1: 100006
+    second: Armature
+  - first:
+      1: 100008
+    second: Bone
+  - first:
+      1: 100010
+    second: Bone_001
+  - first:
+      1: 100012
+    second: Bone_002
+  - first:
+      1: 100014
+    second: Bone_003
+  - first:
+      1: 100016
+    second: Bone_004
+  - first:
+      4: 400000
+    second: Circle
+  - first:
+      4: 400002
+    second: //RootNode
+  - first:
+      4: 400004
+    second: Plane
+  - first:
+      4: 400006
+    second: Armature
+  - first:
+      4: 400008
+    second: Bone
+  - first:
+      4: 400010
+    second: Bone_001
+  - first:
+      4: 400012
+    second: Bone_002
+  - first:
+      4: 400014
+    second: Bone_003
+  - first:
+      4: 400016
+    second: Bone_004
+  - first:
+      21: 2100000
+    second: unnamed
+  - first:
+      21: 2100002
+    second: None__Joy_Oil_gas_station_blueprints_jpg
+  - first:
+      23: 2300000
+    second: Circle
+  - first:
+      23: 2300002
+    second: Plane
+  - first:
+      33: 3300000
+    second: Circle
+  - first:
+      33: 3300002
+    second: Plane
+  - first:
+      43: 4300000
+    second: Plane
+  - first:
+      43: 4300002
+    second: Circle
+  - first:
+      74: 7400000
+    second: Default Take
+  - first:
+      74: 7400002
+    second: ArmatureAction
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Plane
+  - first:
+      74: -623603649343465320
+    second: Scene
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -67,34 +130,45 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -104,14 +178,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

@@ -1,83 +1,248 @@
 fileFormatVersion: 2
 guid: 932398719afa4424ab8d1924d4564688
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: Cube
-    100004: Cube_001
-    100006: Cylinder
-    100008: Cylinder_001
-    100010: Cube_002
-    100012: Cube_003
-    100014: Armature
-    100016: Bone
-    100018: Bone_001
-    100020: Cube_004
-    100022: Bone.001
-    100024: Cube.001
-    100026: Cube.002
-    100028: Cube.003
-    100030: Cube.004
-    100032: Cylinder.001
-    400000: //RootNode
-    400002: Cube
-    400004: Cube_001
-    400006: Cylinder
-    400008: Cylinder_001
-    400010: Cube_002
-    400012: Cube_003
-    400014: Armature
-    400016: Bone
-    400018: Bone_001
-    400020: Cube_004
-    400022: Bone.001
-    400024: Cube.001
-    400026: Cube.002
-    400028: Cube.003
-    400030: Cube.004
-    400032: Cylinder.001
-    2300000: //RootNode
-    2300002: Cube
-    2300004: Cube_001
-    2300006: Cylinder
-    2300008: Cylinder_001
-    2300010: Cube_002
-    2300012: Cube_003
-    2300014: Cube.001
-    2300016: Cube.002
-    2300018: Cube.003
-    2300020: Cube.004
-    2300022: Cylinder.001
-    3300000: //RootNode
-    3300002: Cube
-    3300004: Cube_001
-    3300006: Cylinder
-    3300008: Cylinder_001
-    3300010: Cube_002
-    3300012: Cube_003
-    3300014: Cube.001
-    3300016: Cube.002
-    3300018: Cube.003
-    3300020: Cube.004
-    3300022: Cylinder.001
-    4300000: Cube
-    4300002: Cylinder
-    4300004: Cube_001
-    4300006: Cylinder_001
-    4300008: Cube_002
-    4300010: Cube_003
-    4300012: Cube_004
-    4300014: Cube.004
-    4300016: Cube.003
-    4300018: Cube.002
-    4300020: Cube.001
-    4300022: Cylinder.001
-    7400000: Default Take
-    7400002: Open_Lift_Fan
-    7400004: Armature|Open Lift Fan
-    9500000: //RootNode
-    13700000: Cube_004
+  serializedVersion: 20101
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: Cube
+  - first:
+      1: 100004
+    second: Cube_001
+  - first:
+      1: 100006
+    second: Cylinder
+  - first:
+      1: 100008
+    second: Cylinder_001
+  - first:
+      1: 100010
+    second: Cube_002
+  - first:
+      1: 100012
+    second: Cube_003
+  - first:
+      1: 100014
+    second: Armature
+  - first:
+      1: 100016
+    second: Bone
+  - first:
+      1: 100018
+    second: Bone_001
+  - first:
+      1: 100020
+    second: Cube_004
+  - first:
+      1: 100022
+    second: Bone.001
+  - first:
+      1: 100024
+    second: Cube.001
+  - first:
+      1: 100026
+    second: Cube.002
+  - first:
+      1: 100028
+    second: Cube.003
+  - first:
+      1: 100030
+    second: Cube.004
+  - first:
+      1: 100032
+    second: Cylinder.001
+  - first:
+      1: 100034
+    second: Bone.001_end
+  - first:
+      1: 100036
+    second: Bone_end
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: Cube
+  - first:
+      4: 400004
+    second: Cube_001
+  - first:
+      4: 400006
+    second: Cylinder
+  - first:
+      4: 400008
+    second: Cylinder_001
+  - first:
+      4: 400010
+    second: Cube_002
+  - first:
+      4: 400012
+    second: Cube_003
+  - first:
+      4: 400014
+    second: Armature
+  - first:
+      4: 400016
+    second: Bone
+  - first:
+      4: 400018
+    second: Bone_001
+  - first:
+      4: 400020
+    second: Cube_004
+  - first:
+      4: 400022
+    second: Bone.001
+  - first:
+      4: 400024
+    second: Cube.001
+  - first:
+      4: 400026
+    second: Cube.002
+  - first:
+      4: 400028
+    second: Cube.003
+  - first:
+      4: 400030
+    second: Cube.004
+  - first:
+      4: 400032
+    second: Cylinder.001
+  - first:
+      4: 400034
+    second: Bone.001_end
+  - first:
+      4: 400036
+    second: Bone_end
+  - first:
+      23: 2300000
+    second: //RootNode
+  - first:
+      23: 2300002
+    second: Cube
+  - first:
+      23: 2300004
+    second: Cube_001
+  - first:
+      23: 2300006
+    second: Cylinder
+  - first:
+      23: 2300008
+    second: Cylinder_001
+  - first:
+      23: 2300010
+    second: Cube_002
+  - first:
+      23: 2300012
+    second: Cube_003
+  - first:
+      23: 2300014
+    second: Cube.001
+  - first:
+      23: 2300016
+    second: Cube.002
+  - first:
+      23: 2300018
+    second: Cube.003
+  - first:
+      23: 2300020
+    second: Cube.004
+  - first:
+      23: 2300022
+    second: Cylinder.001
+  - first:
+      33: 3300000
+    second: //RootNode
+  - first:
+      33: 3300002
+    second: Cube
+  - first:
+      33: 3300004
+    second: Cube_001
+  - first:
+      33: 3300006
+    second: Cylinder
+  - first:
+      33: 3300008
+    second: Cylinder_001
+  - first:
+      33: 3300010
+    second: Cube_002
+  - first:
+      33: 3300012
+    second: Cube_003
+  - first:
+      33: 3300014
+    second: Cube.001
+  - first:
+      33: 3300016
+    second: Cube.002
+  - first:
+      33: 3300018
+    second: Cube.003
+  - first:
+      33: 3300020
+    second: Cube.004
+  - first:
+      33: 3300022
+    second: Cylinder.001
+  - first:
+      43: 4300000
+    second: Cube
+  - first:
+      43: 4300002
+    second: Cylinder
+  - first:
+      43: 4300004
+    second: Cube_001
+  - first:
+      43: 4300006
+    second: Cylinder_001
+  - first:
+      43: 4300008
+    second: Cube_002
+  - first:
+      43: 4300010
+    second: Cube_003
+  - first:
+      43: 4300012
+    second: Cube_004
+  - first:
+      43: 4300014
+    second: Cube.004
+  - first:
+      43: 4300016
+    second: Cube.003
+  - first:
+      43: 4300018
+    second: Cube.002
+  - first:
+      43: 4300020
+    second: Cube.001
+  - first:
+      43: 4300022
+    second: Cylinder.001
+  - first:
+      74: 7400000
+    second: Default Take
+  - first:
+      74: 7400002
+    second: Open_Lift_Fan
+  - first:
+      74: 7400004
+    second: Armature|Open Lift Fan
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Cube_004
+  - first:
+      74: -623603649343465320
+    second: Scene
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -98,7 +263,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: HUD
-    second: {fileID: 2100000, guid: d1d75597445567a40870324aab5e5cdd, type: 2}
+    second: {fileID: 2100000, guid: b8a1b17b1322da9438313faff7aa8a91, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -135,7 +300,7 @@ ModelImporter:
       name: unnamed
     second: {fileID: 2100000, guid: dce126c0ceb956349b33de58c47d661c, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -168,25 +333,32 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 0
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: 1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 30
     normalImportMode: 1
@@ -195,10 +367,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -208,13 +380,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

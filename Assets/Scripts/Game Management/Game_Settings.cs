@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class Game_Settings : MonoBehaviour
 {
@@ -11,10 +12,19 @@ public class Game_Settings : MonoBehaviour
     public UDBox VSyncUD;
     public UDBox qualityUD;
     public UDBox fullscreenModeUD;
+    public bool useGUI = true;
 
     [Space]
     [Header("Gameplay Settings")]
     public Slider lookSensitivitySlider;
+
+    [Space]
+    [Header("Audio Settings")]
+    public AudioMixer masterMixer;
+    public Slider masterVolumeSlider;
+    public Slider musicVolumeSlider;
+    public Slider sfxVolumeSlider;
+
     
 
     public struct GraphicsSettings{
@@ -26,8 +36,15 @@ public class Game_Settings : MonoBehaviour
     public struct GameplaySettings{
         public float lookSensitivity;
     }
+
+    public struct AudioSettings{
+        public float masterVolume;
+        public float musicVolume;
+        public float sfxVolume;
+    }
     public static GraphicsSettings currGraphicsSettings;
     public static GameplaySettings currGameplaySettings;
+    public static AudioSettings currAudioSettings;
 
     public static void LoadGraphicsSettings(){
         //Pull game settings from file
@@ -38,8 +55,11 @@ public class Game_Settings : MonoBehaviour
         //Pull game settings from file
         string _gameplaySettings = System.IO.File.ReadAllText(Application.persistentDataPath + "/gameplaysettings.json");
         currGameplaySettings = JsonUtility.FromJson<GameplaySettings>(_gameplaySettings);
-
-
+    }
+    public static void LoadAudioSettings(){
+        //Pull game settings from file
+        string _audioSettings = System.IO.File.ReadAllText(Application.persistentDataPath + "/audiosettings.json");
+        currAudioSettings = JsonUtility.FromJson<AudioSettings>(_audioSettings);
     }
     
     public static void SaveGameSettings(){
@@ -49,6 +69,9 @@ public class Game_Settings : MonoBehaviour
         //Pull game settings from file
         string _gameplaySettings =JsonUtility.ToJson(currGameplaySettings);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/gameplaysettings.json", _gameplaySettings);
+        //Pull game settings from file
+        string _audioSettings =JsonUtility.ToJson(currAudioSettings);
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/audiosettings.json", _audioSettings);
     }
 
      public static void RestoreGraphicsSettings(){
@@ -64,6 +87,13 @@ public class Game_Settings : MonoBehaviour
     public static void RestoreGameplaySettings(){
         //Restore default settings
         currGameplaySettings.lookSensitivity = 0.5f;
+        SaveGameSettings();
+    }
+    public static void RestoreAudioSettings(){
+        //Restore default settings
+        currAudioSettings.masterVolume = 0.5f;
+        currAudioSettings.musicVolume = 0.5f;
+        currAudioSettings.sfxVolume = 0.5f;
         SaveGameSettings();
     }
     // Start is called before the first frame update
@@ -82,8 +112,15 @@ public class Game_Settings : MonoBehaviour
         catch{
             RestoreGameplaySettings();
         }
+        try{
+            LoadAudioSettings();
+        }
+        catch{
+            RestoreAudioSettings();
+        }
         ApplySettings();
-        UpdateGUI();
+        if(useGUI)
+            UpdateGUI();
     }
 
     public void ChangeMSAALevel(string level)
@@ -155,6 +192,24 @@ public class Game_Settings : MonoBehaviour
         ApplySettings();
     }
 
+    #region Audio Settings
+    public void ChangeMasterVolume(){
+        currAudioSettings.masterVolume = masterVolumeSlider.value;
+		masterMixer.SetFloat("Master Volume", Mathf.Log10(currAudioSettings.masterVolume)*20.0f);
+        ApplySettings();
+    }
+    public void ChangeMusicVolume(){
+        currAudioSettings.musicVolume = musicVolumeSlider.value;
+		masterMixer.SetFloat("Music Volume", Mathf.Log10(currAudioSettings.musicVolume)*20.0f);
+        ApplySettings();
+    }
+    public void ChangeSFXVolume(){
+        currAudioSettings.sfxVolume = sfxVolumeSlider.value;
+		masterMixer.SetFloat("SFX Volume", Mathf.Log10(currAudioSettings.sfxVolume)*20.0f);
+        ApplySettings();
+    }
+    #endregion
+
     public void ApplySettings(){
         QualitySettings.antiAliasing = currGraphicsSettings.MSAA;
         QualitySettings.vSyncCount = currGraphicsSettings.VSync;
@@ -162,6 +217,11 @@ public class Game_Settings : MonoBehaviour
         Screen.fullScreenMode = (FullScreenMode)currGraphicsSettings.fullScreenMode;
 
         MInput.sensitivity = currGameplaySettings.lookSensitivity;
+
+        //Audio Settings
+        masterMixer.SetFloat("Master Volume", Mathf.Log10(currAudioSettings.masterVolume)*20.0f);
+        masterMixer.SetFloat("Music Volume", Mathf.Log10(currAudioSettings.musicVolume)*20.0f);
+        masterMixer.SetFloat("SFX Volume", Mathf.Log10(currAudioSettings.sfxVolume)*20.0f);
 
         SaveGameSettings();
     }
@@ -175,6 +235,11 @@ public class Game_Settings : MonoBehaviour
 
         //Gameplay Settings
         lookSensitivitySlider.value = currGameplaySettings.lookSensitivity;
+
+        //Audio Settings
+        masterVolumeSlider.value = currAudioSettings.masterVolume;
+        musicVolumeSlider.value = currAudioSettings.musicVolume;
+        sfxVolumeSlider.value = currAudioSettings.sfxVolume;
     }
 
     public void ShowSettingsPanel(int panelNumber){

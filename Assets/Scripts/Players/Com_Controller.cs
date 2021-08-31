@@ -227,7 +227,7 @@ public class Com_Controller : MonoBehaviour {
 		}
 		if(spaceRoute.Count > 0){
 			Vector3 desiredDirection = (spaceRoute[0]-this.transform.position).normalized;
-			currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * maxSpeed, 0.1f);
+			currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * maxSpeed, 0.05f);
 			this.transform.position +=  currentVelocity * Time.deltaTime;
 			lastPosition = transform.position;
 		}
@@ -246,7 +246,7 @@ public class Com_Controller : MonoBehaviour {
 
 	void AnimateMovement()
 	{
-		anim.SetFloat("V Movement", agent.velocity.z);
+		anim.SetFloat("V Movement", agent.velocity.magnitude*1.5f/agent.speed);
 		if (botState == BotState.Patrol)
 		{
 			anim.SetFloat("Head Turn Speed", Mathf.Clamp01(Mathf.Sin(Time.time*1f)/2f+0.5f));
@@ -308,7 +308,7 @@ public class Com_Controller : MonoBehaviour {
 
 		//Check if our currently targetted player is still visible
 		if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 10f&&Vector3.Distance(transform.position, targetPlayer._transform.position)<50f) {
-			if (Vector3.Angle (targetPlayer._transform.position-this.transform.position, head.transform.forward) < 70f) {
+			if (Vector3.Angle (targetPlayer._transform.position-this.transform.position, head.transform.forward) < 90f) {
 				if (!Physics.Linecast (this.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller> () != null) {
 										
 					targetPlayer._lastSpottedTime = Time.time;
@@ -499,7 +499,7 @@ public class Com_Controller : MonoBehaviour {
 		}
 		else{
 			spaceDestination = patrolPositions[patrolIndex].position;
-			this.transform.forward = Vector3.Slerp(this.transform.forward, (spaceDestination-this.transform.position).normalized, 0.3f);
+			this.transform.forward = Vector3.Slerp(this.transform.forward, (spaceDestination-this.transform.position).normalized, 0.1f);
 			
 		}
 
@@ -529,7 +529,7 @@ public class Com_Controller : MonoBehaviour {
 	{
 		float sqrDistance = Vector3.Magnitude(targetPlayer._transform.position - transform.position);
 		
-		if ( sqrDistance> 20f)
+		if ( sqrDistance> 7f)
 		{
 			if(!isInSpace){
 				agent.destination = targetPlayer._transform.position;
@@ -549,17 +549,18 @@ public class Com_Controller : MonoBehaviour {
 			else{
 				spaceDestination = this.transform.position;
 			}
+			
 			Aim();
 		}
 		
-		this.transform.forward = Vector3.Slerp(transform.forward,((targetPlayer._transform.position-fireScript.shotSpawn.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);//Vector3.Slerp(fireScript.shotSpawn.transform.forward, ((targetPlayer._transform.position-transform.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);
+		this.transform.forward = Vector3.Slerp(transform.forward,((targetPlayer._transform.position+targetPlayer._transform.up * 1.5f-fireScript.shotSpawn.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);//Vector3.Slerp(fireScript.shotSpawn.transform.forward, ((targetPlayer._transform.position-transform.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);
 
 	}
 	void Aim()
 	{
 		anim.SetBool("Scope", true);
 		//use relative position
-		Vector3 _relativePosition = targetPlayer._transform.position - transform.position;
+		Vector3 _relativePosition = targetPlayer._transform.position+targetPlayer._transform.up * 1.5f - fireScript.shotSpawn.position;
 		//Lerp towards player
 		if(!isInSpace){
 			transform.Rotate(0f,Vector3.SignedAngle( fireScript.shotSpawn.transform.forward, _relativePosition, Vector3.up)*lockOnRate,0f);
@@ -570,8 +571,11 @@ public class Com_Controller : MonoBehaviour {
 			_angle = Vector3.SignedAngle(fireScript.shotSpawn.forward, transform.forward, transform.right)/1000f;
 		}
 		anim.SetFloat("Look Speed", Mathf.Lerp(anim.GetFloat("Look Speed"),Mathf.Clamp01(anim.GetFloat("Look Speed")- _angle),lockOnRate));
+		Debug.DrawLine(transform.position, transform.position+_relativePosition, Color.white);
+		Debug.DrawLine(fireScript.shotSpawn.position, fireScript.shotSpawn.position+fireScript.shotSpawn.transform.forward * 10f, Color.magenta);
 		if (Vector3.Angle(fireScript.shotSpawn.transform.forward, _relativePosition) < 10f)
 		{
+			
 			if(!isInSpace){
 				agent.Stop();
 			}

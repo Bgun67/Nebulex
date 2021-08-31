@@ -5,7 +5,10 @@ using UnityEngine;
 public class Player_IK : MonoBehaviour
 {
     public Transform rhTarget;
+    [HideInInspector]
+    public Vector3 rhOffset = Vector3.zero;
     public Transform lhTarget;
+    public float footOffset = 0.1f;
 
     Vector3 rfTargetPos;
     Quaternion rfTargetRot;
@@ -27,20 +30,22 @@ public class Player_IK : MonoBehaviour
     }
 
     void Update(){
-        //Pull the latest raycast data from the player
-        if(!isBot && player.rfHit.distance <= 1f){
-            rfTargetPos = player.rfHit.point;
-            rfTargetRot = Quaternion.FromToRotation(transform.up, player.rfHit.normal) * transform.rotation;
-        }
-        if(!isBot && player.lfHit.distance <= 1f){
-            lfTargetPos = player.lfHit.point;
-            lfTargetRot = Quaternion.FromToRotation(transform.up, player.lfHit.normal) * transform.rotation;
-        }
+        
 
 
     }
 
     void OnAnimatorIK(){
+        //Pull the latest raycast data from the player
+        if(!isBot && player.rfHit.distance <= 1f){
+            rfTargetPos = player.rfHit.point + 0f*transform.up * footOffset;
+            rfTargetRot = Quaternion.FromToRotation(transform.up, player.rfHit.normal) * transform.rotation;
+        }
+        if(!isBot && player.lfHit.distance <= 1f){
+            lfTargetPos = player.lfHit.point + 0f*transform.up * footOffset;
+            lfTargetRot = Quaternion.FromToRotation(transform.up, player.lfHit.normal) * transform.rotation;
+        }
+
         float rfBlend = anim.GetFloat("Right Foot IK Blend");
         float lfBlend = anim.GetFloat("Left Foot IK Blend");
 
@@ -50,7 +55,7 @@ public class Player_IK : MonoBehaviour
         if(rhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);  
-            anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position);
+            anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position + rhOffset.z* player.finger.transform.forward);
             anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation);
         }
         if(lhTarget != null) {
@@ -61,24 +66,27 @@ public class Player_IK : MonoBehaviour
         }
         if(!isBot && player.rfHit.distance <= 1f){
             //Right foot
-            anim.SetIKPositionWeight(AvatarIKGoal.RightFoot,rfBlend);
-            anim.SetIKRotationWeight(AvatarIKGoal.RightFoot,rfBlend);  
-            anim.SetIKPosition(AvatarIKGoal.RightFoot,rfTargetPos);
-            anim.SetIKRotation(AvatarIKGoal.RightFoot,rfTargetRot);
+            //anim.SetIKPositionWeight(AvatarIKGoal.RightFoot,rfBlend);
+            //anim.SetIKRotationWeight(AvatarIKGoal.RightFoot,rfBlend);  
+            //anim.SetIKPosition(AvatarIKGoal.RightFoot,rfTargetPos);
+            //anim.SetIKRotation(AvatarIKGoal.RightFoot,rfTargetRot);
         }
         else{
-            anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot,0);
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,0);
+            //anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot,0);
+            //anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,0);
         }
-        if(!isBot && player.lfHit.distance <= 1f){
-            //Right foot
-            anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot,lfBlend);
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,lfBlend);  
-            anim.SetIKPosition(AvatarIKGoal.LeftFoot,lfTargetPos);
-            anim.SetIKRotation(AvatarIKGoal.LeftFoot,lfTargetRot);
+        if(!isBot && player.lfHitValid){
+            //Left foot
+            //anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot,lfBlend);
+            //anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,lfBlend);
+            //anim.SetIKHintPositionWeight(AvatarIKHint.LeftKnee, 1f);  
+            //anim.SetIKPosition(AvatarIKGoal.LeftFoot,lfTargetPos);
+            //anim.SetIKRotation(AvatarIKGoal.LeftFoot,lfTargetRot);
+            //anim.SetIKHintPosition(AvatarIKHint.LeftKnee, transform.forward);
         }else{
-            anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot,0);
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,0);
+            //anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot,Mathf.Lerp(anim.GetIKPositionWeight(AvatarIKGoal.LeftFoot),0,0.3f));
+            //anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,Mathf.Lerp(anim.GetIKPositionWeight(AvatarIKGoal.LeftFoot),0,0.3f));
+            //anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,0);
         }
     }
 

@@ -18,6 +18,8 @@ public class Player_Controller : MonoBehaviour {
 	//Access to the left and right foot data
 	[HideInInspector]
 	public RaycastHit lfHit;
+	//[HideInInspector]
+	public bool lfHitValid;
 	[HideInInspector]
 	public RaycastHit rfHit;
 
@@ -25,7 +27,8 @@ public class Player_Controller : MonoBehaviour {
 	public bool onLadder = false;
 	public float forceFactor;
 	public bool inVehicle = false;
-	public Transform footRaycast;
+	Transform lfRaycast;
+	Transform rfRaycast;
 	public float maxStepHeight;
 	public Game_Controller gameController;
 	WalkState walkState = WalkState.Walking;
@@ -180,6 +183,11 @@ public class Player_Controller : MonoBehaviour {
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
 		originalCamPosition = mainCamObj.transform.localPosition;
 		originalCamRotation = mainCamObj.transform.localRotation;
+
+		//Feet raycasts
+		lfRaycast = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
+		rfRaycast = anim.GetBoneTransform(HumanBodyBones.RightFoot);
+
 		if (gameController.localPlayer == null) {
 			gameController.GetLocalPlayer ();
 		}
@@ -294,8 +302,12 @@ public class Player_Controller : MonoBehaviour {
 	//was update
 	void Update () {
 		//Gather Raycast data from under the left and right feet
-		Physics.Raycast(footRaycast.transform.position - footRaycast.transform.right * 0.2f, -footRaycast.transform.up,out lfHit,1f,magBootsLayer,QueryTriggerInteraction.Ignore);
-		Physics.Raycast(footRaycast.transform.position + footRaycast.transform.right * 0.2f, -footRaycast.transform.up,out rfHit,1f,magBootsLayer,QueryTriggerInteraction.Ignore);
+		lfHitValid = Physics.Raycast(lfRaycast.position, -transform.up,out lfHit,1f,magBootsLayer,QueryTriggerInteraction.Ignore);
+		if(lfHitValid){
+			Debug.DrawLine(lfRaycast.position, lfHit.point);
+		}
+		
+		Physics.Raycast(rfRaycast.position, -transform.up,out rfHit,1f,magBootsLayer,QueryTriggerInteraction.Ignore);
 		
 
 		//Play thruster sounds
@@ -933,7 +945,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading  && !throwingGrenade) {
 			Transform _scopeTransform = fireScript.scopePosition;
-			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f*_scopeTransform.lossyScale.x/0.3303206f + _scopeTransform.up * 0.022f*_scopeTransform.lossyScale.x/0.3303206f;
+			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
 			if(mainCam.fieldOfView < 11 && anim.GetCurrentAnimatorStateInfo(3).IsName("Aim"+fireScript.aimAnimNumber.ToString())){
@@ -1176,7 +1188,7 @@ public class Player_Controller : MonoBehaviour {
 				Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
 				Debug.DrawRay(_hit.point,_hitNormal, Color.green);
 				rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
-				rb.AddForceAtPosition((transform.up).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)), footRaycast.position);
+				rb.AddForceAtPosition((transform.up).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)), lfRaycast.position);
 				
 				float lookUpDownTime = anim.GetFloat("Look Speed");	
 				anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 0.5f*Time.deltaTime, -1f, 1f));
@@ -1244,7 +1256,7 @@ public class Player_Controller : MonoBehaviour {
 			} 
 		}
 		//Clamp the maximum speed
-		rb.velocity = Vector3.Lerp(rb.velocity, Vector3.ClampMagnitude(rb.velocity,7f), 0.3f);
+		rb.velocity = Vector3.Lerp(rb.velocity, Vector3.ClampMagnitude(rb.velocity,5f), 0.3f);
 	}
 	public void AnimateMovement(){
 		anim.SetFloat ("H Movement", h*moveFactor);
@@ -1376,7 +1388,7 @@ public class Player_Controller : MonoBehaviour {
 	{
 		if (v > 0.1f)
 		{
-			Vector3 footPos = footRaycast.transform.position;
+			Vector3 footPos = lfRaycast.position;
 			RaycastHit _hit;
 			if (Physics.SphereCast(footPos,0.1f, transform.forward,out _hit,0.3f))
 			{
@@ -1660,6 +1672,8 @@ public class Player_Controller : MonoBehaviour {
 
 		anim.Play ("Aim" + fireScript.aimAnimNumber, 3);
 		anim.Play (recoilString, 2, 0f);
+		//We want to move the right hand target back and forth depending how long the gun is
+		this.GetComponent<Player_IK>().rhOffset = fireScript.rhOffset;
 		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;
 		this.GetComponent<Player_IK>().lhTarget = fireScript.lhTarget;
 

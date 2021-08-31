@@ -242,7 +242,9 @@ public class Damage : MonoBehaviour {
 		{
 			if (fromID != 0)
 			{
-				GlobalSound.SendRemoteSound(GlobalSound.JukeBox.HitEnemy, fromID);
+				if(this.tag == "Player"){
+					GlobalSound.SendRemoteSound(GlobalSound.JukeBox.HitEnemy, fromID);
+				}
 				assistArray[fromID] += damageAmount;
 			}
 		}

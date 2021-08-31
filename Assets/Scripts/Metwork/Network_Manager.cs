@@ -62,7 +62,7 @@ public class Network_Manager : MonoBehaviour {
 		if(www.error != null){
 			print("Watchdog Miss");
 			if(kickFailed){
-				Metwork._instance.StartRecoverConnection(Metwork.isServer,Metwork.roomName);
+				//Metwork._instance.StartRecoverConnection(Metwork.isServer,Metwork.roomName);
 				kickFailed = false;
 			}
 			else{

@@ -19,6 +19,7 @@ namespace SceneSwitcher
 		private static bool m_OpenInSceneView = true;
 		private static bool m_CloseInSceneView;
 		private static bool m_IsMinimized;
+		int i = 0;
 		
 		private class Scenes
 		{
@@ -59,7 +60,10 @@ namespace SceneSwitcher
 		
 		private void OnGUI ()
 		{
-			m_Scenes = GetScenes();
+			if(i % 10 == 0){
+				m_Scenes = GetScenes();
+			}
+			i++;
 			GUI.skin.font = ((GUIStyle)"ShurikenLabel").font;
 			
 			EditorGUILayout.BeginVertical((GUIStyle)"HelpBox");
