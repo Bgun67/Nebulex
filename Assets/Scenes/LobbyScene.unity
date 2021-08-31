@@ -2333,6 +2333,74 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4301024, guid: b542535952b5f9441bf0b2a3f977ebf4, type: 3}
+--- !u!1 &145883216
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 145883217}
+  - component: {fileID: 145883219}
+  - component: {fileID: 145883218}
+  m_Layer: 0
+  m_Name: Reverb Zone Gallery
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &145883217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145883216}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.17, y: 0, z: 22.41}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 850664705}
+  m_RootOrder: 56
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &145883218
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145883216}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 25.206665, y: 4.224866, z: 39.194824}
+  m_Center: {x: 0.19421387, y: 2.5018487, z: 2.3933105}
+--- !u!114 &145883219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145883216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d641f3ac86ee034d8c754e880f87ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: 3
+  ambientPreset: 10
+  fadeDistance: 5
+  priority: 1
+  drawGizmo: 1
+  shape: {fileID: 145883218}
+  reverbLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  target: {fileID: 24100000, guid: 2b4ac67fb0a34ff4a968df18d4d6d318, type: 2}
+  lerpKey: 0
 --- !u!1 &150083216 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100110, guid: b542535952b5f9441bf0b2a3f977ebf4,
@@ -18030,6 +18098,10 @@ PrefabInstance:
     - target: {fileID: 401412, guid: b542535952b5f9441bf0b2a3f977ebf4, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 401426, guid: b542535952b5f9441bf0b2a3f977ebf4, type: 3}
+      propertyPath: m_RootOrder
+      value: 51
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: b542535952b5f9441bf0b2a3f977ebf4, type: 3}
       propertyPath: m_Materials.Array.data[0]
