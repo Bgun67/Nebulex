@@ -24,6 +24,7 @@ public class Game_Settings : MonoBehaviour
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
+    public Slider voicePromptVolumeSlider;
 
     
 
@@ -41,6 +42,7 @@ public class Game_Settings : MonoBehaviour
         public float masterVolume;
         public float musicVolume;
         public float sfxVolume;
+        public float voicePromptVolume;
     }
     public static GraphicsSettings currGraphicsSettings;
     public static GameplaySettings currGameplaySettings;
@@ -94,6 +96,7 @@ public class Game_Settings : MonoBehaviour
         currAudioSettings.masterVolume = 0.5f;
         currAudioSettings.musicVolume = 0.5f;
         currAudioSettings.sfxVolume = 0.5f;
+        currAudioSettings.voicePromptVolume = 0.5f;
         SaveGameSettings();
     }
     // Start is called before the first frame update
@@ -208,6 +211,11 @@ public class Game_Settings : MonoBehaviour
 		masterMixer.SetFloat("SFX Volume", Mathf.Log10(currAudioSettings.sfxVolume)*20.0f);
         ApplySettings();
     }
+    public void ChangeVoicePromptVolume(){
+        currAudioSettings.voicePromptVolume = voicePromptVolumeSlider.value;
+		//masterMixer.SetFloat("Voice Prompt Volume", Mathf.Log10(currAudioSettings.voicePromptVolume)*20.0f);
+        ApplySettings();
+    }
     #endregion
 
     public void ApplySettings(){
@@ -222,6 +230,7 @@ public class Game_Settings : MonoBehaviour
         masterMixer.SetFloat("Master Volume", Mathf.Log10(currAudioSettings.masterVolume)*20.0f);
         masterMixer.SetFloat("Music Volume", Mathf.Log10(currAudioSettings.musicVolume)*20.0f);
         masterMixer.SetFloat("SFX Volume", Mathf.Log10(currAudioSettings.sfxVolume)*20.0f);
+        //masterMixer.SetFloat("Voice Prompt Volume", Mathf.Log10(currAudioSettings.voicePromptVolume)*20.0f);
 
         SaveGameSettings();
     }
@@ -240,6 +249,7 @@ public class Game_Settings : MonoBehaviour
         masterVolumeSlider.value = currAudioSettings.masterVolume;
         musicVolumeSlider.value = currAudioSettings.musicVolume;
         sfxVolumeSlider.value = currAudioSettings.sfxVolume;
+        voicePromptVolumeSlider.value = currAudioSettings.voicePromptVolume;
     }
 
     public void ShowSettingsPanel(int panelNumber){
