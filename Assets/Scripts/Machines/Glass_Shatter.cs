@@ -23,9 +23,9 @@ public class Glass_Shatter : MonoBehaviour {
 	// Update is called once per frame
 	void OnTriggerEnter (Collider other) {
 		Vector3 position = other.transform.position;
-		print ("Coll");
+		
 		if (other.GetComponent<Bullet_Controller> ()) {
-			print ("foudn Bullet");
+			
 			if (type == GlassType.Permeable) {
 				Instantiate (crackPrefab, this.GetComponent<Collider> ().ClosestPoint (position), Quaternion.identity);
 				
@@ -45,11 +45,11 @@ public class Glass_Shatter : MonoBehaviour {
 	}
 	void OnCollisionEnter (Collision other) {
 		Vector3 position = other.contacts[0].point;
-		print ("Coll");
+		Vector3 normal = other.contacts[0].normal;
 		if (other.transform.root.GetComponent<Bullet_Controller> ()) {
-			print ("foudn Bullet");
 			 if (type == GlassType.Bulletproof) {
-				GameObject crack = Instantiate (crackPrefab, position, Quaternion.identity);
+				 
+				GameObject crack = Instantiate (crackPrefab, position, Quaternion.LookRotation(-normal));
 				crack.transform.parent = this.transform;
 				Destroy(crack, 20f);
 			} 

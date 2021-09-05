@@ -198,7 +198,7 @@ public class AudioReverbArea : MonoBehaviour
     Collider[] colliders = new Collider[10];
 
     
-    void FixedUpdate()
+    void Update()
     {
         //Reload the reverb data if it has changed during playmode
         if(previousPreset != preset)
