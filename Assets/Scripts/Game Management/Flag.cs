@@ -131,11 +131,12 @@ public class Flag : MonoBehaviour {
 
 		} else {
 			//Pickup the flag
+			/*TODO
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netObj.netView.RPC ("RPC_PickupFlag", MRPCMode.AllBuffered, new object[]{_player.netObj.netID });
 			} else {
 				RPC_PickupFlag (_player.netObj.netID);
-			}
+			}*/
 		}
 	}
 
@@ -147,7 +148,8 @@ public class Flag : MonoBehaviour {
 
 		target = player.jetpackJets[0].transform;
 		this.transform.forward = player.transform.forward;
-		netObj.owner = player.netObj.owner;
+		//TODO
+		//netObj.owner = player.netObj.owner;
 	}
 
 

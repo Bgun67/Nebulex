@@ -11,7 +11,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 
 	public GameObject[] spawnButtons;
 	public Transform[] spawnPositions;
-	public GameObject sceneCam;
+	public Camera sceneCam;
 
 	Game_Controller gameController;
 	public GameObject eventSystem;
@@ -84,23 +84,32 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 
 		_player.damageScript.initialPosition = null;
 		_player.damageScript.Reactivate();
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			gameController.netView.RPC ("RPC_ActivatePlayer", MRPCMode.AllBuffered, new object[]{ _player.netObj.owner});
-			if (_player.netObj.isLocal) {
-				_player.sceneCam.enabled = false;
-				_player.sceneCam.GetComponent<AudioListener>().enabled = false;
+		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
+			//TODO
+			//gameController.netView.RPC ("RPC_ActivatePlayer", MRPCMode.AllBuffered, new object[]{ _player.netObj.owner});
+			//CHECK
+			if (_player.isLocalPlayer) {
+				Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
+				Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
 
 			}
 		} else {
 			//Enables the player
-			gameController.RPC_ActivatePlayer (_player.netObj.owner);
-			_player.sceneCam.enabled = false;
-			_player.sceneCam.GetComponent<AudioListener>().enabled = false;
+			//TODO
+			//gameController.RPC_ActivatePlayer (_player.netObj.owner);
+			Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
+			Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
 
-		}
+		}*/
+		//gameController.RPC_ActivatePlayer (_player.playerID);
+		_player.Cmd_ShowPlayer();
+		//CHECK
+		Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
+		Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
+
 		//zoom down effect
-		_player.mainCamObj.transform.position = _player.sceneCam.transform.position;
-		_player.mainCamObj.transform.rotation = _player.sceneCam.transform.rotation;
+		_player.mainCamObj.transform.position = Game_Controller.Instance.sceneCam.transform.position;
+		_player.mainCamObj.transform.rotation = Game_Controller.Instance.sceneCam.transform.rotation;
 		SceneManager.UnloadSceneAsync ("SpawnScene");
 		this.enabled = (false);
 

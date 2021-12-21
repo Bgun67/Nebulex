@@ -17,7 +17,7 @@ public class Passenger_Enter : MonoBehaviour {
 	void FixedUpdate(){
 		
 		
-		if (player== null||!player.netObj.isLocal)
+		if (player== null||!player.isLocalPlayer)
 		{
 			return;
 		}
@@ -45,15 +45,15 @@ public class Passenger_Enter : MonoBehaviour {
 		}
 		
 		transform.root.SendMessage("Exit");
+		/*TODO
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
-
 			player.netView.RPC("RPCExitVehicle", MRPCMode.AllBuffered, new object[] { });
 		}
 		else
 		{
 			player.RPC_ExitVehicle();
-		}
+		}*/
 		player = null;
 		lastTime = Time.time;
 		print("Disconnecting");
@@ -67,7 +67,7 @@ public class Passenger_Enter : MonoBehaviour {
 		{
 			UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(true);
 		}
-		if (player == null||!player.netObj.isLocal) {
+		if (player == null||!player.isLocalPlayer) {
 			player = _player.GetComponent<Player_Controller>();
 			//player.rb.isKinematic = true;
 			player.inVehicle = true;
@@ -75,11 +75,12 @@ public class Passenger_Enter : MonoBehaviour {
 			CapsuleCollider[] capsules = player.GetComponents<CapsuleCollider> ();
 			capsules[0].enabled = false;
 			capsules[1].enabled = false;
+			/*TODO
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				player.netObj.netView.RPC ("RPC_Sit", MRPCMode.AllBuffered, new object[]{ true});
 			} else {
 				player.RPC_Sit (true);
-			}
+			}*/
 			exitWait = Time.time + 2f;
 		}
 	}

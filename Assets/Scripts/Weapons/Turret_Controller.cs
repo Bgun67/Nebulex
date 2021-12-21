@@ -12,7 +12,7 @@ public class Turret_Controller : MonoBehaviour
 	public Fire primary1;
 	public Fire primary2;
 	public GameObject mainCamera;
-	public GameObject player;
+	public Player_Controller player;
 	public MetworkView netView;
 	public GameObject explosionEffect;
 	public GameObject destroyedPrefab;
@@ -34,13 +34,13 @@ public class Turret_Controller : MonoBehaviour
 		primary1.playerID = 0;
 		primary2.playerID = 0;
 	}
-	public virtual void Activate(GameObject pilot)
+	public virtual void Activate(Player_Controller pilot)
 	{
 		//Switch to the internal camera
 		print(pilot.name);
 		if (player == null)
 		{
-			pilot.GetComponent<Player_Controller>().mainCamObj.SetActive(false);
+			pilot.mainCamObj.SetActive(false);
 			netView = this.GetComponent<MetworkView>();
 
 
@@ -68,8 +68,8 @@ public class Turret_Controller : MonoBehaviour
 	public void RPC_Activate(int _pilot)
 	{
 		player = FindObjectOfType<Game_Controller>().GetPlayerFromNetID(_pilot);
-		player.SetActive(false);
-		player.GetComponent<Player_Controller>().inVehicle = true;
+		player.gameObject.SetActive(false);
+		player.inVehicle = true;
 		this.enabled = true;
 
 		primary1.playerID = _pilot;
@@ -79,7 +79,7 @@ public class Turret_Controller : MonoBehaviour
 	public void Exit()
 	{
 		//Switch to the player camera
-		player.GetComponent<Player_Controller>().mainCamObj.SetActive(true);
+		player.mainCamObj.SetActive(true);
 		this.mainCamera.SetActive(false);
 
 		GetComponent<Damage>().healthShown = false;
@@ -103,13 +103,13 @@ public class Turret_Controller : MonoBehaviour
 	[MRPC]
 	public void RPC_Exit()
 	{
-		print(player.name);
+		
 		GetComponent<Damage>().healthShown = false;
 		GetComponent<Damage>().UpdateUI();
 		//move player away from the object
 		player.transform.position = transform.position + transform.right * 5f;
 		player.gameObject.SetActive(true);
-		player.GetComponent<Player_Controller>().inVehicle = false;
+		player.inVehicle = false;
 
 		player = null;
 
@@ -159,9 +159,6 @@ public class Turret_Controller : MonoBehaviour
 			Exit();
 			player = FindObjectOfType<Game_Controller>().GetPlayerFromNetID(id);
 			player.GetComponent<Damage>().TakeDamage(1000, 0, transform.position);
-
-			//tmpPlayer.GetComponent<Player_Controller> ().Die ();
-
 		}
 		this.GetComponent<Damage>().Reset();
 

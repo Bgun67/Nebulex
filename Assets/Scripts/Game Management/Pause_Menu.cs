@@ -8,7 +8,7 @@ public class Pause_Menu : MonoBehaviour {
 	public GameObject confirmRecallPanel;
 	public GameObject settingsPanel;
 	public GameObject eventSystem;
-	public GameObject player;
+	public Player_Controller player;
 
 	// Use this for initialization
 	void OnEnable(){

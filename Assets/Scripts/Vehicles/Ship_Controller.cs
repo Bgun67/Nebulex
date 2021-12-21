@@ -15,7 +15,7 @@ public class Ship_Controller : MonoBehaviour {
 	protected Rigidbody rb;
 	public Metwork_Object netObj;
 	public GameObject mainCamera;
-	public GameObject player;
+	public Player_Controller player;
 	public List<Vector3> route;
 
 	public GameObject[] destroyedPrefabs;
@@ -146,7 +146,7 @@ public class Ship_Controller : MonoBehaviour {
 	}
 	void LowerRamp()
 	{
-		transform.GetComponentInChildren<Door_Controller>().GetComponent<Activater>().ActivateScript(player);
+		transform.GetComponentInChildren<Door_Controller>().GetComponent<Activater>().ActivateScript(player.gameObject);
 	}
 	
 
@@ -409,7 +409,7 @@ public class Ship_Controller : MonoBehaviour {
 		fireScript2.FireWeapon ();
 	}
 
-	public void Activate(GameObject pilot){
+	public void Activate(Player_Controller pilot){
 		//Ensure that the gameobject has the netObj set (Due to start() not being called yet)
 		if (netObj == null) {
 			netObj = this.GetComponent<Metwork_Object> ();
@@ -417,7 +417,8 @@ public class Ship_Controller : MonoBehaviour {
 
 		if (pilot.GetComponent<Metwork_Object> ().isLocal && this.player == null) {
 			this.DisableAI();
-			pilot.GetComponent<Player_Controller> ().GainAir ();
+			//TODO: Find a better way of doing this maybe?
+			pilot.GainAir ();
 			this.mainCamera.SetActive (true);
 			GetComponent<Damage> ().healthShown = true;
 			GetComponent<Damage> ().UpdateUI ();
@@ -458,8 +459,8 @@ public class Ship_Controller : MonoBehaviour {
 		}
 
 		player = FindObjectOfType<Game_Controller>().GetPlayerFromNetID (_pilot);
-		player.GetComponent<Player_Controller> ().inVehicle = true;
-		player.SetActive (false);
+		player.inVehicle = true;
+		player.gameObject.SetActive (false);
 
 		if (anim != null&&!isTransport) {
 			anim.SetBool ("Should Close", true);
@@ -514,20 +515,20 @@ public class Ship_Controller : MonoBehaviour {
 		if (netObj == null) {
 			netObj = this.GetComponent<Metwork_Object> ();
 		}
-		player.SetActive (true);
+		player.gameObject.SetActive (true);
 		player.GetComponent<Rigidbody> ().velocity = this.rb.velocity;
 		player.transform.position = this.transform.position+FindExitPoint();
 		if (rb.useGravity)
 		{
-			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
-			player.GetComponent<Player_Controller>().rb.useGravity = true;
+			player.StartCoroutine("EnterGravity");
+			player.rb.useGravity = true;
 		}
 		else
 		{
-			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
-			player.GetComponent<Player_Controller>().rb.useGravity = false;
+			player.StartCoroutine("ExitGravity");
+			player.rb.useGravity = false;
 		}
-		player.GetComponent<Player_Controller> ().inVehicle = false;
+		player.inVehicle = false;
 
 		if (!isTransport && anim != null)
 		{

@@ -54,8 +54,11 @@ public class Player_IK : MonoBehaviour
     
         if(rhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
-            anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);  
-            anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position + rhOffset.z* player.finger.transform.forward);
+            anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
+            if(player != null)  
+                anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position + rhOffset.z* player.finger.transform.forward);
+            else
+                anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position);
             anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation);
         }
         if(lhTarget != null) {

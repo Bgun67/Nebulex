@@ -34,7 +34,7 @@ public class Activater : MonoBehaviour
 		textObj.transform.position = _textPosition;
 		textObj.transform.parent = transform;
 		SetText();
-		player = FindObjectOfType<Game_Controller>().localPlayer;
+		player = FindObjectOfType<Game_Controller>().localPlayer.gameObject;
 
 		StartCoroutine(CheckShowText());
 
@@ -58,7 +58,7 @@ public class Activater : MonoBehaviour
 	[MRPC]
 	public void RPC_ActivateScript(int _netID)
 	{
-		GameObject player = FindObjectOfType<Game_Controller>().GetPlayerFromNetID(_netID);
+		GameObject player = FindObjectOfType<Game_Controller>().GetPlayerFromNetID(_netID).gameObject;
 
 		foreach (MonoBehaviour scriptToActivate in scriptsToActivate)
 		{

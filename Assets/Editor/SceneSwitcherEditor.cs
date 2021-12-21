@@ -120,8 +120,9 @@ namespace SceneSwitcher
 			GUILayout.Space(2);
 			GUILayout.EndHorizontal();
 
-			if(m_Scenes.Count == 0)
-				EditorGUILayout.LabelField("There are no scenes available.");
+			//FIXME
+			//if(m_Scenes.Count == 0)
+			//	EditorGUILayout.LabelField("There are no scenes available.");
 			
 			GUILayout.Space(5);
 			

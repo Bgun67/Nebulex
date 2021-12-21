@@ -1,10 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Mirror;
 
-public class Game_Controller : MonoBehaviour {
+public class Game_Controller : NetworkBehaviour {
 
 	[System.Serializable]
 	public class PlayerStats{
@@ -37,7 +38,7 @@ public class Game_Controller : MonoBehaviour {
 		}
 	}
 
-	public List<GameObject> playerObjects = new List<GameObject> ();
+	public List<Player_Controller> playerObjects = new List<Player_Controller> ();
 	[HideInInspector]
 	public List<Com_Controller> bots = new List<Com_Controller>();
 
@@ -57,8 +58,8 @@ public class Game_Controller : MonoBehaviour {
 
 	public Transform shipOneTransform;
 	public Transform shipTwoTransform;
-	public GameObject sceneCam;
-	public MetworkView netView;
+	public Camera sceneCam;
+	//public MetworkView netView;
 
 	public Flag flagA;
 	public Flag flagB;
@@ -74,12 +75,16 @@ public class Game_Controller : MonoBehaviour {
 
 	[Space(5f)]
 	#region UI
-	public GameObject localPlayer;
+	public Player_Controller localPlayer;
 	[Header("UI Variables")]
 	public int matchLength;
+	[SyncVar]
+	//TODO: make this not an int
 	public int currentTime;
 	public float fps;
+	[SyncVar]
 	public int scoreA;
+	[SyncVar]
 	public int scoreB;
 	[Header( "UI Objects")]
 	public Text UI_timeText;
@@ -110,48 +115,6 @@ public class Game_Controller : MonoBehaviour {
 
 
 	#endregion
-
-	public void ServerTransferred(){
-		
-	}
-
-	[MRPC]
-	public void RPC_UpdateMatchInfo()
-	{
-		if (!Metwork.isServer)
-		{
-			return;
-		}
-		netView.RPC("RPC_UpdateMatchScore", MRPCMode.OthersBuffered, new object[] { scoreA, scoreB });
-		for (int i = 0; i < statsArray.Length; i++)
-		{
-			PlayerStats stat = statsArray[i];
-			if (stat.name == "")
-			{
-				continue;
-			}
-			netView.RPC("RPC_UpdateStatsArrayEntry", MRPCMode.OthersBuffered, new object[] { i, stat.name, stat.kills, stat.deaths, stat.assists, stat.score });
-		}
-	}
-	[MRPC]
-	public void RPC_UpdateMatchScore(int _scoreA, int _scoreB)
-	{
-		scoreA = _scoreA;
-		scoreB = _scoreB;
-	}
-	[MRPC]
-	public void RPC_UpdateStatsArrayEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
-	{
-		PlayerStats _stat = statsArray[_index];
-		_stat.name = _name;
-		_stat.kills = _kills;
-		_stat.deaths = _deaths;
-		_stat.assists = _assists;
-		_stat.score = _score;
-
-		statsArray[_index] = _stat;
-	}
-
 	public void Start()
 	{
 
@@ -163,7 +126,12 @@ public class Game_Controller : MonoBehaviour {
 		UI_awayColour = UI_Manager.GetInstance.UI_AwayColour;
 
 
-		netView = this.GetComponent<MetworkView>();
+		//netView = this.GetComponent<MetworkView>();
+		//Add the bots (we're going to ignore this for now)
+		//This part should only be done on the server
+		//TODO:
+		statsArray[0].isBot = true;
+		//CHECK
 		GetLocalPlayer();
 		
 		Physics.autoSimulation = false;
@@ -173,6 +141,7 @@ public class Game_Controller : MonoBehaviour {
 
 		if (SceneManager.GetActiveScene().name != "LobbyScene")
 		{
+			//TODO This should only runn on the server
 			InvokeRepeating("GameUpdate", 1f, 1f);
 			InvokeRepeating("UpdateUI", 1f, 0.1f);
 			InvokeRepeating("UpdateHost", 130f, 10f);
@@ -256,20 +225,61 @@ public class Game_Controller : MonoBehaviour {
 			}
 		}
 		//call to server to sync the scores on all clients
-		if (Metwork.peerType != MetworkPeerType.Disconnected)
-		{
-			netView.RPC("RPC_UpdateMatchInfo", MRPCMode.Server, new object[] { });
-		}
+		//TODO
+		//if (Metwork.peerType != MetworkPeerType.Disconnected)
+		//{
+		//	netView.RPC("RPC_UpdateMatchInfo", MRPCMode.Server, new object[] { });
+		//}
 		Invoke("PhysicsUpdate", 1f);
 
 	}
+
+	
+
+	
+
+	[MRPC]
+	public void RPC_UpdateMatchInfo()
+	{
+		if (!isServer)
+		{
+			return;
+		}
+		//TODO
+		for (int i = 0; i < statsArray.Length; i++)
+		{
+			PlayerStats stat = statsArray[i];
+			if (stat.name == "")
+			{
+				continue;
+			}
+			//TODO Turn this into a hash table or something
+			//netView.RPC("RPC_UpdateStatsArrayEntry", MRPCMode.OthersBuffered, new object[] { i, stat.name, stat.kills, stat.deaths, stat.assists, stat.score });
+		}
+	}
+	
+	[MRPC]
+	public void RPC_UpdateStatsArrayEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
+	{
+		PlayerStats _stat = statsArray[_index];
+		_stat.name = _name;
+		_stat.kills = _kills;
+		_stat.deaths = _deaths;
+		_stat.assists = _assists;
+		_stat.score = _score;
+
+		statsArray[_index] = _stat;
+	}
+
 	public int GetLocalPlayer(){
-		//foreach (Player_Controller player in FindObjectsOfType<Player_Controller>()) {
-		foreach (GameObject player in playerObjects) {
-			Metwork_Object _metObj = player.GetComponent<Metwork_Object>();
-			if (_metObj!=null && _metObj.isLocal) {
+		if(localPlayer != null)
+			return localPlayer.playerID;
+
+		//TODO Replace this with playerObjects
+		foreach (Player_Controller player in FindObjectsOfType<Player_Controller>()) {
+			if (player.isLocalPlayer){
 				localPlayer = player;
-				return _metObj.netID;
+				return localPlayer.playerID;
 			}
 		}
 		return -1;
@@ -278,12 +288,27 @@ public class Game_Controller : MonoBehaviour {
 		Physics.autoSimulation = true;
 		
 	}
+	/*Remove if unneeded
 	void UpdateHost(){
 		if(Metwork.isServer){
 			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
 			string _newScene = matchSettings[2];
 			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (_newScene);
 		}
+	}*/
+
+	public int AssignPlayerID(){
+		int _playerID = -1;
+		for(int i = 0; i<statsArray.Length; i++){
+			if(statsArray[i].isBot == true){
+				statsArray[i].isBot = false;
+				_playerID = i;
+				break;
+			}
+		}
+		if(_playerID == -1)
+			Debug.LogError("Invalid player ID: " + _playerID);
+		return _playerID;
 	}
 
 	[MRPC]
@@ -339,8 +364,8 @@ public class Game_Controller : MonoBehaviour {
 		
 
 		foreach (Player_Controller player in GameObject.FindObjectsOfType<Player_Controller>()) {
-			if (player.GetComponent<Metwork_Object> ().isLocal) {
-				localPlayer = player.gameObject;
+			if (player.isLocalPlayer) {
+				localPlayer = player;
 			}
 		}
 
@@ -348,12 +373,10 @@ public class Game_Controller : MonoBehaviour {
 		if (currentTime <= 0) {
 			EndGame ();
 		}
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			UpdateShipHealths ();
-			if (Metwork.isServer) {
-				netView.RPC ("RPC_UpdateTime", MRPCMode.Others, currentTime);
-			}
-		}
+		//TODO: Do through syncvar in damage class
+		//if (Metwork.peerType != MetworkPeerType.Disconnected) {
+			//UpdateShipHealths ();
+		//}
 
 		fps = 1f / Time.deltaTime;
 		
@@ -399,12 +422,12 @@ public class Game_Controller : MonoBehaviour {
 		if(carrierADmg == null){
 			return;
 		}
-
+		//TODO: These can be handled by a syncvar of the damage
 		if (carrierADmg.netObj.isLocal) {
-			netView.RPC ("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 0, carrierADmg.currentHealth});
+			//netView.RPC ("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 0, carrierADmg.currentHealth});
 		}
 		if (carrierBDmg.netObj.isLocal) {
-			netView.RPC("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 1, carrierBDmg.currentHealth});
+			//netView.RPC("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 1, carrierBDmg.currentHealth});
 		}
 	}
 
@@ -560,7 +583,7 @@ public class Game_Controller : MonoBehaviour {
 		endOfGameUI.SetActive (true);
 		gameplayUI.SetActive (false);
 
-		if (statsArray[localPlayer.GetComponent<Metwork_Object>().netID].team == winningTeam)
+		if (statsArray[localPlayer.playerID].team == winningTeam)
 		{
 			winningTeamText.text = "Your Team Wins!";
 		}
@@ -599,9 +622,9 @@ public class Game_Controller : MonoBehaviour {
 		int previousScore = int.Parse( data [1]);
 		int previousKills = int.Parse( data [2]);
 		int previousDeaths = int.Parse( data [3]);
-		data [1] =( previousScore+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].score).ToString();
-		data [2] =( previousKills+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].kills).ToString();
-		data [3] =( previousDeaths+statsArray [localPlayer.GetComponent<Metwork_Object> ().netID].deaths).ToString();
+		data [1] =( previousScore+statsArray [localPlayer.playerID].score).ToString();
+		data [2] =( previousKills+statsArray [localPlayer.playerID].kills).ToString();
+		data [3] =( previousDeaths+statsArray [localPlayer.playerID].deaths).ToString();
 
 		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Player Data.txt", Util.ThiccWatermelon(data));
 		
@@ -611,6 +634,7 @@ public class Game_Controller : MonoBehaviour {
 	}
 
 	public static GameObject GetGameObjectFromNetID(int _netID){
+		//CHECK Function never really used
 		Metwork_Object[] netObjects = GameObject.FindObjectsOfType<Metwork_Object> ();
 
 		for (int i = 0; i < netObjects.Length; i++) {
@@ -633,31 +657,32 @@ public class Game_Controller : MonoBehaviour {
 	}
 
 	//safer than get gameobject but slower
-	public GameObject GetPlayerFromNetID(int _netID){
+	public Player_Controller GetPlayerFromNetID(int _netID){
 		
 
 		for (int i = 0; i < playerObjects.Count; i++) {
-			if (playerObjects [i].GetComponent<Metwork_Object>().netID == _netID) {
+			if (playerObjects [i].playerID == _netID) {
 				return playerObjects [i];
 			}
 		}
 		Debug.LogWarning ("Could not find player with id: " + _netID.ToString());
-		return GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		return null;//GameObject.CreatePrimitive(PrimitiveType.Sphere);
 	}
 
 	[MRPC]
 	public void RPC_ActivatePlayer(int _owner){
-		GetPlayerFromNetID (_owner).SetActive (true);
+		GetPlayerFromNetID (_owner).gameObject.SetActive (true);
 	}
 
 	public void AddAssist(int playerNum, int assistAmount){
+		/*TODO This can be done through a synced hash list
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_AddAssist", MRPCMode.AllBuffered, new object[] {
 				playerNum, assistAmount
 			});
 		} else {
 			RPC_AddAssist (playerNum, assistAmount);
-		}
+		}*/
 
 	}
 	[MRPC]
@@ -667,14 +692,14 @@ public class Game_Controller : MonoBehaviour {
 		playerStat.assists++;
 	}
 	public void AddKill(int playerNum){
-
+		/*TODO convert to synced hashlist
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_AddKill", MRPCMode.AllBuffered, new object[] {
 				playerNum
 			});
 		} else {
 			RPC_AddKill (playerNum);
-		}
+		}*/
 
 	}
 	[MRPC]
@@ -682,30 +707,31 @@ public class Game_Controller : MonoBehaviour {
 		statsArray [playerNum].kills++;
 		statsArray [playerNum].score += 100;
 
-		if(playerNum == localPlayer.GetComponent<Metwork_Object>().netID){
+		if(playerNum == localPlayer.playerID){
 			WindowsVoice.Speak("Target Down");
 			
 		}
 	}
 	public void AddDeath(int playerNum){
+		/*TODO Synced list
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_AddDeath", MRPCMode.AllBuffered, new object[] {
 				playerNum
 			});
 		} else {
 			RPC_AddDeath (playerNum);
-		}
+		}*/
 
 	}
 	[MRPC]
 	public void RPC_AddDeath(int playerNum){
-
+		/*TODO synced list
 		statsArray [playerNum].deaths++;
 		if (statsArray [playerNum].team == 1) {
 			scoreA++;
 		} else {
 			scoreB++;
-		}
+		}*/
 		
 	}
 
@@ -747,7 +773,7 @@ public class Game_Controller : MonoBehaviour {
 		}
 		
 		
-		if(Metwork.isServer){
+		if(isServer){
 			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (newScene);
 		}
 
@@ -761,7 +787,7 @@ public class Game_Controller : MonoBehaviour {
 	public int GetLocalTeam()
 	{
 		GetLocalPlayer();
-		return statsArray[localPlayer.GetComponent<Metwork_Object>().netID].team;
+		return statsArray[localPlayer.playerID].team;
 	}
 	void Update()
 	{
@@ -770,7 +796,7 @@ public class Game_Controller : MonoBehaviour {
 			GameClipMode = !GameClipMode;
 			if (GameClipMode)
 			{
-				localPlayer.GetComponent<Player_Controller>().mainCamObj.SetActive(false);
+				localPlayer.mainCamObj.SetActive(false);
 
 				foreach (TextMesh textMesh in FindObjectsOfType<TextMesh>())
 				{
@@ -780,9 +806,9 @@ public class Game_Controller : MonoBehaviour {
 			}
 			else
 			{
-				localPlayer.GetComponent<Player_Controller>().mainCamObj.SetActive(true);
-				localPlayer.GetComponent<Player_Controller>().mainCamObj.transform.position = GameClipCamera.transform.position;
-				localPlayer.GetComponent<Player_Controller>().helmet.SetActive(false);
+				localPlayer.mainCamObj.SetActive(true);
+				localPlayer.mainCamObj.transform.position = GameClipCamera.transform.position;
+				localPlayer.helmet.SetActive(false);
 				Destroy(GameClipCamera.gameObject);
 			}
 		}
@@ -792,7 +818,7 @@ public class Game_Controller : MonoBehaviour {
 			{
 				GameClipTarget = localPlayer.transform;
 			}
-			localPlayer.GetComponent<Player_Controller>().helmet.SetActive(true);
+			localPlayer.helmet.SetActive(true);
 			GameClipCamera.transform.LookAt(GameClipTarget.position);
 			Vector3 targetPosition = GameClipTarget.position - GameClipCamera.transform.forward * GameClipCameraOffset;
 			GameClipCamera.transform.position = Vector3.Lerp(GameClipCamera.transform.position, targetPosition, 0.5f);
@@ -841,11 +867,12 @@ public class Game_Controller : MonoBehaviour {
 		return Game_Controller.instance.statsArray[_viewID].team;
 	}
 	public static int GetTeam(Player_Controller _player){
-		return Game_Controller.instance.statsArray[_player.netObj.netID].team;
+		//TODO _player.netObj.netID
+		return Game_Controller.instance.statsArray[_player.playerID].team;
 	}
-	public static int GetTeam(GameObject _player){
-		return Game_Controller.instance.statsArray[_player.GetComponent<Metwork_Object>().netID].team;
-	}
+	//public static int GetTeam(GameObject _player){
+	//	return Game_Controller.instance.statsArray[_player.GetComponent<Metwork_Object>().netID].team;
+	//}
 
 
 

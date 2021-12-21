@@ -99,6 +99,7 @@ public class Com_Controller : MonoBehaviour {
 			//Add the bots
 			//Check if the position is already occupied by a player
 			if(gameController.statsArray[this.botID - 64].isFilled == false){
+				/*TODO: Move this to the gamecontroller start function
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
 					gameController.netView.RPC ("RPC_AddPlayerStat", MRPCMode.AllBuffered, new object[] {
 						"Bot " + (this.botID - 64).ToString(),
@@ -114,7 +115,7 @@ public class Com_Controller : MonoBehaviour {
 						this.botID - 64,
 						true
 					);
-				}
+				}*/
 				
 			}
 			else{
@@ -322,7 +323,8 @@ public class Com_Controller : MonoBehaviour {
 		{
 			for (int i = 0; i < players.Length; i++)
 			{
-				if(gameController.statsArray[players[i].netObj.owner].team == gameController.statsArray[botID - 64].team){
+				//TODO players[i].netObj.owner
+				if(gameController.statsArray[0].team == gameController.statsArray[botID - 64].team){
 					continue;
 				}
 				if (Vector3.Dot((players[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
@@ -431,7 +433,8 @@ public class Com_Controller : MonoBehaviour {
 		float loudestSound = -1000f;
 		foreach (Player_Controller player in _players)
 		{
-			if(gameController.statsArray[player.netObj.owner].team == gameController.statsArray[botID - 64].team){
+			//TODO player.netObj.owner
+			if(gameController.statsArray[0].team == gameController.statsArray[botID - 64].team){
 				continue;
 			}
 			float[] samples = new float[2];
@@ -552,8 +555,15 @@ public class Com_Controller : MonoBehaviour {
 			
 			Aim();
 		}
+		Quaternion _rotation = Quaternion.FromToRotation(fireScript.shotSpawn.transform.forward, (targetPlayer._transform.position+targetPlayer._transform.up * 1.5f - fireScript.shotSpawn.transform.position).normalized);
+		_rotation = Quaternion.Slerp( Quaternion.identity,_rotation, 0.05f);
+		this.transform.forward = _rotation * this.transform.forward;
+
+		Vector3 _distToPivot = transform.up*1.5f;
+		transform.position = _rotation * (-_distToPivot) + transform.position + _distToPivot;
 		
-		this.transform.forward = Vector3.Slerp(transform.forward,((targetPlayer._transform.position+targetPlayer._transform.up * 1.5f-fireScript.shotSpawn.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);//Vector3.Slerp(fireScript.shotSpawn.transform.forward, ((targetPlayer._transform.position-transform.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);
+		
+		//this.transform.forward = Vector3.Slerp(transform.forward,((targetPlayer._transform.position+targetPlayer._transform.up * 1.5f-fireScript.shotSpawn.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);//Vector3.Slerp(fireScript.shotSpawn.transform.forward, ((targetPlayer._transform.position-transform.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);
 
 	}
 	void Aim()

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Mirror;
 
-public class Player_Controller : MonoBehaviour {
+public class Player_Controller : NetworkBehaviour {
 	float v;
 	float v2;
 	float h;
@@ -33,8 +34,8 @@ public class Player_Controller : MonoBehaviour {
 	public Game_Controller gameController;
 	WalkState walkState = WalkState.Walking;
 	public bool useGravity;
-	//to be used for running crouching and walking
-	public float moveSpeed = 20f;
+	//to be used for moving in space
+	float moveSpeed = 5f;
 	float lookFactor = 1f;
 	float moveFactor = 1f;
 	public float currentStepHeight;
@@ -42,20 +43,22 @@ public class Player_Controller : MonoBehaviour {
 	bool exitingGravity = false;
 	float jumpWait;
 	float jumpHeldTime;
-	public MetworkView netView;
-	public Metwork_Object netObj;
+	//public MetworkView netView;
+	//public Metwork_Object netObj;
 	public float jetpackFuel = 1f;
 	public ParticleSystem[] jetpackJets;
 
 	public bool refueling = false;
+	bool magBootsLock = false;
 
 	public float airTime;
 	public float suffocationTime;
 	public Damage damageScript;
 	public LadderController ladder;
 	public int kills;
-
-	public Camera sceneCam;
+	
+	[SyncVar]
+	public int playerID;
 
 	public string playerName = "Fred";
 	public GameObject ragdoll;
@@ -173,9 +176,9 @@ public class Player_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
 		gameController = FindObjectOfType<Game_Controller> ();
-		netView = this.GetComponent<MetworkView> ();
-		netObj = this.GetComponent<Metwork_Object> ();
+		
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> ();
@@ -201,10 +204,11 @@ public class Player_Controller : MonoBehaviour {
 		}
 
 		//UI_Manager.onPieEvent += this.OnPieEvent;
-		if (netObj.isLocal) {
+		//CHECK
+		if (isLocalPlayer){
 			LoadPlayerData ();
-
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
+			//TODO
+			/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				print (this.name);
 				gameController.netView.RPC ("RPC_AddPlayerStat", MRPCMode.AllBuffered, new object[] {
 					playerName,
@@ -218,22 +222,23 @@ public class Player_Controller : MonoBehaviour {
 					this.netObj.owner,
 					false
 				);
-			}
+			}*/
 		}
-		
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
+		//TODO
+		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
 		} else {
 			RPC_ShowNameText ();
 			sceneCam.enabled = false;
 			sceneCam.GetComponent<AudioListener>().enabled = false;
-		}
+		}*/
 		anim.SetFloat ("Look Speed", 0.5f);
 	}
 	// runs after start basically the same
+	//Check remove this function if possible
 	public void Setup(){
 		gameController = FindObjectOfType<Game_Controller> ();
-		netObj = this.GetComponent<Metwork_Object> ();
+		//netObj = this.GetComponent<Metwork_Object> ();
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> (); 
@@ -249,7 +254,9 @@ public class Player_Controller : MonoBehaviour {
 		}
 
 		mainCam.enabled = true;
-		if (netObj.isLocal) {
+		
+		if (isLocalPlayer) {
+			
 			SetupWeapons ();
 			damageScript = this.GetComponent<Damage> ();
 			damageScript.healthShown = true;
@@ -258,13 +265,13 @@ public class Player_Controller : MonoBehaviour {
 		}
 		//primarySelected = !primarySelected;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
-			//netView.RPC("RPC_SwitchWeapons",MRPCMode.AllBuffered, new object[]{primarySelected});
+			//TODO
+			//netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
+			
 		} else {
-			//RPC_SwitchWeapons(primarySelected);
+			
 			RPC_ShowNameText ();
-//			sceneCam.enabled = false;
-//			sceneCam.GetComponent<AudioListener>().enabled = false;
+
 		}
 		
 		UpdateUI ();
@@ -273,7 +280,7 @@ public class Player_Controller : MonoBehaviour {
 
 	void OnEnable(){
 
-		if (netObj!=null&&netObj.isLocal) {
+		if (isLocalPlayer) {
 			if (minimapUI != null) {
 				minimapUI.SetActive (true);
 			}
@@ -288,7 +295,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 	void OnDisable(){
 		try {
-			if (netObj.isLocal) {
+			if (isLocalPlayer) {
 				minimapUI.SetActive (false);
 			}
 		} catch {
@@ -324,14 +331,14 @@ public class Player_Controller : MonoBehaviour {
 			if(_deltaRot > 0.1f){
 				_soundVolume += 0.3f;
 			}
-			if(thrusterSoundFactor > 0.1f){
+			if(thrusterSoundFactor > 0.1f && !magBootsLock){
 				wrapper.PlayOneShot(0, thrusterSoundFactor);
 			}
 
 			previousVelocity = rb.velocity;
 		}
 
-		if (!netObj.isLocal) {
+		if (!isLocalPlayer) {
 			mainCamObj.SetActive(false);
 			minimapCam.SetActive(false);
 			iconCamera.SetActive (false);
@@ -390,11 +397,14 @@ public class Player_Controller : MonoBehaviour {
 		}
 
 		if (MInput.GetButtonDown ("Switch Weapons")) {
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
+			//TODO
+			Cmd_SwitchWeapons(primarySelected);
+			/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[]{primarySelected });
 			} else {
 				RPC_SwitchWeapons (primarySelected);
-			}
+			}*/
+			
 			UpdateUI ();
 		}
 			
@@ -432,7 +442,8 @@ public class Player_Controller : MonoBehaviour {
 				if (Time.frameCount % 4 == 0) {
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						if (jetpackJets.Length>1) {
-							netView.RPC ("RPC_Jump", MRPCMode.Others, new object[]{ true, jetpackJets [0].isPlaying });
+							//TODO:
+							//netView.RPC ("RPC_Jump", MRPCMode.Others, new object[]{ true, jetpackJets [0].isPlaying });
 						}
 					}
 				}
@@ -444,27 +455,31 @@ public class Player_Controller : MonoBehaviour {
 				if (Time.frameCount % 4 == 0) {
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						if (jetpackJets.Length>1) {
-							
-							netView.RPC ("RPC_Jump", MRPCMode.Others, new object[]{ false, jetpackJets [0].isPlaying });
+							//TODO
+							//netView.RPC ("RPC_Jump", MRPCMode.Others, new object[]{ false, jetpackJets [0].isPlaying });
 						}
 					}
 				}
 			}
 			if (Input.GetButtonDown ("Crouch")) {
 				if (walkState == WalkState.Crouching) {
-					if (Metwork.peerType != MetworkPeerType.Disconnected) {
+					//TODO:
+					/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						netView.RPC ("RPC_UnCrouch", MRPCMode.AllBuffered, new object[]{ });
 					} else {
 						RPC_UnCrouch ();
-					}
+					}*/
 
 				} else {
 					walkState = WalkState.Crouching;
+					//TODO:
+					/*
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						netView.RPC ("RPC_Crouch", MRPCMode.AllBuffered, new object[]{ });
 					} else {
 						RPC_Crouch ();
-					}
+					}*/
+
 					
 
 				}
@@ -497,7 +512,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 
 		blackoutShader.ChangeConciousness (Mathf.Clamp01(Mathf.Pow(airTime / suffocationTime,2f)+0.3f) * 10f);
-		if(netObj.isLocal){
+		if(isLocalPlayer){
 			breatheSound.volume = Mathf.Clamp01(Mathf.Pow((suffocationTime-airTime) / suffocationTime,2f)-0.3f);
 		}
 		else{
@@ -524,7 +539,7 @@ public class Player_Controller : MonoBehaviour {
 
 	public void OnPieEvent(int _segmentNumber)
 	{
-		if (_segmentNumber == -1 || !netObj.isLocal || !this.enabled)
+		if (_segmentNumber == -1 || !isLocalPlayer || !this.enabled)
 		{
 			return;
 		}
@@ -606,12 +621,12 @@ public class Player_Controller : MonoBehaviour {
 	}
 	#endregion
 	public void ShowMag(int shown){
-		
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
+		//TODO
+		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ShowMag", MRPCMode.AllBuffered, new object[]{  shown!=0 });
 		} else {
 			RPC_ShowMag (shown!=0 );
-		}
+		}*/
 	}
 	[MRPC]
 	public void RPC_ShowMag(bool shown){
@@ -640,11 +655,12 @@ public class Player_Controller : MonoBehaviour {
 	}
 	void ThrowGrenade(){
 		throwingGrenade = true;
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
+		//TODO:
+		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_ThrowGrenade", MRPCMode.AllBuffered, new object[]{ });
 		} else {
 			RPC_ThrowGrenade ();
-		}
+		}*/
 	
 	}
 	[MRPC]
@@ -661,7 +677,7 @@ public class Player_Controller : MonoBehaviour {
 		Destroy (grenadeModel);
 
 
-		if (!netObj.isLocal) {
+		if (isLocalPlayer) {
 			return;
 		}
 		
@@ -698,12 +714,12 @@ public class Player_Controller : MonoBehaviour {
 		_grenade.GetComponent<MetworkView>().Start();
 		_grenade.GetComponent<Frag_Grenade>().fromID = _grenadeView /1000;
 
-
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
+		//TODO
+		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_SpawnGrenade", MRPCMode.OthersBuffered, new object[]{_grenadeView, _grenade.velocity, _grenade.position,_grenade.rotation});
 		} else {
 			RPC_SpawnGrenade (_grenadeView, _grenade.velocity, _grenade.position,_grenade.rotation);
-		}
+		}*/
 
 	}
 	[MRPC]
@@ -765,7 +781,8 @@ public class Player_Controller : MonoBehaviour {
 
         if (Metwork.peerType != MetworkPeerType.Disconnected)
         {
-            bestShip.GetComponent<MetworkView>().RPC("RPC_ActivateAI", MRPCMode.AllBuffered, new object[] { netObj.owner });
+			//TODO:
+            //bestShip.GetComponent<MetworkView>().RPC("RPC_ActivateAI", MRPCMode.AllBuffered, new object[] { netObj.owner });
         }
         bestShip.target = this.transform;
         bestShip.GetComponent<Raycaster>().target = this.transform.position;
@@ -844,14 +861,24 @@ public class Player_Controller : MonoBehaviour {
 		//rb.MovePosition(otherPlayer.transform.position + otherPlayer.transform.forward * knifePosition);
 		if (counterKnife)
 		{
-			otherPlayer.GetComponent<Player_Controller>().netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
-			this.netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
+			//TODO:
+			/*otherPlayer.GetComponent<Player_Controller>().netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });
+			
+			this.netView.RPC("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[] { });*/
 			counterKnife = false;
 		}
 		else
 		{
 			damageScript.TakeDamage(100, otherPlayerInt, otherPlayer.transform.position);
 		}
+	}
+	[Command]
+	public void Cmd_ShowPlayer(){
+		Rpc_ShowPlayer();
+	}
+	[ClientRpc]
+	public void Rpc_ShowPlayer(){
+		this.gameObject.SetActive(true);
 	}
 
 	[MRPC]
@@ -874,7 +901,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 	public void Knife(){
 		print("Attempting to knife");
-		if (!netObj.isLocal)
+		if (isLocalPlayer)
 		{
 			return;
 		}
@@ -892,6 +919,8 @@ public class Player_Controller : MonoBehaviour {
 			}
 
 		}
+		//TODO:
+		/*
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			netView.RPC("RPC_Knife", MRPCMode.AllBuffered, new object[] { });
@@ -899,7 +928,7 @@ public class Player_Controller : MonoBehaviour {
 		else
 		{
 			RPC_Knife();
-		}
+		}*/
 	}
 	IEnumerator Stab(GameObject _otherPlayer)
 	{
@@ -914,6 +943,8 @@ public class Player_Controller : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			i += Time.deltaTime;
 		}
+		//TODO
+		/*
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
@@ -923,7 +954,7 @@ public class Player_Controller : MonoBehaviour {
 		{
 			_otherPlayer.GetComponent<Player_Controller>().RPC_GetKnifed(netObj.owner);
 			print("FOund player stabbing now");
-		}
+		}*/
 	}
 	[MRPC]
 	public void RPC_Knife(){
@@ -970,9 +1001,10 @@ public class Player_Controller : MonoBehaviour {
 			}
 			recoilString = "Recoil" + fireScript.recoilNumber;
 			if (Time.frameCount % 3f == 0) {
-				if (Metwork.peerType != MetworkPeerType.Disconnected) {
+				//TODO
+				/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 					netView.RPC ("RPC_Aim", MRPCMode.Others, new object[]{true });
-				} 
+				} */
 			}
 
 		} else {
@@ -993,9 +1025,10 @@ public class Player_Controller : MonoBehaviour {
 			lookFactor = 1f;
 			recoilString = "Recoil" + fireScript.recoilNumber+"*";
 			if (Time.frameCount+1 % 3f == 0) {
+				/*
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
 					netView.RPC ("RPC_Aim", MRPCMode.All, new object[]{false });
-				} 
+				} */
 			}
 
 		}
@@ -1048,6 +1081,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 		if (refueling == false) {
 			//Factor to make realistic rocket effects
+			//TODO: Get rid of all this shit
 			float _fuelFactor = Mathf.Pow(2f*jetpackFuel - 2.6f, 4) * Mathf.Cos(1f + 2f*jetpackFuel - 2.6f) + 1;
 			rb.AddRelativeForce (0f, Time.deltaTime * 30f * forceFactor * z * 2f, 0f);
 			//rb.velocity = new Vector3(rb.velocity.x,12f, rb.velocity.z);
@@ -1118,11 +1152,10 @@ public class Player_Controller : MonoBehaviour {
 		
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		
-
-
 		float factor = Time.deltaTime * forceFactor;
 		float strafeFactor = Input.GetButton("Ctrl") ? 0f:1f;
 		float rollFactor = Input.GetButton("Ctrl") ? 1f:0f;
+		magBootsLock = false;
 
 		//TODO: Tie this into the jetpack fuel
 		if (false && Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
@@ -1135,13 +1168,17 @@ public class Player_Controller : MonoBehaviour {
 		{
 	
 			rb.AddRelativeTorque(-v2 * factor/2f, h2*factor/7f, -h * factor/1.5f * rollFactor);
-			
-			//transform.Rotate(Vector3.Lerp(Vector3.zero, new Vector3(-v2 * Time.deltaTime, h2 * Time.deltaTime, -h * Time.deltaTime),0.1f));
-			rb.AddRelativeForce(h * Time.deltaTime * forceFactor* strafeFactor * 40f, z * Time.deltaTime * forceFactor * 40f, v * Time.deltaTime * forceFactor * 40f);
+			Vector3 desiredVelocity = transform.TransformVector(new Vector3(h,z,v) * moveSpeed);
+			if(desiredVelocity.sqrMagnitude < previousVelocity.sqrMagnitude*0.5f){
+				rb.velocity = Vector3.Lerp(previousVelocity, Vector3.zero, 0.05f);
+			}
+			else{
+				rb.velocity = Vector3.Lerp(previousVelocity, desiredVelocity, 0.7f);
+			}
 			
 		}
 		anim.SetBool("Float", true);
-		bool _magBootsLock = false;
+		
 
 		//Raycast down to find ground to lock on to
 		//Also check if the jump key is pressed
@@ -1152,15 +1189,15 @@ public class Player_Controller : MonoBehaviour {
 
 
 			//Raycast from three different spots
-			Physics.SphereCast(transform.position,0.1f,- transform.up * 5.4f,out _hit,5.4f, magBootsLayer,  QueryTriggerInteraction.Ignore);
-			Physics.Linecast(transform.position - transform.right * 0.1f,transform.position+ transform.right * 0.15f- transform.up * 5.4f, out _hit2, magBootsLayer, QueryTriggerInteraction.Ignore);
-			Physics.Linecast(transform.position + transform.right * 0.1f,transform.position- transform.right * 0.15f- transform.up * 5.4f, out _hit3, magBootsLayer,  QueryTriggerInteraction.Ignore);
+			bool hasHit1 = Physics.SphereCast(transform.position + transform.up * 0.1f,0.1f,- transform.up * 5.4f,out _hit,5.4f, magBootsLayer,  QueryTriggerInteraction.Ignore);
+			bool hasHit2 = Physics.Linecast(transform.position - transform.right * 0.1f,transform.position+ transform.right * 0.15f- transform.up * 5.4f, out _hit2, magBootsLayer, QueryTriggerInteraction.Ignore);
+			bool hasHit3 = Physics.Linecast(transform.position + transform.right * 0.1f,transform.position- transform.right * 0.15f- transform.up * 5.4f, out _hit3, magBootsLayer,  QueryTriggerInteraction.Ignore);
 			//Hit distance is zero if no hit
-			_hit.distance = _hit.distance == 0 ? 100000f : _hit.distance;
-			_hit2.distance = _hit2.distance == 0 ? 100000f : _hit2.distance;
-			_hit3.distance = _hit3.distance == 0 ? 100000f : _hit3.distance;
+			_hit.distance = !hasHit1 ? 100000f : _hit.distance;
+			//_hit2.distance = !hasHit2 ? 100000f : _hit2.distance;
+			//_hit3.distance = !hasHit3 ? 100000f : _hit3.distance;
 
-			if( _hit.distance <= 5.4f || _hit2.distance <= 5.4f || _hit3.distance <= 5.4f){
+			if( _hit.distance <= 5.4f){// || _hit2.distance <= 5.4f || _hit3.distance <= 5.4f){
 				//Take the weighted average of the three distances;
 				Vector3 _hitNormal = _hit.normal; //(_hit.normal / _hit.distance + _hit2.normal / _hit2.distance + _hit3.normal / _hit3.distance)/3f; 
 				
@@ -1175,7 +1212,7 @@ public class Player_Controller : MonoBehaviour {
 				}
 				
 				
-				float _hitDistance = 1f / (1f/_hit.distance + 1f/_hit2.distance + 1f/_hit3.distance);
+				float _hitDistance = 1f / (1f/_hit.distance);// + 1f/_hit2.distance + 1f/_hit3.distance);
 				Vector3 _hitPoint = _hit.point;//(_hit.point / _hit.distance + _hit2.point / _hit2.distance + _hit3.point / _hit3.distance) / (_hitDistance); 
 				
 				//print(_hit.point + " " + _hitPoint);
@@ -1188,31 +1225,43 @@ public class Player_Controller : MonoBehaviour {
 				Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
 				Debug.DrawRay(_hit.point,_hitNormal, Color.green);
 				rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
-				rb.AddForceAtPosition((transform.up).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)), lfRaycast.position);
-				
+				//rb.AddForceAtPosition((transform.up).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)), lfRaycast.position);
+				rb.velocity += transform.up * -98100f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)) * Time.deltaTime;
+
 				float lookUpDownTime = anim.GetFloat("Look Speed");	
 				anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 0.5f*Time.deltaTime, -1f, 1f));
 				if (Time.frameCount % 4==0) {
+					/*TODO
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
-					}
+					}*/
 				}
 				rb.angularDrag = 20f;
 				//Add torque to compensate for extra friction
 				rb.AddRelativeTorque(0, h2*factor/3f* 20f, 0);
+				rb.rotation = new Quaternion(0,1,0,0) * rb.rotation;
 				//Add left/right force (to convert the roll force to side-side)
 				
-				rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f,0,0);
-				_magBootsLock = true;
+				//rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f,0,0);
+				if(_hit.distance <= 0.2f){
+					//TODO: Finishe
+					rb.velocity = transform.TransformVector(new Vector3(h,z,v).normalized * moveSpeed * 1.5f);
+					magBootsLock = true;
+				}
+				else{
+					magBootsLock = false;
+				}
+				
+				
 			}
 			else{
-				_magBootsLock = false;
+				
 			}
 			
 		}
 		
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
-		if(!_magBootsLock && Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) < 3f){
+		if(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) < 3f){
 			//Return to zero-g defaults
 			//rb.constraints = RigidbodyConstraints.None;
 			rb.angularDrag = 1f;
@@ -1250,13 +1299,12 @@ public class Player_Controller : MonoBehaviour {
 			
 		}
 		if (Time.frameCount % 4 == 0) {
-
+			/*TODO
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_AnimateSpace", MRPCMode.Others, new object[]{ thrusterSoundFactor});
-			} 
+			} */
 		}
-		//Clamp the maximum speed
-		rb.velocity = Vector3.Lerp(rb.velocity, Vector3.ClampMagnitude(rb.velocity,5f), 0.3f);
+		
 	}
 	public void AnimateMovement(){
 		anim.SetFloat ("H Movement", h*moveFactor);
@@ -1266,10 +1314,10 @@ public class Player_Controller : MonoBehaviour {
 		float forwardSpeed = v+Mathf.Abs(h2)/2f;//Mathf.Clamp(transform.InverseTransformVector (rb.velocity).z, -5f, 5f);
 
 		if (Time.frameCount % 4 == 0) {
-
+			/*TODO
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_AnimateMovement", MRPCMode.Others, new object[]{ (int)walkState, h*moveFactor,v*moveFactor, thrusterSoundFactor});
-			} 
+			}*/ 
 		}
 	}
 	public void FootstepAnim(){
@@ -1322,6 +1370,7 @@ public class Player_Controller : MonoBehaviour {
 	public void RPC_ExitVehicle()
 	{
 		airTime = suffocationTime;
+		/*TODO
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 
@@ -1330,7 +1379,7 @@ public class Player_Controller : MonoBehaviour {
 		else
 		{
 			RPC_Sit(false);
-		}
+		}*/
 		inVehicle = false;
 		//player.rb.isKinematic = false;
 		//TODO: This may suffer an IEnumerator problem
@@ -1405,9 +1454,10 @@ public class Player_Controller : MonoBehaviour {
 		anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 2f*Time.deltaTime, -1f, 1f));
 		
 		if (Time.frameCount % 4==0) {
+			/*TODO
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
-			}
+			}*/
 		}
 
 	
@@ -1463,6 +1513,7 @@ public class Player_Controller : MonoBehaviour {
 			SpawnGrenade(0.25f);
 		}
 		//sceneCam.enabled = true;
+		/*TODO
 		if(Metwork.peerType  != MetworkPeerType.Disconnected){
 			netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{ });
 		}
@@ -1472,13 +1523,8 @@ public class Player_Controller : MonoBehaviour {
 
 		if (netObj == null) {
 			netObj = GetComponent<Metwork_Object> ();
-		}
-		//if (netObj.isLocal) {
-		//	if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
-		//	{
-		//		SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
-		//	}
-		//}
+		}*/
+		
 
 		Invoke("CoDie", 4f);
 
@@ -1487,10 +1533,10 @@ public class Player_Controller : MonoBehaviour {
 
 	public void CoDie(){
 		
-		sceneCam.enabled = true;
-		sceneCam.GetComponent<AudioListener>().enabled = true;
+		Game_Controller.Instance.sceneCam.enabled = true;
+		Game_Controller.Instance.GetComponent<AudioListener>().enabled = true;
 		
-		if (netObj.isLocal) {
+		if (isLocalPlayer) {
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
 			{
 				SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
@@ -1538,7 +1584,7 @@ public class Player_Controller : MonoBehaviour {
         this.transform.position = Vector3.up * 10000f;
         this.gameObject.SetActive (false);
 
-		if(!netObj.isLocal){
+		if(!isLocalPlayer){
 			_ragdollGO.GetComponentInChildren<Camera>().gameObject.SetActive(false);
 		}
 
@@ -1580,7 +1626,7 @@ public class Player_Controller : MonoBehaviour {
 		}
 		transform.forward = _aimDirection;
 
-		if(netObj.isLocal){
+		if(isLocalPlayer){
 			breatheSound.Play ();
 		}
 		//print("Exited");
@@ -1640,8 +1686,12 @@ public class Player_Controller : MonoBehaviour {
 		lookFactor = 1f;
 		enteringGravity = false;
 	}
-	[MRPC]
-	public void RPC_SwitchWeapons(bool _primary){
+	[Command]
+	public void Cmd_SwitchWeapons(bool _primary){
+		Rpc_SwitchWeapons(_primary);
+	}
+	[ClientRpc]
+	public void Rpc_SwitchWeapons(bool _primary){
 		StartCoroutine (SwitchWeapons (_primary));
 	}
 	public IEnumerator SwitchWeapons(bool _primary){
@@ -1659,14 +1709,17 @@ public class Player_Controller : MonoBehaviour {
 			primarySelected = true;
 		}
 		
-		if(netObj.isLocal){
+		if(isLocalPlayer){
 			UI_Manager._instance.ChangeWeapon (primarySelected);
 		}
 		recoilAmount = fireScript.recoilAmount;
 		recoilString = "Recoil" + fireScript.recoilNumber;
-		fireScript.playerID = netObj.owner;
+		
+		//TODO
+		fireScript.playerID = playerID;
 		anim.SetBool ("Switch Weapons", false);
-		fireScript.playerID = netObj.owner;
+		//TODO
+		fireScript.playerID = playerID;
 
 		anim.SetFloat ("Drift", fireScript.bulk);
 
@@ -1681,7 +1734,8 @@ public class Player_Controller : MonoBehaviour {
 	}
 	public int GetTeam()
 	{
-		return gameController.statsArray[netObj.netID].team;
+		//TODO
+		return gameController.statsArray[playerID].team;
 	
 	}
 	public void SetupWeapons(){
@@ -1706,14 +1760,14 @@ public class Player_Controller : MonoBehaviour {
 				//Metwork.metViews.Remove(_secondaryNetView);
 			}
 
-
-
+			LoadWeaponData(loadoutSettingsString);
+			/*TODO
 			if(Metwork.peerType  != MetworkPeerType.Disconnected){
 				netView.RPC("RPC_LoadWeaponData",MRPCMode.AllBuffered, new object[]{loadoutSettingsString, primaryNetView, secondaryNetView });
 			}
 			else{
 				RPC_LoadWeaponData(loadoutSettingsString, primaryNetView, secondaryNetView);
-			}
+			}*/
 
 
 
@@ -1738,17 +1792,19 @@ public class Player_Controller : MonoBehaviour {
 				}
 			}
 
+			LoadWeaponData(loadoutSettingsString);
+			/*TODO
 			if(Metwork.peerType  != MetworkPeerType.Disconnected){
 				
 				netView.RPC("RPC_LoadWeaponData",MRPCMode.AllBuffered, new object[]{loadoutSettingsString,primaryNetView,secondaryNetView});
 			}
 			else{
 				RPC_LoadWeaponData(loadoutSettingsString,primaryNetView,secondaryNetView);
-			}
+			}*/
 		}
 	}
-	[MRPC]
-	public void RPC_LoadWeaponData(string settingsString, int _primaryMetID, int _secondaryMetID){
+	//CHECK This may need to be a networked function
+	public void LoadWeaponData(string settingsString){//}, int _primaryMetID, int _secondaryMetID){
 		
 		string[] settings = settingsString.Split ('/');
 
@@ -1764,6 +1820,7 @@ public class Player_Controller : MonoBehaviour {
 		primaryLocalRotation = Loadout_Controller.gunLocalRotations [settings [0]];
 		secondaryLocalRotation = Loadout_Controller.gunLocalRotations [settings [1]];
 		//add the primary weapon to the finger
+		//TODO Needs to be spawned
 		primaryWeapon = (GameObject)Instantiate (primaryWeaponPrefab, finger);
 		primaryWeapon.transform.localPosition = primaryLocalPosition;
 		primaryWeapon.transform.localRotation = Quaternion.Euler (primaryLocalRotation);
@@ -1779,7 +1836,7 @@ public class Player_Controller : MonoBehaviour {
 		GameObject secondaryScope = (GameObject)Resources.Load ("Weapons/Scopes/" + settings [3]);
 		Instantiate (secondaryScope, secondaryWeapon.GetComponent<Fire> ().scopePosition);
 
-
+		/*TODO Remove
 		primaryWeapon.GetComponent<MetworkView> ().viewID = _primaryMetID;
 		if (!Metwork.metViews.ContainsKey (_primaryMetID)) {
 			Metwork.metViews.Add (_primaryMetID, primaryWeapon.GetComponent<MetworkView> ());
@@ -1792,8 +1849,9 @@ public class Player_Controller : MonoBehaviour {
 			Metwork.metViews.Add (_secondaryMetID, secondaryWeapon.GetComponent<MetworkView> ());
 		} else {
 			Metwork.metViews[_secondaryMetID] = secondaryWeapon.GetComponent<MetworkView> ();
-		}
-		RPC_SwitchWeapons(false);
+		}*/
+		//CHECK The latency on this switch may be too much to bear, it may be better to do it locally
+		Cmd_SwitchWeapons(false);
 		
 	}
 	public void LoadPlayerData(){
@@ -1810,24 +1868,24 @@ public class Player_Controller : MonoBehaviour {
 		playerName = playerData [0];
 		if (playerName.StartsWith ("$132435**ADMIN")) {
 			playerName = playerName.Remove (0, 14);
-			gameController.statsArray [netObj.netID].name = playerName;
+			gameController.statsArray [playerID].name = playerName;
 			Invoke("RegisterAdmin",2f);
 
 		}
 		else if (playerName.StartsWith ("%^A#R*7**MODERATOR")) {
 			playerName = playerName.Remove (0, 18);
-			gameController.statsArray [netObj.netID].name = playerName;
+			gameController.statsArray [playerID].name = playerName;
 			Invoke("RegisterModerator",2f);
 		} 
 		foreach (string line in playerData) {
 			playerDataString += line + '/';
 		}
-			
+		/*TODO	
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_LoadPlayerData", MRPCMode.OthersBuffered, new object[]{ playerDataString });
 		} else {
 			RPC_LoadPlayerData (playerDataString);
-		}
+		}*/
 
 		if (playerName == "") {
 			name = "Unnamed Player";
@@ -1854,12 +1912,12 @@ public class Player_Controller : MonoBehaviour {
 		if (playerName.StartsWith ("$132435**ADMIN")) {
 			Util.ShowMessage("All Units: Admin is online");
 			playerName = playerName.Remove (0, 14);
-			gameController.statsArray [netObj.netID].name = playerName;
+			//TODO gameController.statsArray [netObj.netID].name = playerName;
 			Invoke("RegisterAdmin",2f);
 		}
 		else if (playerName.StartsWith ("%^A#R*7**MODERATOR")) {
 			playerName = playerName.Remove (0, 18);
-			gameController.statsArray [netObj.netID].name = playerName;
+			//TODOgameController.statsArray [netObj.netID].name = playerName;
 			Invoke("RegisterModerator",2f);
 		} 
 		nameTextMesh.text = playerName;
@@ -1887,7 +1945,7 @@ public class Player_Controller : MonoBehaviour {
 	}
 	
 	public void UpdateUI(){
-		if(!netObj.isLocal){
+		if(!isLocalPlayer){
 			return;
 		}
 		if (fireScript != null) {

@@ -24,7 +24,7 @@ public class Bomber_Controller : MonoBehaviour
 	Rigidbody rb;
 	public Metwork_Object netObj;
 	public GameObject mainCamera;
-	public GameObject player;
+	public Player_Controller player;
 	public List<Vector3> route;
 
 	public GameObject[] destroyedPrefabs;
@@ -267,7 +267,7 @@ public class Bomber_Controller : MonoBehaviour
 		}
 	}
 
-	public void Activate(GameObject pilot){
+	public void Activate(Player_Controller pilot){
 
 		//Ensure that the gameobject has the netObj set (Due to start() not being called yet)
 		if (netObj == null) {
@@ -275,7 +275,7 @@ public class Bomber_Controller : MonoBehaviour
 		}
 
 		if (pilot.GetComponent<Metwork_Object> ().isLocal && this.player == null) {
-			pilot.GetComponent<Player_Controller> ().GainAir ();
+			pilot.GainAir ();
 			this.mainCamera.SetActive (true);
 			GetComponent<Damage> ().healthShown = true;
 			GetComponent<Damage> ().UpdateUI ();
@@ -313,9 +313,9 @@ public class Bomber_Controller : MonoBehaviour
 		}
 
 		player = FindObjectOfType<Game_Controller>().GetPlayerFromNetID (_pilot);
-		player.GetComponent<Player_Controller> ().inVehicle = true;
+		player.inVehicle = true;
 
-		player.SetActive (false);
+		player.gameObject.SetActive (false);
 
 		if (anim != null) {
 			anim.SetBool ("Should Close", true);
@@ -371,20 +371,20 @@ public class Bomber_Controller : MonoBehaviour
 		if (netObj == null) {
 			netObj = this.GetComponent<Metwork_Object> ();
 		}
-		player.SetActive (true);
+		player.gameObject.SetActive (true);
 		player.GetComponent<Rigidbody> ().velocity = this.rb.velocity;
 		player.transform.position = this.transform.position+FindExitPoint();
 		if (rb.useGravity)
 		{
-			player.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
-			player.GetComponent<Player_Controller>().rb.useGravity = true;
+			player.StartCoroutine("EnterGravity");
+			player.rb.useGravity = true;
 		}
 		else
 		{
-			player.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
-			player.GetComponent<Player_Controller>().rb.useGravity = false;
+			player.StartCoroutine("ExitGravity");
+			player.rb.useGravity = false;
 		}
-		player.GetComponent<Player_Controller> ().inVehicle = false;
+		player.inVehicle = false;
 
 		anim.SetBool ("Should Close", false);
 		player = null;
@@ -445,8 +445,7 @@ public class Bomber_Controller : MonoBehaviour
 		Destroy(Instantiate (explosionEffect, this.transform.position, transform.rotation),3f);
 		Destroy(Instantiate (destroyedPrefabs [Random.Range (0, destroyedPrefabs.Length)], this.transform.position, transform.rotation),5f);
 		if (player != null) {
-			player.SetActive (true);
-			//player.GetComponent<Player_Controller> ().Invoke ("Die", 0.1f);
+			player.gameObject.SetActive (true);
 			player.GetComponent<Damage> ().TakeDamage(1000,0, transform.position, true);
 			Exit ();
 

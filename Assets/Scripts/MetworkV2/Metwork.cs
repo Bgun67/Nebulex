@@ -1251,6 +1251,7 @@ public class Metwork : MonoBehaviour {
 	public void DelayedConnect(){
 		Metwork.Connect(roomName);
 	}
+	/*DEPRECATED 
 	void StopTransferringServer(){
 		isTransferringServer = false;
 		if(Metwork.isServer){
@@ -1261,7 +1262,7 @@ public class Metwork : MonoBehaviour {
 				_gameController.ServerTransferred();
 			}
 		}
-	}
+	}*/
 
 
 	/// <summary>
