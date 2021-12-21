@@ -36,7 +36,8 @@ public class Game_Settings : MonoBehaviour
     }
     public struct GameplaySettings{
         public float lookSensitivity;
-    }
+		public bool holdToGroundLock;
+	}
 
     public struct AudioSettings{
         public float masterVolume;
@@ -89,7 +90,8 @@ public class Game_Settings : MonoBehaviour
     public static void RestoreGameplaySettings(){
         //Restore default settings
         currGameplaySettings.lookSensitivity = 0.5f;
-        SaveGameSettings();
+		currGameplaySettings.holdToGroundLock = true;
+		SaveGameSettings();
     }
     public static void RestoreAudioSettings(){
         //Restore default settings
@@ -192,6 +194,11 @@ public class Game_Settings : MonoBehaviour
     public void ChangeLookSensitivity(){
         currGameplaySettings.lookSensitivity = lookSensitivitySlider.value;
 		MInput.sensitivity = currGameplaySettings.lookSensitivity;
+        ApplySettings();
+    }
+
+	public void ChangeHoldToGroundLock(string mode){
+        currGameplaySettings.holdToGroundLock = mode=="Enabled"?true:false;
         ApplySettings();
     }
 
