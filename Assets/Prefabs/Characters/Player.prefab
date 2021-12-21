@@ -1,51 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2650152942696065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500021049238046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  visible: 0
-  m_AssetId: b9f1228e890c95646bb37da2c7c813c7
-  hasSpawned: 0
---- !u!114 &7454834971110159729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500021049238046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 0
-  bufferTimeMultiplier: 1
-  bufferSizeLimit: 64
-  catchupThreshold: 4
-  catchupMultiplier: 0.1
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
 --- !u!1001 &7142441320170151926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2140410072593017168, guid: 783577177cb004841a4685d42797a477,
+        type: 3}
+      propertyPath: m_AssetId
+      value: b9f1228e890c95646bb37da2c7c813c7
+      objectReference: {fileID: 0}
     - target: {fileID: 1947680260360821914, guid: 783577177cb004841a4685d42797a477,
         type: 3}
       propertyPath: m_Layer
@@ -177,12 +136,6 @@ PrefabInstance:
     - {fileID: 8319309914895511747, guid: 783577177cb004841a4685d42797a477, type: 3}
     - {fileID: 5599050600337980996, guid: 783577177cb004841a4685d42797a477, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 783577177cb004841a4685d42797a477, type: 3}
---- !u!1 &1500021049238046 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7141117788187000296, guid: 783577177cb004841a4685d42797a477,
-    type: 3}
-  m_PrefabInstance: {fileID: 7142441320170151926}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1446386582979217905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8578676034299123207, guid: 783577177cb004841a4685d42797a477,

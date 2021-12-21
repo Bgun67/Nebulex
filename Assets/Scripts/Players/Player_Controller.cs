@@ -344,13 +344,15 @@ public class Player_Controller : NetworkBehaviour {
 			iconCamera.SetActive (false);
 
 			nameTextMesh.transform.LookAt (gameController.localPlayer.transform);
-			
+			if(!helmet.activeSelf) helmet.SetActive(true);
 
 			return;
 		} else {
 			mainCamObj.SetActive(true);
 			minimapCam.SetActive(true);
 			iconCamera.SetActive (true);
+			if(helmet.activeSelf)helmet.SetActive(false);
+		
 		}
 		
 
@@ -1938,10 +1940,7 @@ public class Player_Controller : NetworkBehaviour {
 			nameTextMesh.color = new Color (255f, 0f, 0f);
 			nameTextMesh.gameObject.SetActive (false);
 		}
-		if (this.gameObject == gameController.localPlayer)
-		{
-			helmet.SetActive(false);
-		}
+		
 	}
 	
 	public void UpdateUI(){

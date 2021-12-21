@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -101,6 +101,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
 
 		}*/
+		//TODO Add
 		//gameController.RPC_ActivatePlayer (_player.playerID);
 		_player.Cmd_ShowPlayer();
 		//CHECK

@@ -173,15 +173,17 @@ public class Com_Controller : MonoBehaviour {
 		fireScript.playerID = botID;
 
 		int localTeam = gameController.GetLocalTeam();
-		if (gameController.statsArray[botID - 64].team == localTeam) {
-			nameTextMesh.color = new Color (0f, 50f, 255f);
-			nameTextMesh.gameObject.SetActive (true);
+		if(Game_Controller.Instance.localPlayer != null){
+			if (gameController.statsArray[botID - 64].team == localTeam) {
+				nameTextMesh.color = new Color (0f, 50f, 255f);
+				nameTextMesh.gameObject.SetActive (true);
 
-		} else {
-			nameTextMesh.color = new Color (255f, 0f, 0f);
-			nameTextMesh.gameObject.SetActive (false);
+			} else {
+				nameTextMesh.color = new Color (255f, 0f, 0f);
+				nameTextMesh.gameObject.SetActive (false);
+			}
+			nameTextMesh.transform.LookAt (gameController.localPlayer.transform);
 		}
-		nameTextMesh.transform.LookAt (gameController.localPlayer.transform);
 
 		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
 		{

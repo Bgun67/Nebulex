@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Mirror;
 
-public class Damage : MonoBehaviour {
+public class Damage : NetworkBehaviour {
 	public int originalHealth;
+	[SyncVar]
 	public int currentHealth;
 	public UnityEvent dieFunction;
 	public bool isVehicle = true;
@@ -41,7 +43,7 @@ public class Damage : MonoBehaviour {
 	public float impactDamageFactor = -1f;
 	public float damageThreshold = 0f;
 
-	public Metwork_Object netObj;
+	//public Metwork_Object netObj;
 
 	// Use this for initialization
 	void Start () {
@@ -61,12 +63,7 @@ public class Damage : MonoBehaviour {
 		if (regen) {
 			InvokeRepeating ("RegenHealth",regenTime, 100f/originalHealth);
 		}
-		if (netObj == null) {
-			netObj = this.GetComponent<Metwork_Object> ();
-		}
-		if (netObj == null) {
-			netObj = this.GetComponentInParent<Metwork_Object> ();
-		}
+		
 
 	}
 	public void Reset(){
@@ -92,31 +89,11 @@ public class Damage : MonoBehaviour {
 
 
 	}
-	bool CheckLocal()
-	{
-		if (netObj != null)
-		{
-			return (netObj.isLocal);
-		}
-		else if(Metwork.isServer)
-		{
-			return true;
-		}
-		else if(Metwork.peerType == MetworkPeerType.Disconnected)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	
+		
 
 	public void TakeDamage(int damageAmount, int fromID, Vector3 _hitDirection, bool overrideTeam = false)
 	{
-
+		//TODO: This should all be done on the server and passed to the clients
 		if (forwarder)
 		{
 			//print("sendingDamage");
@@ -124,7 +101,7 @@ public class Damage : MonoBehaviour {
 			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _hitDirection, overrideTeam);
 			return;
 		}
-		if (!CheckLocal() || isDead)
+		if (!isLocalPlayer || isDead)
 		{
 			return;
 		}
@@ -137,8 +114,8 @@ public class Damage : MonoBehaviour {
 		if(this.GetComponent<Com_Controller>() != null){
 			thisID = this.GetComponent<Com_Controller>().botID - 64;
 		}
-		else{
-			thisID = netObj.owner;
+		else if(this.GetComponent<Player_Controller>()!= null){
+			thisID = this.GetComponent<Player_Controller>().playerID;
 		}
 
 		if(this.tag == "Player"){
@@ -260,6 +237,7 @@ public class Damage : MonoBehaviour {
 		{
 			if (lowHealthEffect != null)
 			{
+				/*TODO
 				if (netObj != null)
 				{
 					if (Metwork.peerType != MetworkPeerType.Disconnected)
@@ -270,7 +248,7 @@ public class Damage : MonoBehaviour {
 					{
 						RPC_ShowLowHealthEffect(_show);
 					}
-				}
+				}*/
 
 			}
 		}
@@ -312,7 +290,7 @@ public class Damage : MonoBehaviour {
 			return;
 		}
 
-		if (!netObj.isLocal||collision.transform.root.tag == "Bullet") {
+		if (!isLocalPlayer||collision.transform.root.tag == "Bullet") {
 			return;
 		}
 

@@ -786,8 +786,14 @@ public class Game_Controller : NetworkBehaviour {
 	}
 	public int GetLocalTeam()
 	{
-		GetLocalPlayer();
-		return statsArray[localPlayer.playerID].team;
+
+		int _localPlayerID = GetLocalPlayer();
+		//At the start of the match there may be no local player, so we can return the team of the 
+		//First bot instead
+		if(_localPlayerID == -1)
+			return statsArray[0].team;
+		else
+			return statsArray[localPlayer.playerID].team;
 	}
 	void Update()
 	{
