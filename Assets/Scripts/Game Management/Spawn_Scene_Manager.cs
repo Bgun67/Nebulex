@@ -19,7 +19,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		gameController = GameObject.FindObjectOfType<Game_Controller> ();
+		gameController = Game_Controller.Instance;
 		if (eventSystem == null) {
 			eventSystem = GameObject.Find ("EventSystem");
 
@@ -77,7 +77,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
 		}
-		Player_Controller _player = gameController.localPlayer.GetComponent<Player_Controller>();
+		Player_Controller _player = Game_Controller.Instance.localPlayer;
 		_player.transform.rotation = Quaternion.LookRotation(spawnPositions [index].forward,Vector3.up);
 		//_player.transform.up = Vector3.up;
 		_player.transform.position = spawnPositions [index].position;

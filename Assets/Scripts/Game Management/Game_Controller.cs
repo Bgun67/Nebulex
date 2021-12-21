@@ -15,7 +15,7 @@ public class Game_Controller : NetworkBehaviour {
 		public int assists = 0;
 		public int score = 0;
 		public int team = -1;
-		public bool isBot = false;
+		public bool isBot = true;
 		public bool isFilled = false;
 	}
 
@@ -73,9 +73,18 @@ public class Game_Controller : NetworkBehaviour {
 	public int netPlayersCount;
 
 
-	[Space(5f)]
+	
 	#region UI
-	public Player_Controller localPlayer;
+	public Player_Controller _localPlayer;
+	public Player_Controller localPlayer{
+		get{
+			return _localPlayer;
+		}
+		set{
+			_localPlayer = value;
+		}
+	}
+	[Space(5f)]
 	[Header("UI Variables")]
 	public int matchLength;
 	[SyncVar]
@@ -115,9 +124,10 @@ public class Game_Controller : NetworkBehaviour {
 
 
 	#endregion
-	public void Start()
+	//Awake runs before any players are added
+	public void Awake()
 	{
-
+		print("Start");
 		instance = Instance;
 		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
 		UI_awayScoreText = UI_Manager.GetInstance.UI_AwayScoreText;
@@ -300,6 +310,7 @@ public class Game_Controller : NetworkBehaviour {
 	public int AssignPlayerID(){
 		int _playerID = -1;
 		for(int i = 0; i<statsArray.Length; i++){
+			print(statsArray[i].isBot);
 			if(statsArray[i].isBot == true){
 				statsArray[i].isBot = false;
 				_playerID = i;

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Mirror;
 
-public class Fire : MonoBehaviour {
+public class Fire : NetworkBehaviour {
 	public enum FireTypes
 	{
 		SemiAuto,

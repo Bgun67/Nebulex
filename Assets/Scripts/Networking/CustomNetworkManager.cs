@@ -18,6 +18,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
 {
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
+        print("OnServerAddPlayer");
         Transform startPos = GetStartPosition();
         GameObject player = startPos != null
             ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
@@ -28,6 +29,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
         player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
         int _playerID = Game_Controller.Instance.AssignPlayerID();
         player.GetComponent<Player_Controller>().playerID = _playerID;
+        Game_Controller.Instance.playerObjects.Add(player.GetComponent<Player_Controller>());
         NetworkServer.AddPlayerForConnection(conn, player);
     }
 }

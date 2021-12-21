@@ -43,8 +43,7 @@ public class Player_Controller : NetworkBehaviour {
 	bool exitingGravity = false;
 	float jumpWait;
 	float jumpHeldTime;
-	//public MetworkView netView;
-	//public Metwork_Object netObj;
+	
 	public float jetpackFuel = 1f;
 	public ParticleSystem[] jetpackJets;
 
@@ -177,7 +176,7 @@ public class Player_Controller : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 		
-		gameController = FindObjectOfType<Game_Controller> ();
+		gameController = Game_Controller.Instance;
 		
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponent<Animator> ();
@@ -190,10 +189,10 @@ public class Player_Controller : NetworkBehaviour {
 		//Feet raycasts
 		lfRaycast = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
 		rfRaycast = anim.GetBoneTransform(HumanBodyBones.RightFoot);
-
-		if (gameController.localPlayer == null) {
-			gameController.GetLocalPlayer ();
-		}
+		//CHECK: Likely removal needed
+		//if (gameController.localPlayer == null) {
+		//	gameController.GetLocalPlayer ();
+		//}
 		//ICONS
 		GameObject[] _icons = GameObject.FindGameObjectsWithTag("Icon");
 				
@@ -206,6 +205,7 @@ public class Player_Controller : NetworkBehaviour {
 		//UI_Manager.onPieEvent += this.OnPieEvent;
 		//CHECK
 		if (isLocalPlayer){
+			gameController.localPlayer = this;
 			LoadPlayerData ();
 			//TODO
 			/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -238,7 +238,6 @@ public class Player_Controller : NetworkBehaviour {
 	//Check remove this function if possible
 	public void Setup(){
 		gameController = FindObjectOfType<Game_Controller> ();
-		//netObj = this.GetComponent<Metwork_Object> ();
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> (); 
@@ -270,7 +269,7 @@ public class Player_Controller : NetworkBehaviour {
 			
 		} else {
 			
-			RPC_ShowNameText ();
+			//RPC_ShowNameText ();
 
 		}
 		
@@ -505,6 +504,7 @@ public class Player_Controller : NetworkBehaviour {
             }
 
         } else {
+			
 			if (!exitingGravity)
 			{
 				SpaceMove();
@@ -781,16 +781,15 @@ public class Player_Controller : NetworkBehaviour {
 		
 
 
-        if (Metwork.peerType != MetworkPeerType.Disconnected)
-        {
-			//TODO:
-            //bestShip.GetComponent<MetworkView>().RPC("RPC_ActivateAI", MRPCMode.AllBuffered, new object[] { netObj.owner });
-        }
+        
+        /*TODO Do this all on the server
+		bestShip.GetComponent<MetworkView>().RPC("RPC_ActivateAI", MRPCMode.AllBuffered, new object[] { netObj.owner });
+        
         bestShip.target = this.transform;
         bestShip.GetComponent<Raycaster>().target = this.transform.position;
         bestShip.isAI = true;
         bestShip.enabled = true;
-        print("Calling: " + bestShip.name);
+        print("Calling: " + bestShip.name);*/
 		WindowsVoice.Speak("Dispatching fighter");
         anim.SetTrigger("Command");
         StartCoroutine(CancelCall(bestShip));
@@ -1151,7 +1150,7 @@ public class Player_Controller : NetworkBehaviour {
 	}
 
 	public void SpaceMove(){
-		
+
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		
 		float factor = Time.deltaTime * forceFactor;
@@ -1598,13 +1597,14 @@ public class Player_Controller : NetworkBehaviour {
 	//Called by grav controller when entering / exiting gravity;
 	public IEnumerator ExitGravity(){
 		exitingGravity = true;
-		//print("Exiting Gravity");
+		
 		rb.angularDrag = 1f;
 		rb.drag = 0.3f;
 		rb.constraints = RigidbodyConstraints.None;
 		anim.SetBool ("Float", true);
 		anim.SetBool ("Jump", false);
 		anim.SetInteger("Walk State", 0);
+
 
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
 		while(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f){
@@ -1615,7 +1615,6 @@ public class Player_Controller : NetworkBehaviour {
 		Vector3 _aimDirection = mainCam.transform.forward;
 		float _originalLookTime = anim.GetFloat("Look Speed");
 		Vector3 _originalForward = transform.forward;
-	
 		float _counter = 0;
 		while (_counter < 1f)
 		{
@@ -1631,7 +1630,7 @@ public class Player_Controller : NetworkBehaviour {
 		if(isLocalPlayer){
 			breatheSound.Play ();
 		}
-		//print("Exited");
+
 		//walkSound.Stop ();
 
 		lookFactor = 1f;
@@ -1810,8 +1809,9 @@ public class Player_Controller : NetworkBehaviour {
 		
 		string[] settings = settingsString.Split ('/');
 
-		Destroy(this.primaryWeapon);
-		Destroy(this.secondaryWeapon);
+		//CHECK whether this should be unspawn or destroy
+		NetworkServer.Destroy(this.primaryWeapon);
+		NetworkServer.Destroy(this.secondaryWeapon);
 
 		primaryWeaponPrefab = (GameObject)Resources.Load ("Weapons/" + settings [0]);
 		secondaryWeaponPrefab = (GameObject)Resources.Load ("Weapons/" + settings [1]);
@@ -1826,10 +1826,13 @@ public class Player_Controller : NetworkBehaviour {
 		primaryWeapon = (GameObject)Instantiate (primaryWeaponPrefab, finger);
 		primaryWeapon.transform.localPosition = primaryLocalPosition;
 		primaryWeapon.transform.localRotation = Quaternion.Euler (primaryLocalRotation);
+		NetworkServer.Spawn(primaryWeapon, this.connectionToClient);
+
 		secondaryWeapon = (GameObject)Instantiate (secondaryWeaponPrefab, finger);
 		secondaryWeapon.transform.localPosition = secondaryLocalPosition;
 		secondaryWeapon.transform.localRotation = Quaternion.Euler (secondaryLocalRotation);
 		secondaryWeapon.SetActive (false);
+		NetworkServer.Spawn(secondaryWeapon, this.connectionToClient);
 
 		//scopes now
 		GameObject primaryScope = (GameObject)Resources.Load ("Weapons/Scopes/" + settings [2]);
