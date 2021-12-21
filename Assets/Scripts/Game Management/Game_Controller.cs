@@ -423,12 +423,12 @@ public class Game_Controller : NetworkBehaviour {
 			return;
 		}
 		//TODO: These can be handled by a syncvar of the damage
-		if (carrierADmg.netObj.isLocal) {
+		/*if (carrierADmg.netObj.isLocal) {
 			//netView.RPC ("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 0, carrierADmg.currentHealth});
 		}
 		if (carrierBDmg.netObj.isLocal) {
 			//netView.RPC("RPC_UpdateShipHealths", MRPCMode.OthersBuffered, new object[]{ 1, carrierBDmg.currentHealth});
-		}
+		}*/
 	}
 
 	[MRPC]
