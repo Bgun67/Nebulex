@@ -1160,7 +1160,11 @@ public class Player_Controller : NetworkBehaviour {
 		float rollFactor = Input.GetButton("Ctrl") ? 1f:0f;
 		magBootsLock = false;
 		//Also check if the jump key is pressed, in either auto or hold states
-		if (Game_Settings.currGameplaySettings.holdToGroundLock)
+		if (Input.GetAxis("Move Y") >= 0.05f)
+		{
+			magBootsOn = false;
+		}
+		else if (Game_Settings.currGameplaySettings.holdToGroundLock)
 		{
 			magBootsOn = Input.GetButton("Jump");
 		}
@@ -1169,6 +1173,7 @@ public class Player_Controller : NetworkBehaviour {
 			magBootsOn = !magBootsOn;
 		}
 
+
 		Vector3 velocity = Vector3.zero;
 		Vector3 rotation = Vector3.zero;
 		//TODO: Tie this into the jetpack fuel
@@ -1176,27 +1181,20 @@ public class Player_Controller : NetworkBehaviour {
 		{
 			jumpWait = Time.time + 5f;
 			rb.AddRelativeForce (new Vector3(0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f)*60f);
-
 		}
 		else
 		{
-	
-			//rb.AddRelativeTorque(-v2 * factor/2f, h2*factor/7f, -h * factor/1.5f * rollFactor);
-			//rb.angularVelocity = (Vector3.Lerp(rb.angularVelocity, transform.TransformVector(-v2 * factor/2f, h2*factor/7f, -h * factor/1.5f * rollFactor), 1f));
 			Vector3 desiredVelocity = transform.TransformVector(new Vector3(h,z,v) * moveSpeed);
 			if(desiredVelocity.sqrMagnitude < previousVelocity.sqrMagnitude*0.5f){
 				velocity = Vector3.Lerp(previousVelocity, Vector3.zero, 0.05f);
 			}
 			else{
-				velocity = Vector3.Lerp(previousVelocity, desiredVelocity, 0.4f);
+				velocity = Vector3.Lerp(previousVelocity, desiredVelocity, 0.2f);
 			}
 			
 		}
-		anim.SetBool("Float", true);
 
-
-		
-		if(magBootsOn && Input.GetAxis("Move Y") <= 0.05f){
+		if(magBootsOn){
 			RaycastHit _hit = new RaycastHit();
 			RaycastHit _hit2 = new RaycastHit();
 			RaycastHit _hit3 = new RaycastHit();
@@ -1241,7 +1239,7 @@ public class Player_Controller : NetworkBehaviour {
 
 
 				float lookUpDownTime = anim.GetFloat("Look Speed");	
-				anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 0.5f*Time.deltaTime, -1f, 1f));
+				anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 2f*Time.deltaTime, -1f, 1f));
 				if (Time.frameCount % 4==0) {
 					/*TODO
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -1256,6 +1254,9 @@ public class Player_Controller : NetworkBehaviour {
 
 				if(_hit.distance <= 0.2f){
 					//TODO: Finishe
+					anim.SetBool("Float", false);
+					thrusterSoundFactor = 0f;
+
 					magBootsLock = true;
 				}
 				else{
@@ -1273,15 +1274,8 @@ public class Player_Controller : NetworkBehaviour {
 			rotation = Vector3.zero;
 		}
 		else if(!magBootsLock)
-		{
-			
-			//Return to zero-g defaults
-			//rb.constraints = RigidbodyConstraints.None;
-			/*rb.angularDrag = 1f;
-			if (!Input.GetButton("Jump"))
-			{
-				previousNormal = transform.up;
-			}*/
+		{	
+			anim.SetBool("Float", true);
 
 			//Try to right the player's body and camera (as in exit gravity)
 			Vector3 _aimDirection = mainCam.transform.forward;
@@ -1309,7 +1303,7 @@ public class Player_Controller : NetworkBehaviour {
 			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.up, rotation.y);
 			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.forward, rotation.z);
 
-			thrusterSoundFactor = Mathf.Clamp01((velocity - rb.velocity).magnitude*4f);
+			thrusterSoundFactor = (velocity - rb.velocity).magnitude>0.45f?1f:0f;
 			//thrusterSoundFactor = 0.5f * Mathf.Ceil(Mathf.Abs(h) + Mathf.Abs(z)) + 0.3f * Mathf.Ceil(Mathf.Abs(v));
 		}
 
