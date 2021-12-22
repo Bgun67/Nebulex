@@ -135,10 +135,20 @@ public class Player_Controller : NetworkBehaviour {
 	public Transform finger;
 	public Transform rightHandPosition;
 	public GameObject magGO;
+	[SyncVar (hook = "SwitchWeapons")]
 	public bool primarySelected = true;
 	[Header("Primary")]
 	public GameObject primaryWeapon;
 	public GameObject primaryWeaponPrefab;
+	//Weapon identifiers
+	[SyncVar (hook = "LoadWeaponData")]
+	public int primaryWeaponNum;
+	[SyncVar (hook = "LoadWeaponData")]
+	public int secondaryWeaponNum;
+	[SyncVar (hook = "LoadWeaponData")]
+	public int primaryScopeNum;
+	[SyncVar (hook = "LoadWeaponData")]
+	public int secondaryScopeNum;
 	public Vector3 primaryLocalPosition;
 	public Vector3 primaryLocalRotation;
 	int primaryNetView = -1;
@@ -399,7 +409,7 @@ public class Player_Controller : NetworkBehaviour {
 
 		if (MInput.GetButtonDown ("Switch Weapons")) {
 			//TODO
-			Cmd_SwitchWeapons(primarySelected);
+			Cmd_SwitchWeapons(!primarySelected);
 			/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_SwitchWeapons", MRPCMode.AllBuffered, new object[]{primarySelected });
 			} else {
@@ -1499,10 +1509,21 @@ public class Player_Controller : NetworkBehaviour {
 			if(muzzleClimb < 0.6f){
 				muzzleClimb += 0.05f;
 			}
-			fireScript.FireWeapon();
+			fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+			Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 		}
 		UpdateUI ();
 	}
+	[Command]
+	void Cmd_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
+		if(isServerOnly) fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+		Rpc_FireWeapon(shotSpawnPosition, shotSpawnForward);
+	}
+	[ClientRpc(includeOwner=false)]
+	void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
+		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+	}
+
 	public void Recoil(){
 		anim.Play (recoilString, 2, 1-Random.Range(recoilAmount*0.7f,recoilAmount));
 		//anim.SetFloat("Recoil", 1 - Random.Range(recoilAmount * 0.7f, recoilAmount));
@@ -1689,25 +1710,25 @@ public class Player_Controller : NetworkBehaviour {
 	}
 	[Command]
 	public void Cmd_SwitchWeapons(bool _primary){
-		Rpc_SwitchWeapons(_primary);
+		primarySelected = _primary;
+		if(isServerOnly)SwitchWeapons(primarySelected, primarySelected);
+		
 	}
-	[ClientRpc]
-	public void Rpc_SwitchWeapons(bool _primary){
-		StartCoroutine (SwitchWeapons (_primary));
+	public void SwitchWeapons(bool oldValue, bool newValue){
+		StartCoroutine (Co_SwitchWeapons (primarySelected));
 	}
-	public IEnumerator SwitchWeapons(bool _primary){
+	
+	public IEnumerator Co_SwitchWeapons(bool _primary){
 		anim.SetBool ("Switch Weapons", true);
 		yield return new WaitForSeconds (0.5f);
 		if (_primary) {
 			primaryWeapon.SetActive (false);
 			secondaryWeapon.SetActive (true);
 			fireScript = secondaryWeapon.GetComponent<Fire> ();
-			primarySelected = false;
 		} else {
 			secondaryWeapon.SetActive (false);
 			primaryWeapon.SetActive (true);
 			fireScript = primaryWeapon.GetComponent<Fire> ();
-			primarySelected = true;
 		}
 		
 		if(isLocalPlayer){
@@ -1747,7 +1768,7 @@ public class Player_Controller : NetworkBehaviour {
 				loadoutSettingsString+=line+'/';
 			}
 
-			if(primaryNetView == -1 || secondaryNetView == -1){
+			/*if(primaryNetView == -1 || secondaryNetView == -1){
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
 					primaryNetView = Metwork.AllocateMetworkView (Metwork.player.connectionID);
 					secondaryNetView = Metwork.AllocateMetworkView (Metwork.player.connectionID);
@@ -1759,9 +1780,15 @@ public class Player_Controller : NetworkBehaviour {
 			else{
 				//Metwork.metViews.Remove(_primaryNetView);
 				//Metwork.metViews.Remove(_secondaryNetView);
-			}
+			}*/
+			//TODO: Change the guns to work off of ints instead of strings
+			string[] splitString = loadoutSettingsString.Split('/');
+			int _primary = int.Parse(splitString[0]);
+			int _secondary = int.Parse(splitString[1]);
+			int _primaryScope = int.Parse(splitString[2]);
+			int _secondaryScope = int.Parse(splitString[3]);
 
-			LoadWeaponData(loadoutSettingsString);
+			Cmd_LoadWeaponData(_primary,_secondary,_primaryScope,_secondaryScope);
 			/*TODO
 			if(Metwork.peerType  != MetworkPeerType.Disconnected){
 				netView.RPC("RPC_LoadWeaponData",MRPCMode.AllBuffered, new object[]{loadoutSettingsString, primaryNetView, secondaryNetView });
@@ -1783,7 +1810,7 @@ public class Player_Controller : NetworkBehaviour {
 				loadoutSettingsString+=line+'/';
 			}
 
-			if (primaryNetView == -1 || secondaryNetView == -1) {
+			/*if (primaryNetView == -1 || secondaryNetView == -1) {
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
 					primaryNetView = Metwork.AllocateMetworkView (Metwork.player.connectionID);
 					secondaryNetView = Metwork.AllocateMetworkView (Metwork.player.connectionID);
@@ -1791,9 +1818,15 @@ public class Player_Controller : NetworkBehaviour {
 					primaryNetView = Metwork.AllocateMetworkView (1);
 					secondaryNetView = Metwork.AllocateMetworkView (1);
 				}
-			}
+			}*/
 
-			LoadWeaponData(loadoutSettingsString);
+			string[] splitString = loadoutSettingsString.Split('/');
+			int _primary = int.Parse(splitString[0]);
+			int _secondary = int.Parse(splitString[1]);
+			int _primaryScope = int.Parse(splitString[2]);
+			int _secondaryScope = int.Parse(splitString[3]);
+
+			Cmd_LoadWeaponData(_primary,_secondary,_primaryScope,_secondaryScope);
 			/*TODO
 			if(Metwork.peerType  != MetworkPeerType.Disconnected){
 				
@@ -1804,42 +1837,52 @@ public class Player_Controller : NetworkBehaviour {
 			}*/
 		}
 	}
-	//CHECK This may need to be a networked function
-	public void LoadWeaponData(string settingsString){//}, int _primaryMetID, int _secondaryMetID){
+	[Command]
+	void Cmd_LoadWeaponData(int _primary, int _secondary, int _primaryScope, int _secondaryScope){
+		//The hooked function will probably run 4 times but c'est la vie
+		primaryWeaponNum = _primary;
+		secondaryWeaponNum = _secondary;
+		primaryScopeNum = _primaryScope;
+		secondaryScopeNum = _secondaryScope;
+
+		//Check: Not sure whether the server runs hooks or not
+		if(isServerOnly) LoadWeaponData(0, 0);
 		
-		string[] settings = settingsString.Split ('/');
+	}
+	
+	public void LoadWeaponData(int oldValue, int newValue){//}, int _primaryMetID, int _secondaryMetID){
+		
 
-		//CHECK whether this should be unspawn or destroy
-		NetworkServer.Destroy(this.primaryWeapon);
-		NetworkServer.Destroy(this.secondaryWeapon);
+		Destroy(this.primaryWeapon);
+		Destroy(this.secondaryWeapon);
 
-		primaryWeaponPrefab = (GameObject)Resources.Load ("Weapons/" + settings [0]);
-		secondaryWeaponPrefab = (GameObject)Resources.Load ("Weapons/" + settings [1]);
+		primaryWeaponPrefab = Game_Controller.Instance.weaponsCatalog.guns[primaryWeaponNum];//(GameObject)Resources.Load ("Weapons/" + settings [0]);
+		secondaryWeaponPrefab = Game_Controller.Instance.weaponsCatalog.guns[secondaryWeaponNum];//(GameObject)Resources.Load ("Weapons/" + settings [1]);
 
-		primaryLocalPosition = Loadout_Controller.gunLocalPositions [settings [0]];
-		secondaryLocalPosition = Loadout_Controller.gunLocalPositions [settings [1]];
+		primaryLocalPosition = Loadout_Controller.gunLocalPositions [primaryWeaponPrefab.name];
+		secondaryLocalPosition = Loadout_Controller.gunLocalPositions [secondaryWeaponPrefab.name];
 
-		primaryLocalRotation = Loadout_Controller.gunLocalRotations [settings [0]];
-		secondaryLocalRotation = Loadout_Controller.gunLocalRotations [settings [1]];
+		primaryLocalRotation = Loadout_Controller.gunLocalRotations [primaryWeaponPrefab.name];
+		secondaryLocalRotation = Loadout_Controller.gunLocalRotations [secondaryWeaponPrefab.name];
 		//add the primary weapon to the finger
-		//TODO Needs to be spawned
 		primaryWeapon = (GameObject)Instantiate (primaryWeaponPrefab, finger);
 		primaryWeapon.transform.localPosition = primaryLocalPosition;
 		primaryWeapon.transform.localRotation = Quaternion.Euler (primaryLocalRotation);
-		NetworkServer.Spawn(primaryWeapon, this.connectionToClient);
 
 		secondaryWeapon = (GameObject)Instantiate (secondaryWeaponPrefab, finger);
 		secondaryWeapon.transform.localPosition = secondaryLocalPosition;
 		secondaryWeapon.transform.localRotation = Quaternion.Euler (secondaryLocalRotation);
 		secondaryWeapon.SetActive (false);
-		NetworkServer.Spawn(secondaryWeapon, this.connectionToClient);
 
 		//scopes now
-		GameObject primaryScope = (GameObject)Resources.Load ("Weapons/Scopes/" + settings [2]);
-		Instantiate (primaryScope, primaryWeapon.GetComponent<Fire> ().scopePosition);
-
-		GameObject secondaryScope = (GameObject)Resources.Load ("Weapons/Scopes/" + settings [3]);
-		Instantiate (secondaryScope, secondaryWeapon.GetComponent<Fire> ().scopePosition);
+		if(primaryScopeNum >= 0){
+			GameObject primaryScope = Game_Controller.Instance.weaponsCatalog.scopes[primaryScopeNum];
+			Instantiate (primaryScope, primaryWeapon.GetComponent<Fire> ().scopePosition);
+		}
+		if(secondaryScopeNum >= 0){
+			GameObject secondaryScope = Game_Controller.Instance.weaponsCatalog.scopes[secondaryScopeNum];
+			Instantiate (secondaryScope, secondaryWeapon.GetComponent<Fire> ().scopePosition);
+		}
 
 		/*TODO Remove
 		primaryWeapon.GetComponent<MetworkView> ().viewID = _primaryMetID;
@@ -1856,7 +1899,8 @@ public class Player_Controller : NetworkBehaviour {
 			Metwork.metViews[_secondaryMetID] = secondaryWeapon.GetComponent<MetworkView> ();
 		}*/
 		//CHECK The latency on this switch may be too much to bear, it may be better to do it locally
-		Cmd_SwitchWeapons(false);
+		SwitchWeapons(primarySelected, primarySelected);
+		
 		
 	}
 	public void LoadPlayerData(){

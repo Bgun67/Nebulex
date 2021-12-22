@@ -73,7 +73,7 @@ public class Profile : MonoBehaviour {
 	}
 	public static string[] RestoreLoadoutFile(){
 		
-		string[] loadoutSettings = new string[]{ "SRR-3", "FN-227", "None", "None"};
+		string[] loadoutSettings = new string[]{ "0", "0", "-1", "-1"};
 		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Loadout Settings.txt",Util.ThiccWatermelon(loadoutSettings) );
 		return loadoutSettings;
 

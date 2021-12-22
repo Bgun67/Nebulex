@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Mirror;
 
 //TODO: Fix lobby scene players
 //TODO: Increase volume range for bots
 //TODO: Fix the Astroball
 //wanted to keep the old bot script
-public class Com_Controller : MonoBehaviour {
+public class Com_Controller : NetworkBehaviour {
 	public enum BotState{
 		Patrol,
 		Alert,
@@ -594,9 +595,19 @@ public class Com_Controller : MonoBehaviour {
 			//TODO: Stop navigation
 
 			//fire
-			fireScript.FireWeapon();
+			fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+			Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 		}
 
+	}
+	[Command]
+	void Cmd_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
+		if(isServerOnly) fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+		Rpc_FireWeapon(shotSpawnPosition, shotSpawnForward);
+	}
+	[ClientRpc(includeOwner=false)]
+	void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
+		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
 	}
 
 	[MRPC]

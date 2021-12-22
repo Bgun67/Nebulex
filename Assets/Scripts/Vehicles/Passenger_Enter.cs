@@ -33,7 +33,8 @@ public class Passenger_Enter : MonoBehaviour {
 			Exit();
 		}
 		if (Input.GetButton("Fire1")){
-			player.fireScript.FireWeapon();
+			//CHECK
+			//player.fireScript.FireWeapon();
 		}
 
 	}

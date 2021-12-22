@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Mirror;
 
-public class Bot : MonoBehaviour {
+public class Bot : NetworkBehaviour {
 
 	public enum BotState{
 		Patrol,
@@ -176,9 +177,19 @@ public class Bot : MonoBehaviour {
 			//Lerp towards player
 			transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(_relativePosition, transform.up),lockOnRate);
 			//fire
-			fireScript.FireWeapon();
+			fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+			Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 		}
 
+	}
+	[Command]
+	void Cmd_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
+		if(isServerOnly) fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+		Rpc_FireWeapon(shotSpawnPosition, shotSpawnForward);
+	}
+	[ClientRpc(includeOwner=false)]
+	void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
+		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
 	}
 
 	public void Die(){

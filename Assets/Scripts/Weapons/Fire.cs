@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Mirror;
 
-public class Fire : NetworkBehaviour {
+public class Fire : MonoBehaviour {
 	public enum FireTypes
 	{
 		SemiAuto,
@@ -137,7 +136,9 @@ public class Fire : NetworkBehaviour {
 		
 
 	}
-	public void FireWeapon(){
+	//I've ignored sending the inherited velocity, I think the server will be up to date enought
+	//on it so the difference will be small.
+	public void FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
 		
 		if (!reloading) {
 			
@@ -158,8 +159,8 @@ public class Fire : NetworkBehaviour {
 					fireDelay = Time.time + fireRate;
 					GameObject bullet = GetBullet ();
 					
-					bullet.transform.position = shotSpawn.position;
-					bullet.transform.rotation = shotSpawn.rotation;
+					bullet.transform.position = shotSpawnPosition;
+					bullet.transform.forward = shotSpawnForward;
 					fired++;
 					if (weaponAnim != null) {
 						try {
@@ -168,15 +169,17 @@ public class Fire : NetworkBehaviour {
 
 						}
 					}
-					//Vector3 randomFactor = Random.insideUnitSphere*recoilAmount*0.01f*Mathf.Clamp(fired,1f,3f);
+		
 					if (ignoreParentVelocity) {
-						bullet.GetComponent<Rigidbody> ().velocity = (shotSpawn.transform.forward) * bulletVelocity;
+						bullet.GetComponent<Rigidbody> ().velocity = (shotSpawnForward) * bulletVelocity;
 					} else {
-						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + (shotSpawn.transform.forward) * bulletVelocity;
+						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + (shotSpawnForward) * bulletVelocity;
 					}
 					bullet.GetComponent<Bullet_Controller> ().damagePower = damagePower;
 					
-					if (Metwork.peerType != MetworkPeerType.Disconnected) {
+					
+
+					/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						netView.RPC ("RPC_FireWeapon", MRPCMode.Others, new object[] {
 							bullet.transform.position,
 							bullet.transform.rotation,
@@ -184,7 +187,7 @@ public class Fire : NetworkBehaviour {
 							bullet.GetComponent<Bullet_Controller> ().damagePower,
 							playerID
 						});
-					}
+					}*/
 					if (shootSound != null) {
 						shootSound.PlayOneShot (sound, 1f);
 					}
@@ -218,17 +221,32 @@ public class Fire : NetworkBehaviour {
 			}
 		}
 	}
+	/*No longer needed
+	[Command]
+	void Cmd_FireWeapon(Vector3 _position, Quaternion _rotation, Vector3 _velocity, int _damagePower, int _ID){
+		//Fire the gun on the clients
+		Rpc_FireWeapon(_position, _rotation,_velocity, _damagePower, _ID);
+		
+		GameObject bullet = GetBullet ();
+		bullet.transform.position = _position;
+		bullet.transform.rotation = _rotation;
 
-	[MRPC]
-	void RPC_FireWeapon(Vector3 _position, Quaternion _rotation, Vector3 _velocity, int _damagePower, int _ID){
+		fired++;
+		bullet.GetComponent<Rigidbody> ().velocity = _velocity;
+		bullet.GetComponent<Bullet_Controller> ().damagePower = _damagePower;
+		bullet.GetComponent<Bullet_Controller> ().fromID = _ID;
+		
+
+	}
+	//CHECK: It is possible that this runs on all the clients (so it is repeated on the original client)
+	[ClientRpc]
+	void Rpc_FireWeapon(Vector3 _position, Quaternion _rotation, Vector3 _velocity, int _damagePower, int _ID){
 		if (weaponAnim != null) {
 			
 			//weaponAnim.SetTrigger ("Fire");
 		}
 		if (shootSound != null) {
 			shootSound.PlayOneShot (sound, 1f);
-			//shootSound.Play ();
-
 		}
 		if (muzzleFlash != null) {
 			muzzleFlash.Play ();
@@ -243,7 +261,7 @@ public class Fire : NetworkBehaviour {
 		bullet.GetComponent<Bullet_Controller> ().fromID = _ID;
 		
 
-	}
+	}*/
 
 
 

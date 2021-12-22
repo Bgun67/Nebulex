@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 /*Michael Gunther: 2018-02-05
  * Purpose: Ship class to be derived from to make the fighter ship, bombers etc
@@ -8,7 +9,7 @@ using UnityEngine;
  * Improvements/Fixes:
 * */
 
-public class Bomber_Controller : MonoBehaviour
+public class Bomber_Controller : NetworkBehaviour
 {
 
 	public enum WeaponType
@@ -259,12 +260,54 @@ public class Bomber_Controller : MonoBehaviour
 	public virtual void Fire ()
 	{
 		if (weaponType == WeaponType.Primary) {
-			fireScriptLeft.FireWeapon ();
-			fireScriptRight.FireWeapon ();
+			fireScriptLeft.FireWeapon(fireScriptLeft.shotSpawn.transform.position, fireScriptLeft.shotSpawn.transform.forward);
+			Cmd_FireWeapon(fireScriptLeft.shotSpawn.transform.position, fireScriptLeft.shotSpawn.transform.forward, 0);
+			fireScriptRight.FireWeapon (fireScriptRight.shotSpawn.transform.position, fireScriptRight.shotSpawn.transform.forward);
+			Cmd_FireWeapon(fireScriptRight.shotSpawn.transform.position, fireScriptRight.shotSpawn.transform.forward, 1);
 		}
 		if (weaponType == WeaponType.Secondary) {
-			bombFireScript.FireWeapon ();
+			bombFireScript.FireWeapon (bombFireScript.shotSpawn.transform.position, bombFireScript.shotSpawn.transform.forward);
+			Cmd_FireWeapon(bombFireScript.shotSpawn.transform.position, bombFireScript.shotSpawn.transform.forward, 2);
 		}
+	}
+	[Command]
+	void Cmd_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward, int gunNum){
+		Fire fireScript;
+		switch(gunNum){
+			case 0:
+				fireScript = fireScriptLeft;
+				break;
+			case 1:
+				fireScript = fireScriptRight;
+				break;
+			case 2:
+				fireScript = bombFireScript;
+				break;
+			default:
+				fireScript = fireScriptLeft;
+				break;
+		}
+		if(isServerOnly) fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+		Rpc_FireWeapon(shotSpawnPosition, shotSpawnForward, gunNum);
+	}
+	[ClientRpc(includeOwner=false)]
+	void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward, int gunNum){
+		Fire fireScript;
+		switch(gunNum){
+			case 0:
+				fireScript = fireScriptLeft;
+				break;
+			case 1:
+				fireScript = fireScriptRight;
+				break;
+			case 2:
+				fireScript = bombFireScript;
+				break;
+			default:
+				fireScript = fireScriptLeft;
+				break;
+		}
+		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
 	}
 
 	public void Activate(Player_Controller pilot){

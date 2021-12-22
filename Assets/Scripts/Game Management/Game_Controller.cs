@@ -37,6 +37,7 @@ public class Game_Controller : NetworkBehaviour {
 			return instance;
 		}
 	}
+	public Weapons_Catalog weaponsCatalog;
 
 	public List<Player_Controller> playerObjects = new List<Player_Controller> ();
 	[HideInInspector]

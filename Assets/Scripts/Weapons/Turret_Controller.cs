@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Turret_Controller : MonoBehaviour
+public class Turret_Controller : NetworkBehaviour
 {
 
 	public GameObject turretPivot;
 	float h;
 	float v;
 	public Animator anim;
-	public Fire primary1;
-	public Fire primary2;
+	public Fire fireScriptLeft;
+	public Fire fireScriptRight;
 	public GameObject mainCamera;
 	public Player_Controller player;
 	public MetworkView netView;
@@ -31,8 +32,8 @@ public class Turret_Controller : MonoBehaviour
 		//Find all the bombbers in the scene
 		bombers = FindObjectsOfType<Bomber_Controller>();
 
-		primary1.playerID = 0;
-		primary2.playerID = 0;
+		fireScriptLeft.playerID = 0;
+		fireScriptRight.playerID = 0;
 	}
 	public virtual void Activate(Player_Controller pilot)
 	{
@@ -72,8 +73,8 @@ public class Turret_Controller : MonoBehaviour
 		player.inVehicle = true;
 		this.enabled = true;
 
-		primary1.playerID = _pilot;
-		primary2.playerID = _pilot;
+		fireScriptLeft.playerID = _pilot;
+		fireScriptRight.playerID = _pilot;
 
 	}
 	public void Exit()
@@ -191,8 +192,10 @@ public class Turret_Controller : MonoBehaviour
 			Look();
 			if (Input.GetButton("Fire1"))
 			{
-				primary1.FireWeapon();
-				primary2.FireWeapon();
+				fireScriptLeft.FireWeapon(fireScriptLeft.shotSpawn.transform.position, fireScriptLeft.shotSpawn.transform.forward);
+				Cmd_FireWeapon(fireScriptLeft.shotSpawn.transform.position, fireScriptLeft.shotSpawn.transform.forward, 0);
+				fireScriptRight.FireWeapon (fireScriptRight.shotSpawn.transform.position, fireScriptRight.shotSpawn.transform.forward);
+				Cmd_FireWeapon(fireScriptRight.shotSpawn.transform.position, fireScriptRight.shotSpawn.transform.forward, 1);
 			}
 			if (Input.GetButtonDown("Use Item"))
 			{
@@ -201,6 +204,41 @@ public class Turret_Controller : MonoBehaviour
 		}
 
 	}
+
+	[Command]
+	void Cmd_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward, int gunNum){
+		Fire fireScript;
+		switch(gunNum){
+			case 0:
+				fireScript = fireScriptLeft;
+				break;
+			case 1:
+				fireScript = fireScriptRight;
+				break;
+			default:
+				fireScript = fireScriptLeft;
+				break;
+		}
+		if(isServerOnly) fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+		Rpc_FireWeapon(shotSpawnPosition, shotSpawnForward, gunNum);
+	}
+	[ClientRpc(includeOwner=false)]
+	void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward, int gunNum){
+		Fire fireScript;
+		switch(gunNum){
+			case 0:
+				fireScript = fireScriptLeft;
+				break;
+			case 1:
+				fireScript = fireScriptRight;
+				break;
+			default:
+				fireScript = fireScriptLeft;
+				break;
+		}
+		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+	}
+
 	[MRPC]
 	public void RPC_Turn(float turn, float currentTime)
 	{
@@ -298,10 +336,10 @@ public class Turret_Controller : MonoBehaviour
 
 
 		//Project on the relative (to the base) x-z plane to find left right rotation
-		float _yAngle = Vector3.SignedAngle(primary1.shotSpawn.forward,_bestShip.transform.position - transform.position,transform.up);
+		float _yAngle = Vector3.SignedAngle(fireScriptLeft.shotSpawn.forward,_bestShip.transform.position - transform.position,transform.up);
 		anim.SetFloat ("Turn Speed", Mathf.Clamp(-_yAngle/200f,-1f,1f));
 		//Project on the relative (to the base) x-z plane to find left right rotation
-		float _xAngle = Vector3.SignedAngle(primary1.shotSpawn.forward, _bestShip.transform.position - transform.position, transform.right);
+		float _xAngle = Vector3.SignedAngle(fireScriptLeft.shotSpawn.forward, _bestShip.transform.position - transform.position, transform.right);
 
 		float lookUpDownTime = anim.GetCurrentAnimatorStateInfo (0).normalizedTime;
 		if(lookUpDownTime >= 1.0f){
@@ -312,12 +350,14 @@ public class Turret_Controller : MonoBehaviour
 		}
 		anim.SetFloat ("Look Speed",  Mathf.Clamp(_xAngle/10f,-2f,2f));
 
-		if(Vector3.Dot(primary1.shotSpawn.forward, (_bestShip.transform.position-transform.position).normalized) >0.7){
+		if(Vector3.Dot(fireScriptLeft.shotSpawn.forward, (_bestShip.transform.position-transform.position).normalized) >0.7){
 			RaycastHit _hit;
 			Physics.Raycast(transform.position, _bestShip.transform.position-transform.position, out _hit,500f, layerMask, QueryTriggerInteraction.Ignore);
 			if(_hit.transform.root == _bestShip.transform){
-				primary1.FireWeapon ();
-				primary2.FireWeapon ();
+				fireScriptLeft.FireWeapon(fireScriptLeft.shotSpawn.transform.position, fireScriptLeft.shotSpawn.transform.forward);
+				Cmd_FireWeapon(fireScriptLeft.shotSpawn.transform.position, fireScriptLeft.shotSpawn.transform.forward, 0);
+				fireScriptRight.FireWeapon (fireScriptRight.shotSpawn.transform.position, fireScriptRight.shotSpawn.transform.forward);
+				Cmd_FireWeapon(fireScriptRight.shotSpawn.transform.position, fireScriptRight.shotSpawn.transform.forward, 1);
 			}
 		}
 	}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 /*Michael Gunther: 2018-02-05
  * Purpose: Ship class to be derived from to make the fighter ship, bombers etc
@@ -9,7 +10,7 @@ using UnityEngine.UI;
  * Improvements/Fixes:
  * */
 
-public class Ship_Controller : MonoBehaviour {
+public class Ship_Controller : NetworkBehaviour {
 
 	//Components
 	protected Rigidbody rb;
@@ -30,8 +31,8 @@ public class Ship_Controller : MonoBehaviour {
 	protected float moveZ;
 	protected float deltaThrustForce;
 
-	public Fire fireScript1;
-	public Fire fireScript2;
+	public Fire fireScriptLeft;
+	public Fire fireScriptRight;
 	public bool isAI = false;
 	public bool isTransport = false;
 	public Transform target;
@@ -405,8 +406,43 @@ public class Ship_Controller : MonoBehaviour {
 	}
 
 	public virtual void Fire (){
-		fireScript1.FireWeapon ();
-		fireScript2.FireWeapon ();
+		fireScriptLeft.FireWeapon(fireScriptLeft.shotSpawn.transform.position, fireScriptLeft.shotSpawn.transform.forward);
+		Cmd_FireWeapon(fireScriptLeft.shotSpawn.transform.position, fireScriptLeft.shotSpawn.transform.forward, 0);
+		fireScriptRight.FireWeapon (fireScriptRight.shotSpawn.transform.position, fireScriptRight.shotSpawn.transform.forward);
+		Cmd_FireWeapon(fireScriptRight.shotSpawn.transform.position, fireScriptRight.shotSpawn.transform.forward, 1);
+	}
+	[Command]
+	void Cmd_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward, int gunNum){
+		Fire fireScript;
+		switch(gunNum){
+			case 0:
+				fireScript = fireScriptLeft;
+				break;
+			case 1:
+				fireScript = fireScriptRight;
+				break;
+			default:
+				fireScript = fireScriptLeft;
+				break;
+		}
+		if(isServerOnly) fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+		Rpc_FireWeapon(shotSpawnPosition, shotSpawnForward, gunNum);
+	}
+	[ClientRpc(includeOwner=false)]
+	void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward, int gunNum){
+		Fire fireScript;
+		switch(gunNum){
+			case 0:
+				fireScript = fireScriptLeft;
+				break;
+			case 1:
+				fireScript = fireScriptRight;
+				break;
+			default:
+				fireScript = fireScriptLeft;
+				break;
+		}
+		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
 	}
 
 	public void Activate(Player_Controller pilot){
@@ -467,9 +503,9 @@ public class Ship_Controller : MonoBehaviour {
 		} 
 
 		netObj.owner = _pilot;
-		if (fireScript1 != null && fireScript2 != null) {
-			fireScript1.playerID = _pilot;
-			fireScript2.playerID = _pilot;
+		if (fireScriptLeft != null && fireScriptRight != null) {
+			fireScriptLeft.playerID = _pilot;
+			fireScriptRight.playerID = _pilot;
 		}
 
 	}
