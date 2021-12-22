@@ -48,6 +48,8 @@ public class Player_Controller : NetworkBehaviour {
 	public ParticleSystem[] jetpackJets;
 
 	public bool refueling = false;
+	//controls whether the player has toggle the magboots on or off
+	bool magBootsOn;
 	bool magBootsLock = false;
 
 	public float airTime;
@@ -1167,33 +1169,42 @@ public class Player_Controller : NetworkBehaviour {
 		float strafeFactor = Input.GetButton("Ctrl") ? 0f:1f;
 		float rollFactor = Input.GetButton("Ctrl") ? 1f:0f;
 		magBootsLock = false;
+		//Also check if the jump key is pressed, in either auto or hold states
+		if (Input.GetAxis("Move Y") >= 0.05f)
+		{
+			magBootsOn = false;
+		}
+		else if (Game_Settings.currGameplaySettings.holdToGroundLock)
+		{
+			magBootsOn = Input.GetButton("Jump");
+		}
+		else if (Input.GetButtonDown("Jump"))
+		{
+			magBootsOn = !magBootsOn;
+		}
 
+
+		Vector3 velocity = Vector3.zero;
+		Vector3 rotation = Vector3.zero;
 		//TODO: Tie this into the jetpack fuel
 		if (false && Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
 		{
 			jumpWait = Time.time + 5f;
 			rb.AddRelativeForce (new Vector3(0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f)*60f);
-
 		}
 		else
 		{
-	
-			rb.AddRelativeTorque(-v2 * factor/2f, h2*factor/7f, -h * factor/1.5f * rollFactor);
 			Vector3 desiredVelocity = transform.TransformVector(new Vector3(h,z,v) * moveSpeed);
 			if(desiredVelocity.sqrMagnitude < previousVelocity.sqrMagnitude*0.5f){
-				rb.velocity = Vector3.Lerp(previousVelocity, Vector3.zero, 0.05f);
+				velocity = Vector3.Lerp(previousVelocity, Vector3.zero, 0.05f);
 			}
 			else{
-				rb.velocity = Vector3.Lerp(previousVelocity, desiredVelocity, 0.7f);
+				velocity = Vector3.Lerp(previousVelocity, desiredVelocity, 0.2f);
 			}
 			
 		}
-		anim.SetBool("Float", true);
-		
 
-		//Raycast down to find ground to lock on to
-		//Also check if the jump key is pressed
-		if(Input.GetButton("Jump") && Input.GetAxis("Move Y") <= 0.05f){
+		if(magBootsOn){
 			RaycastHit _hit = new RaycastHit();
 			RaycastHit _hit2 = new RaycastHit();
 			RaycastHit _hit3 = new RaycastHit();
@@ -1210,7 +1221,7 @@ public class Player_Controller : NetworkBehaviour {
 
 			if( _hit.distance <= 5.4f){// || _hit2.distance <= 5.4f || _hit3.distance <= 5.4f){
 				//Take the weighted average of the three distances;
-				Vector3 _hitNormal = _hit.normal; //(_hit.normal / _hit.distance + _hit2.normal / _hit2.distance + _hit3.normal / _hit3.distance)/3f; 
+				Vector3 _hitNormal = (_hit.normal+_hit2.normal+_hit3.normal).normalized; //(_hit.normal / _hit.distance + _hit2.normal / _hit2.distance + _hit3.normal / _hit3.distance)/3f; 
 				
 				if(Vector3.Dot(_hitNormal.normalized, previousNormal.normalized)> 0.4f){
 
@@ -1235,28 +1246,27 @@ public class Player_Controller : NetworkBehaviour {
 				
 				Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
 				Debug.DrawRay(_hit.point,_hitNormal, Color.green);
-				rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
-				//rb.AddForceAtPosition((transform.up).normalized * -10000000f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)), lfRaycast.position);
-				rb.velocity += transform.up * -98100f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)) * Time.deltaTime;
+
 
 				float lookUpDownTime = anim.GetFloat("Look Speed");	
-				anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 0.5f*Time.deltaTime, -1f, 1f));
+				anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 2f*Time.deltaTime, -1f, 1f));
 				if (Time.frameCount % 4==0) {
 					/*TODO
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
 					}*/
 				}
-				rb.angularDrag = 20f;
-				//Add torque to compensate for extra friction
-				rb.AddRelativeTorque(0, h2*factor/3f* 20f, 0);
-				rb.rotation = new Quaternion(0,1,0,0) * rb.rotation;
-				//Add left/right force (to convert the roll force to side-side)
-				
-				//rb.AddRelativeForce(h * Time.deltaTime * forceFactor * 20f,0,0);
+
+				rotation = new Vector3(0, h2 * 2f, 0) * 5f * Time.deltaTime * 30f;
+				rb.transform.Rotate(rotation);
+				velocity = transform.TransformVector(new Vector3(h,z,v).normalized * moveSpeed);
+				velocity += transform.up * -98100f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)) * Time.deltaTime;
+
 				if(_hit.distance <= 0.2f){
 					//TODO: Finishe
-					rb.velocity = transform.TransformVector(new Vector3(h,z,v).normalized * moveSpeed * 1.5f);
+					anim.SetBool("Float", false);
+					thrusterSoundFactor = 0f;
+
 					magBootsLock = true;
 				}
 				else{
@@ -1265,50 +1275,50 @@ public class Player_Controller : NetworkBehaviour {
 				
 				
 			}
-			else{
-				
-			}
-			
 		}
 		
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
-		if(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) < 3f){
-			//Return to zero-g defaults
-			//rb.constraints = RigidbodyConstraints.None;
-			rb.angularDrag = 1f;
-			if(!Input.GetButton("Jump")){
-				previousNormal = transform.up;
-			}
+		if (Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f)
+		{
+			velocity = Vector3.zero;
+			rotation = Vector3.zero;
+		}
+		else if(!magBootsLock)
+		{	
+			anim.SetBool("Float", true);
 
 			//Try to right the player's body and camera (as in exit gravity)
 			Vector3 _aimDirection = mainCam.transform.forward;
 			float _originalLookTime = anim.GetFloat("Look Speed");
 			Vector3 _originalForward = transform.forward;
-		
-			float _counter = Vector3.Dot(_aimDirection.normalized,_originalForward.normalized);
-			if(_counter < 0.97f){
-				
-				//transform.LookAt(transform.position + Vector3.Slerp (_originalForward, _aimDirection,0.5f));
-				Vector3 _lerpedForward = Vector3.Slerp (_originalForward, _aimDirection,0.3f);
-				Vector3 _lerpedUp = Vector3.ProjectOnPlane(transform.up,_lerpedForward);
+
+			float _counter = Vector3.Dot(_aimDirection.normalized, _originalForward.normalized);
+			if (_counter < 0.97f)
+			{
+				Vector3 _lerpedForward = Vector3.Slerp(_originalForward, _aimDirection, 0.3f);
+				Vector3 _lerpedUp = Vector3.ProjectOnPlane(transform.up, _lerpedForward);
 				rb.transform.rotation = Quaternion.LookRotation(_lerpedForward, _lerpedUp);
-				//anim.SetFloat ("Look Speed",Mathf.Lerp(_originalLookTime ,0.5f,_counter));
-				anim.SetFloat ("Look Speed", 0.5f - 0.8f * Vector3.SignedAngle(_originalForward,transform.forward,transform.right)/90f);
-				//rb.AddForce(Vector3.Lerp(Vector3.zero,Vector3.up * 9.81f,  _counter), ForceMode.Acceleration);
+				anim.SetFloat("Look Speed", 0.5f - 0.8f * Vector3.SignedAngle(_originalForward, transform.forward, transform.right) / 90f);
 			}
 
-			
 
-			Vector3 _rotateAmount = Vector3.Lerp(previousRot,new Vector3(-v2 * 2f, h2*2f, -h * 1.5f * rollFactor) * 5f * Time.deltaTime * 30f, 0.05f);
-			rb.transform.Rotate(_rotateAmount);
-			previousRot = _rotateAmount;
+			float _timeFactor = 5f * Time.deltaTime * 30f;
+			rotation = new Vector3(
+				Mathf.Lerp(previousRot.x, -v2 * 2f*_timeFactor , 0.1f),
+				Mathf.Lerp(previousRot.y, h2 * 2f*_timeFactor , 0.1f),
+				Mathf.Lerp(previousRot.z, -h * 1.5f * rollFactor*_timeFactor , 0.05f)
+			);
+			previousRot = rotation;
+			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
+			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.up, rotation.y);
+			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.forward, rotation.z);
 
-			thrusterSoundFactor = 0.5f * Mathf.Ceil(Mathf.Abs(h) + Mathf.Abs(z)) + 0.3f * Mathf.Ceil(Mathf.Abs(v));
-
-				
-			
-			
+			thrusterSoundFactor = (velocity - rb.velocity).magnitude>0.45f?1f:0f;
+			//thrusterSoundFactor = 0.5f * Mathf.Ceil(Mathf.Abs(h) + Mathf.Abs(z)) + 0.3f * Mathf.Ceil(Mathf.Abs(v));
 		}
+
+		rb.velocity = velocity;
+		
 		if (Time.frameCount % 4 == 0) {
 			/*TODO
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {

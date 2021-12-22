@@ -8,14 +8,12 @@ public class Pause_Menu : MonoBehaviour {
 	public GameObject confirmRecallPanel;
 	public GameObject settingsPanel;
 	public GameObject eventSystem;
-	public Player_Controller player;
 
 	// Use this for initialization
 	void OnEnable(){
 	}
 	public void Pause () {
 		this.gameObject.SetActive (true);
-		player = FindObjectOfType<Game_Controller>().localPlayer;
 		//eventSystem.SetActive (true);
 
 		MInput.inputLock = MInput.InputLock.LockAll;
@@ -38,9 +36,13 @@ public class Pause_Menu : MonoBehaviour {
 
 	}
 	public void KillPlayer(){
+		Player_Controller player = FindObjectOfType<Game_Controller>().localPlayer;
+
 		MInput.inputLock = MInput.InputLock.None;
-		print(player.GetComponent<Damage>().currentHealth);
-		player.GetComponent<Damage> ().TakeDamage (200, 0, player.transform.position + player.transform.forward, true);
+		if (player)
+		{
+			player.GetComponent<Damage>().TakeDamage(200, 0, player.transform.position + player.transform.forward, true);
+		}
 		confirmRecallPanel.SetActive(false);
 		Resume();
 	}
