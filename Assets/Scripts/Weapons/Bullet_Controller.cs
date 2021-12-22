@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Bullet_Controller : MonoBehaviour {
+public class Bullet_Controller : NetworkBehaviour {
 	[Tooltip("If using particles ensure the damage is for each particle")]
 	public int damagePower;
 	[Tooltip("Auto Destroy time in seconds")]
@@ -39,34 +40,26 @@ Rigidbody rb;
 		}
 		try {
 			try {
-				other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
+				if(isServer)
+					other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
 
 
 			} catch {
 				try {
-					other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
+					if(isServer)
+						other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
 				} catch {
-					other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID,other.transform.position+other.relativeVelocity);
+					if(isServer)
+						other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID,other.transform.position+other.relativeVelocity);
 				}
 			}
 		} catch {
 
 		}
 
-		//this.enabled = false;
 
-		//Invoke ("DisableBullet", 0.1f);
 		DisableBullet();
-		/*
-		if (other.collider.tag == checkTag1) {
-			RaycastHit hit;
-			Physics.Raycast (this.transform.position, Vector3.down, out hit, 10f);
-			print (hit.normal);
-			Instantiate (effect1, other.collider.ClosestPoint (this.transform.position), Quaternion.Euler (hit.normal));
-
-		} else if (other.collider.tag == checkTag2) {
-		} else {
-		}*/
+		
 
 
 

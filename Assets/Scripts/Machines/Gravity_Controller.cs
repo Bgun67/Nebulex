@@ -43,7 +43,6 @@ public class Gravity_Controller : MonoBehaviour {
 				else
 				{
 					other.GetComponent<Player_Controller>().shipRB = null;
-
 					other.GetComponent<Player_Controller>().StopCoroutine("EnterGravity");
 					other.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
 
@@ -66,11 +65,14 @@ public class Gravity_Controller : MonoBehaviour {
 				//rb.useGravity = false;
 
 				if (useGravity) {
-						other.GetComponent<Player_Controller>().shipRB = rootRB;
+					other.GetComponent<Player_Controller>().shipRB = rootRB;
 					other.GetComponent<Player_Controller>().rb.useGravity = useGravity;
 					other.GetComponent<Player_Controller>().StartCoroutine("EnterGravity");
 				} else {
-
+					//Used for boxes that define zero-gravity fields
+					other.GetComponent<Player_Controller>().shipRB = null;
+					other.GetComponent<Player_Controller>().StopCoroutine("EnterGravity");
+					other.GetComponent<Player_Controller>().StartCoroutine("ExitGravity");
 				}			
 			}
 		}
@@ -91,7 +93,7 @@ public class Gravity_Controller : MonoBehaviour {
 					other.GetComponent<Player_Controller>().rb.useGravity = false;
 					other.GetComponent<Player_Controller> ().StartCoroutine ("ExitGravity");
 				} else {
-
+					
 				}
 			}
 		}
