@@ -28,6 +28,7 @@ public class Damage : NetworkBehaviour {
 	public bool healthShown;
 	public bool indicateLowHealth = false;
 	public GameObject lowHealthEffect;
+	[SyncVar]
 	public bool isDead;
 	[Tooltip("Use this to send the damage to a different damage script specified below")]
 	public bool forwarder;

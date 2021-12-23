@@ -82,8 +82,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		//_player.transform.up = Vector3.up;
 		_player.transform.position = spawnPositions [index].position;
 
-		_player.damageScript.initialPosition = null;
-		_player.damageScript.Reactivate();
+		
 		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			//TODO
 			//gameController.netView.RPC ("RPC_ActivatePlayer", MRPCMode.AllBuffered, new object[]{ _player.netObj.owner});
@@ -101,9 +100,8 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
 
 		}*/
-		//TODO Add
-		//gameController.RPC_ActivatePlayer (_player.playerID);
-		_player.Cmd_ShowPlayer();
+		
+		_player.Cmd_ActivatePlayer();
 		//CHECK
 		Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
 		Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;

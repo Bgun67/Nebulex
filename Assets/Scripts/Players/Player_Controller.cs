@@ -886,12 +886,19 @@ public class Player_Controller : NetworkBehaviour {
 		}
 	}
 	[Command]
-	public void Cmd_ShowPlayer(){
-		Rpc_ShowPlayer();
+	public void Cmd_ActivatePlayer(){
+		this.damageScript.initialPosition = null;
+		this.damageScript.Reactivate();
+
+		Rpc_ActivatePlayer();
 	}
 	[ClientRpc]
-	public void Rpc_ShowPlayer(){
+	public void Rpc_ActivatePlayer(){
 		this.gameObject.SetActive(true);
+		if (isLocalPlayer) {
+			Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
+			Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
+		}
 	}
 
 	[MRPC]
@@ -1541,43 +1548,18 @@ public class Player_Controller : NetworkBehaviour {
 	#endregion
 	#region Region2
 	public void Die(){
+		//Since the damage is calculated on the server, this function only
+		//runs on the server and has to be passed to every client
 		if(throwingGrenade){
+			//TODO: Grenades
 			SpawnGrenade(0.25f);
 		}
-		//sceneCam.enabled = true;
-		/*TODO
-		if(Metwork.peerType  != MetworkPeerType.Disconnected){
-			netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{ });
-		}
-		else{
-			RPC_Die ();
-		}
-
-		if (netObj == null) {
-			netObj = GetComponent<Metwork_Object> ();
-		}*/
-		
-
-		Invoke("CoDie", 4f);
-
-
+		//Invoke the die animations on all clients
+		Rpc_Die();
 	}
 
-	public void CoDie(){
-		
-		Game_Controller.Instance.sceneCam.enabled = true;
-		Game_Controller.Instance.GetComponent<AudioListener>().enabled = true;
-		
-		if (isLocalPlayer) {
-			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
-			{
-				SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
-			}
-		}
-	}
-
-	[MRPC]
-	public void RPC_Die(){
+	[ClientRpc]
+	public void Rpc_Die(){
 		Vector3 position = this.transform.position;
 		Quaternion rotation = this.transform.rotation;
 		inVehicle = false;
@@ -1619,8 +1601,22 @@ public class Player_Controller : NetworkBehaviour {
 		if(!isLocalPlayer){
 			_ragdollGO.GetComponentInChildren<Camera>().gameObject.SetActive(false);
 		}
-
-
+		else{
+			Invoke("CoDie", 4f);
+		}
+	}
+	public void CoDie(){
+		
+		Game_Controller.Instance.sceneCam.enabled = true;
+		//TODO: Figure out what the fuck this does
+		//Game_Controller.Instance.GetComponent<AudioListener>().enabled = true;
+		
+		if (isLocalPlayer) {
+			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
+			{
+				SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
+			}
+		}
 	}
 
 

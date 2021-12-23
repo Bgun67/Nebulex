@@ -141,7 +141,12 @@ public class Game_Controller : NetworkBehaviour {
 		//Add the bots (we're going to ignore this for now)
 		//This part should only be done on the server
 		//TODO:
-		statsArray[0].isBot = true;
+		for(int i = 0; i<32; i++){
+			statsArray[i].isBot = true;
+			//TODO: Properly assign the teams
+			statsArray[i].team = i%2;
+		}
+		
 		//CHECK
 		GetLocalPlayer();
 		
@@ -352,7 +357,8 @@ public class Game_Controller : NetworkBehaviour {
 		for(int i = 1; i<statsArray.Length; i++) {
 			int _id = i;
 			int team = (i+1) % 2;
-			statsArray [_id].team = team;
+			//TODO: Maybe set the teams
+			//statsArray [_id].team = team;
 			if (playerObjects.Count >= i) {
 				Player_Controller _player = GetPlayerFromNetID (_id).GetComponent<Player_Controller> ();
 				//Set the colour highlights of the player's "jersey" meshes
@@ -681,10 +687,10 @@ public class Game_Controller : NetworkBehaviour {
 		return null;//GameObject.CreatePrimitive(PrimitiveType.Sphere);
 	}
 
-	[MRPC]
-	public void RPC_ActivatePlayer(int _owner){
-		GetPlayerFromNetID (_owner).gameObject.SetActive (true);
-	}
+	//[MRPC]
+	//public void RPC_ActivatePlayer(int _owner){
+//		GetPlayerFromNetID (_owner).gameObject.SetActive (true);
+	//}
 
 	public void AddAssist(int playerNum, int assistAmount){
 		/*TODO This can be done through a synced hash list

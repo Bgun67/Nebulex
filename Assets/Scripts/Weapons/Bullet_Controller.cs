@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
-public class Bullet_Controller : NetworkBehaviour {
+
+public class Bullet_Controller : MonoBehaviour {
 	[Tooltip("If using particles ensure the damage is for each particle")]
 	public int damagePower;
 	[Tooltip("Auto Destroy time in seconds")]
@@ -20,9 +20,7 @@ Rigidbody rb;
 		if(trail == null)
 			trail = this.GetComponent<TrailRenderer>();
 	}
-	
 
-	// Update is called once per frame
 	 void OnCollisionEnter(Collision other)
 	{
 		BulletHit(other);
@@ -38,26 +36,20 @@ Rigidbody rb;
 			DisableBullet();
 			Destroy(blastScript.gameObject, 5f);
 		}
-		try {
-			try {
-				if(isServer)
-					other.collider.GetComponent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
 
-
-			} catch {
-				try {
-					if(isServer)
-						other.collider.GetComponentInParent<Damage> ().TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
-				} catch {
-					if(isServer)
-						other.transform.root.GetComponent<Damage> ().TakeDamage (damagePower, fromID,other.transform.position+other.relativeVelocity);
-				}
-			}
-		} catch {
-
+		//Damage is only calculated on the server
+		Damage _damageScript;
+		//Step through the gameobject's hierarchy looking for damage scripts
+		_damageScript = other.collider.GetComponent<Damage> ();
+		if(_damageScript == null)
+			_damageScript = other.collider.GetComponentInParent<Damage> ();
+		if(_damageScript == null)
+			_damageScript = other.transform.root.GetComponent<Damage> ();
+		if(_damageScript != null){
+			print("Damage Script found");
+			_damageScript.TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
 		}
-
-
+		
 		DisableBullet();
 		
 
