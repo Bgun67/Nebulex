@@ -7,7 +7,7 @@ using Mirror;
 
 public class Damage : NetworkBehaviour {
 	public int originalHealth;
-	[SyncVar]
+	[SyncVar (hook = "UpdateUIHook")]
 	public int currentHealth;
 	public UnityEvent dieFunction;
 	public bool isVehicle = true;
@@ -93,26 +93,39 @@ public class Damage : NetworkBehaviour {
 
 	public void TakeDamage(int damageAmount, int fromID, Vector3 _hitDirection, bool overrideTeam = false)
 	{
-		//TODO: This should all be done on the server and passed to the clients
-		if (forwarder)
-		{
-			//print("sendingDamage");
+		
+		if(isLocalPlayer && this.tag == "Player"){
+			UI_Manager.GetInstance.UpdateHitDirection(_hitDirection, this.transform);
+			GlobalSound.HurtSound();
+		}
 
+		//Damage should only be done on the server and then synced to the clients
+		if(!isServer){
+			return;
+		}
+		//TODO: Implement a second class for children that doesn't have a networkID
+		/*if (forwarder)
+		{
 			forwardedDamage.TakeDamage((int)(damageAmount * forwardedScale), fromID, _hitDirection, overrideTeam);
 			return;
-		}
-		if (!isLocalPlayer || isDead)
+		}*/
+		//Dead men take no bullets
+		if (isDead)
 		{
 			return;
 		}
 
-		if(fromID > 64){
-			fromID = Game_Controller.GetBotFromPlayerID(fromID).botID - 64;
-		}
+		//I'm removing the offset used for bots, from now on they will just used a regular
+		//1-32ish playerNumber;
+		//if(fromID > 64){
+		//	fromID = Game_Controller.GetBotFromPlayerID(fromID).botID - 64;
+		//}
 
 		int thisID = 0;
 		if(this.GetComponent<Com_Controller>() != null){
-			thisID = this.GetComponent<Com_Controller>().botID - 64;
+			//Again, the future offset will not be necessary
+			//TODO: Switch all the bots to the regular playerIDs + spawn the bots dynamically
+			thisID = this.GetComponent<Com_Controller>().botID;// - 64;
 		}
 		else if(this.GetComponent<Player_Controller>()!= null){
 			thisID = this.GetComponent<Player_Controller>().playerID;
@@ -122,16 +135,12 @@ public class Damage : NetworkBehaviour {
 			
 			
 			//From ID of 65 is a bot
+			//Ignore friendly fire
 			if ((gameController.statsArray[fromID].team == gameController.statsArray[thisID].team) && !overrideTeam)
 			{
-				
 				return;
 			}
-			if(this.gameObject == gameController.localPlayer){
-				
-				UI_Manager.GetInstance.UpdateHitDirection(_hitDirection, this.transform);
-				GlobalSound.HurtSound();
-			}
+			
 			
 		}
 		if(damageAmount >= damageThreshold){
@@ -201,7 +210,8 @@ public class Damage : NetworkBehaviour {
 				Destroy(this.gameObject);
 			}
 			int j = 0;
-			foreach (Damage damageScript in this.GetComponentsInChildren<Damage>())
+			//TODO: Implement child gameobject damage
+			/*foreach (Damage damageScript in this.GetComponentsInChildren<Damage>())
 			{
 				if (j > 9)
 				{
@@ -209,7 +219,7 @@ public class Damage : NetworkBehaviour {
 				}
 				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID, _hitDirection);
 				j++;
-			}
+			}*/
 
 
 
@@ -290,7 +300,7 @@ public class Damage : NetworkBehaviour {
 			return;
 		}
 
-		if (!isLocalPlayer||collision.transform.root.tag == "Bullet") {
+		if (!isServer||collision.transform.root.tag == "Bullet") {
 			return;
 		}
 
@@ -312,6 +322,9 @@ public class Damage : NetworkBehaviour {
 
 			
 		}
+	}
+	public void UpdateUIHook(int oldValue, int newValue){
+		UpdateUI();
 	}
 	public void UpdateUI(){
 		if (healthShown == true) {
