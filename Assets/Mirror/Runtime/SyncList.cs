@@ -350,12 +350,13 @@ namespace Mirror
             get => objects[i];
             set
             {
-                if (!comparer.Equals(objects[i], value))
-                {
+                //Michael removed this to make sure the list syncs properly
+                //if (!comparer.Equals(objects[i], value))
+                //{
                     T oldItem = objects[i];
                     objects[i] = value;
                     AddOperation(Operation.OP_SET, i, oldItem, value);
-                }
+                //}
             }
         }
 
