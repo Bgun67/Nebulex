@@ -99,7 +99,7 @@ public class Com_Controller : NetworkBehaviour {
 
 			//Add the bots
 			//Check if the position is already occupied by a player
-			if(gameController.statsArray[this.botID - 64].isFilled == false){
+			if(gameController.playerStats[this.botID - 64].isFilled == false){
 				/*TODO: Move this to the gamecontroller start function
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
 					gameController.netView.RPC ("RPC_AddPlayerStat", MRPCMode.AllBuffered, new object[] {
@@ -126,7 +126,7 @@ public class Com_Controller : NetworkBehaviour {
 			nameTextMesh.text = "Bot " + (this.botID - 64).ToString();
 
 			List<Spawn_Point> _allSpawns = new List<Spawn_Point>(FindObjectsOfType<Spawn_Point>());
-			_allSpawns.RemoveAll(x => x.team != gameController.statsArray[botID - 64].team);
+			_allSpawns.RemoveAll(x => x.team != gameController.playerStats[botID - 64].team);
 
 			Spawn_Point[] _spawnPoints = _allSpawns.ToArray();
 			patrolIndex = Random.Range(0, (botID - 64) % patrolPositions.Length);
@@ -175,7 +175,7 @@ public class Com_Controller : NetworkBehaviour {
 
 		int localTeam = gameController.GetLocalTeam();
 		if(Game_Controller.Instance.localPlayer != null){
-			if (gameController.statsArray[botID - 64].team == localTeam) {
+			if (gameController.playerStats[botID - 64].team == localTeam) {
 				nameTextMesh.color = new Color (0f, 50f, 255f);
 				nameTextMesh.gameObject.SetActive (true);
 
@@ -327,7 +327,7 @@ public class Com_Controller : NetworkBehaviour {
 			for (int i = 0; i < players.Length; i++)
 			{
 				//TODO players[i].netObj.owner
-				if(gameController.statsArray[0].team == gameController.statsArray[botID - 64].team){
+				if(gameController.playerStats[0].team == gameController.playerStats[botID - 64].team){
 					continue;
 				}
 				if (Vector3.Dot((players[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
@@ -363,7 +363,7 @@ public class Com_Controller : NetworkBehaviour {
 
 			for (int i = 0; i < bots.Length; i++)
 			{
-				if(gameController.statsArray[bots[i].botID - 64].team == gameController.statsArray[botID - 64].team || bots[i] == this){
+				if(gameController.playerStats[bots[i].botID - 64].team == gameController.playerStats[botID - 64].team || bots[i] == this){
 					continue;
 				}
 				if (Vector3.Dot((bots[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
@@ -437,7 +437,7 @@ public class Com_Controller : NetworkBehaviour {
 		foreach (Player_Controller player in _players)
 		{
 			//TODO player.netObj.owner
-			if(gameController.statsArray[0].team == gameController.statsArray[botID - 64].team){
+			if(gameController.playerStats[0].team == gameController.playerStats[botID - 64].team){
 				continue;
 			}
 			float[] samples = new float[2];
@@ -458,7 +458,7 @@ public class Com_Controller : NetworkBehaviour {
 		}
 		foreach (Com_Controller player in _bots)
 		{
-			if(gameController.statsArray[player.botID - 64].team == gameController.statsArray[botID - 64].team){
+			if(gameController.playerStats[player.botID - 64].team == gameController.playerStats[botID - 64].team){
 				continue;
 			}
 			float[] samples = new float[2];

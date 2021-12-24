@@ -9,7 +9,7 @@ public class Game_Controller : NetworkBehaviour {
 
 	[System.Serializable]
 	public class PlayerStats{
-		public string name = "THis is not really a name";
+		public string name = "Default Name";
 		public int kills = -1;
 		public int deaths = -1;
 		public int assists = 0;
@@ -43,9 +43,9 @@ public class Game_Controller : NetworkBehaviour {
 	[HideInInspector]
 	public List<Com_Controller> bots = new List<Com_Controller>();
 
-
-
-	public PlayerStats[] statsArray = new PlayerStats[32];
+	[SerializeField]
+	public readonly SyncList<PlayerStats> playerStats = new SyncList<PlayerStats>();
+	public PlayerStats[] debugPlayerStats = new PlayerStats[32];
 
 
 	public List<Transform> playerSpawnTransforms = new List<Transform> ();
@@ -136,16 +136,27 @@ public class Game_Controller : NetworkBehaviour {
 		UI_homeColour = UI_Manager.GetInstance.UI_HomeColour;
 		UI_awayColour = UI_Manager.GetInstance.UI_AwayColour;
 
+		playerStats.Callback += OnPlayerSync;
 
 		//netView = this.GetComponent<MetworkView>();
 		//Add the bots (we're going to ignore this for now)
-		//This part should only be done on the server
-		//TODO:
+		//This part should only be done on the server, but since is server only functions
+		//on spawned objects, I don't really know what to do
+		//TODO
+		
 		for(int i = 0; i<32; i++){
-			statsArray[i].isBot = true;
+			PlayerStats _player = new PlayerStats();
+			_player.name = "Player " + i.ToString();
+			_player.isBot = true;
 			//TODO: Properly assign the teams
-			statsArray[i].team = i%2;
+			_player.team = i%2;
+			playerStats.Add(_player);
 		}
+		print(playerStats.Count);
+		
+		print(playerStats.Count);
+		//Force a copy of the debug array
+		OnPlayerSync(SyncList<PlayerStats>.Operation.OP_ADD, 0, new PlayerStats(), new PlayerStats());
 		
 		//CHECK
 		GetLocalPlayer();
@@ -262,29 +273,29 @@ public class Game_Controller : NetworkBehaviour {
 			return;
 		}
 		//TODO
-		for (int i = 0; i < statsArray.Length; i++)
+		for (int i = 0; i < playerStats.Count; i++)
 		{
-			PlayerStats stat = statsArray[i];
+			PlayerStats stat = playerStats[i];
 			if (stat.name == "")
 			{
 				continue;
 			}
 			//TODO Turn this into a hash table or something
-			//netView.RPC("RPC_UpdateStatsArrayEntry", MRPCMode.OthersBuffered, new object[] { i, stat.name, stat.kills, stat.deaths, stat.assists, stat.score });
+			//netView.RPC("RPC_UpdateplayerStatsEntry", MRPCMode.OthersBuffered, new object[] { i, stat.name, stat.kills, stat.deaths, stat.assists, stat.score });
 		}
 	}
 	
 	[MRPC]
-	public void RPC_UpdateStatsArrayEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
+	public void RPC_UpdateplayerStatsEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
 	{
-		PlayerStats _stat = statsArray[_index];
+		PlayerStats _stat = playerStats[_index];
 		_stat.name = _name;
 		_stat.kills = _kills;
 		_stat.deaths = _deaths;
 		_stat.assists = _assists;
 		_stat.score = _score;
 
-		statsArray[_index] = _stat;
+		playerStats[_index] = _stat;
 	}
 
 	public int GetLocalPlayer(){
@@ -315,11 +326,12 @@ public class Game_Controller : NetworkBehaviour {
 
 	public int AssignPlayerID(){
 		int _playerID = -1;
-		for(int i = 0; i<statsArray.Length; i++){
-			print(statsArray[i].isBot);
-			if(statsArray[i].isBot == true){
-				statsArray[i].isBot = false;
+		for(int i = 0; i<playerStats.Count; i++){
+			print(playerStats[i].isBot);
+			if(playerStats[i].isBot == true){
+				playerStats[i].isBot = false;
 				_playerID = i;
+				//TODO: Change this to a new playerstat so it can be updated automatically
 				break;
 			}
 		}
@@ -330,7 +342,7 @@ public class Game_Controller : NetworkBehaviour {
 
 	[MRPC]
 	public void RPC_AddPlayerStat(string name, int _owner, bool _isBot){
-		PlayerStats stat = statsArray[_owner];
+		PlayerStats stat = playerStats[_owner];
 		stat.name = name;
 		stat.kills = 0;
 		stat.deaths = 0;
@@ -346,7 +358,7 @@ public class Game_Controller : NetworkBehaviour {
 		
 
 		//zero is left empty to comply with one indexed
-		statsArray[_owner] =  stat;
+		playerStats[_owner] =  stat;
 		RPC_SetTeam ();
 
 	}
@@ -354,11 +366,11 @@ public class Game_Controller : NetworkBehaviour {
 
 	public void RPC_SetTeam(){
 		
-		for(int i = 1; i<statsArray.Length; i++) {
+		for(int i = 1; i<playerStats.Count; i++) {
 			int _id = i;
 			int team = (i+1) % 2;
 			//TODO: Maybe set the teams
-			//statsArray [_id].team = team;
+			//playerStats [_id].team = team;
 			if (playerObjects.Count >= i) {
 				Player_Controller _player = GetPlayerFromNetID (_id).GetComponent<Player_Controller> ();
 				//Set the colour highlights of the player's "jersey" meshes
@@ -554,7 +566,7 @@ public class Game_Controller : NetworkBehaviour {
 		List<PlayerStats> winners = new List<PlayerStats> ();
 		List<PlayerStats> losers = new List<PlayerStats> ();
 
-		foreach (PlayerStats player in statsArray) {
+		foreach (PlayerStats player in playerStats) {
 			if (player.name == "") {
 				continue;
 			}
@@ -601,7 +613,7 @@ public class Game_Controller : NetworkBehaviour {
 		endOfGameUI.SetActive (true);
 		gameplayUI.SetActive (false);
 
-		if (statsArray[localPlayer.playerID].team == winningTeam)
+		if (playerStats[localPlayer.playerID].team == winningTeam)
 		{
 			winningTeamText.text = "Your Team Wins!";
 		}
@@ -640,9 +652,9 @@ public class Game_Controller : NetworkBehaviour {
 		int previousScore = int.Parse( data [1]);
 		int previousKills = int.Parse( data [2]);
 		int previousDeaths = int.Parse( data [3]);
-		data [1] =( previousScore+statsArray [localPlayer.playerID].score).ToString();
-		data [2] =( previousKills+statsArray [localPlayer.playerID].kills).ToString();
-		data [3] =( previousDeaths+statsArray [localPlayer.playerID].deaths).ToString();
+		data [1] =( previousScore+playerStats [localPlayer.playerID].score).ToString();
+		data [2] =( previousKills+playerStats [localPlayer.playerID].kills).ToString();
+		data [3] =( previousDeaths+playerStats [localPlayer.playerID].deaths).ToString();
 
 		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Player Data.txt", Util.ThiccWatermelon(data));
 		
@@ -701,56 +713,49 @@ public class Game_Controller : NetworkBehaviour {
 		} else {
 			RPC_AddAssist (playerNum, assistAmount);
 		}*/
+		//CHECK Player stats MUST be updated this way, otherwise the 
+		//Network will not notice that the list has changed
+		PlayerStats playerStat = playerStats [playerNum];
+		playerStat.score += assistAmount;
+		playerStat.assists++;
+		playerStats [playerNum] = playerStat;
 
 	}
 	[MRPC]
 	public void RPC_AddAssist(int playerNum, int assistAmount){
-		PlayerStats playerStat = statsArray [playerNum];
-		playerStat.score += assistAmount;
-		playerStat.assists++;
+		
 	}
 	public void AddKill(int playerNum){
-		/*TODO convert to synced hashlist
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_AddKill", MRPCMode.AllBuffered, new object[] {
-				playerNum
-			});
-		} else {
-			RPC_AddKill (playerNum);
-		}*/
+		PlayerStats playerStat = playerStats [playerNum];
+		playerStat.kills++;
+		playerStat.score += 100;
+		playerStats [playerNum] = playerStat;
+
+		RPC_AddKill(playerNum);
 
 	}
-	[MRPC]
+	[ClientRpc]
 	public void RPC_AddKill(int playerNum){
-		statsArray [playerNum].kills++;
-		statsArray [playerNum].score += 100;
-
 		if(playerNum == localPlayer.playerID){
 			WindowsVoice.Speak("Target Down");
-			
 		}
 	}
 	public void AddDeath(int playerNum){
-		/*TODO Synced list
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_AddDeath", MRPCMode.AllBuffered, new object[] {
-				playerNum
-			});
-		} else {
-			RPC_AddDeath (playerNum);
-		}*/
-
-	}
-	[MRPC]
-	public void RPC_AddDeath(int playerNum){
-		/*TODO synced list
-		statsArray [playerNum].deaths++;
-		if (statsArray [playerNum].team == 1) {
+		PlayerStats playerStat = playerStats [playerNum];
+		playerStat.deaths++;
+		playerStats [playerNum] = playerStat;
+		if (playerStats [playerNum].team == 1) {
 			scoreA++;
 		} else {
 			scoreB++;
-		}*/
-		
+		}
+
+	}
+
+	//TODO: Remove
+	[MRPC]
+	public void RPC_AddDeath(int playerNum){
+
 	}
 
 	public void RestartGame()
@@ -809,9 +814,9 @@ public class Game_Controller : NetworkBehaviour {
 		//At the start of the match there may be no local player, so we can return the team of the 
 		//First bot instead
 		if(_localPlayerID == -1)
-			return statsArray[0].team;
+			return playerStats[0].team;
 		else
-			return statsArray[localPlayer.playerID].team;
+			return playerStats[localPlayer.playerID].team;
 	}
 	void Update()
 	{
@@ -888,14 +893,19 @@ public class Game_Controller : NetworkBehaviour {
 		}
 	}
 	public static int GetTeam(int _viewID){
-		return Game_Controller.instance.statsArray[_viewID].team;
+		return Game_Controller.instance.playerStats[_viewID].team;
 	}
 	public static int GetTeam(Player_Controller _player){
 		//TODO _player.netObj.netID
-		return Game_Controller.instance.statsArray[_player.playerID].team;
+		return Game_Controller.instance.playerStats[_player.playerID].team;
 	}
+
+	public void OnPlayerSync(SyncList<PlayerStats>.Operation op, int index, PlayerStats oldItem, PlayerStats newItem){
+		playerStats.CopyTo(debugPlayerStats, 0);
+	}
+
 	//public static int GetTeam(GameObject _player){
-	//	return Game_Controller.instance.statsArray[_player.GetComponent<Metwork_Object>().netID].team;
+	//	return Game_Controller.instance.playerStats[_player.GetComponent<Metwork_Object>().netID].team;
 	//}
 
 

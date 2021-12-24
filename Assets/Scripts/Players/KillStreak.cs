@@ -41,9 +41,9 @@ public class KillStreak : MonoBehaviour
 	}
 	void CheckStreak()
 	{
-		deltaKills = gameController.statsArray[localNum].kills - kills;
+		deltaKills = gameController.playerStats[localNum].kills - kills;
 		//player has been killed
-		if (gameController.statsArray[localNum].deaths > deaths)
+		if (gameController.playerStats[localNum].deaths > deaths)
 		{
 			ResetStreak();
 			StartCoroutine(FadeSourceVolume(0f));
@@ -56,8 +56,8 @@ public class KillStreak : MonoBehaviour
 	void ResetStreak()
 	{
 		deltaKills = 0;
-		kills = gameController.statsArray[localNum].kills;
-		deaths = gameController.statsArray[localNum].deaths;
+		kills = gameController.playerStats[localNum].kills;
+		deaths = gameController.playerStats[localNum].deaths;
 		print("Resetting Streak");
 
 	}

@@ -137,7 +137,7 @@ public class Damage : NetworkBehaviour {
 			
 			//From ID of 65 is a bot
 			//Ignore friendly fire
-			if ((gameController.statsArray[fromID].team == gameController.statsArray[thisID].team) && !overrideTeam)
+			if ((gameController.playerStats[fromID].team == gameController.playerStats[thisID].team) && !overrideTeam)
 			{
 				return;
 			}
@@ -163,8 +163,8 @@ public class Damage : NetworkBehaviour {
 			
 			if (this.tag == "Player")
 			{	
-				int thisTeam = gameController.statsArray[thisID].team;
-				int fromTeam = gameController.statsArray[fromID].team;
+				int thisTeam = gameController.playerStats[thisID].team;
+				int fromTeam = gameController.playerStats[fromID].team;
 				if (fromTeam != thisTeam)
 				{
 					gameController.AddKill(fromID);
@@ -172,7 +172,7 @@ public class Damage : NetworkBehaviour {
 				gameController.AddDeath(thisID);
 				
 
-				Chat.LogToChat((fromTeam == 0 ? "<color=green>": "<color=red>") + gameController.statsArray[fromID].name + "</color> killed "+ (thisTeam == 0 ? "<color=green>": "<color=red>") + gameController.statsArray[thisID].name +"</color>\n");
+				Chat.LogToChat((fromTeam == 0 ? "<color=green>": "<color=red>") + gameController.playerStats[fromID].name + "</color> killed "+ (thisTeam == 0 ? "<color=green>": "<color=red>") + gameController.playerStats[thisID].name +"</color>\n");
 
 			
 				for (int i = 1; i < assistArray.Length; i++)
@@ -236,10 +236,10 @@ public class Damage : NetworkBehaviour {
 				assistArray[fromID] += damageAmount;
 			}
 		}
-		if (healthShown)
-		{
-			UpdateUI();
-		}
+		//if (healthShown)
+		//{
+		//	UpdateUI();
+		//}
 
 	}
 	public void ShowLowHealthEffect(bool _show)
@@ -273,10 +273,10 @@ public class Damage : NetworkBehaviour {
 		if (currentHealth < originalHealth) {
 			if (Time.time >= regenWait) {
 				currentHealth++;
-				if (healthShown)
-				{
-					UpdateUI();
-				}
+				//if (healthShown)
+				//{
+				//	UpdateUI();
+				//}
 			}
 		} else {
 			for (int i = 0; i < assistArray.Length; i++) {
@@ -328,7 +328,7 @@ public class Damage : NetworkBehaviour {
 		UpdateUI();
 	}
 	public void UpdateUI(){
-		if (healthShown == true) {
+		if (isLocalPlayer && healthShown == true) {
 			if (isVehicle)
 			{
 				UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(true);

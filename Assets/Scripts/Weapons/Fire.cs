@@ -65,6 +65,8 @@ public class Fire : MonoBehaviour {
 	public ParticleSystem muzzleFlash;
 	public int playerID;
 	public bool reloading;
+	public delegate void ReloadEvent();
+	public ReloadEvent OnReloadEvent;
 	public GameObject magGO;
 
 	public Stack<GameObject> poolList = new Stack<GameObject> ();
@@ -176,18 +178,7 @@ public class Fire : MonoBehaviour {
 						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + (shotSpawnForward) * bulletVelocity;
 					}
 					bullet.GetComponent<Bullet_Controller> ().damagePower = damagePower;
-					
-					
 
-					/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
-						netView.RPC ("RPC_FireWeapon", MRPCMode.Others, new object[] {
-							bullet.transform.position,
-							bullet.transform.rotation,
-							bullet.GetComponent<Rigidbody> ().velocity,
-							bullet.GetComponent<Bullet_Controller> ().damagePower,
-							playerID
-						});
-					}*/
 					if (shootSound != null) {
 						shootSound.PlayOneShot (sound, 1f);
 					}
@@ -270,10 +261,10 @@ public class Fire : MonoBehaviour {
 			reloading = true;
 			if (magAmmo < magSize) {
 				if (totalAmmo > 0) {
-					if (Metwork.peerType != MetworkPeerType.Disconnected) {
-						transform.root.GetComponent<MetworkView>().RPC ("RPC_Reload", MRPCMode.All, new object[] { });
-					} else {
-						transform.root.SendMessage ("RPC_Reload");
+					
+					//Invoke a delegate when the gun reloads
+					if(OnReloadEvent != null){
+						OnReloadEvent();
 					}
 					yield return new WaitForSeconds (reloadTime);
 
