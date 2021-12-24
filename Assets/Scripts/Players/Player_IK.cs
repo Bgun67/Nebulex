@@ -20,9 +20,13 @@ public class Player_IK : MonoBehaviour
     Quaternion rfTargetRot;
     Vector3 lfTargetPos;
     Quaternion lfTargetRot;
-    
 
-    private Animator anim;
+	Transform grabTarget;
+	Vector3 grabPoint;
+	Quaternion grabNormal;
+
+
+	private Animator anim;
     private Player_Controller player;
     private bool isBot = false;
 
@@ -40,6 +44,17 @@ public class Player_IK : MonoBehaviour
         if(player==null)
             isBot = true;
     }
+	void Update()
+	{
+		if (grabTarget)
+		{
+			if ((grabPoint - player.mainCamObj.transform.position).magnitude > 1f)
+			{
+				grabTarget = null;
+			}
+		}
+		//CheckGrab();
+	}
 
 	public void Scope(bool isScoped)
 	{
@@ -65,6 +80,29 @@ public class Player_IK : MonoBehaviour
 		}
 		return -player.transform.forward * recoilMagnitude * recoilCurve.Evaluate(Time.time - recoilStartTime);
 	}
+
+	/*void CheckGrab()
+	{
+		if (player)
+		{
+			if (player.rb.useGravity)
+			{
+				return;
+			}
+			if (grabTarget == null)
+			{
+				RaycastHit hit;
+				Physics.Raycast(player.mainCamObj.transform.position + player.transform.right * -0.1f, player.mainCamObj.transform.forward * 0.1f, out hit, 1f);
+				if (hit.transform != null)
+				{
+					grabTarget = hit.transform;
+					grabPoint = hit.point;
+					grabNormal = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+				}
+			}
+
+		}
+	}*/
 
 	void OnAnimatorIK(){
         //Pull the latest raycast data from the player
@@ -97,7 +135,14 @@ public class Player_IK : MonoBehaviour
 			anim.SetIKPosition(AvatarIKGoal.RightHand,rhPosition);
 			anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation);
         }
-        if(lhTarget != null) {
+		if (grabTarget != null)
+		{
+			anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);
+            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand,lhBlend);  
+			anim.SetIKPosition(AvatarIKGoal.LeftHand,grabPoint);
+            anim.SetIKRotation(AvatarIKGoal.LeftHand,lhTarget.rotation);
+		}
+		else if(lhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);
             anim.SetIKRotationWeight(AvatarIKGoal.LeftHand,lhBlend);  
             anim.SetIKPosition(AvatarIKGoal.LeftHand,lhTarget.position);
