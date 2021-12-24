@@ -14,6 +14,7 @@ public class Player_Controller : NetworkBehaviour {
 	float down;
 	public Rigidbody rb;
 	public Animator anim;
+	Player_IK player_IK;
 
 	public LayerMask magBootsLayer;
 	//Access to the left and right foot data
@@ -37,6 +38,7 @@ public class Player_Controller : NetworkBehaviour {
 	//to be used for moving in space
 	float moveSpeed = 5f;
 	float lookFactor = 1f;
+	float scopeMoveFactor = 1f;
 	float moveFactor = 1f;
 	public float currentStepHeight;
 	public bool enteringGravity = false;
@@ -193,6 +195,7 @@ public class Player_Controller : NetworkBehaviour {
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> ();
+		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
 		originalCamPosition = mainCamObj.transform.localPosition;
@@ -391,9 +394,9 @@ public class Player_Controller : NetworkBehaviour {
 		} else {
 			anim.SetBool ("Head Turn Enabled", false);
 		}
-		z = Input.GetAxis ("Move Y") * moveFactor;
-		v = Input.GetAxis ("Move Z")*moveFactor;
-		h = Input.GetAxis ("Move X")*moveFactor;
+		z = Input.GetAxis ("Move Y") * moveFactor*scopeMoveFactor;
+		v = Input.GetAxis ("Move Z")*moveFactor*scopeMoveFactor;
+		h = Input.GetAxis ("Move X")*moveFactor*scopeMoveFactor;
 
 		muzzleClimb -= Time.deltaTime;
 		if(muzzleClimb < 0){
@@ -1002,26 +1005,13 @@ public class Player_Controller : NetworkBehaviour {
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
-			if(mainCam.fieldOfView < 11 && anim.GetCurrentAnimatorStateInfo(3).IsName("Aim"+fireScript.aimAnimNumber.ToString())){
-				fireScript.transform.rotation = Quaternion.RotateTowards(fireScript.scopePosition.rotation, mainCam.transform.rotation, 0.7f);
-				mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
-				//fireScript.transform.rotation *= Quaternion.FromToRotation(fireScript.scopePosition.forward, mainCam.transform.forward);
-				// * Quaternion.Inverse((fireScript.scopePosition.rotation * Quaternion.Inverse(fireScript.transform.rotation)));
-				//mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation, fireScript.scopePosition.rotation, 0.7f);
-			}
-			anim.SetBool ("Scope", true);
-			//StartCoroutine (Zoom (true));
+			mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
+			
+			player_IK.Scope(true);
 			Zoom(true);
 			lookFactor = 0.3f;
-			if (walkState!=WalkState.Crouching)
-			{
-				moveFactor = 0.75f;
-			}
-			else
-			{
-				moveFactor = 0.5f;
-
-			}
+			scopeMoveFactor = 0.75f;
+			
 			recoilString = "Recoil" + fireScript.recoilNumber;
 			if (Time.frameCount % 3f == 0) {
 				//TODO
@@ -1034,18 +1024,11 @@ public class Player_Controller : NetworkBehaviour {
 			mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition,originalCamPosition,0.2f*Time.deltaTime/0.034f);
 			mainCam.transform.localRotation = Quaternion.Lerp(mainCam.transform.localRotation, originalCamRotation, 0.1f);
 
-			anim.SetBool ("Scope", false);
 			Zoom(false);
-			if (walkState!=WalkState.Crouching)
-			{
-				moveFactor = 1f;
-			}
-			else
-			{
-				moveFactor = 0.75f;
-
-			}
+			player_IK.Scope(false);
+			scopeMoveFactor = 1f;
 			lookFactor = 1f;
+
 			recoilString = "Recoil" + fireScript.recoilNumber+"*";
 			if (Time.frameCount+1 % 3f == 0) {
 				/*
@@ -1069,7 +1052,7 @@ public class Player_Controller : NetworkBehaviour {
 
 
 		if (zoomIn == true) {
-			mainCam.fieldOfView = Mathf.Lerp(i,10f,0.5f);
+			mainCam.fieldOfView = Mathf.Lerp(i,20f,0.5f);
 		}else
 		{
 			mainCam.fieldOfView = Mathf.Lerp(i, 90f, 0.5f);
@@ -1312,19 +1295,18 @@ public class Player_Controller : NetworkBehaviour {
 			}
 
 
-			float _timeFactor = 5f * Time.deltaTime * 30f;
+			float _timeFactor = 5f * Time.deltaTime* 30f;
 			rotation = new Vector3(
-				Mathf.Lerp(previousRot.x, -v2 * 2f*_timeFactor , 0.1f),
-				Mathf.Lerp(previousRot.y, h2 * 2f*_timeFactor , 0.1f),
-				Mathf.Lerp(previousRot.z, -h * 1.5f * rollFactor*_timeFactor , 0.05f)
+				Mathf.Lerp(previousRot.x, -v2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
+				Mathf.Lerp(previousRot.y, h2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
+				Mathf.Lerp(previousRot.z, -h * 1.5f * rollFactor*_timeFactor , 0.05f*Time.deltaTime*20f)
 			);
 			previousRot = rotation;
 			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
 			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.up, rotation.y);
 			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.forward, rotation.z);
 
-			thrusterSoundFactor = (velocity - rb.velocity).magnitude>0.45f?1f:0f;
-			//thrusterSoundFactor = 0.5f * Mathf.Ceil(Mathf.Abs(h) + Mathf.Abs(z)) + 0.3f * Mathf.Ceil(Mathf.Abs(v));
+			thrusterSoundFactor = (velocity - rb.velocity).magnitude/Time.deltaTime>10f?1f:0f;
 		}
 
 		rb.velocity = velocity;
@@ -1338,8 +1320,8 @@ public class Player_Controller : NetworkBehaviour {
 		
 	}
 	public void AnimateMovement(){
-		anim.SetFloat ("H Movement", h*moveFactor);
-		anim.SetFloat ("V Movement", v*moveFactor);
+		anim.SetFloat ("H Movement", h*moveFactor*scopeMoveFactor);
+		anim.SetFloat ("V Movement", v*moveFactor*scopeMoveFactor);
 		anim.SetInteger ("Walk State", (int)walkState);
 		
 		float forwardSpeed = v+Mathf.Abs(h2)/2f;//Mathf.Clamp(transform.InverseTransformVector (rb.velocity).z, -5f, 5f);
@@ -1347,7 +1329,7 @@ public class Player_Controller : NetworkBehaviour {
 		if (Time.frameCount % 4 == 0) {
 			/*TODO
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_AnimateMovement", MRPCMode.Others, new object[]{ (int)walkState, h*moveFactor,v*moveFactor, thrusterSoundFactor});
+				netView.RPC ("RPC_AnimateMovement", MRPCMode.Others, new object[]{ (int)walkState, h*moveFactor*scopeMoveFactor,v*moveFactor*scopeMoveFactor, thrusterSoundFactor});
 			}*/ 
 		}
 	}
@@ -1529,8 +1511,10 @@ public class Player_Controller : NetworkBehaviour {
 			if(muzzleClimb < 0.6f){
 				muzzleClimb += 0.05f;
 			}
-			fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+			bool fired = fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 			Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+
+			if (fired) { player_IK.Recoil(fireScript.recoilAmount); };
 		}
 		UpdateUI ();
 	}
@@ -1544,10 +1528,6 @@ public class Player_Controller : NetworkBehaviour {
 		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
 	}
 
-	public void Recoil(){
-		anim.Play (recoilString, 2, 1-Random.Range(recoilAmount*0.7f,recoilAmount));
-		//anim.SetFloat("Recoil", 1 - Random.Range(recoilAmount * 0.7f, recoilAmount));
-	}
 	#endregion
 	#region Region2
 	public void Die(){
@@ -1759,8 +1739,10 @@ public class Player_Controller : NetworkBehaviour {
 		this.GetComponent<Player_IK>().rhOffset = fireScript.rhOffset;
 		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;
 		this.GetComponent<Player_IK>().lhTarget = fireScript.lhTarget;
-
-
+		if (fireScript.lhHint)
+		{
+			this.GetComponent<Player_IK>().lhHint = fireScript.lhHint;
+		}
 	}
 	public int GetTeam()
 	{
