@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: c5e3b86bf2b1cbc4ca31b5e0fe6cc8b4
 ModelImporter:
-  serializedVersion: 20101
+  serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -5216564759553158716
@@ -34,7 +34,10 @@ ModelImporter:
     optimizeGameObjects: 0
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: 
+    rigImportWarnings: "Avatar Rig Configuration mis-match. Inbetween bone rotation
+      in configuration does not match rotation in animation file:\n\t'upperleg02.L'
+      : rotation error = 18.580612 deg\n\t'upperleg02.R' : rotation error = 25.941795
+      deg\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Hannah_Grives_Fatigues|Float' has import animation
       warnings that might lower retargeting quality:\nNote: Activate translation
@@ -93,14 +96,14 @@ ModelImporter:
       takeName: Hannah_Grives_Fatigues|Float
       internalID: 0
       firstFrame: 0
-      lastFrame: 200
+      lastFrame: 80
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1553,6 +1556,7 @@ ModelImporter:
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

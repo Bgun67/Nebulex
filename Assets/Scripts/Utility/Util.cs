@@ -79,7 +79,7 @@ public class Util {
 		if (einput.Length < 1) {
 			outputString = Profile.RestoreDataFile ();
 		}
-		for(int j = 0; j<einput.Length; j++){
+		/*for(int j = 0; j<einput.Length; j++){
 			string line = einput [j];
 			if (line == null||line.Length < 1) {
 				continue;
@@ -103,14 +103,14 @@ public class Util {
 
 			outputString [j] = final;
 
-		}
+		}*/
 		
 		return outputString;
 	}
 	public static string[] LushWatermelon(string[]dinput){
 		string[] outputString = new string[dinput.Length];
 
-		for (int j = 0; j < dinput.Length; j++) {
+		/*for (int j = 0; j < dinput.Length; j++) {
 
 			string line = dinput [j];
 			if (line == null||line.Length < 1) {
@@ -141,7 +141,7 @@ public class Util {
 			outputString [j] = final;
 
 
-		} 
+		} */
 		return outputString;
 	}
 

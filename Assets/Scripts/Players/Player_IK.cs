@@ -7,10 +7,16 @@ public class Player_IK : MonoBehaviour
     public Transform rhTarget;
     [HideInInspector]
     public Vector3 rhOffset = Vector3.zero;
-    public Transform lhTarget;
-    public float footOffset = 0.1f;
+	public Vector3 rhPosition = Vector3.zero;
 
-    Vector3 rfTargetPos;
+	public Transform lhTarget;
+	public Transform lhHint;
+	public float scopeOffset = 0.2f;
+	float scopedFactor;
+
+	public float footOffset = 0.1f;
+
+	Vector3 rfTargetPos;
     Quaternion rfTargetRot;
     Vector3 lfTargetPos;
     Quaternion lfTargetRot;
@@ -20,8 +26,14 @@ public class Player_IK : MonoBehaviour
     private Player_Controller player;
     private bool isBot = false;
 
-    // Start is called before the first frame update
-    void Start()
+	[Header("Recoil")]
+	float recoilStartTime;
+	float recoilMagnitude;
+	[SerializeField]
+	AnimationCurve recoilCurve;
+
+	// Start is called before the first frame update
+	void Start()
     {
         anim = this.GetComponent<Animator>();   
         player = this.GetComponent<Player_Controller>();
@@ -29,13 +41,32 @@ public class Player_IK : MonoBehaviour
             isBot = true;
     }
 
-    void Update(){
-        
+	public void Scope(bool isScoped)
+	{
+		if (isScoped)
+		{
+			scopedFactor = Mathf.Lerp(scopedFactor, scopeOffset, 0.5f);
+		}
+		else
+		{
+			scopedFactor = Mathf.Lerp(scopedFactor, 0f, 0.5f);
+		}
+	}
+	public void Recoil(float magnitude)
+	{
+		recoilMagnitude = magnitude;
+		recoilStartTime = Time.time;
+	}
+	Vector3 GetRecoil()
+	{
+		if (Time.time - recoilStartTime > 1)
+		{
+			return Vector3.zero;
+		}
+		return -player.transform.forward * recoilMagnitude * recoilCurve.Evaluate(Time.time - recoilStartTime);
+	}
 
-
-    }
-
-    void OnAnimatorIK(){
+	void OnAnimatorIK(){
         //Pull the latest raycast data from the player
         if(!isBot && player.rfHit.distance <= 1f){
             rfTargetPos = player.rfHit.point + 0f*transform.up * footOffset;
@@ -55,18 +86,28 @@ public class Player_IK : MonoBehaviour
         if(rhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
-            if(player != null)  
-                anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position + rhOffset.z* player.finger.transform.forward);
-            else
-                anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position);
-            anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation);
+            if(player != null){
+				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
+				rhPosition = Vector3.Lerp(rhPosition, targetPosition, 0.5f);
+			}
+			else
+			{
+				rhPosition =  rhTarget.position;
+			}
+			anim.SetIKPosition(AvatarIKGoal.RightHand,rhPosition);
+			anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation);
         }
         if(lhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);
             anim.SetIKRotationWeight(AvatarIKGoal.LeftHand,lhBlend);  
             anim.SetIKPosition(AvatarIKGoal.LeftHand,lhTarget.position);
             anim.SetIKRotation(AvatarIKGoal.LeftHand,lhTarget.rotation);
-        }
+			if (lhHint)
+			{
+				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,lhBlend);  
+				anim.SetIKHintPosition(AvatarIKHint.LeftElbow, lhHint.position);
+			}
+		}
         if(!isBot && player.rfHit.distance <= 1f){
             //Right foot
             //anim.SetIKPositionWeight(AvatarIKGoal.RightFoot,rfBlend);
@@ -93,5 +134,6 @@ public class Player_IK : MonoBehaviour
         }
     }
 
-    
+
+
 }

@@ -19,6 +19,7 @@ public class Fire : MonoBehaviour {
 	[Tooltip("An offset to be applied to the position of the right hand to accomodate longer/shorter guns")]
 	public Vector3 rhOffset;
 	public Transform lhTarget;
+	public Transform lhHint;
 	public float reloadTime;
 	[Tooltip("Rounds Per Minute")]
 	public float fireRate;
@@ -138,19 +139,19 @@ public class Fire : MonoBehaviour {
 	}
 	//I've ignored sending the inherited velocity, I think the server will be up to date enought
 	//on it so the difference will be small.
-	public void FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
+	public bool FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
 		
 		if (!reloading) {
 			
 			if (fireType == FireTypes.SemiAuto) {
 			
 				if (fired > 0) {
-					return;
+					return false;
 				} 
 			} else if (fireType == FireTypes.Burst) {
 
 				if (fired > 2) {
-					return;
+					return false;
 				} 
 			}
 			if (Time.time >= fireDelay) {
@@ -195,19 +196,14 @@ public class Fire : MonoBehaviour {
 						muzzleFlash.Play ();
 					}
 					bullet.GetComponent<Bullet_Controller> ().fromID = playerID;
-					if (isRecoil) {
-						if (recoil.GetPersistentEventCount () > 0) {
-							recoil.Invoke ();
-						} else {
-							transform.root.SendMessage ("Recoil");
-						}
-					}
 
 					magAmmo--;
 					if (magAmmo < 1) {
 					//	StartCoroutine (Reload ());
 
 					}
+					return true;
+
 
 				} 
 				if (magAmmo <= 0) {
@@ -220,6 +216,8 @@ public class Fire : MonoBehaviour {
 				}
 			}
 		}
+		return false;
+
 	}
 	/*No longer needed
 	[Command]
