@@ -152,9 +152,7 @@ public class Game_Controller : NetworkBehaviour {
 			_player.team = i%2;
 			playerStats.Add(_player);
 		}
-		print(playerStats.Count);
-		
-		print(playerStats.Count);
+
 		//Force a copy of the debug array
 		OnPlayerSync(SyncList<PlayerStats>.Operation.OP_ADD, 0, new PlayerStats(), new PlayerStats());
 		
@@ -220,26 +218,7 @@ public class Game_Controller : NetworkBehaviour {
 		{
 			radiationField.SetActive(true);
 			radiationField.GetComponent<Radiation>().carrier = shipOneTransform.gameObject;
-			/*foreach (GameObject position in GameObject.FindGameObjectsWithTag("Spawn Point 1"))
-			{
-				position.tag = "Untagged";
-
-			}
-			GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag("Spawn Point 0");
-			for (int i = 0; i < spawnPositions.Length; i++)
-			{
-				if (i % 2 == 0)
-				{
-					spawnPositions[i].tag = "Spawn Point 1";
-				}
-				else
-				{
-					spawnPositions[i].tag = "Spawn Point 0";
-
-				}
-
-
-			}*/
+			
 			shipTwoTransform.gameObject.SetActive(false);
 			shipTwoTransform = shipOneTransform;
 
@@ -741,9 +720,10 @@ public class Game_Controller : NetworkBehaviour {
 		}
 	}
 	public void AddDeath(int playerNum){
+		//TODO: Send Cmd to allow players to kill themselves
 		PlayerStats playerStat = playerStats [playerNum];
 		playerStat.deaths++;
-		playerStats [playerNum] = playerStat;
+		playerStats[playerNum] = playerStat;
 		if (playerStats [playerNum].team == 1) {
 			scoreA++;
 		} else {
@@ -901,6 +881,8 @@ public class Game_Controller : NetworkBehaviour {
 	}
 
 	public void OnPlayerSync(SyncList<PlayerStats>.Operation op, int index, PlayerStats oldItem, PlayerStats newItem){
+		print("Syncing list operation: ");
+		print("Playerstats: " + playerStats.Count + " debugPlayerStats: " + debugPlayerStats.Length);
 		playerStats.CopyTo(debugPlayerStats, 0);
 	}
 
