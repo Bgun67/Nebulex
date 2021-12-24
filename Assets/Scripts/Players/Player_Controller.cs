@@ -1012,7 +1012,6 @@ public class Player_Controller : NetworkBehaviour {
 			lookFactor = 0.3f;
 			scopeMoveFactor = 0.75f;
 			
-			recoilString = "Recoil" + fireScript.recoilNumber;
 			if (Time.frameCount % 3f == 0) {
 				//TODO
 				/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -1029,7 +1028,6 @@ public class Player_Controller : NetworkBehaviour {
 			scopeMoveFactor = 1f;
 			lookFactor = 1f;
 
-			recoilString = "Recoil" + fireScript.recoilNumber+"*";
 			if (Time.frameCount+1 % 3f == 0) {
 				/*
 				if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -1723,9 +1721,7 @@ public class Player_Controller : NetworkBehaviour {
 		if(isLocalPlayer){
 			UI_Manager._instance.ChangeWeapon (primarySelected);
 		}
-		recoilAmount = fireScript.recoilAmount;
-		recoilString = "Recoil" + fireScript.recoilNumber;
-		
+		recoilAmount = fireScript.recoilAmount;		
 		
 		fireScript.playerID = playerID;
 		anim.SetBool ("Switch Weapons", false);

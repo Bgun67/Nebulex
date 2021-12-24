@@ -46,16 +46,12 @@ public class Fire : MonoBehaviour {
 	[Space()]
 	public WaitForSeconds reloadWait;
 	public Animator weaponAnim;
-	public bool isRecoil = false;
-	public UnityEvent recoil;
 	[Tooltip("0-1 bitches!")]
 	public float recoilAmount = 0.5f;
 	[Tooltip("0-1 How much the weapon drifts")]
 	[Range(0,1)]
 	public float bulk = 0.5f;
 
-	[Tooltip("1 = smg style, 2 = pistol")]
-	public int recoilNumber = 1;
 	public int aimAnimNumber = 1;
 	public Transform scopePosition;
 	int fired = 0;

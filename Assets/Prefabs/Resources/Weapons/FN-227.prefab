@@ -5022,7 +5022,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5239,7 +5238,8 @@ MonoBehaviour:
   shotSpawn: {fileID: 4030526747569418}
   rhTarget: {fileID: 0}
   rhOffset: {x: 0, y: 0, z: 0}
-  lhTarget: {fileID: 0}
+  lhTarget: {fileID: 3774411081919969070}
+  lhHint: {fileID: 0}
   reloadTime: 1
   fireRate: 700
   magSize: 12
@@ -5911,10 +5911,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8071308403507497648}
-  m_LocalRotation: {x: 0.0035745176, y: 0.980527, z: 0.19553237, w: -0.017924966}
-  m_LocalPosition: {x: 0, y: 0.18100004, z: -0.20200007}
+  m_LocalRotation: {x: 0, y: 0.999833, z: -0, w: -0.018281102}
+  m_LocalPosition: {x: 0.005, y: -0.045, z: -0.075}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4551670457645824}
   m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: -22.555, y: 182.09499, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 182.09499, z: 0}
