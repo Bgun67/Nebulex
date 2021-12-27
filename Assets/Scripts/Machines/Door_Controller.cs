@@ -15,15 +15,20 @@ public class Door_Controller : MonoBehaviour {
 	public bool closing;
 	public bool locked;
 	public BoxCollider boxCollider;
+	public int doorNumber = -1;
+	public bool outerDoor = false;
 	// Use this for initialization
 	void Start(){
 		
 	}
 	public IEnumerator Activate () {
-		
-		if (!locked) {
-			
-			if (!open) {
+
+		if (!locked)
+		{
+			yield break;
+		}
+
+		if (!open) {
 				open = true;
 
 				anim.SetBool ("Opening", true);
@@ -36,25 +41,36 @@ public class Door_Controller : MonoBehaviour {
 				opening = true;
 				
 
-			} else {
-				open = false;
-				anim.SetBool ("Opening", false);
-				if (!automatic) {
-					anim.SetFloat ("Door Speed", -doorSpeed);
-				}
-
-				if (doNotMoveCollider) {
-					boxCollider.isTrigger = false;
-				}
-				closing = true;
+			} else
+		{
+			open = false;
+			anim.SetBool("Opening", false);
+			if (!automatic)
+			{
+				anim.SetFloat("Door Speed", -doorSpeed);
 			}
+
+			if (doNotMoveCollider)
+			{
+				boxCollider.isTrigger = false;
+			}
+			if (outerDoor)
+			{
+				locked = true;
+			}
+			closing = true;
 		}
+
 		yield return new WaitForSeconds (2f);
 		closing = false;
 		opening = false;
 
 	}
 
+	public void Unlock()
+	{
+		locked = false;
+	}
 	public void TerminateMovement(){
 		anim.SetFloat ("Door Speed", 0f);
 
