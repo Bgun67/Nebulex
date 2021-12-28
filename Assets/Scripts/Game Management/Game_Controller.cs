@@ -152,11 +152,14 @@ public class Game_Controller : NetworkBehaviour {
 			//TODO: Properly assign the teams
 			_player.team = i%2;
 			playerStats.Add(_player);
-			//TODO: Assign these to spawn points
-			GameObject _bot = Instantiate(botPrefab, Vector3.zero, Quaternion.identity);
-			_bot.GetComponent<Com_Controller>().botID = i;
-			bots.Add(_bot.GetComponent<Com_Controller>());
-			NetworkServer.Spawn(_bot);
+			if (CustomNetworkManager.IsServerMachine())
+			{
+				//TODO: Assign these to spawn points
+				GameObject _bot = Instantiate(botPrefab, Vector3.zero, Quaternion.identity);
+				_bot.GetComponent<Com_Controller>().botID = i;
+				bots.Add(_bot.GetComponent<Com_Controller>());
+				NetworkServer.Spawn(_bot);
+			}
 		}
 
 		//Force a copy of the debug array
