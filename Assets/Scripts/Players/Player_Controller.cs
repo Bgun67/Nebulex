@@ -1505,9 +1505,10 @@ public class Player_Controller : NetworkBehaviour {
 	public virtual void Attack(){
 		if (!grappleActive)
 		{
+			//Spread of the gun
 			fireScript.shotSpawn.transform.forward = this.mainCam.transform.forward 
 													+ muzzleClimb * fireScript.recoilAmount * mainCam.transform.up * 0.3f
-													+ fireScript.recoilAmount * (0.2f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
+													+ fireScript.recoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
 													;
 			if(muzzleClimb < 0.6f){
 				muzzleClimb += 0.05f;

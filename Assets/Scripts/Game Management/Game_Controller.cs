@@ -38,6 +38,7 @@ public class Game_Controller : NetworkBehaviour {
 		}
 	}
 	public Weapons_Catalog weaponsCatalog;
+	public int maxPlayers = 32;
 	public GameObject botPrefab;
 
 	public List<Player_Controller> playerObjects = new List<Player_Controller> ();
@@ -46,7 +47,7 @@ public class Game_Controller : NetworkBehaviour {
 
 	[SerializeField]
 	public readonly SyncList<PlayerStats> playerStats = new SyncList<PlayerStats>();
-	public PlayerStats[] debugPlayerStats = new PlayerStats[32];
+	public PlayerStats[] debugPlayerStats;
 
 
 	public List<Transform> playerSpawnTransforms = new List<Transform> ();
@@ -145,7 +146,7 @@ public class Game_Controller : NetworkBehaviour {
 		//on spawned objects, I don't really know what to do
 		//TODO
 		
-		for(int i = 0; i<32; i++){
+		for(int i = 0; i<maxPlayers; i++){
 			PlayerStats _player = new PlayerStats();
 			_player.name = "Player " + i.ToString();
 			_player.isBot = true;
@@ -893,6 +894,8 @@ public class Game_Controller : NetworkBehaviour {
 	}
 
 	public void OnPlayerSync(SyncList<PlayerStats>.Operation op, int index, PlayerStats oldItem, PlayerStats newItem){
+		if(debugPlayerStats == null || debugPlayerStats.Length != playerStats.Count)
+			debugPlayerStats = new PlayerStats[playerStats.Count];
 		playerStats.CopyTo(debugPlayerStats, 0);
 	}
 
