@@ -74,7 +74,8 @@ public class CustomNetworkManager : Mirror.NetworkManager
     public override void OnStopServer(){
         base.OnStopServer();
         isServerMachine = false;
-        FindObjectOfType<PHPMasterServerConnect> ().UnregisterHost ();
+        GetComponent<PHPMasterServerConnect> ().UnregisterHost ();
+        print("On stop server");
     }
     public override void OnStopHost(){
         base.OnStopHost();
