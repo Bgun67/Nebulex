@@ -97,8 +97,9 @@ public class Fire : MonoBehaviour {
 			netView = this.GetComponentInParent<MetworkView>();
 		}
 		magAmmo = magSize;
+		totalAmmo = maxAmmo;
 
-		Invoke("CreateObjectPool", Random.Range(0, 0.01f));
+		Invoke(nameof(CreateObjectPool), Random.Range(0, 0.01f));
 		//
 	}
 
@@ -277,6 +278,10 @@ public class Fire : MonoBehaviour {
 
 		transform.root.SendMessage ("UpdateUI");
 
+	}
+	public void RestockAmmo(){
+		magAmmo = magSize;
+		totalAmmo = maxAmmo;
 	}
 	void OnEnable(){
 		shootSound = this.GetComponent<AudioSource>();

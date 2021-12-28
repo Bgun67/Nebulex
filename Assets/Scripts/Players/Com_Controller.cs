@@ -27,7 +27,7 @@ public class Com_Controller : NetworkBehaviour {
 	}
 	public bool isInSpace = false;
 	public LayerMask physicsMask;
-    public Transform[] patrolPositions;
+    public GameObject[] patrolPositions;
 	public int carrierNum;
 	public Animator anim;
 	public float _angle;
@@ -56,6 +56,7 @@ public class Com_Controller : NetworkBehaviour {
 	List<Vector3> spaceRoute = new List<Vector3>();
 	public Vector3 currentVelocity;
 	private Game_Controller gameController;
+	[SyncVar]
 	public int botID = -1;
 	public TextMesh nameTextMesh;
 	public GameObject ragdoll;
@@ -71,11 +72,13 @@ public class Com_Controller : NetworkBehaviour {
 		fireScript = GetComponentInChildren<Fire>();
 		damageScript = GetComponent<Damage>();
 		netView = GetComponent<MetworkView>();
-		gameController = FindObjectOfType<Game_Controller> ();
-
+		gameController = Game_Controller.Instance;
+		patrolPositions = GameObject.FindGameObjectsWithTag("Patrol Position");
+		
 		lastPosition = this.transform.position;
 
-		gameController.bots.Add(this);
+		//TODO: Remove
+		//gameController.bots.Add(this);
 		if (head == null)
 		{
 			head = GameObject.Find("Main Camera").transform;
@@ -91,46 +94,18 @@ public class Com_Controller : NetworkBehaviour {
 	{
 		//TODO: fix name problem,
 		//Program in jerseys, smooth lerp, reduce lag, 
-		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
+		if (CustomNetworkManager.IsServerMachine())
 		{
-			//InvokeRepeating("CheckState", Random.Range(0.1f, 0.5f), 0.2f);
-			
 			
 
-			//Add the bots
-			//Check if the position is already occupied by a player
-			if(gameController.playerStats[this.botID - 64].isFilled == false){
-				/*TODO: Move this to the gamecontroller start function
-				if (Metwork.peerType != MetworkPeerType.Disconnected) {
-					gameController.netView.RPC ("RPC_AddPlayerStat", MRPCMode.AllBuffered, new object[] {
-						"Bot " + (this.botID - 64).ToString(),
-						//NetObj owner
-						this.botID - 64,
-						//IS bot
-						true
-
-					});
-				} else {
-					gameController.RPC_AddPlayerStat (
-						"Bot " + (this.botID - 64).ToString(),
-						this.botID - 64,
-						true
-					);
-				}*/
-				
-			}
-			else{
-				this.gameObject.SetActive(false);
-			}
-
-			nameTextMesh.text = "Bot " + (this.botID - 64).ToString();
+			nameTextMesh.text = "Bot " + (this.botID).ToString();
 
 			List<Spawn_Point> _allSpawns = new List<Spawn_Point>(FindObjectsOfType<Spawn_Point>());
-			_allSpawns.RemoveAll(x => x.team != gameController.playerStats[botID - 64].team);
+			_allSpawns.RemoveAll(x => x.team != gameController.playerStats[botID].team);
 
 			Spawn_Point[] _spawnPoints = _allSpawns.ToArray();
-			patrolIndex = Random.Range(0, (botID - 64) % patrolPositions.Length);
-			damageScript.initialPosition = _spawnPoints[(botID - 64) % _spawnPoints.Length].transform;
+			patrolIndex = Random.Range(0, (botID) % patrolPositions.Length);
+			damageScript.initialPosition = _spawnPoints[(botID) % _spawnPoints.Length].transform;
 			//Randomize the starting position, so we don't get bot collision
 			if(isInSpace){
 				damageScript.initialPosition.position += Random.insideUnitSphere * Random.Range(0f, 10f);
@@ -141,11 +116,11 @@ public class Com_Controller : NetworkBehaviour {
 			
 			if(!isInSpace){
 				agent.Warp(damageScript.initialPosition.position);
-				agent.destination = patrolPositions[patrolIndex].position;
+				agent.destination = patrolPositions[patrolIndex].transform.position;
 			}
 			else{
 				this.transform.position = damageScript.initialPosition.position;
-				spaceDestination = patrolPositions[patrolIndex].position;
+				spaceDestination = patrolPositions[patrolIndex].transform.position;
 			}
 
 		}
@@ -175,7 +150,7 @@ public class Com_Controller : NetworkBehaviour {
 
 		int localTeam = gameController.GetLocalTeam();
 		if(Game_Controller.Instance.localPlayer != null){
-			if (gameController.playerStats[botID - 64].team == localTeam) {
+			if (gameController.playerStats[botID].team == localTeam) {
 				nameTextMesh.color = new Color (0f, 50f, 255f);
 				nameTextMesh.gameObject.SetActive (true);
 
@@ -216,7 +191,7 @@ public class Com_Controller : NetworkBehaviour {
 		}
 
 		
-		if(Time.frameCount % NUM_BOTS == botID-65 && (lastSpaceDestination - spaceDestination).magnitude > 5f){
+		if(Time.frameCount % NUM_BOTS == botID && (lastSpaceDestination - spaceDestination).magnitude > 5f){
 			Nav_Volume_Builder._instance.FindRoute(this.transform.position, spaceDestination);
 			lastSpaceDestination = spaceDestination;
 			//Perform Deep copy
@@ -327,7 +302,7 @@ public class Com_Controller : NetworkBehaviour {
 			for (int i = 0; i < players.Length; i++)
 			{
 				//TODO players[i].netObj.owner
-				if(gameController.playerStats[0].team == gameController.playerStats[botID - 64].team){
+				if(gameController.playerStats[0].team == gameController.playerStats[botID].team){
 					continue;
 				}
 				if (Vector3.Dot((players[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
@@ -363,7 +338,7 @@ public class Com_Controller : NetworkBehaviour {
 
 			for (int i = 0; i < bots.Length; i++)
 			{
-				if(gameController.playerStats[bots[i].botID - 64].team == gameController.playerStats[botID - 64].team || bots[i] == this){
+				if(gameController.playerStats[bots[i].botID].team == gameController.playerStats[botID].team || bots[i] == this){
 					continue;
 				}
 				if (Vector3.Dot((bots[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
@@ -437,7 +412,7 @@ public class Com_Controller : NetworkBehaviour {
 		foreach (Player_Controller player in _players)
 		{
 			//TODO player.netObj.owner
-			if(gameController.playerStats[0].team == gameController.playerStats[botID - 64].team){
+			if(gameController.playerStats[0].team == gameController.playerStats[botID].team){
 				continue;
 			}
 			float[] samples = new float[2];
@@ -458,7 +433,7 @@ public class Com_Controller : NetworkBehaviour {
 		}
 		foreach (Com_Controller player in _bots)
 		{
-			if(gameController.playerStats[player.botID - 64].team == gameController.playerStats[botID - 64].team){
+			if(gameController.playerStats[player.botID].team == gameController.playerStats[botID].team){
 				continue;
 			}
 			float[] samples = new float[2];
@@ -504,13 +479,13 @@ public class Com_Controller : NetworkBehaviour {
 			//agent.CalculatePath(agent.destination, path);
 		}
 		else{
-			spaceDestination = patrolPositions[patrolIndex].position;
+			spaceDestination = patrolPositions[patrolIndex].transform.position;
 			this.transform.forward = Vector3.Slerp(this.transform.forward, (spaceDestination-this.transform.position).normalized, 0.1f);
 			
 		}
 
 		//
-		if ((!isInSpace &&!agent.pathPending&& !agent.hasPath) || Vector3.Distance(agent.transform.position,patrolPositions[patrolIndex].position) <= 4f) {
+		if ((!isInSpace &&!agent.pathPending&& !agent.hasPath) || Vector3.Distance(agent.transform.position,patrolPositions[patrolIndex].transform.position) <= 4f) {
 			
 			//Switch to the next patrol position
 			patrolIndex++;
@@ -520,11 +495,11 @@ public class Com_Controller : NetworkBehaviour {
 			}
 			//Reset the patrol target
 			if(!isInSpace){
-				agent.destination = patrolPositions[patrolIndex].position;
+				agent.destination = patrolPositions[patrolIndex].transform.position;
 				agent.CalculatePath(agent.destination, path);
 			}
 			else{
-				spaceDestination = patrolPositions[patrolIndex].position;
+				spaceDestination = patrolPositions[patrolIndex].transform.position;
 			}
 		
 		}

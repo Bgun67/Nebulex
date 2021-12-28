@@ -135,7 +135,6 @@ public class Nav_Volume_Builder : MonoBehaviour
             
             breakCounter --;
             if(breakCounter < 0){
-                print("EBreak");
                 break;
             }
 

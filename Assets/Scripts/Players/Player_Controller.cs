@@ -36,7 +36,7 @@ public class Player_Controller : NetworkBehaviour {
 	WalkState walkState = WalkState.Walking;
 	public bool useGravity;
 	//to be used for moving in space
-	float moveSpeed = 5f;
+	float moveSpeed = 7f;
 	float lookFactor = 1f;
 	float scopeMoveFactor = 1f;
 	float moveFactor = 1f;
@@ -409,7 +409,7 @@ public class Player_Controller : NetworkBehaviour {
 			
 		}
 		if (Input.GetKeyDown ("/")) {
-			damageScript.TakeDamage (1000, 0, transform.position, true);
+			Cmd_KillPlayer();
 		}
 
 		if (MInput.GetButtonDown ("Switch Weapons")) {
@@ -901,6 +901,8 @@ public class Player_Controller : NetworkBehaviour {
 	[ClientRpc]
 	public void Rpc_ActivatePlayer(){
 		this.gameObject.SetActive(true);
+		//Reload the players ammo
+		primaryWeapon.GetComponent<Fire>().RestockAmmo();
 		if (isLocalPlayer) {
 			Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
 			Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
@@ -1185,12 +1187,12 @@ public class Player_Controller : NetworkBehaviour {
 		}
 		else
 		{
-			Vector3 desiredVelocity = transform.TransformVector(new Vector3(h,z,v) * moveSpeed);
-			if(desiredVelocity.sqrMagnitude < previousVelocity.sqrMagnitude*0.5f){
-				velocity = Vector3.Lerp(previousVelocity, Vector3.zero, 0.05f);
+			Vector3 desiredVelocity = transform.TransformVector(new Vector3(h,z,v).normalized * moveSpeed);
+			if(desiredVelocity.sqrMagnitude < rb.velocity.sqrMagnitude*0.5f){
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.05f*Time.deltaTime * 60f);
 			}
 			else{
-				velocity = Vector3.Lerp(previousVelocity, desiredVelocity, 0.2f);
+				velocity = Vector3.Lerp(rb.velocity, desiredVelocity, 0.2f*Time.deltaTime * 60f);
 			}
 			
 		}
@@ -1251,7 +1253,8 @@ public class Player_Controller : NetworkBehaviour {
 				rotation = new Vector3(0, h2 * 2f, 0) * 5f * Time.deltaTime * 30f;
 				rb.transform.Rotate(rotation);
 				velocity = transform.TransformVector(new Vector3(h,z,v).normalized * moveSpeed);
-				velocity += transform.up * -98100f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)) * Time.deltaTime;
+				//TODO: Make leaf fall down
+				velocity += transform.up * -98100f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)) * Time.deltaTime * 60f;
 
 				if(_hit.distance <= 0.2f){
 					//TODO: Finishe
@@ -1286,7 +1289,7 @@ public class Player_Controller : NetworkBehaviour {
 			float _counter = Vector3.Dot(_aimDirection.normalized, _originalForward.normalized);
 			if (_counter < 0.97f)
 			{
-				Vector3 _lerpedForward = Vector3.Slerp(_originalForward, _aimDirection, 0.3f);
+				Vector3 _lerpedForward = Vector3.Slerp(_originalForward, _aimDirection, 0.3f * Time.deltaTime * 60f);
 				Vector3 _lerpedUp = Vector3.ProjectOnPlane(transform.up, _lerpedForward);
 				rb.transform.rotation = Quaternion.LookRotation(_lerpedForward, _lerpedUp);
 				anim.SetFloat("Look Speed", 0.5f - 0.8f * Vector3.SignedAngle(_originalForward, transform.forward, transform.right) / 90f);
@@ -1528,6 +1531,10 @@ public class Player_Controller : NetworkBehaviour {
 
 	#endregion
 	#region Region2
+	[Command]
+	public void Cmd_KillPlayer(){
+		damageScript.TakeDamage (1000, 0, transform.position, true);
+	}
 	public void Die(){
 		//Since the damage is calculated on the server, this function only
 		//runs on the server and has to be passed to every client
@@ -1591,6 +1598,7 @@ public class Player_Controller : NetworkBehaviour {
 		Game_Controller.Instance.sceneCam.enabled = true;
 		//TODO: Figure out what the fuck this does
 		//Game_Controller.Instance.GetComponent<AudioListener>().enabled = true;
+		//Reload the guns
 		
 		if (isLocalPlayer) {
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)

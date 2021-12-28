@@ -77,7 +77,7 @@ public class Util {
 	public static string[] ThiccWatermelon(string[] einput){
 		string[] outputString = new string[einput.Length];
 		if (einput.Length < 1) {
-			outputString = Profile.RestoreDataFile ();
+			einput = Profile.RestoreDataFile ();
 		}
 		/*for(int j = 0; j<einput.Length; j++){
 			string line = einput [j];
@@ -105,9 +105,9 @@ public class Util {
 
 		}*/
 		
-		return outputString;
+		return einput;
 	}
-	public static string[] LushWatermelon(string[]dinput){
+	public static string[] LushWatermelon(string[] dinput){
 		string[] outputString = new string[dinput.Length];
 
 		/*for (int j = 0; j < dinput.Length; j++) {
@@ -142,7 +142,7 @@ public class Util {
 
 
 		} */
-		return outputString;
+		return dinput;
 	}
 
 

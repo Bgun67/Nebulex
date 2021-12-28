@@ -10,8 +10,8 @@ public class Game_Controller : NetworkBehaviour {
 	[System.Serializable]
 	public class PlayerStats{
 		public string name = "Default Name";
-		public int kills = -1;
-		public int deaths = -1;
+		public int kills = 0;
+		public int deaths = 0;
 		public int assists = 0;
 		public int score = 0;
 		public int team = -1;
@@ -38,6 +38,7 @@ public class Game_Controller : NetworkBehaviour {
 		}
 	}
 	public Weapons_Catalog weaponsCatalog;
+	public GameObject botPrefab;
 
 	public List<Player_Controller> playerObjects = new List<Player_Controller> ();
 	[HideInInspector]
@@ -50,6 +51,7 @@ public class Game_Controller : NetworkBehaviour {
 
 	public List<Transform> playerSpawnTransforms = new List<Transform> ();
 	public int currentTeamNum;
+	[SyncVar (hook = nameof(SetGameMode))]
 	public string gameMode;
 
 	public bool finished = false;
@@ -128,7 +130,6 @@ public class Game_Controller : NetworkBehaviour {
 	//Awake runs before any players are added
 	public void Awake()
 	{
-		print("Start");
 		instance = Instance;
 		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
 		UI_awayScoreText = UI_Manager.GetInstance.UI_AwayScoreText;
@@ -151,6 +152,11 @@ public class Game_Controller : NetworkBehaviour {
 			//TODO: Properly assign the teams
 			_player.team = i%2;
 			playerStats.Add(_player);
+			//TODO: Assign these to spawn points
+			GameObject _bot = Instantiate(botPrefab, Vector3.zero, Quaternion.identity);
+			_bot.GetComponent<Com_Controller>().botID = i;
+			bots.Add(_bot.GetComponent<Com_Controller>());
+			NetworkServer.Spawn(_bot);
 		}
 
 		//Force a copy of the debug array
@@ -240,8 +246,10 @@ public class Game_Controller : NetworkBehaviour {
 
 	}
 
-	
-
+	//Invoked when the game mode has changed
+	void SetGameMode(string oldValue, string newValue){
+		
+	}
 	
 
 	[MRPC]
@@ -306,7 +314,6 @@ public class Game_Controller : NetworkBehaviour {
 	public int AssignPlayerID(){
 		int _playerID = -1;
 		for(int i = 0; i<playerStats.Count; i++){
-			print(playerStats[i].isBot);
 			if(playerStats[i].isBot == true){
 				playerStats[i].isBot = false;
 				_playerID = i;
@@ -319,6 +326,7 @@ public class Game_Controller : NetworkBehaviour {
 		return _playerID;
 	}
 
+	/*TODO: Remove
 	[MRPC]
 	public void RPC_AddPlayerStat(string name, int _owner, bool _isBot){
 		PlayerStats stat = playerStats[_owner];
@@ -340,7 +348,7 @@ public class Game_Controller : NetworkBehaviour {
 		playerStats[_owner] =  stat;
 		RPC_SetTeam ();
 
-	}
+	}*/
 
 
 	public void RPC_SetTeam(){
@@ -655,6 +663,7 @@ public class Game_Controller : NetworkBehaviour {
 		return GameObject.CreatePrimitive(PrimitiveType.Sphere);
 	}
 
+	/*TODO Remove
 	public static Com_Controller GetBotFromPlayerID(int _playerID){
 		for (int i = 0; i < Instance.bots.Count; i++) {
 			if (Instance.bots[i].botID == _playerID) {
@@ -663,7 +672,7 @@ public class Game_Controller : NetworkBehaviour {
 		}
 		print ("Failed to find Bot " + _playerID.ToString());
 		return null;
-	}
+	}*/
 
 	//safer than get gameobject but slower
 	public Player_Controller GetPlayerFromNetID(int _netID){
@@ -881,8 +890,6 @@ public class Game_Controller : NetworkBehaviour {
 	}
 
 	public void OnPlayerSync(SyncList<PlayerStats>.Operation op, int index, PlayerStats oldItem, PlayerStats newItem){
-		print("Syncing list operation: ");
-		print("Playerstats: " + playerStats.Count + " debugPlayerStats: " + debugPlayerStats.Length);
 		playerStats.CopyTo(debugPlayerStats, 0);
 	}
 

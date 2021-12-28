@@ -2,6 +2,7 @@ using UnityEngine;
 //using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 
 
 public class MHostData{
@@ -17,7 +18,7 @@ public class MHostData{
 	public string comment;
 }
 
-public class PHPMasterServerConnect : MonoBehaviour 
+public class PHPMasterServerConnect : NetworkBehaviour 
 {
 	public string masterServerURL = "";
 	public string gameType = "";
@@ -43,6 +44,8 @@ public class PHPMasterServerConnect : MonoBehaviour
 			return _instance;
 		}
 	}
+
+	CustomNetworkManager manager;
 	
 	void Awake () {
         if (_instance != null) {
@@ -50,12 +53,14 @@ public class PHPMasterServerConnect : MonoBehaviour
         } else {
 		    DontDestroyOnLoad (gameObject);
         	_instance = this;
+			manager = this.GetComponent<CustomNetworkManager>();
 			try{
 				masterServerURL = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/network.config");
 			}
 			catch{};
 			Metwork.onPlayerConnected += _instance.OnMetPlayerConnected;
 			Metwork.onPlayerDisconnected += _instance.OnMetPlayerDisconnected;
+			
 			
 		}
 
@@ -95,7 +100,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 	
 	private IEnumerator QueryPHPMasterServerCR ()
 	{
-		print ("Querying Harder");
+		//print ("Querying Harder");
 		atOnce = true;
 		string url = masterServerURL+"QueryMS?gameType="+WWW.EscapeURL(gameType);
     	Debug.Log ("looking for URL " + url);
@@ -163,22 +168,22 @@ public class PHPMasterServerConnect : MonoBehaviour
 		atOnce = false;
 	}
 
-	public void RegisterHost (string pGameName, string pComment) {
-		gameName = pGameName;
-		comment = pComment;
-		registered = true;
+	public void RegisterHost () {
+		//gameName = pGameName;
+		//comment = pComment;
+		registered = false;
 		StartCoroutine (RegistrationLoop ());
 	}
 
 	private IEnumerator RegistrationLoop()
 	{
-		while (registered && Metwork.isServer){//NetworkServer.active) {
+		while (!registered && manager.isServerMachine){//NetworkServer.active) {
 			print("Registering");
             yield return StartCoroutine (RegisterHostCR());
     		yield return new WaitForSeconds(delayBetweenUpdates);
 		}
 
-		registered = false;
+		//registered = false;
 	}
 
     private IEnumerator RegisterHostCR () {
@@ -187,31 +192,34 @@ public class PHPMasterServerConnect : MonoBehaviour
 	    url += "?gameType="+WWW.EscapeURL (gameType);
 	    url += "&gameName="+WWW.EscapeURL (gameName);
 	    url += "&comment="+WWW.EscapeURL (comment);
-		url += "&playerLimit=" + 32;//NetworkManager.singleton.matchSize;
-		url += "&connectedPlayers="+Metwork.players.Count;//NetworkManager.singleton.numPlayers;
-		url += "&internalIp="+"192.168.2.30";//NetworkManager.singleton.networkAddress;
-		url += "&internalPort="+10235;//NetworkManager.singleton.networkPort;
-		url += "&externalPort="+10235;//NetworkManager.singleton.networkPort;
+		url += "&playerLimit=" + manager.maxConnections;
+		url += "&connectedPlayers="+manager.numPlayers;
+		url += "&internalIp="+"192.168.2.30";
+		url += "&internalPort="+manager.GetComponent<kcp2k.KcpTransport>().Port;
+		url += "&externalPort="+manager.GetComponent<kcp2k.KcpTransport>().Port;
 
-		//if (NetworkManager.singleton.serverBindToIP) {
-				url += "&externalIp="+"204.123.32.5";//+NetworkManager.singleton.serverBindAddress;
-		//} else {
-	    //	url += "&externalIp="+NetworkManager.singleton.networkAddress;
-		//}
+		
+		//TODO
+		url += "&externalIp="+"204.123.32.5";
+		
 	    Debug.Log (url);
 	
 	    WWW www = new WWW (url);
 	    yield return www;
 	
 	    retries = 0;
-	    while ((www.error != null || www.text != "") && retries < maxRetries) {
+	    while ((www.error != null || www.text != "Succeeded") && retries < maxRetries) {
 	        retries ++;
 	        www = new WWW (url);
 	        yield return www;
 	    }
-	    if ((www.error != null || www.text != "")) {
+	    if ((www.error != null || www.text != "Succeeded") && retries >= maxRetries) {
 			Debug.LogError (www.error);
 	        SendMessage ("OnRegisterHostFailed");
+		}
+		if (www.error != null && www.text == "Succeeded") {
+			Debug.Log("Successfully registered host");
+			registered = true;
 		}
 		Debug.Log("Recieved transmision: " + www.text);
     }
@@ -251,8 +259,9 @@ public class PHPMasterServerConnect : MonoBehaviour
 				SendMessage ("OnUnregisterHostFailed");
 			} else {
 				Debug.Log ("Successfully unregistered host");
+				registered = false;
 			}
-			registered = false;
+			
     	}
 	}
 
@@ -264,7 +273,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 	//	print ("Server Initialized");
 	//}
 
-	public IEnumerator OnServerInitialized () {
+	/*public IEnumerator OnServerInitialized () {
 
 
 
@@ -313,7 +322,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 
 		RegisterHost (this.gameName, this.comment);
 		Metwork.disconnectReason = DisconnectReason.Unexpected;
-	}
+	}*/
 
 	public void UpdateHost(string _comment){
 		this.comment = _comment;
@@ -335,12 +344,13 @@ public class PHPMasterServerConnect : MonoBehaviour
 		url += "&gameName="+WWW.EscapeURL (gameName);
 		url += "&comment="+WWW.EscapeURL (comment);
 		//url += "&useNat=" + true;//!Network.HavePublicAddress();
-		url += "&connectedPlayers="+Metwork.players.Count;//(Network.connections.Length + 1);
-		url += "&playerLimit="+32;//Network.maxConnections;
-		url += "&internalIp="+"192.168.2.30";//Network.player.ipAddress;
-		url += "&internalPort="+10235;//Network.player.port;
+		url += "&connectedPlayers="+manager.numPlayers;
+		url += "&playerLimit=" + manager.maxConnections;
+		url += "&internalIp="+"192.168.2.30";
+		url += "&internalPort="+manager.GetComponent<kcp2k.KcpTransport>().Port;
+		url += "&externalPort="+manager.GetComponent<kcp2k.KcpTransport>().Port;
+		//TODO
 		url += "&externalIp="+"204.123.32.5";//Network.player.externalIP;
-		url += "&externalPort="+10235;//Network.player.externalPort;
 		url += "&guid="+10234915;//Network.player.guid;
 		url += "&passwordProtected="+0;//(Network.incomingPassword != "" ? 1 : 0);
 		Debug.Log (url);

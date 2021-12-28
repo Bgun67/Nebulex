@@ -44,12 +44,12 @@ public class GlobalSound : MonoBehaviour
             instance.RPC_RemoteSound((int)_sound, _destinationPlayer);
         }
     } 
-
+    //TODO
     [MRPC]
     public void RPC_RemoteSound(int _sound, int _destinationPlayer){
-        if(_destinationPlayer == gameController.localPlayer.GetComponent<Metwork_Object>().owner){
-            effectsSource.PlayOneShot(jukeBox[_sound]);
-        }
+        //if(_destinationPlayer == gameController.localPlayer.GetComponent<Metwork_Object>().owner){
+        //    effectsSource.PlayOneShot(jukeBox[_sound]);
+        //}
     }
 
 

@@ -1197,9 +1197,9 @@ public class Metwork : MonoBehaviour {
 		Debug.Log("Shutting Down Server");
 		if(Metwork.isServer){
 			FindObjectOfType<PHPMasterServerConnect> ().UnregisterHost ();
-			//TODO: Enable this
 			
-			Metwork._instance.TransferServer();
+			
+			
 		}
 		Debug.Log("Resetting Network");
 		Metwork._instance.Reset();

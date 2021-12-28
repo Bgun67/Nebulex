@@ -56,7 +56,7 @@ public class Damage : NetworkBehaviour {
 		}
 		currentHealth = originalHealth;
 		Reactivate ();
-		gameController = FindObjectOfType<Game_Controller> ();
+		gameController = Game_Controller.Instance;
 		if(healthShown){
 			UpdateUI();
 		}
@@ -328,7 +328,10 @@ public class Damage : NetworkBehaviour {
 		UpdateUI();
 	}
 	public void UpdateUI(){
-		if (isLocalPlayer && healthShown == true) {
+		if(!isLocalPlayer){
+		return;}
+
+		if (healthShown == true) {
 			if (isVehicle)
 			{
 				UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(true);

@@ -37,7 +37,6 @@ public class WindowsVoice : MonoBehaviour {
   {
     if (theVoice == this)
     {
-      Debug.Log("Destroying speech");
       destroySpeech();
       theVoice = null;
     }

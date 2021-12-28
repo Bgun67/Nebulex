@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 using System.Net;
 using System.Collections.Specialized;
 using System;
+using Mirror;
 
 
 public class Match_Scene_Manager : MonoBehaviour
@@ -53,12 +54,15 @@ public class MapClass
 
 	public Button[] hostButtons;
 	MHostData[] hostData;
+	[HideInInspector]
 	public PHPMasterServerConnect connection;
 	public bool isError = false;
+	public CustomNetworkManager manager;
 
 	// Use this for initialization
 	void Awake()
 	{
+		manager = GetComponent<CustomNetworkManager>();
 		foreach (Button hostButton in hostButtons)
 		{
 			hostButton.gameObject.SetActive(false);
@@ -146,6 +150,7 @@ public class MapClass
 		MapClass map = maps[currentMapNum];
 		mapNameText.text = map.displayedName;
 		mapImage.sprite = map.mapImage;
+		manager.onlineScene = map.sceneName;
 		ShowAllowedMatchTypes(map);
 	}
 	void ShowAllowedMatchTypes(MapClass _map)
@@ -174,17 +179,20 @@ public class MapClass
 
 		if (testing)
 		{
-			//Network.Connect (localIP, 12345);//hostData [index].port);
+			
 		}
 		else
 		{
-			//Network.Connect (hostData [index].guid);
-			Metwork.Connect(hostData[index].gameName);
+			//Metwork.Connect(hostData[index].gameName);
+			//TODO switch this to an IP instead;
+			manager.networkAddress = hostData[index].gameName;
+			manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)hostData[index].port;
+			manager.StartClient();
 
 		}
-
-		Metwork.onConnectedToServer += OnConnectedToMetServer;
-		Metwork.onPlayerConnected += OnMetPlayerConnected;
+		//TODO?
+		//Metwork.onConnectedToServer += OnConnectedToMetServer;
+		//Metwork.onPlayerConnected += OnMetPlayerConnected;
 		System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
 			"1200",
 			hostData[index].gameType,
@@ -216,7 +224,6 @@ public class MapClass
 	void DeactivateLoadPanel()
 	{
 		//TODO: Reload the scene when the network connection fails! or make workaround! 
-		Debug.Log("Showing loading panel");
 		//unsecure, but should not fail
 		loadingPanel.SetActive(false);
 	}
@@ -319,29 +326,30 @@ public class MapClass
 		{
 			connection.comment = maps[currentMapNum].sceneName;
 			connection.gameName = gameNameInput.text;
+
+			manager.StartHost();
+			manager.onStartHost += OnMetServerInitialized;
 			if (testing)
 			{
 				//Network.InitializeServer (32, int.Parse (portString), false);
 			}
 			else
 			{
-				//Network.InitializeServer (32, int.Parse (portString),
-				//	!Network.HavePublicAddress ());
+				
+				//Metwork.onServerInitialized += OnMetServerInitialized;
 
-				Metwork.InitializeServer(gameNameInput.text);
+				
+				//send server notifications
+				//TODO: Disabled for now
+				//SendDiscordNotification(gameNameInput.text);
 			}
-			Metwork.onServerInitialized += OnMetServerInitialized;
-
-			//This line is only necessary for local builds
-			//MasterServer.RegisterHost (connection.gameType, gameNameInput.text, "");
-			//unsecure, but should not fail
-			try { loadingPanel.SetActive(true); } catch { }
-			Invoke("DeactivateLoadPanel", 5f);
-			//Destroy the script, it no longer belongs
-			print("Starting Server");
-			//Destroy (this);
-			//send server notifications
-			SendDiscordNotification(gameNameInput.text);
+				//This line is only necessary for local builds
+				//MasterServer.RegisterHost (connection.gameType, gameNameInput.text, "");
+				//unsecure, but should not fail
+				try { loadingPanel.SetActive(true); } catch { }
+				Invoke("DeactivateLoadPanel", 5f);
+				//Destroy the script, it no longer belongs
+			
 		}
 		else
 		{
@@ -393,8 +401,8 @@ public class MapClass
 	}
 	public void OnMetServerInitialized()
 	{
-		SceneManager.LoadScene("LobbyScene");
-		StartCoroutine(GameObject.FindObjectOfType<PHPMasterServerConnect>().OnServerInitialized());
+		//SceneManager.LoadScene("LobbyScene");
+		//StartCoroutine(GameObject.FindObjectOfType<PHPMasterServerConnect>().OnServerInitialized());
 		Destroy(this);
 	}
 
