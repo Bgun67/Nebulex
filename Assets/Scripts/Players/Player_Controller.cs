@@ -187,17 +187,23 @@ public class Player_Controller : NetworkBehaviour {
 		Running
 	}
 
-	// Use this for initialization
-	void Start () {
-		
-		gameController = Game_Controller.Instance;
-		
+	void Awake()
+	{
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponent<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> ();
 		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
+
+	}
+
+	// Use this for initialization
+	void Start () {
+		
+		gameController = Game_Controller.Instance;
+		
+		
 		originalCamPosition = mainCamObj.transform.localPosition;
 		originalCamRotation = mainCamObj.transform.localRotation;
 
@@ -1289,14 +1295,14 @@ public class Player_Controller : NetworkBehaviour {
 			float _counter = Vector3.Dot(_aimDirection.normalized, _originalForward.normalized);
 			if (_counter < 0.97f)
 			{
-				Vector3 _lerpedForward = Vector3.Slerp(_originalForward, _aimDirection, 0.3f * Time.deltaTime * 60f);
+				Vector3 _lerpedForward = Vector3.Slerp(_originalForward, _aimDirection, 0.3f);
 				Vector3 _lerpedUp = Vector3.ProjectOnPlane(transform.up, _lerpedForward);
 				rb.transform.rotation = Quaternion.LookRotation(_lerpedForward, _lerpedUp);
 				anim.SetFloat("Look Speed", 0.5f - 0.8f * Vector3.SignedAngle(_originalForward, transform.forward, transform.right) / 90f);
 			}
 
 
-			float _timeFactor = 5f * Time.deltaTime* 30f;
+			float _timeFactor = 5f * 30f;
 			rotation = new Vector3(
 				-v2 * 2f*_timeFactor,//Mathf.Lerp(previousRot.x, -v2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
 				h2 * 2f*_timeFactor,//Mathf.Lerp(previousRot.y, h2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
