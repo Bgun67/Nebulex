@@ -1298,9 +1298,9 @@ public class Player_Controller : NetworkBehaviour {
 
 			float _timeFactor = 5f * Time.deltaTime* 30f;
 			rotation = new Vector3(
-				Mathf.Lerp(previousRot.x, -v2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
-				Mathf.Lerp(previousRot.y, h2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
-				Mathf.Lerp(previousRot.z, -h * 1.5f * rollFactor*_timeFactor , 0.05f*Time.deltaTime*20f)
+				-v2 * 2f*_timeFactor,//Mathf.Lerp(previousRot.x, -v2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
+				h2 * 2f*_timeFactor,//Mathf.Lerp(previousRot.y, h2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
+				-h * 1.5f * rollFactor*_timeFactor//Mathf.Lerp(previousRot.z, -h * 1.5f * rollFactor*_timeFactor , 0.05f*Time.deltaTime*20f)
 			);
 			previousRot = rotation;
 			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
