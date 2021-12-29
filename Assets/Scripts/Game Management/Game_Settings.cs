@@ -20,7 +20,7 @@ public class Game_Settings : MonoBehaviour
 
     [Space]
     [Header("Audio Settings")]
-    public AudioMixer masterMixer;
+    public static AudioMixer masterMixer;
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
@@ -52,7 +52,7 @@ public class Game_Settings : MonoBehaviour
     public static void LoadGraphicsSettings(){
         //Pull game settings from file
         string _graphicsSettings = System.IO.File.ReadAllText(Application.persistentDataPath + "/graphicssettings.json");
-        currGraphicsSettings = JsonUtility.FromJson<GraphicsSettings>(_graphicsSettings);
+		currGraphicsSettings = JsonUtility.FromJson<GraphicsSettings>(_graphicsSettings);
     }
     public static void LoadGameplaySettings(){
         //Pull game settings from file
@@ -101,32 +101,46 @@ public class Game_Settings : MonoBehaviour
         currAudioSettings.voicePromptVolume = 0.5f;
         SaveGameSettings();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        try{
-            LoadGraphicsSettings();
-        }
-        catch{
-            print("Restoring Graphics Settings");
-            RestoreGraphicsSettings();
-        }
-        try{
-            LoadGameplaySettings();
-        }
-        catch{
-            RestoreGameplaySettings();
-        }
-        try{
-            LoadAudioSettings();
-        }
-        catch{
-            RestoreAudioSettings();
-        }
-        ApplySettings();
-        if(useGUI)
+	// Start is called before the first frame update
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	static void LoadSettings()
+	{
+		try
+		{
+			LoadGraphicsSettings();
+		}
+		catch
+		{
+			print("Restoring Graphics Settings");
+			RestoreGraphicsSettings();
+		}
+		try
+		{
+			LoadGameplaySettings();
+
+		}
+		catch
+		{
+			print("Restoring Gameplay Settings");
+			RestoreGameplaySettings();
+		}
+		try
+		{
+			LoadAudioSettings();
+		}
+		catch
+		{
+			print("Restoring Audio Settings");
+			RestoreAudioSettings();
+		}
+		ApplySettings();
+	}
+	void Start(){
+		if(useGUI)
             UpdateGUI();
-    }
+
+		print("All Settings Initialized");
+	}
 
     public void ChangeMSAALevel(string level)
     {
@@ -225,7 +239,7 @@ public class Game_Settings : MonoBehaviour
     }
     #endregion
 
-    public void ApplySettings(){
+    public static void ApplySettings(){
         QualitySettings.antiAliasing = currGraphicsSettings.MSAA;
         QualitySettings.vSyncCount = currGraphicsSettings.VSync;
         QualitySettings.SetQualityLevel(currGraphicsSettings.qualityLevel);
@@ -233,8 +247,9 @@ public class Game_Settings : MonoBehaviour
 
         MInput.sensitivity = currGameplaySettings.lookSensitivity;
 
-        //Audio Settings
-        masterMixer.SetFloat("Master Volume", Mathf.Log10(currAudioSettings.masterVolume)*20.0f);
+		//Audio Settings
+		masterMixer = (AudioMixer)Resources.Load("_Mixers/Game");
+		masterMixer.SetFloat("Master Volume", Mathf.Log10(currAudioSettings.masterVolume)*20.0f);
         masterMixer.SetFloat("Music Volume", Mathf.Log10(currAudioSettings.musicVolume)*20.0f);
         masterMixer.SetFloat("SFX Volume", Mathf.Log10(currAudioSettings.sfxVolume)*20.0f);
         //masterMixer.SetFloat("Voice Prompt Volume", Mathf.Log10(currAudioSettings.voicePromptVolume)*20.0f);

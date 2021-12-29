@@ -39,6 +39,7 @@ public class AudioWrapper : MonoBehaviour
             source.rolloffMode = AudioRolloffMode.Linear;
             source.maxDistance = 20f;
         }
+		
     }
 
     public void PlayOneShot(int _clip, float _volume){

@@ -52,6 +52,7 @@ public class Player_IK : MonoBehaviour
 			scopedFactor = Mathf.Lerp(scopedFactor, 0f, 0.5f);
 		}
 	}
+	
 	public void Recoil(float magnitude)
 	{
 		recoilMagnitude = magnitude;

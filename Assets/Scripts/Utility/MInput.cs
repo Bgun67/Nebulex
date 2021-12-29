@@ -88,19 +88,19 @@ public class MInput : MonoBehaviour {
 		{
 
 			float _delta = Input.GetAxis("Mouse X");
-			_smoothRot = Mathf.Lerp(previousDeltaX,_delta,0.4f);
+			_smoothRot = _delta;//Mathf.Lerp(previousDeltaX,_delta,0.4f);
 			previousDeltaX = _delta;
 
 		}
 		else if (_axisName == "Mouse Y")
 		{
 			float _delta = Input.GetAxis("Mouse Y");
-			_smoothRot = Mathf.Lerp(previousDeltaY,_delta,0.6f);
+			_smoothRot = _delta;//Mathf.Lerp(previousDeltaY,_delta,0.6f);
 			previousDeltaY = _delta;
 
 		}
 
-		return _smoothRot * 5f * _smoothRot * Mathf.Sign(_smoothRot)*sensitivity;
+		return _smoothRot * 5f * /*_smoothRot * Mathf.Sign(_smoothRot)*/sensitivity;
 
 		Debug.LogError("MInput: " + _axisName + " does not exist!");
 	}

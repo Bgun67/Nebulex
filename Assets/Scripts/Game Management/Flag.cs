@@ -23,7 +23,7 @@ public class Flag : MonoBehaviour {
 
 
 	void Start(){
-		gameController = GameObject.FindObjectOfType<Game_Controller> ();
+		gameController = Game_Controller.Instance;
 		rb = GetComponent<Rigidbody>();
 		ReturnFlag ();
 		if (gameController.gameMode != Game_Controller.GameType.CTF) {

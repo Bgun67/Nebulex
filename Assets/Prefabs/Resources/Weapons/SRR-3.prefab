@@ -150,6 +150,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!1 &1565418576223526
@@ -273,7 +274,7 @@ ParticleSystem:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1586936629837550}
-  serializedVersion: 6
+  serializedVersion: 7
   lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
@@ -3903,19 +3904,20 @@ ParticleSystem:
     range: {x: 0, y: 1}
   CollisionModule:
     enabled: 0
-    serializedVersion: 3
+    serializedVersion: 4
     type: 0
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    plane0: {fileID: 0}
-    plane1: {fileID: 0}
-    plane2: {fileID: 0}
-    plane3: {fileID: 0}
-    plane4: {fileID: 0}
-    plane5: {fileID: 0}
+    m_Planes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -4089,17 +4091,20 @@ ParticleSystem:
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
-    collisionShape0: {fileID: 0}
-    collisionShape1: {fileID: 0}
-    collisionShape2: {fileID: 0}
-    collisionShape3: {fileID: 0}
-    collisionShape4: {fileID: 0}
-    collisionShape5: {fileID: 0}
+    serializedVersion: 2
     inside: 1
     outside: 0
     enter: 0
     exit: 0
+    colliderQueryMode: 0
     radiusScale: 1
+    primitives:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
@@ -5059,7 +5064,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5114,7 +5118,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4555555215612494}
-  - component: {fileID: 95947182173568420}
   - component: {fileID: 114041897218599616}
   - component: {fileID: 82216935135489244}
   - component: {fileID: 114343764164266812}
@@ -5141,28 +5144,10 @@ Transform:
   - {fileID: 4212418953722512}
   - {fileID: 4718596372042736}
   - {fileID: 1313016542506554109}
+  - {fileID: 5805689076719445289}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &95947182173568420
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991755903921898}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 63e3bbf6c7c0e044fa6f2b3c794e9ec9, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114041897218599616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5179,6 +5164,7 @@ MonoBehaviour:
   rhTarget: {fileID: 0}
   rhOffset: {x: 0, y: 0, z: 0}
   lhTarget: {fileID: 1313016542506554109}
+  lhHint: {fileID: 0}
   reloadTime: 3
   fireRate: 700
   magSize: 32
@@ -5197,13 +5183,8 @@ MonoBehaviour:
   cockSound: {fileID: 8300000, guid: 088940cda1af1c9499ced22b55580323, type: 3}
   sound: {fileID: 8300000, guid: 0846601c78386494bb98bf1529862725, type: 3}
   weaponAnim: {fileID: 0}
-  isRecoil: 1
-  recoil:
-    m_PersistentCalls:
-      m_Calls: []
   recoilAmount: 0.25
   bulk: 0.5
-  recoilNumber: 1
   aimAnimNumber: 1
   scopePosition: {fileID: 4893021308517778}
   ignoreParentVelocity: 0
@@ -5211,7 +5192,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 198191471837166540}
   playerID: 0
   reloading: 0
-  magGO: {fileID: 0}
+  magGO: {fileID: 4647724497906362423}
 --- !u!82 &82216935135489244
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5322,6 +5303,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewID: -1
+--- !u!1 &4647724497906362423
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5805689076719445289}
+  m_Layer: 0
+  m_Name: Mag Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5805689076719445289
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4647724497906362423}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.061, z: 0.087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4555555215612494}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &6030712896637106093
 GameObject:
   m_ObjectHideFlags: 0
@@ -5345,10 +5356,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6030712896637106093}
-  m_LocalRotation: {x: -0.99973077, y: -0, z: -0, w: -0.02320481}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4555555215612494}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: -182.659, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}

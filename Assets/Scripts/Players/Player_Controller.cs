@@ -654,6 +654,17 @@ public class Player_Controller : NetworkBehaviour {
 	void Reload(){
 		if(isLocalPlayer){
 			anim.SetTrigger ("Reload");
+			if (fireScript.magGO)
+			{
+				/*anim.MatchTarget(
+					fireScript.magGO.transform.position,
+					fireScript.magGO.transform.rotation,
+					AvatarTarget.LeftHand,
+					new MatchTargetWeightMask(Vector3.one, 1f),
+					0.5f,
+					1f
+				);*/
+			}
 			Cmd_Reload();
 		}
 	}
@@ -1014,7 +1025,8 @@ public class Player_Controller : NetworkBehaviour {
 
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
 			mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
-			
+			mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation,Quaternion.LookRotation(_scopeTransform.forward, _scopeTransform.up),0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
+
 			player_IK.Scope(true);
 			Zoom(true);
 			lookFactor = 0.3f;
@@ -1193,12 +1205,12 @@ public class Player_Controller : NetworkBehaviour {
 		}
 		else
 		{
-			Vector3 desiredVelocity = transform.TransformVector(new Vector3(h,z,v).normalized * moveSpeed);
+			Vector3 desiredVelocity = transform.TransformVector(new Vector3(h*strafeFactor,z,v).normalized * moveSpeed);
 			if(desiredVelocity.sqrMagnitude < rb.velocity.sqrMagnitude*0.5f){
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.05f*Time.deltaTime * 60f);
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.05f*Time.deltaTime * 20f);
 			}
 			else{
-				velocity = Vector3.Lerp(rb.velocity, desiredVelocity, 0.2f*Time.deltaTime * 60f);
+				velocity = Vector3.Lerp(rb.velocity, desiredVelocity, 0.2f*Time.deltaTime * 20f);
 			}
 			
 		}
@@ -1302,15 +1314,15 @@ public class Player_Controller : NetworkBehaviour {
 			}
 
 
-			float _timeFactor = 5f * 30f;
+			float _timeFactor = 2*30f;
 			rotation = new Vector3(
-				-v2 * 2f*_timeFactor,//Mathf.Lerp(previousRot.x, -v2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
-				h2 * 2f*_timeFactor,//Mathf.Lerp(previousRot.y, h2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
-				-h * 1.5f * rollFactor*_timeFactor*Time.deltaTime//Mathf.Lerp(previousRot.z, -h * 1.5f * rollFactor*_timeFactor , 0.05f*Time.deltaTime*20f)
+				-v2 *_timeFactor,//*Time.deltaTime*60f,//Mathf.Lerp(previousRot.x, -v2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
+				h2 *_timeFactor,//*Time.deltaTime*60f,//Mathf.Lerp(previousRot.y, h2 * 2f*_timeFactor , 0.2f*Time.deltaTime*20f),
+				Mathf.Lerp(previousRot.z, -h * rollFactor*5f*Time.deltaTime*60f , 0.1f)
 			);
 			previousRot = rotation;
-			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
 			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.up, rotation.y);
+			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
 			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.forward, rotation.z);
 
 			thrusterSoundFactor = (velocity - rb.velocity).magnitude/Time.deltaTime>10f?1f:0f;
@@ -1742,9 +1754,7 @@ public class Player_Controller : NetworkBehaviour {
 		fireScript.playerID = playerID;
 
 		anim.SetFloat ("Drift", fireScript.bulk);
-
-		anim.Play ("Aim" + fireScript.aimAnimNumber, 3);
-		anim.Play (recoilString, 2, 0f);
+		anim.Play ("Aim" + fireScript.aimAnimNumber, 2);
 		//We want to move the right hand target back and forth depending how long the gun is
 		this.GetComponent<Player_IK>().rhOffset = fireScript.rhOffset;
 		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;

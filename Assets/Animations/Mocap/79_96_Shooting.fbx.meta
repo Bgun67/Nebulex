@@ -1,103 +1,287 @@
 fileFormatVersion: 2
 guid: f10f8ce47d36dfc4f980c308ab3374dd
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: 79_96
-    100002: //RootNode
-    100004: abdomen
-    100006: chest
-    100008: head
-    100010: hip
-    100012: lButtock
-    100014: lCollar
-    100016: leftEye
-    100018: lFoot
-    100020: lForeArm
-    100022: lHand
-    100024: lIndex1
-    100026: lIndex2
-    100028: lMid1
-    100030: lMid2
-    100032: lPinky1
-    100034: lPinky2
-    100036: lRing1
-    100038: lRing2
-    100040: lShin
-    100042: lShldr
-    100044: lThigh
-    100046: lThumb1
-    100048: lThumb2
-    100050: neck
-    100052: rButtock
-    100054: rCollar
-    100056: rFoot
-    100058: rForeArm
-    100060: rHand
-    100062: rightEye
-    100064: rIndex1
-    100066: rIndex2
-    100068: rMid1
-    100070: rMid2
-    100072: rPinky1
-    100074: rPinky2
-    100076: rRing1
-    100078: rRing2
-    100080: rShin
-    100082: rShldr
-    100084: rThigh
-    100086: rThumb1
-    100088: rThumb2
-    400000: 79_96
-    400002: //RootNode
-    400004: abdomen
-    400006: chest
-    400008: head
-    400010: hip
-    400012: lButtock
-    400014: lCollar
-    400016: leftEye
-    400018: lFoot
-    400020: lForeArm
-    400022: lHand
-    400024: lIndex1
-    400026: lIndex2
-    400028: lMid1
-    400030: lMid2
-    400032: lPinky1
-    400034: lPinky2
-    400036: lRing1
-    400038: lRing2
-    400040: lShin
-    400042: lShldr
-    400044: lThigh
-    400046: lThumb1
-    400048: lThumb2
-    400050: neck
-    400052: rButtock
-    400054: rCollar
-    400056: rFoot
-    400058: rForeArm
-    400060: rHand
-    400062: rightEye
-    400064: rIndex1
-    400066: rIndex2
-    400068: rMid1
-    400070: rMid2
-    400072: rPinky1
-    400074: rPinky2
-    400076: rRing1
-    400078: rRing2
-    400080: rShin
-    400082: rShldr
-    400084: rThigh
-    400086: rThumb1
-    400088: rThumb2
-    7400000: 79_96_Aim
-    9500000: //RootNode
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: 79_96
+  - first:
+      1: 100002
+    second: //RootNode
+  - first:
+      1: 100004
+    second: abdomen
+  - first:
+      1: 100006
+    second: chest
+  - first:
+      1: 100008
+    second: head
+  - first:
+      1: 100010
+    second: hip
+  - first:
+      1: 100012
+    second: lButtock
+  - first:
+      1: 100014
+    second: lCollar
+  - first:
+      1: 100016
+    second: leftEye
+  - first:
+      1: 100018
+    second: lFoot
+  - first:
+      1: 100020
+    second: lForeArm
+  - first:
+      1: 100022
+    second: lHand
+  - first:
+      1: 100024
+    second: lIndex1
+  - first:
+      1: 100026
+    second: lIndex2
+  - first:
+      1: 100028
+    second: lMid1
+  - first:
+      1: 100030
+    second: lMid2
+  - first:
+      1: 100032
+    second: lPinky1
+  - first:
+      1: 100034
+    second: lPinky2
+  - first:
+      1: 100036
+    second: lRing1
+  - first:
+      1: 100038
+    second: lRing2
+  - first:
+      1: 100040
+    second: lShin
+  - first:
+      1: 100042
+    second: lShldr
+  - first:
+      1: 100044
+    second: lThigh
+  - first:
+      1: 100046
+    second: lThumb1
+  - first:
+      1: 100048
+    second: lThumb2
+  - first:
+      1: 100050
+    second: neck
+  - first:
+      1: 100052
+    second: rButtock
+  - first:
+      1: 100054
+    second: rCollar
+  - first:
+      1: 100056
+    second: rFoot
+  - first:
+      1: 100058
+    second: rForeArm
+  - first:
+      1: 100060
+    second: rHand
+  - first:
+      1: 100062
+    second: rightEye
+  - first:
+      1: 100064
+    second: rIndex1
+  - first:
+      1: 100066
+    second: rIndex2
+  - first:
+      1: 100068
+    second: rMid1
+  - first:
+      1: 100070
+    second: rMid2
+  - first:
+      1: 100072
+    second: rPinky1
+  - first:
+      1: 100074
+    second: rPinky2
+  - first:
+      1: 100076
+    second: rRing1
+  - first:
+      1: 100078
+    second: rRing2
+  - first:
+      1: 100080
+    second: rShin
+  - first:
+      1: 100082
+    second: rShldr
+  - first:
+      1: 100084
+    second: rThigh
+  - first:
+      1: 100086
+    second: rThumb1
+  - first:
+      1: 100088
+    second: rThumb2
+  - first:
+      4: 400000
+    second: 79_96
+  - first:
+      4: 400002
+    second: //RootNode
+  - first:
+      4: 400004
+    second: abdomen
+  - first:
+      4: 400006
+    second: chest
+  - first:
+      4: 400008
+    second: head
+  - first:
+      4: 400010
+    second: hip
+  - first:
+      4: 400012
+    second: lButtock
+  - first:
+      4: 400014
+    second: lCollar
+  - first:
+      4: 400016
+    second: leftEye
+  - first:
+      4: 400018
+    second: lFoot
+  - first:
+      4: 400020
+    second: lForeArm
+  - first:
+      4: 400022
+    second: lHand
+  - first:
+      4: 400024
+    second: lIndex1
+  - first:
+      4: 400026
+    second: lIndex2
+  - first:
+      4: 400028
+    second: lMid1
+  - first:
+      4: 400030
+    second: lMid2
+  - first:
+      4: 400032
+    second: lPinky1
+  - first:
+      4: 400034
+    second: lPinky2
+  - first:
+      4: 400036
+    second: lRing1
+  - first:
+      4: 400038
+    second: lRing2
+  - first:
+      4: 400040
+    second: lShin
+  - first:
+      4: 400042
+    second: lShldr
+  - first:
+      4: 400044
+    second: lThigh
+  - first:
+      4: 400046
+    second: lThumb1
+  - first:
+      4: 400048
+    second: lThumb2
+  - first:
+      4: 400050
+    second: neck
+  - first:
+      4: 400052
+    second: rButtock
+  - first:
+      4: 400054
+    second: rCollar
+  - first:
+      4: 400056
+    second: rFoot
+  - first:
+      4: 400058
+    second: rForeArm
+  - first:
+      4: 400060
+    second: rHand
+  - first:
+      4: 400062
+    second: rightEye
+  - first:
+      4: 400064
+    second: rIndex1
+  - first:
+      4: 400066
+    second: rIndex2
+  - first:
+      4: 400068
+    second: rMid1
+  - first:
+      4: 400070
+    second: rMid2
+  - first:
+      4: 400072
+    second: rPinky1
+  - first:
+      4: 400074
+    second: rPinky2
+  - first:
+      4: 400076
+    second: rRing1
+  - first:
+      4: 400078
+    second: rRing2
+  - first:
+      4: 400080
+    second: rShin
+  - first:
+      4: 400082
+    second: rShldr
+  - first:
+      4: 400084
+    second: rThigh
+  - first:
+      4: 400086
+    second: rThumb1
+  - first:
+      4: 400088
+    second: rThumb2
+  - first:
+      74: 7400000
+    second: 79_96_Aim
+  - first:
+      95: 9500000
+    second: //RootNode
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -126,6 +310,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 79_96_Aim
       takeName: 79_96
+      internalID: 0
       firstFrame: 34
       lastFrame: 50
       wrapMode: 0
@@ -136,10 +321,10 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
+      loopBlendOrientation: 1
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -158,25 +343,32 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -185,10 +377,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: hip
       humanName: Hips
@@ -751,13 +943,17 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

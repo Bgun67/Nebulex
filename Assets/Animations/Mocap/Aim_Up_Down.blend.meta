@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 439763b79ac363a41a485cc82e15c7f2
 ModelImporter:
-  serializedVersion: 20101
+  serializedVersion: 20200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -1127,8 +1127,11 @@ ModelImporter:
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Scene' has import animation warnings that might
       lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'spine01' is inbetween humanoid transforms and has
-      rotation animation that will be discarded.\n"
+      retargeting quality.\n\t'upperarm02.L' has translation animation that will
+      be discarded.\n\t'upperarm02.L' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\t'upperarm02.R' has translation animation
+      that will be discarded.\n\t'upperarm02.R' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -3714,6 +3717,7 @@ ModelImporter:
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
