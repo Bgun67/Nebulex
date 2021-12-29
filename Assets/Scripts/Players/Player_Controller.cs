@@ -1019,7 +1019,7 @@ public class Player_Controller : NetworkBehaviour {
 			moveFactor = 0.75f;
 			return;
 		}
-		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading  && !throwingGrenade) {
+		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading &&!anim.GetBool("Switch Weapons")  && !throwingGrenade) {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
@@ -1734,7 +1734,7 @@ public class Player_Controller : NetworkBehaviour {
 	
 	public IEnumerator Co_SwitchWeapons(bool _primary){
 		anim.SetBool ("Switch Weapons", true);
-		yield return new WaitForSeconds (0.5f);
+		yield return new WaitForSeconds (0.35f);
 		if (!_primary) {
 			primaryWeapon.SetActive (false);
 			secondaryWeapon.SetActive (true);
@@ -1751,6 +1751,8 @@ public class Player_Controller : NetworkBehaviour {
 		recoilAmount = fireScript.recoilAmount;		
 		
 		fireScript.playerID = playerID;
+		yield return new WaitForSeconds (2.06f);
+
 		anim.SetBool ("Switch Weapons", false);
 		fireScript.playerID = playerID;
 
