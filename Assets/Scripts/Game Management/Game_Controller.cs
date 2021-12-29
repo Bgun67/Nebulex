@@ -152,14 +152,6 @@ public class Game_Controller : NetworkBehaviour {
 			//TODO: Properly assign the teams
 			_player.team = i%2;
 			playerStats.Add(_player);
-			if (CustomNetworkManager.IsServerMachine())
-			{
-				//TODO: Assign these to spawn points
-				GameObject _bot = Instantiate(botPrefab, Vector3.zero, Quaternion.identity);
-				_bot.GetComponent<Com_Controller>().botID = i;
-				bots.Add(_bot.GetComponent<Com_Controller>());
-				NetworkServer.Spawn(_bot);
-			}
 		}
 
 		//Force a copy of the debug array
@@ -247,6 +239,26 @@ public class Game_Controller : NetworkBehaviour {
 		//}
 		Invoke("PhysicsUpdate", 1f);
 
+	}
+	void Start(){
+		for(int i = 0; i<maxPlayers; i++){
+			if(!playerStats[i].isBot)
+				continue;
+			PlayerStats _player = playerStats[i];
+			_player.name = "Bot " + i.ToString();
+			
+			//TODO: Properly assign the teams
+			
+			playerStats[i] = _player;
+			if (CustomNetworkManager.IsServerMachine())
+			{
+				//TODO: Assign these to spawn points
+				GameObject _bot = Instantiate(botPrefab, Vector3.zero, Quaternion.identity);
+				_bot.GetComponent<Com_Controller>().botID = i;
+				bots.Add(_bot.GetComponent<Com_Controller>());
+				NetworkServer.Spawn(_bot);
+			}
+		}
 	}
 
 	//Invoked when the game mode has changed
