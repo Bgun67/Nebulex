@@ -242,22 +242,24 @@ public class Game_Controller : NetworkBehaviour {
 
 	}
 	void Start(){
-		for(int i = 0; i<maxPlayers; i++){
-			if(!playerStats[i].isBot)
-				continue;
-			PlayerStats _player = playerStats[i];
-			_player.name = "Bot " + i.ToString();
-			
-			//TODO: Properly assign the teams
-			
-			playerStats[i] = _player;
-			if (CustomNetworkManager.IsServerMachine())
-			{
+		if (CustomNetworkManager.IsServerMachine())
+		{
+			for(int i = 0; i<maxPlayers; i++){
+				if(!playerStats[i].isBot)
+					continue;
+				PlayerStats _player = playerStats[i];
+				_player.name = "Bot " + i.ToString();
+				
+				//TODO: Properly assign the teams
+				
+				playerStats[i] = _player;
+				
 				//TODO: Assign these to spawn points
 				GameObject _bot = Instantiate(botPrefab, Vector3.zero, Quaternion.identity);
 				_bot.GetComponent<Com_Controller>().botID = i;
 				bots.Add(_bot.GetComponent<Com_Controller>());
 				NetworkServer.Spawn(_bot);
+				
 			}
 		}
 	}

@@ -33,7 +33,7 @@ public class Player_IK : MonoBehaviour
 	AnimationCurve recoilCurve;
 
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
     {
         anim = this.GetComponent<Animator>();   
         player = this.GetComponent<Player_Controller>();
