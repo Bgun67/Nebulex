@@ -20,6 +20,7 @@ public class Fire : MonoBehaviour {
 	public Vector3 rhOffset;
 	public Transform lhTarget;
 	public Transform lhHint;
+	public float leftGripSize = 1f;
 	public float reloadTime;
 	[Tooltip("Rounds Per Minute")]
 	public float fireRate;
@@ -52,7 +53,6 @@ public class Fire : MonoBehaviour {
 	[Range(0,1)]
 	public float bulk = 0.5f;
 
-	public int aimAnimNumber = 1;
 	public Transform scopePosition;
 	int fired = 0;
 	[Tooltip("DO fired bullets start with the parents velocity?")]

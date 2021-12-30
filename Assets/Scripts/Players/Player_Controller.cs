@@ -12,6 +12,9 @@ public class Player_Controller : NetworkBehaviour {
 	float h2;
 	float z;
 	float down;
+	float strafeFactor;
+	float rollFactor;
+	bool jump;
 	public Rigidbody rb;
 	public Animator anim;
 	Player_IK player_IK;
@@ -403,6 +406,9 @@ public class Player_Controller : NetworkBehaviour {
 		z = Input.GetAxis ("Move Y") * moveFactor*scopeMoveFactor;
 		v = Input.GetAxis ("Move Z")*moveFactor*scopeMoveFactor;
 		h = Input.GetAxis ("Move X")*moveFactor*scopeMoveFactor;
+		strafeFactor = Input.GetButton("Ctrl") ? 0f:1f;
+		rollFactor = Input.GetButton("Ctrl") ? 1f:0f;
+		jump = Input.GetButton("Jump");
 
 		muzzleClimb -= Time.deltaTime;
 		if(muzzleClimb < 0){
@@ -430,7 +436,7 @@ public class Player_Controller : NetworkBehaviour {
 
 		if (rb.useGravity) {
 			MouseLook();
-			if (Input.GetButton("Jump")){
+			if (jump){
 				Hop();
 			}
 			if (z > 0f) {
@@ -517,14 +523,14 @@ public class Player_Controller : NetworkBehaviour {
                 GainAir();
             }
 
-        } else {
+        } 
+		else{
 			
 			if (!exitingGravity)
 			{
 				SpaceMove();
 			}
 			LoseAir ();
-
 		}
 
 		blackoutShader.ChangeConciousness (Mathf.Clamp01(Mathf.Pow(airTime / suffocationTime,2f)+0.3f) * 10f);
@@ -553,6 +559,7 @@ public class Player_Controller : NetworkBehaviour {
 
 	}
 
+	
 	public void OnPieEvent(int _segmentNumber)
 	{
 		if (_segmentNumber == -1 || !isLocalPlayer || !this.enabled)
@@ -1176,12 +1183,11 @@ public class Player_Controller : NetworkBehaviour {
 
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		
-		float factor = Time.deltaTime * forceFactor;
-		float strafeFactor = Input.GetButton("Ctrl") ? 0f:1f;
-		float rollFactor = Input.GetButton("Ctrl") ? 1f:0f;
+		float factor = Time.deltaTime*  forceFactor;
+		
 		magBootsLock = false;
 		//Also check if the jump key is pressed, in either auto or hold states
-		if (Input.GetAxis("Move Y") >= 0.05f)
+		if (z >= 0.05f)
 		{
 			magBootsOn = false;
 		}
@@ -1250,10 +1256,10 @@ public class Player_Controller : NetworkBehaviour {
 				
 				//print(_hit.point + " " + _hitPoint);
 
-				Vector3 _lerpedForward = Vector3.Slerp(transform.forward,Vector3.ProjectOnPlane(transform.forward, _hitNormal), 0.3f * (1f-_hitDistance/5.4f));
-				Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hitNormal,0.3f*( 1f-_hitDistance/5.4f));
+				Vector3 _lerpedForward = Vector3.Slerp(transform.forward,Vector3.ProjectOnPlane(transform.forward, _hitNormal), 0.3f );//* (1f-_hitDistance/5.4f));
+				Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hitNormal,0.3f);//*( 1f-_hitDistance/5.4f));
 				previousNormal = _lerpedUp;
-				rb.transform.rotation = Quaternion.LookRotation(_lerpedForward,_lerpedUp);
+				rb.MoveRotation(Quaternion.LookRotation(_lerpedForward,_lerpedUp));
 				
 				Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
 				Debug.DrawRay(_hit.point,_hitNormal, Color.green);
@@ -1272,7 +1278,7 @@ public class Player_Controller : NetworkBehaviour {
 				rb.transform.Rotate(rotation);
 				velocity = transform.TransformVector(new Vector3(h,z,v).normalized * moveSpeed);
 				//TODO: Make leaf fall down
-				velocity += transform.up * -98100f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)) * Time.deltaTime * 60f;
+				velocity += transform.up * -9810f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)) * Time.deltaTime * 60f;
 
 				if(_hit.distance <= 0.2f){
 					//TODO: Finishe
@@ -1321,9 +1327,10 @@ public class Player_Controller : NetworkBehaviour {
 				Mathf.Lerp(previousRot.z, -h * rollFactor*5f*Time.deltaTime*60f , 0.1f)
 			);
 			previousRot = rotation;
-			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.up, rotation.y);
-			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
-			rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.forward, rotation.z);
+			rb.MoveRotation(transform.rotation*Quaternion.Euler(rotation));
+			//rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.up, rotation.y);
+			//rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
+			//rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.forward, rotation.z);
 
 			thrusterSoundFactor = (velocity - rb.velocity).magnitude/Time.deltaTime>10f?1f:0f;
 		}
@@ -1734,7 +1741,7 @@ public class Player_Controller : NetworkBehaviour {
 	
 	public IEnumerator Co_SwitchWeapons(bool _primary){
 		anim.SetBool ("Switch Weapons", true);
-		yield return new WaitForSeconds (0.35f);
+		yield return new WaitForSeconds (0.8f);
 		if (!_primary) {
 			primaryWeapon.SetActive (false);
 			secondaryWeapon.SetActive (true);
@@ -1751,13 +1758,6 @@ public class Player_Controller : NetworkBehaviour {
 		recoilAmount = fireScript.recoilAmount;		
 		
 		fireScript.playerID = playerID;
-		yield return new WaitForSeconds (2.06f);
-
-		anim.SetBool ("Switch Weapons", false);
-		fireScript.playerID = playerID;
-
-		anim.SetFloat ("Drift", fireScript.bulk);
-		anim.Play ("Aim" + fireScript.aimAnimNumber, 2);
 		//We want to move the right hand target back and forth depending how long the gun is
 		this.GetComponent<Player_IK>().rhOffset = fireScript.rhOffset;
 		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;
@@ -1766,6 +1766,15 @@ public class Player_Controller : NetworkBehaviour {
 		{
 			this.GetComponent<Player_IK>().lhHint = fireScript.lhHint;
 		}
+		yield return new WaitForSeconds (1.26f);
+
+		anim.SetBool ("Switch Weapons", false);
+		fireScript.playerID = playerID;
+
+		anim.SetFloat ("Drift", fireScript.bulk);
+		anim.SetFloat ("Left Hand Grip", fireScript.leftGripSize);
+
+		
 	}
 	public int GetTeam()
 	{

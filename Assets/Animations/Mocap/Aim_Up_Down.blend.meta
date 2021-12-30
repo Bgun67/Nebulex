@@ -1127,11 +1127,9 @@ ModelImporter:
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Scene' has import animation warnings that might
       lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'upperarm02.L' has translation animation that will
-      be discarded.\n\t'upperarm02.L' is inbetween humanoid transforms and has rotation
-      animation that will be discarded.\n\t'upperarm02.R' has translation animation
-      that will be discarded.\n\t'upperarm02.R' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n"
+      retargeting quality.\n\t'upperarm02.L' is inbetween humanoid transforms and
+      has rotation animation that will be discarded.\n\t'upperarm02.R' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -2353,7 +2351,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human:

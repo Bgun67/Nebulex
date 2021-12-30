@@ -89,7 +89,7 @@ public class Player_IK : MonoBehaviour
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
             if(player != null){
 				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
-				rhPosition = Vector3.Lerp(rhPosition, targetPosition, 0.5f);
+				rhPosition = Vector3.Lerp(rhPosition, targetPosition, 0.45f);
 			}
 			else
 			{
