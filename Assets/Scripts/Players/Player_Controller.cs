@@ -45,6 +45,7 @@ public class Player_Controller : NetworkBehaviour {
 	float lookTime = 0.5f;
 	float scopeMoveFactor = 1f;
 	float moveFactor = 1f;
+	float originalFOV;
 	public float currentStepHeight;
 	public bool enteringGravity = false;
 	bool exitingGravity = false;
@@ -148,6 +149,7 @@ public class Player_Controller : NetworkBehaviour {
 	public GameObject magGO;
 	[SyncVar (hook = "SwitchWeapons")]
 	public bool primarySelected = true;
+	bool switchWeapons = false;
 	[Header("Primary")]
 	public GameObject primaryWeapon;
 	public GameObject primaryWeaponPrefab;
@@ -202,7 +204,7 @@ public class Player_Controller : NetworkBehaviour {
 		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
-
+		originalFOV = mainCam.fieldOfView;
 	}
 
 	// Use this for initialization
@@ -412,7 +414,7 @@ public class Player_Controller : NetworkBehaviour {
 			Cmd_KillPlayer();
 		}
 
-		if (MInput.GetButtonDown ("Switch Weapons")) {
+		if (MInput.GetButtonDown ("Switch Weapons")&&!switchWeapons) {
 			Cmd_SwitchWeapons(!primarySelected);			
 			UpdateUI ();
 		}
@@ -955,7 +957,7 @@ public class Player_Controller : NetworkBehaviour {
 			moveFactor = 0.75f;
 			return;
 		}
-		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading &&!anim.GetBool("Switch Weapons")  && !throwingGrenade) {
+		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading &&!switchWeapons && !throwingGrenade) {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
@@ -1006,10 +1008,10 @@ public class Player_Controller : NetworkBehaviour {
 
 
 		if (zoomIn == true) {
-			mainCam.fieldOfView = Mathf.Lerp(i,20f,0.5f);
+			mainCam.fieldOfView = Mathf.Lerp(i,0.5f*originalFOV,0.5f);
 		}else
 		{
-			mainCam.fieldOfView = Mathf.Lerp(i, 90f, 0.5f);
+			mainCam.fieldOfView = Mathf.Lerp(i, originalFOV, 0.5f);
 		}
 	}
 	[Command]
@@ -1153,6 +1155,8 @@ public class Player_Controller : NetworkBehaviour {
 				foreach (ParticleSystem jet in jetpackJets) {
 					jet.Play ();
 				}
+				thrusterSoundFactor = 1f;
+
 				jetpackFuel -= Time.deltaTime * 2.5f;
 				sprintFactor = 1.5f;
 			} else {
@@ -1174,7 +1178,7 @@ public class Player_Controller : NetworkBehaviour {
 			if(rb.velocity.magnitude < 3.5f){
 				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
 			}else{
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.006f*Time.deltaTime * 20f);
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.06f*Time.deltaTime * 20f);
 			}
 		}
 		else{
@@ -1705,25 +1709,31 @@ public class Player_Controller : NetworkBehaviour {
 	public void SwitchWeapons(bool oldValue, bool newValue){
 		StartCoroutine (Co_SwitchWeapons (primarySelected));
 	}
-	
-	public IEnumerator Co_SwitchWeapons(bool _primary){
-		anim.SetBool ("Switch Weapons", true);
-		yield return new WaitForSeconds (0.8f);
-		if (!_primary) {
-			primaryWeapon.SetActive (false);
-			secondaryWeapon.SetActive (true);
-			fireScript = secondaryWeapon.GetComponent<Fire> ();
-		} else {
-			secondaryWeapon.SetActive (false);
-			primaryWeapon.SetActive (true);
-			fireScript = primaryWeapon.GetComponent<Fire> ();
+
+	public IEnumerator Co_SwitchWeapons(bool _primary)
+	{
+		anim.SetTrigger("Switch Weapons");
+		switchWeapons = true;
+		yield return new WaitForSeconds(0.8f);
+		if (!_primary)
+		{
+			primaryWeapon.SetActive(false);
+			secondaryWeapon.SetActive(true);
+			fireScript = secondaryWeapon.GetComponent<Fire>();
 		}
-		
-		if(isLocalPlayer){
-			UI_Manager._instance.ChangeWeapon (primarySelected);
+		else
+		{
+			secondaryWeapon.SetActive(false);
+			primaryWeapon.SetActive(true);
+			fireScript = primaryWeapon.GetComponent<Fire>();
 		}
-		recoilAmount = fireScript.recoilAmount;		
-		
+
+		if (isLocalPlayer)
+		{
+			UI_Manager._instance.ChangeWeapon(primarySelected);
+		}
+		recoilAmount = fireScript.recoilAmount;
+
 		fireScript.playerID = playerID;
 		//We want to move the right hand target back and forth depending how long the gun is
 		this.GetComponent<Player_IK>().rhOffset = fireScript.rhOffset;
@@ -1733,15 +1743,16 @@ public class Player_Controller : NetworkBehaviour {
 		{
 			this.GetComponent<Player_IK>().lhHint = fireScript.lhHint;
 		}
-		yield return new WaitForSeconds (1.26f);
 
-		anim.SetBool ("Switch Weapons", false);
+
+		yield return new WaitForSeconds(1.26f);
+		switchWeapons = false;
 		fireScript.playerID = playerID;
 
-		anim.SetFloat ("Drift", fireScript.bulk);
-		anim.SetFloat ("Left Hand Grip", fireScript.leftGripSize);
+		anim.SetFloat("Drift", fireScript.bulk);
+		anim.SetFloat("Left Hand Grip", fireScript.leftGripSize);
 
-		
+
 	}
 	public int GetTeam()
 	{
