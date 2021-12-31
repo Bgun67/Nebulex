@@ -240,6 +240,7 @@ public class Player_Controller : NetworkBehaviour {
 	}
 
 	//TODO: Make sure that the name is the right name
+	[Command]
 	void Cmd_SetPlayerName(string name){
 		Game_Controller.PlayerStats stat = Game_Controller.Instance.playerStats[playerID];
 		stat.name = name;
