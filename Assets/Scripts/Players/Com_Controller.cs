@@ -140,7 +140,7 @@ public class Com_Controller : NetworkBehaviour {
 			}
 		}
 		//TODO: Uncouple from frameRate
-		if((Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer) && Time.frameCount % 13 == 0){
+		if(isServer && Time.frameCount % 13 == 0){
 			CheckState();
 		}
 
@@ -162,7 +162,7 @@ public class Com_Controller : NetworkBehaviour {
 			nameTextMesh.transform.LookAt (gameController.localPlayer.transform);
 		}
 
-		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
+		if (isServer)
 		{
 			if(!isInSpace){
 				agent.isStopped = false;
@@ -185,10 +185,7 @@ public class Com_Controller : NetworkBehaviour {
 				default:
 					break;
 			}
-			if (Metwork.peerType != MetworkPeerType.Disconnected)
-			{
-				netView.RPC("RPC_SyncTransform", MRPCMode.Others, new object[] { transform.position, transform.rotation, agent.nextPosition, agent.speed });
-			}
+			
 		}
 
 		
@@ -303,7 +300,7 @@ public class Com_Controller : NetworkBehaviour {
 			for (int i = 0; i < players.Length; i++)
 			{
 				//TODO players[i].netObj.owner
-				if(gameController.playerStats[0].team == gameController.playerStats[botID].team){
+				if(gameController.playerStats[players[i].playerID].team == gameController.playerStats[botID].team){
 					continue;
 				}
 				if (Vector3.Dot((players[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
@@ -413,7 +410,7 @@ public class Com_Controller : NetworkBehaviour {
 		foreach (Player_Controller player in _players)
 		{
 			//TODO player.netObj.owner
-			if(gameController.playerStats[0].team == gameController.playerStats[botID].team){
+			if(gameController.playerStats[player.playerID].team == gameController.playerStats[botID].team){
 				continue;
 			}
 			float[] samples = new float[2];
