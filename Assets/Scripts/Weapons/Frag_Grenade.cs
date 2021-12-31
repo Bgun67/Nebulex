@@ -1,16 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Frag_Grenade : MonoBehaviour {
+public class Frag_Grenade : NetworkBehaviour {
 	[Tooltip("If using particles ensure the damage is for each particle")]
 	public int damagePower;
 	public float explosionForce;
 	public GameObject blastSystem;
+	[SyncVar]
 	public int fromID;
+	[SyncVar]//[HideInInspector]
+	public Vector3 initialVelocity;
 
 	void Awake(){
 		Invoke ("Explode", 5f);
+	}
+	void Start(){
+		GetComponent<Rigidbody>().velocity = initialVelocity;
 	}
 
 	void Explode(){

@@ -225,7 +225,8 @@ public class MapClass
 	{
 		//TODO: Reload the scene when the network connection fails! or make workaround! 
 		//unsecure, but should not fail
-		loadingPanel.SetActive(false);
+		if(loadingPanel != null)
+			loadingPanel.SetActive(false);
 	}
 
 	//Direct Connection without matchmaking

@@ -41,6 +41,8 @@ public class Player_Controller : NetworkBehaviour {
 	//to be used for moving in space
 	float moveSpeed = 7f;
 	float lookFactor = 1f;
+	[SyncVar (hook = nameof(LookTimeHook))]
+	float lookTime = 0.5f;
 	float scopeMoveFactor = 1f;
 	float moveFactor = 1f;
 	public float currentStepHeight;
@@ -81,6 +83,8 @@ public class Player_Controller : NetworkBehaviour {
 	public SkinnedMeshRenderer[] jerseyMeshes;
 
 	#region CrouchHeights
+	[SyncVar (hook = nameof(CrouchHook))]
+	bool isCrouched = false;
 	float capsule_originalHeight1 = 1f;
 	float capsule_originalHeight2 = 1f;
 	float capsule_originalY1 = -0.035f;
@@ -213,10 +217,7 @@ public class Player_Controller : NetworkBehaviour {
 		//Feet raycasts
 		lfRaycast = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
 		rfRaycast = anim.GetBoneTransform(HumanBodyBones.RightFoot);
-		//CHECK: Likely removal needed
-		//if (gameController.localPlayer == null) {
-		//	gameController.GetLocalPlayer ();
-		//}
+		
 		//ICONS
 		GameObject[] _icons = GameObject.FindGameObjectsWithTag("Icon");
 				
@@ -230,33 +231,19 @@ public class Player_Controller : NetworkBehaviour {
 		//CHECK
 		if (isLocalPlayer){
 			gameController.localPlayer = this;
+			gameController.localTeam = gameController.playerStats[playerID].team;
 			LoadPlayerData ();
-			//TODO
-			/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				print (this.name);
-				gameController.netView.RPC ("RPC_AddPlayerStat", MRPCMode.AllBuffered, new object[] {
-					playerName,
-					this.netObj.owner,
-					false
-
-				});
-			} else {
-				gameController.RPC_AddPlayerStat (
-					playerName,
-					this.netObj.owner,
-					false
-				);
-			}*/
+			Cmd_SetPlayerName(playerName);
 		}
-		//TODO
-		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
-		} else {
-			RPC_ShowNameText ();
-			sceneCam.enabled = false;
-			sceneCam.GetComponent<AudioListener>().enabled = false;
-		}*/
+		ShowNameText();
 		anim.SetFloat ("Look Speed", 0.5f);
+	}
+
+	//TODO: Make sure that the name is the right name
+	void Cmd_SetPlayerName(string name){
+		Game_Controller.PlayerStats stat = Game_Controller.Instance.playerStats[playerID];
+		stat.name = name;
+		Game_Controller.Instance.playerStats[playerID] = stat;
 	}
 	// runs after start basically the same
 	//Check remove this function if possible
@@ -288,7 +275,7 @@ public class Player_Controller : NetworkBehaviour {
 		}
 		//primarySelected = !primarySelected;
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			//TODO
+			//TODO Move this to the ui manager
 			//netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
 			
 		} else {
@@ -463,8 +450,8 @@ public class Player_Controller : NetworkBehaviour {
 				if (Time.frameCount % 4 == 0) {
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
 						if (jetpackJets.Length>1) {
-							//TODO:
-							//netView.RPC ("RPC_Jump", MRPCMode.Others, new object[]{ true, jetpackJets [0].isPlaying });
+							//Make some sort of syncvar
+							Cmd_Jump( true, jetpackJets [0].isPlaying);
 						}
 					}
 				}
@@ -475,31 +462,19 @@ public class Player_Controller : NetworkBehaviour {
 				anim.SetBool ("Jump", false);
 				if (Time.frameCount % 4 == 0) {
 					if (Metwork.peerType != MetworkPeerType.Disconnected) {
-						if (jetpackJets.Length>1) {
-							//TODO
-							//netView.RPC ("RPC_Jump", MRPCMode.Others, new object[]{ false, jetpackJets [0].isPlaying });
+						if (jetpackJets.Length>1) {			
+							Cmd_Jump(false, jetpackJets [0].isPlaying );
 						}
 					}
 				}
 			}
 			if (Input.GetButtonDown ("Crouch")) {
 				if (walkState == WalkState.Crouching) {
-					//TODO:
-					/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
-						netView.RPC ("RPC_UnCrouch", MRPCMode.AllBuffered, new object[]{ });
-					} else {
-						RPC_UnCrouch ();
-					}*/
+					Cmd_ChangeCrouch(false);
 
 				} else {
 					walkState = WalkState.Crouching;
-					//TODO:
-					/*
-					if (Metwork.peerType != MetworkPeerType.Disconnected) {
-						netView.RPC ("RPC_Crouch", MRPCMode.AllBuffered, new object[]{ });
-					} else {
-						RPC_Crouch ();
-					}*/
+					Cmd_ChangeCrouch(true);
 
 					
 
@@ -699,16 +674,15 @@ public class Player_Controller : NetworkBehaviour {
 	}
 	void ThrowGrenade(){
 		throwingGrenade = true;
-		//TODO:
-		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_ThrowGrenade", MRPCMode.AllBuffered, new object[]{ });
-		} else {
-			RPC_ThrowGrenade ();
-		}*/
-	
+		Cmd_ThrowGrenade();
 	}
-	[MRPC]
-	void RPC_ThrowGrenade(){
+	[Command]
+	//Start the grenage throwing animation
+	void Cmd_ThrowGrenade(){
+		Rpc_ThrowGrenade();
+	}
+	[ClientRpc]
+	void Rpc_ThrowGrenade(){
 		print ("Throwing Grenade");
 		anim.SetTrigger ("Throw Grenade");
 	}
@@ -717,80 +691,34 @@ public class Player_Controller : NetworkBehaviour {
 	}
 
 	public void SpawnGrenade(float _dropGrenadeFactor = 1f){
+		
 		throwingGrenade = false;
 		Destroy (grenadeModel);
-
-
-		if (isLocalPlayer) {
+		
+		if(!isLocalPlayer)
 			return;
-		}
-		
-		if(MInput.GetButton ("Ctrl")){
+
+		//if(Input.GetButton ("Ctrl")){
 			//If we are scoped, drop the grenade beside us
-			_dropGrenadeFactor = 0.05f;
-		}
-
-		Rigidbody _grenade = ((GameObject)Instantiate (grenadePrefab, grenadeSpawn.position, grenadeSpawn.rotation)).GetComponent<Rigidbody> ();
-
-		Destroy (_grenade.gameObject, 20f);
-
-		_grenade.AddForce (mainCam.transform.forward * 400f * _dropGrenadeFactor);
+		//	_dropGrenadeFactor = 0.05f;
+		//}
 		
-
-		int _grenadeView = 0;
-
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			_grenadeView = Metwork.AllocateMetworkView (Metwork.player.connectionID);
-		} else {
-			_grenadeView = Metwork.AllocateMetworkView (1);
-		}
-		_grenade.GetComponent<MetworkView> ().viewID = _grenadeView;
-		_grenade.GetComponent<Metwork_Object> ().owner = _grenadeView /1000;
-		_grenade.GetComponent<Metwork_Object> ().netID = _grenadeView;
-		_grenade.GetComponent<Metwork_Object>().isLocal = true;
-
-		if (!Metwork.metViews.ContainsKey (_grenadeView)) {
-			Metwork.metViews.Add (_grenadeView, _grenade.GetComponent<MetworkView> ());
-		} else {
-			Metwork.metViews[_grenadeView] = _grenade.GetComponent<MetworkView> ();
-		}
-
-		_grenade.GetComponent<MetworkView>().Start();
-		_grenade.GetComponent<Frag_Grenade>().fromID = _grenadeView /1000;
-
-		//TODO
-		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_SpawnGrenade", MRPCMode.OthersBuffered, new object[]{_grenadeView, _grenade.velocity, _grenade.position,_grenade.rotation});
-		} else {
-			RPC_SpawnGrenade (_grenadeView, _grenade.velocity, _grenade.position,_grenade.rotation);
-		}*/
-
+		Cmd_SpawnGrenade(mainCam.transform.forward * 10.0f * _dropGrenadeFactor, grenadeSpawn.position, grenadeSpawn.rotation);
 	}
-	[MRPC]
-	void RPC_SpawnGrenade(int _grenadeView, Vector3 _velocity, Vector3 _position, Quaternion _rotation){
-		if(grenadeModel != null){
-			Destroy (grenadeModel);
-		}
-		Rigidbody _grenade = ((GameObject)Instantiate (grenadePrefab, _position + _velocity * 0.05f, _rotation)).GetComponent<Rigidbody> ();
-		
-
-		_grenade.GetComponent<MetworkView> ().viewID = _grenadeView;
-		_grenade.GetComponent<Metwork_Object> ().owner = _grenadeView /1000;
-		_grenade.GetComponent<Metwork_Object> ().netID = _grenadeView;
-
-		if (!Metwork.metViews.ContainsKey (_grenadeView)) {
-			Metwork.metViews.Add (_grenadeView, _grenade.GetComponent<MetworkView> ());
-		} else {
-			Metwork.metViews[_grenadeView] = _grenade.GetComponent<MetworkView> ();
-		}
-
-		//Grenades MetworkView not start, changing start to awake fucks things up
-		_grenade.GetComponent<MetworkView>().Start();
-		_grenade.GetComponent<Frag_Grenade>().fromID = _grenadeView /1000;
+	[Command]
+	public void Cmd_SpawnGrenade(Vector3 _velocity, Vector3 _position, Quaternion _rotation){
+		Rigidbody _grenade = ((GameObject)Instantiate (grenadePrefab, _position, _rotation)).GetComponent<Rigidbody> ();
 		_grenade.velocity = _velocity;
+		_grenade.GetComponent<Frag_Grenade>().fromID = playerID;
+		_grenade.GetComponent<Frag_Grenade>().initialVelocity = _velocity;
+		NetworkServer.Spawn(_grenade.gameObject);
+		StartCoroutine(Co_DestroyGrenade(_grenade.gameObject));
 	}
-
-
+	public IEnumerator Co_DestroyGrenade(GameObject _grenade){
+		yield return new WaitForSecondsRealtime(20.0f);
+		NetworkServer.Destroy(_grenade);
+	}
+	
     void CallShip()
     {
         bool isAssigned = false;
@@ -1083,8 +1011,13 @@ public class Player_Controller : NetworkBehaviour {
 			mainCam.fieldOfView = Mathf.Lerp(i, 90f, 0.5f);
 		}
 	}
-	[MRPC]
-	public void RPC_Jump(bool jumping, bool jets){
+	[Command]
+	public void Cmd_Jump(bool jumping, bool jets)
+	{
+		Rpc_Jump(jumping, jets);
+	}
+	[ClientRpc]
+	public void Rpc_Jump(bool jumping, bool jets){
 		if (jets) {
 			foreach (ParticleSystem jet in jetpackJets) {
 				jet.Play ();
@@ -1095,9 +1028,6 @@ public class Player_Controller : NetworkBehaviour {
 			}
 		}
 		anim.SetBool ("Jump", jumping);
-		
-
-
 	}
 	public void Jump(){
 		
@@ -1203,23 +1133,54 @@ public class Player_Controller : NetworkBehaviour {
 
 		Vector3 velocity = Vector3.zero;
 		Vector3 rotation = Vector3.zero;
-		//TODO: Tie this into the jetpack fuel
-		if (false && Input.GetButtonDown("Sprint"))//&&(Time.time >jumpWait))
+		float sprintFactor = 1f;
+		//TODO: Stow the player's gun
+		
+		if (Input.GetButton("Sprint"))
 		{
-			jumpWait = Time.time + 5f;
-			rb.AddRelativeForce (new Vector3(0f, z*Time.deltaTime* forceFactor * 20f, v *Time.deltaTime* forceFactor * 20f)*60f);
-		}
-		else
-		{
-			Vector3 desiredVelocity = transform.TransformVector(new Vector3(h*strafeFactor,z,v).normalized * moveSpeed);
-			if(desiredVelocity.sqrMagnitude < rb.velocity.sqrMagnitude*0.5f){
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.05f*Time.deltaTime * 20f);
+			if (jetpackFuel > 0.7f && refueling == true)
+			{
+				refueling = false;
+
 			}
-			else{
-				velocity = Vector3.Lerp(rb.velocity, desiredVelocity, 0.2f*Time.deltaTime * 20f);
+			if (jetpackFuel <= 0f)
+			{
+				refueling = true;
 			}
+			if (refueling == false) {
+			
+				foreach (ParticleSystem jet in jetpackJets) {
+					jet.Play ();
+				}
+				jetpackFuel -= Time.deltaTime * 2.5f;
+				sprintFactor = 1.5f;
+			} else {
+				foreach (ParticleSystem jet in jetpackJets) {
+					jet.Stop ();
+				}
+			}
+		
+			UpdateUI ();
+			
 			
 		}
+		
+		
+		Vector3 desiredVelocity = transform.TransformVector(new Vector3(h*strafeFactor,z,v).normalized * moveSpeed * sprintFactor);
+		if(desiredVelocity.sqrMagnitude < rb.velocity.sqrMagnitude*0.5f){
+			//Decelerate the player more if they are almost at a standstill
+			//This makes it easier to stop the player
+			if(rb.velocity.magnitude < 3.5f){
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
+			}else{
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.006f*Time.deltaTime * 20f);
+			}
+		}
+		else{
+			velocity = Vector3.Lerp(rb.velocity, desiredVelocity, 0.2f*Time.deltaTime * 20f);
+		}
+			
+		
 
 		if(magBootsOn){
 			RaycastHit _hit = new RaycastHit();
@@ -1379,32 +1340,38 @@ public class Player_Controller : NetworkBehaviour {
 		//walkSound.volume = Mathf.Clamp01 (Mathf.Abs (hSpeed + vSpeed));
 	}
 
-	[MRPC]
-	public void RPC_Crouch(){
-		CapsuleCollider[] capsules = this.GetComponents<CapsuleCollider> ();
-		Vector3 center = capsules [0].center;
-		center.y = capsule_crouchY1;
-		capsules [0].center = center;
-		capsules [0].height = capsule_crouchHeight1;
-		Vector3 center2 = capsules [1].center;
-		center2.y = capsule_crouchY2;
-		capsules [1].center = center2;
-		capsules [1].height = capsule_crouchHeight2;
+	[Command]
+	public void Cmd_ChangeCrouch(bool _isCrouched){
+		isCrouched = _isCrouched;
 	}
-	[MRPC]
-	public void RPC_UnCrouch(){
-		CapsuleCollider[] capsules = this.GetComponents<CapsuleCollider> ();
-		Vector3 center = capsules [0].center;
-		center.y = capsule_originalY1;
-		capsules [0].center = center;
-		capsules [0].height = capsule_originalHeight1;
-		Vector3 center2 = capsules [1].center;
-		center2.y = capsule_originalY2;
-		capsules [1].center = center2;
-		capsules [1].height = capsule_originalHeight2;
 
-		walkState = WalkState.Walking;
+	public void CrouchHook(bool oldVal, bool isCrouched){
+		if(isCrouched){
+			CapsuleCollider[] capsules = this.GetComponents<CapsuleCollider> ();
+			Vector3 center = capsules [0].center;
+			center.y = capsule_crouchY1;
+			capsules [0].center = center;
+			capsules [0].height = capsule_crouchHeight1;
+			Vector3 center2 = capsules [1].center;
+			center2.y = capsule_crouchY2;
+			capsules [1].center = center2;
+			capsules [1].height = capsule_crouchHeight2;
+		}
+		else{
+			CapsuleCollider[] capsules = this.GetComponents<CapsuleCollider> ();
+			Vector3 center = capsules [0].center;
+			center.y = capsule_originalY1;
+			capsules [0].center = center;
+			capsules [0].height = capsule_originalHeight1;
+			Vector3 center2 = capsules [1].center;
+			center2.y = capsule_originalY2;
+			capsules [1].center = center2;
+			capsules [1].height = capsule_originalHeight2;
+
+			walkState = WalkState.Walking;
+		}
 	}
+	
 	[MRPC]
 	public void RPC_ExitVehicle()
 	{
@@ -1493,23 +1460,22 @@ public class Player_Controller : NetworkBehaviour {
 		anim.SetFloat("Look Speed", Mathf.Clamp(lookUpDownTime + v2 * 2f*Time.deltaTime, -1f, 1f));
 		
 		if (Time.frameCount % 4==0) {
-			/*TODO
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netView.RPC ("RPC_Look", MRPCMode.Others, new object[]{ lookUpDownTime });
-			}*/
+			Cmd_SetLookTime(lookUpDownTime);
 		}
 
 	
 	}
-	[MRPC]
-	public void RPC_Look(float time){
-		AdjustView(time);
-
+	[Command]
+	public void Cmd_SetLookTime(float time){
+		lookTime = time;
 	}
-	public void AdjustView(float time)
+	
+	public void LookTimeHook(float oldVal, float _lookTime)
 	{
-		float lookTime = anim.GetFloat("Look Speed");
-		anim.SetFloat("Look Speed", Mathf.Lerp(lookTime, time, 0.5f));
+		if(!isLocalPlayer){
+			float _time = anim.GetFloat("Look Speed");
+			anim.SetFloat("Look Speed", Mathf.Lerp(_time, _lookTime, 0.5f));
+		}
 	}
 	public void TurnHead(){
 		anim.SetFloat ("Head Turn Speed", -h2*0.5f+0.5f);
@@ -1640,8 +1606,8 @@ public class Player_Controller : NetworkBehaviour {
 	public IEnumerator ExitGravity(){
 		exitingGravity = true;
 		
-		rb.angularDrag = 1f;
-		rb.drag = 0.3f;
+		rb.angularDrag = 0f;
+		rb.drag = 0.0f;
 		rb.constraints = RigidbodyConstraints.None;
 		anim.SetBool ("Float", true);
 		anim.SetBool ("Jump", false);
@@ -1685,7 +1651,7 @@ public class Player_Controller : NetworkBehaviour {
 			yield return null;
 		}
 		enteringGravity = true;
-		rb.drag = 0f;
+		rb.drag = 0.3f;
 
 		anim.SetBool ("Float", false);
 		
@@ -1964,20 +1930,22 @@ public class Player_Controller : NetworkBehaviour {
 		nameTextMesh.text = playerName;
 
 	}
-	[MRPC]
-	public void RPC_ShowNameText(){
-		gameController = FindObjectOfType<Game_Controller> ();
-		if (gameController.localPlayer == null) {
-			gameController.GetLocalPlayer ();
+	
+	public void ShowNameText(){
+		
+		gameController = Game_Controller.Instance;
+		if(this.gameObject ==gameController.localPlayer){
+			nameTextMesh.gameObject.SetActive (false);
 		}
-		int localTeam = gameController.GetLocalTeam();
-		if (GetTeam() == localTeam && this.gameObject!=gameController.localPlayer) {
+		else if (gameController.playerStats[playerID].team == gameController.localTeam) {
 			nameTextMesh.color = new Color (0f, 50f, 255f);
 			nameTextMesh.gameObject.SetActive (true);
+			nameTextMesh.text = playerName;
 
 		} else {
 			nameTextMesh.color = new Color (255f, 0f, 0f);
 			nameTextMesh.gameObject.SetActive (false);
+			nameTextMesh.text = playerName;
 		}
 		
 	}

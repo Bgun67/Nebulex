@@ -208,7 +208,8 @@ public class Nav_Volume_Builder : MonoBehaviour
         //Reverse the route so it goes from start to end
         //Remove the start point from the route
         plannedRoute.Reverse();
-        plannedRoute.RemoveAt(0);
+        if(plannedRoute.Count > 0)
+            plannedRoute.RemoveAt(0);
 
         //print("Finished calculating link costs");
         

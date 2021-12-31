@@ -70,9 +70,9 @@ public class Chat : MonoBehaviour {
 		}
 
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_SendMessage", MRPCMode.AllBuffered, new object[]{ gameController.localPlayer.GetComponent<Player_Controller>().playerName + ": " + txtField.text + "\n" , gameController.GetLocalTeam()});
+			netView.RPC ("RPC_SendMessage", MRPCMode.AllBuffered, new object[]{ gameController.localPlayer.GetComponent<Player_Controller>().playerName + ": " + txtField.text + "\n" , gameController.localTeam});
 		} else {
-			RPC_SendMessage (gameController.localPlayer.name + ": " + txtField.text + "\n", gameController.GetLocalTeam());
+			RPC_SendMessage (gameController.localPlayer.name + ": " + txtField.text + "\n", gameController.localTeam);
 		}
 		txtField.text = "";
 		EventSystem.current.SetSelectedGameObject (null, null);

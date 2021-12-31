@@ -35,7 +35,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		List<Spawn_Point> _allSpawns = new List<Spawn_Point>(FindObjectsOfType<Spawn_Point>());
-		_allSpawns.RemoveAll(x => x.team != gameController.GetLocalTeam());
+		_allSpawns.RemoveAll(x => x.team != gameController.localTeam);
 
 		Spawn_Point[] spawnPoints = _allSpawns.ToArray();
 		if(spawnPoints.Length < 1){

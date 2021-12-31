@@ -18,7 +18,7 @@ public class MHostData{
 	public string comment;
 }
 
-public class PHPMasterServerConnect : NetworkBehaviour 
+public class PHPMasterServerConnect : MonoBehaviour 
 {
 	public string masterServerURL = "";
 	public string gameType = "";
@@ -156,7 +156,7 @@ public class PHPMasterServerConnect : NetworkBehaviour
 				}
 			}
 			catch{
-				Debug.Log("Error");
+				Debug.Log("Error parsing host data");
 			}
 			//try {
 				GetComponent<Match_Scene_Manager> ().DisplayMatches ();
