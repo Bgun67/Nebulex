@@ -12,6 +12,7 @@ public class Profile : MonoBehaviour {
 	public Text playerKills;
 	public Text playerDeaths;
 	public Text playerKD;
+	
 	// Use this for initialization
 	void Start () {
 		try

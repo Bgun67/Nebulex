@@ -66,6 +66,18 @@ public class Player_IK : MonoBehaviour
 		}
 		return -player.transform.forward * recoilMagnitude * recoilCurve.Evaluate(Time.time - recoilStartTime);
 	}
+    void Update(){
+        /*if(rhTarget != null){
+            if(player != null){
+				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
+				rhPosition = Vector3.Slerp(rhPosition, targetPosition, 0.99f);
+			}
+			else
+			{
+				rhPosition =  rhTarget.position;
+			}
+        }*/
+    }
 
 	void OnAnimatorIK(){
         //Pull the latest raycast data from the player
@@ -89,7 +101,7 @@ public class Player_IK : MonoBehaviour
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
             if(player != null){
 				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
-				rhPosition = Vector3.Lerp(rhPosition, targetPosition, 0.45f);
+				rhPosition = Vector3.Lerp(rhPosition, targetPosition, 0.5f);
 			}
 			else
 			{

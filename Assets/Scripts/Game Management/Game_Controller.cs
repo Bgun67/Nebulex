@@ -88,6 +88,7 @@ public class Game_Controller : NetworkBehaviour {
 			_localPlayer = value;
 		}
 	}
+	public int localTeam = 0;
 	[Space(5f)]
 	[Header("UI Variables")]
 	public int matchLength;
@@ -483,12 +484,12 @@ public class Game_Controller : NetworkBehaviour {
 
 		//Update the scores of the teams, the local team being on the
 		//left side and the opposing team being on the right
-		if (localPlayer != null && GetLocalTeam() == 0) {
+		if (localPlayer != null && localTeam == 0) {
 			UI_homeScoreText.text = scoreA.ToString();
 			UI_awayScoreText.text = scoreB.ToString();
 			UI_homeColour.color = new Color(0,1f,0);
 			UI_awayColour.color = new Color(1f,0f,0);
-		} else if (GetLocalTeam() == 1){
+		} else if (localTeam == 1){
 			UI_homeScoreText.text = scoreB.ToString();
 			UI_awayScoreText.text = scoreA.ToString();
 			UI_awayColour.color = new Color(0,1f,0);
@@ -814,17 +815,7 @@ public class Game_Controller : NetworkBehaviour {
 	
 
 	}
-	public int GetLocalTeam()
-	{
-
-		int _localPlayerID = GetLocalPlayer();
-		//At the start of the match there may be no local player, so we can return the team of the 
-		//First bot instead
-		if(_localPlayerID == -1)
-			return playerStats[0].team;
-		else
-			return playerStats[localPlayer.playerID].team;
-	}
+	
 	void Update()
 	{
 		if (Input.GetKeyDown("0") && false)

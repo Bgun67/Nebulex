@@ -148,7 +148,8 @@ public class Com_Controller : NetworkBehaviour {
 		this.GetComponent<Player_IK>().lhTarget = fireScript.lhTarget;
 		fireScript.playerID = botID;
 
-		int localTeam = gameController.GetLocalTeam();
+		int localTeam = gameController.localTeam;
+		//TODO move this code to the ui manager
 		if(Game_Controller.Instance.localPlayer != null){
 			if (gameController.playerStats[botID].team == localTeam) {
 				nameTextMesh.color = new Color (0f, 50f, 255f);
