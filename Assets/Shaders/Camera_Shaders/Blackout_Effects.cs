@@ -8,7 +8,6 @@ public class Blackout_Effects : MonoBehaviour {
 	public Material material;
 
 
-	
 	//PostProcess the image
 	void OnRenderImage(RenderTexture source, RenderTexture destination){
 		Graphics.Blit (source, destination, material);

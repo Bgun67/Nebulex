@@ -49,7 +49,7 @@ public class Player_Controller : Player {
 	//bool exitingGravity = false;
 	//float jumpWait;
 	//float jumpHeldTime;
-	
+	float originalFOV;
 	//public float jetpackFuel = 1f;
 	//public ParticleSystem[] jetpackJets;
 
@@ -136,6 +136,7 @@ public class Player_Controller : Player {
 	//[Header("Primary")]
 	//public GameObject primaryWeapon;
 	//public GameObject primaryWeaponPrefab;
+	bool switchWeapons = false;
 	//Weapon identifiers
 	//[SyncVar (hook = "LoadWeaponData")]
 	//public int primaryWeaponNum;
@@ -187,7 +188,7 @@ public class Player_Controller : Player {
 		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
-
+		originalFOV = mainCam.fieldOfView;
 	}
 
 	// Use this for initialization
@@ -397,7 +398,7 @@ public class Player_Controller : Player {
 			Cmd_KillPlayer();
 		}
 
-		if (MInput.GetButtonDown ("Switch Weapons")) {
+		if (MInput.GetButtonDown ("Switch Weapons")&&!switchWeapons) {
 			Cmd_SwitchWeapons(!primarySelected);			
 			UpdateUI ();
 		}
@@ -838,7 +839,7 @@ public class Player_Controller : Player {
 			moveFactor = 0.75f;
 			return;
 		}
-		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading &&!anim.GetBool("Switch Weapons")  && !throwingGrenade) {
+		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading &&!switchWeapons && !throwingGrenade) {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
@@ -890,10 +891,10 @@ public class Player_Controller : Player {
 
 
 		if (zoomIn == true) {
-			mainCam.fieldOfView = Mathf.Lerp(i,20f,0.5f);
+			mainCam.fieldOfView = Mathf.Lerp(i,0.5f*originalFOV,0.5f);
 		}else
 		{
-			mainCam.fieldOfView = Mathf.Lerp(i, 90f, 0.5f);
+			mainCam.fieldOfView = Mathf.Lerp(i, originalFOV, 0.5f);
 		}
 	}
 	
@@ -1021,6 +1022,8 @@ public class Player_Controller : Player {
 				foreach (ParticleSystem jet in jetpackJets) {
 					jet.Play ();
 				}
+				thrusterSoundFactor = 1f;
+
 				jetpackFuel -= Time.deltaTime * 2.5f;
 				sprintFactor = 1.5f;
 			} else {
@@ -1042,7 +1045,7 @@ public class Player_Controller : Player {
 			if(rb.velocity.magnitude < 3.5f){
 				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
 			}else{
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.006f*Time.deltaTime * 20f);
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.06f*Time.deltaTime * 20f);
 			}
 		}
 		else{
