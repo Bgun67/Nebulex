@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
 
-public class Player_Controller : NetworkBehaviour {
+public class Player_Controller : Player {
 	float v;
 	float v2;
 	float h;
@@ -15,101 +15,89 @@ public class Player_Controller : NetworkBehaviour {
 	float strafeFactor;
 	float rollFactor;
 	bool jump;
-	public Rigidbody rb;
-	public Animator anim;
-	Player_IK player_IK;
+	//public Rigidbody rb;
+	//public Animator anim;
+	//Player_IK player_IK;
 
-	public LayerMask magBootsLayer;
+	//public LayerMask magBootsLayer;
 	//Access to the left and right foot data
-	[HideInInspector]
-	public RaycastHit lfHit;
 	//[HideInInspector]
-	public bool lfHitValid;
-	[HideInInspector]
-	public RaycastHit rfHit;
+	//public RaycastHit lfHit;
+	//[HideInInspector]
+	//public bool lfHitValid;
+	//[HideInInspector]
+	//public RaycastHit rfHit;
 
 	Vector3 previousNormal = new Vector3(0,1,0);
-	public bool onLadder = false;
-	public float forceFactor;
-	public bool inVehicle = false;
-	Transform lfRaycast;
-	Transform rfRaycast;
-	public float maxStepHeight;
-	public Game_Controller gameController;
-	WalkState walkState = WalkState.Walking;
-	public bool useGravity;
+	//public bool onLadder = false;
+	//public float forceFactor;
+	//public bool inVehicle = false;
+	//Transform lfRaycast;
+	//Transform rfRaycast;
+	
+	//public Game_Controller gameController;
+	//WalkState walkState = WalkState.Walking;
+	//public bool useGravity;
 	//to be used for moving in space
-	float moveSpeed = 7f;
-	float lookFactor = 1f;
-	[SyncVar (hook = nameof(LookTimeHook))]
-	float lookTime = 0.5f;
-	float scopeMoveFactor = 1f;
-	float moveFactor = 1f;
-	public float currentStepHeight;
-	public bool enteringGravity = false;
-	bool exitingGravity = false;
-	float jumpWait;
-	float jumpHeldTime;
+	//float moveSpeed = 7f;
+	//float lookFactor = 1f;
+	//[SyncVar (hook = nameof(LookTimeHook))]
+	//float lookTime = 0.5f;
+	//float scopeMoveFactor = 1f;
+	//float moveFactor = 1f;
+	//public bool enteringGravity = false;
+	//bool exitingGravity = false;
+	//float jumpWait;
+	//float jumpHeldTime;
 	
-	public float jetpackFuel = 1f;
-	public ParticleSystem[] jetpackJets;
+	//public float jetpackFuel = 1f;
+	//public ParticleSystem[] jetpackJets;
 
-	public bool refueling = false;
+	//public bool refueling = false;
 	//controls whether the player has toggle the magboots on or off
-	bool magBootsOn;
-	bool magBootsLock = false;
+	//bool magBootsOn;
+	//bool magBootsLock = false;
 
-	public float airTime;
-	public float suffocationTime;
-	public Damage damageScript;
-	public LadderController ladder;
-	public int kills;
+	//public float airTime;
+	//public float suffocationTime;
+	//public Damage damageScript;
+	//public LadderController ladder;
 	
-	[SyncVar]
-	public int playerID;
-
-	public string playerName = "Fred";
-	public GameObject ragdoll;
-	public float knifePosition;
-	public Animator knifeAnim;
-	bool counterKnife;
-	public Transform flagPosition;
-	public Rigidbody shipRB;
+	//[SyncVar]
+	//public int playerID;
+	//TODO: Remove and replace with getplayername
+	//public string playerName = "Fred";
+	//public GameObject ragdoll;
+	
+	//public Animator knifeAnim;
+	//bool counterKnife;
+	//public Transform flagPosition;
+	//public Rigidbody shipRB;
 
 	/// <summary>
 	/// The player's team. 0 being team A and 1 being team B
 	/// </summary>
-	public Material[] teamMaterials;
-	public SkinnedMeshRenderer[] jerseyMeshes;
+	//public Material[] teamMaterials;
+	//public SkinnedMeshRenderer[] jerseyMeshes;
 
 	#region CrouchHeights
-	[SyncVar (hook = nameof(CrouchHook))]
-	bool isCrouched = false;
-	float capsule_originalHeight1 = 1f;
-	float capsule_originalHeight2 = 1f;
-	float capsule_originalY1 = -0.035f;
-	float capsule_originalY2 = -0.01f;
-	float capsule_crouchHeight1 = 0.8f;
-	float capsule_crouchHeight2 = 0.8f;
-	float capsule_crouchY1 = -0.132f;
-	float capsule_crouchY2 = -0.1f;
+	//[SyncVar (hook = nameof(CrouchHook))]
+	//bool isCrouched = false;
+	//float capsule_originalHeight1 = 1f;
+	//float capsule_originalHeight2 = 1f;
+	//float capsule_originalY1 = -0.035f;
+	//float capsule_originalY2 = -0.01f;
+	//float capsule_crouchHeight1 = 0.8f;
+	//float capsule_crouchHeight2 = 0.8f;
+	//float capsule_crouchY1 = -0.132f;
+	//float capsule_crouchY2 = -0.1f;
 	#endregion
 
 	[Header("UI")]
 	#region UI
-
-	//GameObject pieIcon;
-	public GameObject [] pieQuadrants;
-	public int pieNumber = 0;
-	public Minimap_Controller mmpController;
-	public MeshRenderer playerIcon;
-	public LayerMask iconMask;
 	bool minimapRunning = false;
 
 	public GameObject minimapUI;
-	public TextMesh nameTextMesh;
-	public Text UI_ammoText;
-	bool keypadPushed;
 	
 	public Blackout_Effects blackoutShader;
 
@@ -118,8 +106,8 @@ public class Player_Controller : NetworkBehaviour {
 	#endregion
 	[Header("Cameras")]
 	#region cameras
-	public GameObject mainCamObj;
-	Camera mainCam;
+	//public GameObject mainCamObj;
+	//Camera mainCam;
 	Vector3 originalCamPosition;
 	Quaternion originalCamRotation;
 	public GameObject minimapCam;
@@ -127,72 +115,69 @@ public class Player_Controller : NetworkBehaviour {
 	#endregion
 	[Header("Sound")]
 	#region sound
-	AudioWrapper wrapper;
-	float thrusterSoundFactor = 0f;
-	public AudioSource walkSound;
-	public AudioClip[] walkClips;
+	//AudioWrapper wrapper;
+	//float thrusterSoundFactor = 0f;
+	//public AudioSource walkSound;
+	//public AudioClip[] walkClips;
 	public AudioSource breatheSound;
-	public AudioClip[] thrusterClips;
 
 	#endregion
 	[Space(5)]
 	[Header("Weapons")]
 	#region weapons
 
-	string recoilString;
-	float recoilAmount;
-	public Fire fireScript;
+	//public Fire fireScript;
 	public string[] loadoutSettings;
-	public Transform finger;
-	public Transform rightHandPosition;
-	public GameObject magGO;
-	[SyncVar (hook = "SwitchWeapons")]
-	public bool primarySelected = true;
-	[Header("Primary")]
-	public GameObject primaryWeapon;
-	public GameObject primaryWeaponPrefab;
+	//public Transform finger;
+	//public Transform rightHandPosition;
+	//public GameObject magGO;
+	//[SyncVar (hook = "SwitchWeapons")]
+	//public bool primarySelected = true;
+	//[Header("Primary")]
+	//public GameObject primaryWeapon;
+	//public GameObject primaryWeaponPrefab;
 	//Weapon identifiers
-	[SyncVar (hook = "LoadWeaponData")]
-	public int primaryWeaponNum;
-	[SyncVar (hook = "LoadWeaponData")]
-	public int secondaryWeaponNum;
-	[SyncVar (hook = "LoadWeaponData")]
-	public int primaryScopeNum;
-	[SyncVar (hook = "LoadWeaponData")]
-	public int secondaryScopeNum;
-	public Vector3 primaryLocalPosition;
-	public Vector3 primaryLocalRotation;
-	int primaryNetView = -1;
-	float muzzleClimb = 0f;
+	//[SyncVar (hook = "LoadWeaponData")]
+	//public int primaryWeaponNum;
+	//[SyncVar (hook = "LoadWeaponData")]
+	//public int secondaryWeaponNum;
+	//[SyncVar (hook = "LoadWeaponData")]
+	//public int primaryScopeNum;
+	//[SyncVar (hook = "LoadWeaponData")]
+	//public int secondaryScopeNum;
+	//public Vector3 primaryLocalPosition;
+	//public Vector3 primaryLocalRotation;
+	
+	//float muzzleClimb = 0f;
 
-	[Header("Secondary")]
-	public GameObject secondaryWeapon;
-	public GameObject secondaryWeaponPrefab;
-	public Vector3 secondaryLocalPosition;
-	public Vector3 secondaryLocalRotation;
-	int secondaryNetView = -1;
-	[Header("Grenades")]
-	int grenadesNum = 4;
-	public GameObject grenadePrefab;
-	public GameObject grenadeModelPrefab;
-	GameObject grenadeModel;
-	bool throwingGrenade = false;
+	//[Header("Secondary")]
+	//public GameObject secondaryWeapon;
+	//public GameObject secondaryWeaponPrefab;
+	//public Vector3 secondaryLocalPosition;
+	//public Vector3 secondaryLocalRotation;
+	
+	//[Header("Grenades")]
+	//int grenadesNum = 4;
+	//public GameObject grenadePrefab;
+	//public GameObject grenadeModelPrefab;
+	//GameObject grenadeModel;
+	//bool throwingGrenade = false;
 
-	public Transform grenadeSpawn;
-	[Header("Grapple")]
-	public bool grappleActive;
+	//public Transform grenadeSpawn;
+	//[Header("Grapple")]
+	//public bool grappleActive;
 
 	#endregion
 
 	//Used to lerp the space rotation
-	Vector3 previousRot = Vector3.zero;
-	Vector3 previousVelocity = Vector3.zero;
+	//Vector3 previousRot = Vector3.zero;
+	//Vector3 previousVelocity = Vector3.zero;
 
-	public enum WalkState{
+	/*public enum WalkState{
 		Walking,
 		Crouching,
 		Running
-	}
+	}*/
 
 	void Awake()
 	{
@@ -235,7 +220,7 @@ public class Player_Controller : NetworkBehaviour {
 			LoadPlayerData ();
 			Cmd_SetPlayerName(playerName);
 		}
-		ShowNameText();
+		
 		anim.SetFloat ("Look Speed", 0.5f);
 	}
 
@@ -257,7 +242,7 @@ public class Player_Controller : NetworkBehaviour {
 
 		airTime = suffocationTime;
 		grenadesNum = 4;
-		pieQuadrants = UI_Manager._instance.pieQuadrants;
+		//pieQuadrants = UI_Manager._instance.pieQuadrants;
 		if (MInput.useMouse)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
@@ -354,7 +339,7 @@ public class Player_Controller : NetworkBehaviour {
 			minimapCam.SetActive(false);
 			iconCamera.SetActive (false);
 
-			nameTextMesh.transform.LookAt (gameController.localPlayer.transform);
+			
 			if(!helmet.activeSelf) helmet.SetActive(true);
 
 			return;
@@ -634,91 +619,7 @@ public class Player_Controller : NetworkBehaviour {
 			fireScript.magGO.SetActive (!shown);
 		}
 	}
-	void Reload(){
-		if(isLocalPlayer){
-			anim.SetTrigger ("Reload");
-			if (fireScript.magGO)
-			{
-				/*anim.MatchTarget(
-					fireScript.magGO.transform.position,
-					fireScript.magGO.transform.rotation,
-					AvatarTarget.LeftHand,
-					new MatchTargetWeightMask(Vector3.one, 1f),
-					0.5f,
-					1f
-				);*/
-			}
-			Cmd_Reload();
-		}
-	}
-	[Command]
-	void Cmd_Reload(){
-		Rpc_Reload();
-	}
-	[ClientRpc (includeOwner = false)]
-	void Rpc_Reload(){
-		anim.SetTrigger ("Reload");
-	}
-
-	void ShowPieQuadrant(int quadrant){
-		pieQuadrants [quadrant].SetActive (true);
-	}
-	void HideQuadrants(){
-		try{
-			pieQuadrants[0].SetActive(false);
-			pieQuadrants[1].SetActive(false);
-			pieQuadrants[2].SetActive(false);
-			pieQuadrants[3].SetActive(false);
-		}
-		catch{
-		}
-	}
-	void ThrowGrenade(){
-		throwingGrenade = true;
-		Cmd_ThrowGrenade();
-	}
-	[Command]
-	//Start the grenage throwing animation
-	void Cmd_ThrowGrenade(){
-		Rpc_ThrowGrenade();
-	}
-	[ClientRpc]
-	void Rpc_ThrowGrenade(){
-		print ("Throwing Grenade");
-		anim.SetTrigger ("Throw Grenade");
-	}
-	public void SpawnGrenadeModel(){
-		grenadeModel = (GameObject)Instantiate (grenadeModelPrefab, grenadeSpawn);
-	}
-
-	public void SpawnGrenade(float _dropGrenadeFactor = 1f){
-		
-		throwingGrenade = false;
-		Destroy (grenadeModel);
-		
-		if(!isLocalPlayer)
-			return;
-
-		//if(Input.GetButton ("Ctrl")){
-			//If we are scoped, drop the grenade beside us
-		//	_dropGrenadeFactor = 0.05f;
-		//}
-		
-		Cmd_SpawnGrenade(mainCam.transform.forward * 10.0f * _dropGrenadeFactor, grenadeSpawn.position, grenadeSpawn.rotation);
-	}
-	[Command]
-	public void Cmd_SpawnGrenade(Vector3 _velocity, Vector3 _position, Quaternion _rotation){
-		Rigidbody _grenade = ((GameObject)Instantiate (grenadePrefab, _position, _rotation)).GetComponent<Rigidbody> ();
-		_grenade.velocity = _velocity;
-		_grenade.GetComponent<Frag_Grenade>().fromID = playerID;
-		_grenade.GetComponent<Frag_Grenade>().initialVelocity = _velocity;
-		NetworkServer.Spawn(_grenade.gameObject);
-		StartCoroutine(Co_DestroyGrenade(_grenade.gameObject));
-	}
-	public IEnumerator Co_DestroyGrenade(GameObject _grenade){
-		yield return new WaitForSecondsRealtime(20.0f);
-		NetworkServer.Destroy(_grenade);
-	}
+	
 	
     void CallShip()
     {
@@ -790,23 +691,9 @@ public class Player_Controller : NetworkBehaviour {
 
     }
 
-    //Gains air relatively slowly
-    public void GainAir()
-    {
-        StartCoroutine(CoGainAir());
-    }
-    IEnumerator CoGainAir()
-    {
-        while (airTime < suffocationTime)
-        {
-            airTime += Time.deltaTime * 10f;
-            yield return new WaitForSeconds(0.1f);
-        }
-        airTime = suffocationTime;
-    }
-
-    public void LoseAir(){
-		airTime -= Time.deltaTime;
+    public override void LoseAir(){
+		base.LoseAir();
+		//TODO: network the damage in this function
 
 		if((int)(airTime/suffocationTime * 100) == 50){
 			WindowsVoice.Speak("Oxygen at 50%");
@@ -817,10 +704,6 @@ public class Player_Controller : NetworkBehaviour {
 		if((int)(airTime/suffocationTime * 100) < 2){
 			WindowsVoice.Speak("Oxygen Critical <break />");
 		}		
-		if (airTime < 0) {
-			airTime = airTime + 1f;
-			damageScript.TakeDamage (10,0, transform.position + transform.forward, true);
-		}
 	}
 	[MRPC]
 	public void RPC_GetKnifed(int otherPlayerInt)
@@ -862,7 +745,7 @@ public class Player_Controller : NetworkBehaviour {
 		}
 	}
 
-	[MRPC]
+	/*[MRPC]
 	public void RPC_SetActive(){
 		print ("Reactivating player");
 		this.gameObject.SetActive (true);
@@ -879,8 +762,8 @@ public class Player_Controller : NetworkBehaviour {
 	public void RetractKnife()
 	{
 		knifeAnim.SetBool("Knife", false);
-	}
-	public void Knife(){
+	}*/
+	/*public void Knife(){
 		print("Attempting to knife");
 		if (isLocalPlayer)
 		{
@@ -901,15 +784,15 @@ public class Player_Controller : NetworkBehaviour {
 
 		}
 		//TODO:
-		/*
-		if (Metwork.peerType != MetworkPeerType.Disconnected)
-		{
-			netView.RPC("RPC_Knife", MRPCMode.AllBuffered, new object[] { });
-		}
-		else
-		{
-			RPC_Knife();
-		}*/
+		//
+		//if (Metwork.peerType != MetworkPeerType.Disconnected)
+		//{
+		//	netView.RPC("RPC_Knife", MRPCMode.AllBuffered, new object[] { });
+		//}
+		//else
+		//{
+		//	RPC_Knife();
+		//}
 	}
 	IEnumerator Stab(GameObject _otherPlayer)
 	{
@@ -925,17 +808,17 @@ public class Player_Controller : NetworkBehaviour {
 			i += Time.deltaTime;
 		}
 		//TODO
-		/*
-		if (Metwork.peerType != MetworkPeerType.Disconnected)
-		{
-			_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
-						netObj.owner});
-		}
-		else
-		{
-			_otherPlayer.GetComponent<Player_Controller>().RPC_GetKnifed(netObj.owner);
-			print("FOund player stabbing now");
-		}*/
+		
+		//if (Metwork.peerType != MetworkPeerType.Disconnected)
+		//{
+		//	_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
+		//				netObj.owner});
+		//}
+		//else
+		//{
+		//	_otherPlayer.GetComponent<Player_Controller>().RPC_GetKnifed(netObj.owner);
+		//	print("FOund player stabbing now");
+		//}
 	}
 	[MRPC]
 	public void RPC_Knife(){
@@ -946,10 +829,10 @@ public class Player_Controller : NetworkBehaviour {
 	{
 		anim.SetBool("Knife", false);
 
-	}
+	}*/
 	#region Region1
 
-	public virtual void Aim(){
+	protected override void Aim(){
 		if (fireScript == null||grappleActive)
 		{
 			moveFactor = 0.75f;
@@ -993,11 +876,12 @@ public class Player_Controller : NetworkBehaviour {
 
 		}
 	}
-	[MRPC]
-	public void RPC_Aim(bool scoped){
+	//TODO:
+	//[MRPC]
+	//public void RPC_Aim(bool scoped){
 		
-		anim.SetBool ("Scope", scoped);
-	}
+	//	anim.SetBool ("Scope", scoped);
+	//}
 	//zoom in to true = zooming in
 	//zooms the camera on scope
 
@@ -1012,25 +896,9 @@ public class Player_Controller : NetworkBehaviour {
 			mainCam.fieldOfView = Mathf.Lerp(i, 90f, 0.5f);
 		}
 	}
-	[Command]
-	public void Cmd_Jump(bool jumping, bool jets)
-	{
-		Rpc_Jump(jumping, jets);
-	}
-	[ClientRpc]
-	public void Rpc_Jump(bool jumping, bool jets){
-		if (jets) {
-			foreach (ParticleSystem jet in jetpackJets) {
-				jet.Play ();
-			}
-		} else {
-			foreach (ParticleSystem jet in jetpackJets) {
-				jet.Stop ();
-			}
-		}
-		anim.SetBool ("Jump", jumping);
-	}
-	public void Jump(){
+	
+	
+	public override void Jump(){
 		
 		if (jetpackFuel > 0.7f && refueling == true)
 		{
@@ -1075,7 +943,7 @@ public class Player_Controller : NetworkBehaviour {
 
 	
 
-	public void UseItem(){
+	public override void UseItem(){
 		RaycastHit hit;
 		if (Physics.Raycast (mainCamObj.transform.position, mainCamObj.transform.forward, out hit)) {
 			
@@ -1307,7 +1175,7 @@ public class Player_Controller : NetworkBehaviour {
 		}
 		
 	}
-	public void AnimateMovement(){
+	public override void AnimateMovement(){
 		anim.SetFloat ("H Movement", h*moveFactor*scopeMoveFactor);
 		anim.SetFloat ("V Movement", v*moveFactor*scopeMoveFactor);
 		anim.SetInteger ("Walk State", (int)walkState);
@@ -1321,11 +1189,7 @@ public class Player_Controller : NetworkBehaviour {
 			}*/ 
 		}
 	}
-	public void FootstepAnim(){
-		//if (!walkSound.isPlaying) {
-			walkSound.PlayOneShot(walkClips[Random.Range(0,walkClips.Length)]);//[Mathf.Clamp(Time.frameCount % 4,0,walkClips.Length-1)]);
-		//}
-	}
+	//TODO:
 	[MRPC]
 	public void RPC_AnimateMovement(int state, float hSpeed, float vSpeed, float _thrusterSoundFactor){
 		anim.SetFloat ("H Movement", hSpeed);
@@ -1334,47 +1198,15 @@ public class Player_Controller : NetworkBehaviour {
 		thrusterSoundFactor = _thrusterSoundFactor;
 		//walkSound.volume = Mathf.Clamp01 (Mathf.Abs (hSpeed + vSpeed));
 	}
-
+	//TODO:
 	[MRPC]
 	public void RPC_AnimateSpace(float _thrusterSoundFactor){
 		thrusterSoundFactor = _thrusterSoundFactor;
 		//walkSound.volume = Mathf.Clamp01 (Mathf.Abs (hSpeed + vSpeed));
 	}
-
-	[Command]
-	public void Cmd_ChangeCrouch(bool _isCrouched){
-		isCrouched = _isCrouched;
-	}
-
-	public void CrouchHook(bool oldVal, bool isCrouched){
-		if(isCrouched){
-			CapsuleCollider[] capsules = this.GetComponents<CapsuleCollider> ();
-			Vector3 center = capsules [0].center;
-			center.y = capsule_crouchY1;
-			capsules [0].center = center;
-			capsules [0].height = capsule_crouchHeight1;
-			Vector3 center2 = capsules [1].center;
-			center2.y = capsule_crouchY2;
-			capsules [1].center = center2;
-			capsules [1].height = capsule_crouchHeight2;
-		}
-		else{
-			CapsuleCollider[] capsules = this.GetComponents<CapsuleCollider> ();
-			Vector3 center = capsules [0].center;
-			center.y = capsule_originalY1;
-			capsules [0].center = center;
-			capsules [0].height = capsule_originalHeight1;
-			Vector3 center2 = capsules [1].center;
-			center2.y = capsule_originalY2;
-			capsules [1].center = center2;
-			capsules [1].height = capsule_originalHeight2;
-
-			walkState = WalkState.Walking;
-		}
-	}
-	
+	//TODO:
 	[MRPC]
-	public void RPC_ExitVehicle()
+	public override void RPC_ExitVehicle()
 	{
 		airTime = suffocationTime;
 		/*TODO
@@ -1466,35 +1298,14 @@ public class Player_Controller : NetworkBehaviour {
 
 	
 	}
-	[Command]
-	public void Cmd_SetLookTime(float time){
-		lookTime = time;
-	}
 	
-	public void LookTimeHook(float oldVal, float _lookTime)
-	{
-		if(!isLocalPlayer){
-			float _time = anim.GetFloat("Look Speed");
-			anim.SetFloat("Look Speed", Mathf.Lerp(_time, _lookTime, 0.5f));
-		}
-	}
 	public void TurnHead(){
 		anim.SetFloat ("Head Turn Speed", -h2*0.5f+0.5f);
 		anim.SetBool("Head Turn Enabled", true);
 
 	}
 
-
-	[MRPC]
-	public void RPC_ClimbLadder(){
-		anim.SetBool ("Climb Ladder", true);
-	}
-	[MRPC]
-	public void RPC_LeaveLadder(){
-		anim.SetBool ("Climb Ladder", false);
-	}
-
-	public virtual void Attack(){
+	public override void Attack(){
 		if (!grappleActive)
 		{
 			//Spread of the gun
@@ -1512,23 +1323,12 @@ public class Player_Controller : NetworkBehaviour {
 		}
 		UpdateUI ();
 	}
-	[Command]
-	void Cmd_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
-		if(isServerOnly) fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
-		Rpc_FireWeapon(shotSpawnPosition, shotSpawnForward);
-	}
-	[ClientRpc(includeOwner=false)]
-	void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
-		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
-	}
+	
 
 	#endregion
 	#region Region2
-	[Command]
-	public void Cmd_KillPlayer(){
-		damageScript.TakeDamage (1000, 0, transform.position, true);
-	}
-	public void Die(){
+	
+	public override void Die(){
 		//Since the damage is calculated on the server, this function only
 		//runs on the server and has to be passed to every client
 		if(throwingGrenade){
@@ -1540,7 +1340,7 @@ public class Player_Controller : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	public void Rpc_Die(){
+	public override void Rpc_Die(){
 		Vector3 position = this.transform.position;
 		Quaternion rotation = this.transform.rotation;
 		inVehicle = false;
@@ -1583,10 +1383,10 @@ public class Player_Controller : NetworkBehaviour {
 			_ragdollGO.GetComponentInChildren<Camera>().gameObject.SetActive(false);
 		}
 		else{
-			Invoke("CoDie", 4f);
+			Invoke(nameof(CoDie), 4f);
 		}
 	}
-	public void CoDie(){
+	public override void CoDie(){
 		
 		Game_Controller.Instance.sceneCam.enabled = true;
 		//TODO: Figure out what the fuck this does
@@ -1604,7 +1404,7 @@ public class Player_Controller : NetworkBehaviour {
 
 
 	//Called by grav controller when entering / exiting gravity;
-	public IEnumerator ExitGravity(){
+	public override IEnumerator ExitGravity(){
 		exitingGravity = true;
 		
 		rb.angularDrag = 0f;
@@ -1646,7 +1446,7 @@ public class Player_Controller : NetworkBehaviour {
 		exitingGravity = false;
 
 	}
-	public IEnumerator EnterGravity(){
+	public override IEnumerator EnterGravity(){
 		if (enteringGravity)
 		{
 			yield return null;
@@ -1696,74 +1496,16 @@ public class Player_Controller : NetworkBehaviour {
 		lookFactor = 1f;
 		enteringGravity = false;
 	}
-	[Command]
-	public void Cmd_SwitchWeapons(bool _primary){
-		primarySelected = _primary;
-		if(isServerOnly)SwitchWeapons(primarySelected, primarySelected);
-		
-	}
-	public void SwitchWeapons(bool oldValue, bool newValue){
-		StartCoroutine (Co_SwitchWeapons (primarySelected));
-	}
 	
-	public IEnumerator Co_SwitchWeapons(bool _primary){
-		anim.SetBool ("Switch Weapons", true);
-		yield return new WaitForSeconds (0.8f);
-		if (!_primary) {
-			primaryWeapon.SetActive (false);
-			secondaryWeapon.SetActive (true);
-			fireScript = secondaryWeapon.GetComponent<Fire> ();
-		} else {
-			secondaryWeapon.SetActive (false);
-			primaryWeapon.SetActive (true);
-			fireScript = primaryWeapon.GetComponent<Fire> ();
-		}
-		
+	public override IEnumerator Co_SwitchWeapons(bool _primary){
+		yield return StartCoroutine(base.Co_SwitchWeapons(_primary));
+
 		if(isLocalPlayer){
 			UI_Manager._instance.ChangeWeapon (primarySelected);
-		}
-		recoilAmount = fireScript.recoilAmount;		
-		
-		fireScript.playerID = playerID;
-		//We want to move the right hand target back and forth depending how long the gun is
-		this.GetComponent<Player_IK>().rhOffset = fireScript.rhOffset;
-		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;
-		this.GetComponent<Player_IK>().lhTarget = fireScript.lhTarget;
-		if (fireScript.lhHint)
-		{
-			this.GetComponent<Player_IK>().lhHint = fireScript.lhHint;
-		}
-		yield return new WaitForSeconds (1.26f);
-
-		anim.SetBool ("Switch Weapons", false);
-		fireScript.playerID = playerID;
-
-		anim.SetFloat ("Drift", fireScript.bulk);
-		anim.SetFloat ("Left Hand Grip", fireScript.leftGripSize);
-
+		}	
 		
 	}
-	public int GetTeam()
-	{
-		return gameController.playerStats[playerID].team;
 	
-	}
-	public int GunNameToInt(string _name){
-		for (int i = 0; i < Game_Controller.Instance.weaponsCatalog.guns.Length; i++){
-			if(Game_Controller.Instance.weaponsCatalog.guns[i].name == _name){
-				return i;
-			}
-		}
-		return -1;
-	}
-	public int ScopeNameToInt(string _name){
-		for (int i = 0; i < Game_Controller.Instance.weaponsCatalog.scopes.Length; i++){
-			if(Game_Controller.Instance.weaponsCatalog.scopes[i].name == _name){
-				return i;
-			}
-		}
-		return -1;
-	}
 	public void SetupWeapons(){
 		try {
 			loadoutSettings = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Loadout Settings.txt"));
@@ -1821,7 +1563,7 @@ public class Player_Controller : NetworkBehaviour {
 		
 	}
 	
-	public void LoadWeaponData(int oldValue, int newValue){//}, int _primaryMetID, int _secondaryMetID){
+	protected override void LoadWeaponData(int oldValue, int newValue){
 		
 
 		Destroy(this.primaryWeapon);
@@ -1928,27 +1670,8 @@ public class Player_Controller : NetworkBehaviour {
 			gameController.playerStats [playerID].name = playerName;
 			Invoke("RegisterModerator",2f);
 		} 
-		nameTextMesh.text = playerName;
-
-	}
-	
-	public void ShowNameText(){
 		
-		gameController = Game_Controller.Instance;
-		if(this.gameObject ==gameController.localPlayer){
-			nameTextMesh.gameObject.SetActive (false);
-		}
-		else if (gameController.playerStats[playerID].team == gameController.localTeam) {
-			nameTextMesh.color = new Color (0f, 50f, 255f);
-			nameTextMesh.gameObject.SetActive (true);
-			nameTextMesh.text = playerName;
 
-		} else {
-			nameTextMesh.color = new Color (255f, 0f, 0f);
-			nameTextMesh.gameObject.SetActive (false);
-			nameTextMesh.text = playerName;
-		}
-		
 	}
 	
 	public void UpdateUI(){
@@ -1981,6 +1704,7 @@ public class Player_Controller : NetworkBehaviour {
 		yield return new WaitForSeconds (2f);
 		minimapRunning = false;
 	}
+	
 	//Admin only
 	public void RegisterModerator(){
 		damageScript.originalHealth = 300;

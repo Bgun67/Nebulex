@@ -8,7 +8,7 @@ using Mirror;
 //TODO: Increase volume range for bots
 //TODO: Fix the Astroball
 //wanted to keep the old bot script
-public class Com_Controller : NetworkBehaviour {
+public class Com_Controller : Player {
 	public enum BotState{
 		Patrol,
 		Alert,
@@ -28,12 +28,12 @@ public class Com_Controller : NetworkBehaviour {
 	public bool isInSpace = false;
 	public LayerMask physicsMask;
     public GameObject[] patrolPositions;
-	public int carrierNum;
-	public Animator anim;
+	
+	//public Animator anim;
 	public float _angle;
 
-	public Fire fireScript;
-	public Damage damageScript;
+	//public Fire fireScript;
+	//public Damage damageScript;
 	Player_Controller[] players;
 	Com_Controller[] bots;
 	const int NUM_BOTS = 16;
@@ -45,7 +45,7 @@ public class Com_Controller : NetworkBehaviour {
 	[Range(0f,1f)]
 	public float lockOnRate = 0.4f;
 	public Transform head;
-	public Transform rightHandPosition;
+	//public Transform rightHandPosition;
 	public BotState botState;
     NavMeshAgent agent;
 
@@ -55,11 +55,11 @@ public class Com_Controller : NetworkBehaviour {
 	public Vector3 lastPosition;
 	List<Vector3> spaceRoute = new List<Vector3>();
 	public Vector3 currentVelocity;
-	private Game_Controller gameController;
-	[SyncVar]
-	public int botID = -1;
+	//private Game_Controller gameController;
+	//[SyncVar]
+	//public int playerID = -1;
 	public TextMesh nameTextMesh;
-	public GameObject ragdoll;
+	//public GameObject ragdoll;
 	
 
 
@@ -98,14 +98,14 @@ public class Com_Controller : NetworkBehaviour {
 		{
 			
 
-			nameTextMesh.text = "Bot " + (this.botID).ToString();
+			nameTextMesh.text = "Bot " + (this.playerID).ToString();
 
 			List<Spawn_Point> _allSpawns = new List<Spawn_Point>(FindObjectsOfType<Spawn_Point>());
-			_allSpawns.RemoveAll(x => x.team != gameController.playerStats[botID].team);
+			_allSpawns.RemoveAll(x => x.team != gameController.playerStats[playerID].team);
 
 			Spawn_Point[] _spawnPoints = _allSpawns.ToArray();
-			patrolIndex = Random.Range(0, (botID) % patrolPositions.Length);
-			damageScript.initialPosition = _spawnPoints[(botID) % _spawnPoints.Length].transform;
+			patrolIndex = Random.Range(0, (playerID) % patrolPositions.Length);
+			damageScript.initialPosition = _spawnPoints[(playerID) % _spawnPoints.Length].transform;
 			//Randomize the starting position, so we don't get bot collision
 			if(isInSpace){
 				damageScript.initialPosition.position += Random.insideUnitSphere * Random.Range(0f, 10f);
@@ -146,12 +146,12 @@ public class Com_Controller : NetworkBehaviour {
 
 		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;
 		this.GetComponent<Player_IK>().lhTarget = fireScript.lhTarget;
-		fireScript.playerID = botID;
+		fireScript.playerID = playerID;
 
 		int localTeam = gameController.localTeam;
 		//TODO move this code to the ui manager
 		if(Game_Controller.Instance.localPlayer != null){
-			if (gameController.playerStats[botID].team == localTeam) {
+			if (gameController.playerStats[playerID].team == localTeam) {
 				nameTextMesh.color = new Color (0f, 50f, 255f);
 				nameTextMesh.gameObject.SetActive (true);
 
@@ -189,7 +189,7 @@ public class Com_Controller : NetworkBehaviour {
 		}
 
 		
-		if(Time.frameCount % NUM_BOTS == botID && (lastSpaceDestination - spaceDestination).magnitude > 5f){
+		if(Time.frameCount % NUM_BOTS == playerID && (lastSpaceDestination - spaceDestination).magnitude > 5f){
 			Nav_Volume_Builder._instance.FindRoute(this.transform.position, spaceDestination);
 			lastSpaceDestination = spaceDestination;
 			//Perform Deep copy
@@ -212,16 +212,13 @@ public class Com_Controller : NetworkBehaviour {
 		
 		
 	}
-	void FootstepAnim()
-	{
-
-	}
+	
 	void Recoil()
 	{
 		anim.Play ("Recoil1*", 2, 0.3f);
 	}
 
-	void AnimateMovement()
+	public override void AnimateMovement()
 	{
 		anim.SetFloat("V Movement", agent.velocity.magnitude*1.5f/agent.speed);
 		if (botState == BotState.Patrol)
@@ -300,7 +297,7 @@ public class Com_Controller : NetworkBehaviour {
 			for (int i = 0; i < players.Length; i++)
 			{
 				//TODO players[i].netObj.owner
-				if(gameController.playerStats[players[i].playerID].team == gameController.playerStats[botID].team){
+				if(gameController.playerStats[players[i].playerID].team == gameController.playerStats[playerID].team){
 					continue;
 				}
 				if (Vector3.Dot((players[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
@@ -336,7 +333,7 @@ public class Com_Controller : NetworkBehaviour {
 
 			for (int i = 0; i < bots.Length; i++)
 			{
-				if(gameController.playerStats[bots[i].botID].team == gameController.playerStats[botID].team || bots[i] == this){
+				if(gameController.playerStats[bots[i].playerID].team == gameController.playerStats[playerID].team || bots[i] == this){
 					continue;
 				}
 				if (Vector3.Dot((bots[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
@@ -403,14 +400,13 @@ public class Com_Controller : NetworkBehaviour {
 	}
 	TargetPlayer Listen(Player_Controller[] _players, Com_Controller[] _bots)
 	{
-		bool heard;
 		TargetPlayer _targetPlayer;
 		Transform heardPlayer = null;
 		float loudestSound = -1000f;
 		foreach (Player_Controller player in _players)
 		{
 			//TODO player.netObj.owner
-			if(gameController.playerStats[player.playerID].team == gameController.playerStats[botID].team){
+			if(gameController.playerStats[player.playerID].team == gameController.playerStats[playerID].team){
 				continue;
 			}
 			float[] samples = new float[2];
@@ -431,7 +427,7 @@ public class Com_Controller : NetworkBehaviour {
 		}
 		foreach (Com_Controller player in _bots)
 		{
-			if(gameController.playerStats[player.botID].team == gameController.playerStats[botID].team){
+			if(gameController.playerStats[player.playerID].team == gameController.playerStats[playerID].team){
 				continue;
 			}
 			float[] samples = new float[2];
@@ -502,6 +498,7 @@ public class Com_Controller : NetworkBehaviour {
 		
 		}
 	}
+	
 
 	//Fights the player
 	void Fight()
@@ -542,7 +539,7 @@ public class Com_Controller : NetworkBehaviour {
 		//this.transform.forward = Vector3.Slerp(transform.forward,((targetPlayer._transform.position+targetPlayer._transform.up * 1.5f-fireScript.shotSpawn.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);//Vector3.Slerp(fireScript.shotSpawn.transform.forward, ((targetPlayer._transform.position-transform.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);
 
 	}
-	void Aim()
+	protected override void Aim()
 	{
 		anim.SetBool("Scope", true);
 		//use relative position
@@ -569,27 +566,9 @@ public class Com_Controller : NetworkBehaviour {
 
 			//fire
 			fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
-			Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+			//Bots only exist on the server
+			Rpc_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 		}
-
-	}
-	[Command]
-	void Cmd_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
-		if(isServerOnly) fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
-		Rpc_FireWeapon(shotSpawnPosition, shotSpawnForward);
-	}
-	[ClientRpc(includeOwner=false)]
-	void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
-		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
-	}
-
-	[MRPC]
-	void RPC_Reload(){
-		anim.SetTrigger ("Reload");
-	}
-
-	void UpdateUI(){
-		//DO Nothing
 
 	}
 
@@ -695,27 +674,18 @@ public class Com_Controller : NetworkBehaviour {
 
 
 	#region Region2
-	public void Die(){
+	public override void Die(){
+		print("Bot die");
 		//This keeps the bots from clumping
 		patrolIndex++;
 		if (patrolIndex >= patrolPositions.Length) {
 			//Return to the first patrol position
 			patrolIndex = 0;
 		}
-		//sceneCam.enabled = true;
-		if(Metwork.peerType  != MetworkPeerType.Disconnected){
-			netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{ });
-		}
-		else{
-			RPC_Die ();
-		}
-
-		
-
-
+		Rpc_Die();
 	}
 
-	public void CoDie(){
+	public override void CoDie(){
 		
 		
 		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
@@ -732,8 +702,8 @@ public class Com_Controller : NetworkBehaviour {
 		this.gameObject.SetActive(true);
 	}
 
-	[MRPC]
-	public void RPC_Die(){
+	[ClientRpc]
+	public override void Rpc_Die(){
 		Vector3 position = this.transform.position;
 		Quaternion rotation = this.transform.rotation;
 		
@@ -764,15 +734,11 @@ public class Com_Controller : NetworkBehaviour {
 
         this.transform.position = Vector3.up * 10000f;
         this.gameObject.SetActive (false);
-		Invoke("CoDie", 4f);
-
-		
-
+		Invoke(nameof(CoDie), 4f);
 
 	}
 
     #endregion
-	
 
 }
 

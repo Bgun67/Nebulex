@@ -43,6 +43,11 @@ public class UI_Manager : MonoBehaviour
 
 	public Image[] damageIndicators;
 
+	//Show the name and team of the each player on the UI
+	public GameObject nameIndicatorPrefab;
+	NameIndicator[] nameIndicators;
+	float nameIndicatorScale = 150;
+
 	[System.Serializable]
 	public class HitDirection
 	{
@@ -52,6 +57,10 @@ public class UI_Manager : MonoBehaviour
 
 	}
 	List<HitDirection> hitDirections;
+	[HideInInspector]
+	public static Color team_red = new Color(255f/255f,90f/255f,85f/255f,1f);
+	[HideInInspector]
+	public static Color team_blue = new Color(90f/255f,160f/255f,230f/255f,1f);
 
 
 	/// <summary>
@@ -75,6 +84,7 @@ public class UI_Manager : MonoBehaviour
 
 	public delegate void OnPieEvent(int _selectedSegment);
 	public static OnPieEvent onPieEvent;
+	
 
 
 
@@ -91,6 +101,15 @@ public class UI_Manager : MonoBehaviour
 		for (int i = 0; i < damageIndicators.Length; i++)
 		{
 			hitDirections.Add(_tmpHitDir);
+		}
+
+		//Populate the name indicators array
+		nameIndicators = new NameIndicator[Game_Controller.Instance.maxPlayers];
+		for (int i = 0; i<nameIndicators.Length; i++){
+			nameIndicators[i] = Instantiate(nameIndicatorPrefab, Vector3.zero, Quaternion.identity).GetComponent<NameIndicator>();
+			//Set the parent to be the canvas
+			nameIndicators[i].transform.SetParent(this.transform, false);
+			nameIndicators[i].gameObject.SetActive(false);
 		}
 	}
 	public static UI_Manager GetInstance{
@@ -120,6 +139,7 @@ public class UI_Manager : MonoBehaviour
 			}
 
 		}
+		//Damage indicators
 		for(int i = 0; i < damageIndicators.Length; i++){
 			Vector3 _projectedDirection = Vector3.ProjectOnPlane(hitDirections[i].normal, hitDirections[i].transform.up);
 			float _angle = -Vector3.SignedAngle(hitDirections[i].transform.forward, _projectedDirection, hitDirections[i].transform.up);
@@ -127,7 +147,39 @@ public class UI_Manager : MonoBehaviour
 			Color _color = damageIndicators[i].color;
 			_color.a = Mathf.Clamp01(1f - (Time.time - hitDirections[i].time)/3f);
 			damageIndicators[i].color = _color;
-			
+		}
+		
+		//Bot indicators
+		foreach(Player _player in FindObjectsOfType<Player>()){
+			//The player is on our team, show them immediately
+			if(_player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
+				int _id = _player.playerID;
+				
+				//Set color
+				nameIndicators[_id].nameText.color = team_blue;
+				nameIndicators[_id].distText.color = team_blue;
+				nameIndicators[_id].image.color = team_blue;
+				//Set name
+				nameIndicators[_id].nameText.text = _player.GetName();
+				
+
+				Bounds bounds = _player.GetComponent<Collider>().bounds;
+				
+				Vector3 _position = Camera.main.WorldToScreenPoint(bounds.center);
+				//Set distance
+				nameIndicators[_id].distText.text = _position.z.ToString("#.000") + " m";
+				
+				if(_position.z > 0){
+					nameIndicators[_id].gameObject.SetActive(true);
+					nameIndicators[_id].transform.position = _position;
+					nameIndicators[_id].transform.localScale = Vector3.one* nameIndicatorScale * Camera.main.nearClipPlane /(_position.z * Mathf.Tan(Camera.main.fieldOfView * Mathf.Deg2Rad * 0.5f));
+					
+				}
+				else{
+					nameIndicators[_id].gameObject.SetActive(false);
+				}
+				
+			}
 		}
 	}
 	void LateUpdate(){
