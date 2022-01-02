@@ -103,7 +103,7 @@ public class Player : NetworkBehaviour {
 	[Space(5)]
 	[Header("Weapons")]
 	#region weapons
-
+	protected bool switchWeapons = false;
 	public Fire fireScript;
 	public Transform finger;
 	public Transform rightHandPosition;
@@ -533,6 +533,7 @@ public class Player : NetworkBehaviour {
 	
 	public virtual IEnumerator Co_SwitchWeapons(bool _primary){
 		anim.SetBool ("Switch Weapons", true);
+		switchWeapons = true;
 		yield return new WaitForSeconds (0.8f);
 		if (!_primary) {
 			primaryWeapon.SetActive (false);
@@ -554,7 +555,7 @@ public class Player : NetworkBehaviour {
 			this.GetComponent<Player_IK>().lhHint = fireScript.lhHint;
 		}
 		yield return new WaitForSeconds (1.26f);
-
+		switchWeapons = false;
 		anim.SetBool ("Switch Weapons", false);
 		fireScript.playerID = playerID;
 
