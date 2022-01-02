@@ -81,7 +81,7 @@ public class Com_Controller : NetworkBehaviour {
 		//gameController.bots.Add(this);
 		if (head == null)
 		{
-			head = GameObject.Find("Main Camera").transform;
+			head = GameObject.Find("Player Camera").transform;
 		}
 
 		anim.SetFloat("Look Speed", 0.5f);
