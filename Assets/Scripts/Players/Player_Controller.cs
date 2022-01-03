@@ -136,7 +136,6 @@ public class Player_Controller : Player {
 	//[Header("Primary")]
 	//public GameObject primaryWeapon;
 	//public GameObject primaryWeaponPrefab;
-	bool switchWeapons = false;
 	//Weapon identifiers
 	//[SyncVar (hook = "LoadWeaponData")]
 	//public int primaryWeaponNum;
