@@ -771,7 +771,6 @@ MonoBehaviour:
   onLadder: 0
   forceFactor: 2200
   inVehicle: 0
-  maxStepHeight: 2
   gameController: {fileID: 0}
   useGravity: 0
   currentStepHeight: 0
@@ -787,11 +786,9 @@ MonoBehaviour:
   suffocationTime: 90
   damageScript: {fileID: 7100440709705760982}
   ladder: {fileID: 0}
-  kills: 0
   playerID: 0
   playerName: Fred
   ragdoll: {fileID: 1333036756815864, guid: b30042f9b29c8ab498091d0074f93a31, type: 3}
-  knifePosition: 1
   knifeAnim: {fileID: 0}
   flagPosition: {fileID: 0}
   shipRB: {fileID: 0}
@@ -800,36 +797,14 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 9426603634ffa0d428909270e40dfcd4, type: 2}
   jerseyMeshes:
   - {fileID: 0}
-  pieQuadrants:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  pieNumber: 0
-  mmpController: {fileID: 7099763606420771792}
-  playerIcon: {fileID: 7155239026187085752}
-  iconMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  minimapUI: {fileID: 0}
-  nameTextMesh: {fileID: 7094127936921761658}
-  UI_ammoText: {fileID: 0}
-  blackoutShader: {fileID: 0}
-  helmet: {fileID: 0}
   mainCamObj: {fileID: 0}
-  minimapCam: {fileID: 7141292712122820794}
-  iconCamera: {fileID: 7140880912453699890}
   walkSound: {fileID: 7078805959131489594}
   walkClips:
   - {fileID: 8300000, guid: efc3a3c96e3961944ac7d1fd519ce54f, type: 3}
   - {fileID: 8300000, guid: 40377f076cf325d478c386e778f8b572, type: 3}
   - {fileID: 8300000, guid: 8e20f53f2f69f4e419fcccdb99b3f328, type: 3}
   - {fileID: 8300000, guid: 53fb6e0b27eea5041a289e99b0faa799, type: 3}
-  breatheSound: {fileID: 7078068542218190658}
-  thrusterClips:
-  - {fileID: 8300000, guid: 06742bb25583ecb44b77f1bcd6211f88, type: 3}
   fireScript: {fileID: 0}
-  loadoutSettings: []
   finger: {fileID: 0}
   rightHandPosition: {fileID: 0}
   magGO: {fileID: 0}
@@ -853,6 +828,13 @@ MonoBehaviour:
   grenadeModelPrefab: {fileID: 100002, guid: f1e2ba081b0fbb543b0771bd4c8a21ff, type: 3}
   grenadeSpawn: {fileID: 0}
   grappleActive: 0
+  minimapUI: {fileID: 0}
+  blackoutShader: {fileID: 0}
+  helmet: {fileID: 0}
+  minimapCam: {fileID: 7141292712122820794}
+  iconCamera: {fileID: 7140880912453699890}
+  breatheSound: {fileID: 7078068542218190658}
+  loadoutSettings: []
 --- !u!114 &8849296974698782649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,13 +1292,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8793211830433660963}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.033536028, y: 3.283728e-10, z: -1.7119267e-10, w: 0.9994376}
   m_LocalPosition: {x: -0.0010005021, y: 0.31331754, z: 0.016737755}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2012793341707456476}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.844, y: 0, z: 0}
 --- !u!20 &9150160435225158219
 Camera:
   m_ObjectHideFlags: 0

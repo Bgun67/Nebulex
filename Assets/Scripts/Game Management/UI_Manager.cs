@@ -152,7 +152,7 @@ public class UI_Manager : MonoBehaviour
 		//Bot indicators
 		foreach(Player _player in FindObjectsOfType<Player>()){
 			//The player is on our team, show them immediately
-			if(_player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
+			if(_player.gameObject.activeInHierarchy&&_player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
 				int _id = _player.playerID;
 				
 				//Set color
