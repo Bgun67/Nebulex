@@ -1,25 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &777028914461818058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818669228569387566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bc9a8cd8bf5ea6438dd98ba908fd99d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actualPosition: {x: 0, y: 0, z: 0}
-  isLocal: 0
-  owner: 0
-  netView: {fileID: 0}
-  rotationLerp: 0.2
-  snapLerp: 0.2
-  lerpRate: 20
-  sendRate: 30
 --- !u!114 &5803625690462232074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34,6 +14,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  rb: {fileID: 0}
+  boundingCollider: {fileID: 5847382945693681454}
+  anim: {fileID: 0}
+  magBootsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  lfHitValid: 0
+  onLadder: 0
+  forceFactor: 0
+  inVehicle: 0
+  gameController: {fileID: 0}
+  useGravity: 0
+  currentStepHeight: 0
+  enteringGravity: 0
+  jetpackFuel: 1
+  jetpackJets: []
+  refueling: 0
+  airTime: 0
+  suffocationTime: 0
+  damageScript: {fileID: 0}
+  ladder: {fileID: 0}
+  playerID: 0
+  playerName: Fred
+  ragdoll: {fileID: 1333036756815864, guid: b30042f9b29c8ab498091d0074f93a31, type: 3}
+  knifeAnim: {fileID: 0}
+  flagPosition: {fileID: 0}
+  shipRB: {fileID: 0}
+  teamMaterials: []
+  jerseyMeshes: []
+  mainCamObj: {fileID: 0}
+  walkSound: {fileID: 0}
+  walkClips: []
+  fireScript: {fileID: 6445974650302845358}
+  finger: {fileID: 0}
+  rightHandPosition: {fileID: 6706184369586867907}
+  magGO: {fileID: 0}
+  primarySelected: 1
+  primaryWeapon: {fileID: 0}
+  primaryWeaponPrefab: {fileID: 0}
+  primaryWeaponNum: 0
+  secondaryWeaponNum: 0
+  primaryScopeNum: 0
+  secondaryScopeNum: 0
+  primaryLocalPosition: {x: 0, y: 0, z: 0}
+  primaryLocalRotation: {x: 0, y: 0, z: 0}
+  secondaryWeapon: {fileID: 0}
+  secondaryWeaponPrefab: {fileID: 0}
+  secondaryLocalPosition: {x: 0, y: 0, z: 0}
+  secondaryLocalRotation: {x: 0, y: 0, z: 0}
+  grenadePrefab: {fileID: 0}
+  grenadeModelPrefab: {fileID: 0}
+  grenadeSpawn: {fileID: 0}
+  grappleActive: 0
   isInSpace: 1
   physicsMask:
     serializedVersion: 2
@@ -49,25 +82,17 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  carrierNum: 0
-  anim: {fileID: 0}
   _angle: 0
-  fireScript: {fileID: 6445974650302845358}
-  damageScript: {fileID: 0}
   patrolIndex: 0
   maxSpeed: 7
   lockOnRate: 0.4
   head: {fileID: 2944726327050854050}
-  rightHandPosition: {fileID: 6706184369586867907}
   botState: 0
   netView: {fileID: 0}
   spaceDestination: {x: 0, y: 0, z: 0}
   lastSpaceDestination: {x: 0, y: 0, z: 0}
   lastPosition: {x: 0, y: 0, z: 0}
   currentVelocity: {x: 0, y: 0, z: 0}
-  botID: 65
-  nameTextMesh: {fileID: 5884287006000900284}
-  ragdoll: {fileID: 1333036756815864, guid: b30042f9b29c8ab498091d0074f93a31, type: 3}
 --- !u!195 &6226886315898191558
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -102,6 +127,11 @@ PrefabInstance:
       propertyPath: m_AssetId
       value: c390d38e0c0195a46bff24e0b6672828
       objectReference: {fileID: 0}
+    - target: {fileID: -492052599107048267, guid: 783577177cb004841a4685d42797a477,
+        type: 3}
+      propertyPath: clientAuthority
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3753713553582954547, guid: 783577177cb004841a4685d42797a477,
         type: 3}
       propertyPath: rhTarget
@@ -125,12 +155,12 @@ PrefabInstance:
     - target: {fileID: 7132676860201916648, guid: 783577177cb004841a4685d42797a477,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7132765047391468030, guid: 783577177cb004841a4685d42797a477,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7137830996014598540, guid: 783577177cb004841a4685d42797a477,
         type: 3}
@@ -218,6 +248,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3736378137668493254}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &5847382945693681454 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 7132676860201916648, guid: 783577177cb004841a4685d42797a477,
+    type: 3}
+  m_PrefabInstance: {fileID: 3736378137668493254}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6706184369586867907 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7983597057225298181, guid: 783577177cb004841a4685d42797a477,
@@ -233,12 +269,6 @@ Transform:
 --- !u!4 &2944726327050854050 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1947680260361240932, guid: 783577177cb004841a4685d42797a477,
-    type: 3}
-  m_PrefabInstance: {fileID: 3736378137668493254}
-  m_PrefabAsset: {fileID: 0}
---- !u!102 &5884287006000900284 stripped
-TextMesh:
-  m_CorrespondingSourceObject: {fileID: 7094127936921761658, guid: 783577177cb004841a4685d42797a477,
     type: 3}
   m_PrefabInstance: {fileID: 3736378137668493254}
   m_PrefabAsset: {fileID: 0}

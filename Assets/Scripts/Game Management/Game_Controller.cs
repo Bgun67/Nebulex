@@ -743,7 +743,7 @@ public class Game_Controller : NetworkBehaviour {
 	}
 	[ClientRpc]
 	public void RPC_AddKill(int playerNum){
-		if(playerNum == localPlayer.playerID){
+		if(localPlayer!= null && playerNum == localPlayer.playerID){
 			WindowsVoice.Speak("Target Down");
 		}
 	}

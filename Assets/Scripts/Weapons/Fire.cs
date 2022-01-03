@@ -58,7 +58,6 @@ public class Fire : MonoBehaviour {
 	[Tooltip("DO fired bullets start with the parents velocity?")]
 	public bool ignoreParentVelocity;
 	Rigidbody rootRB;
-	public MetworkView netView;
 	public ParticleSystem muzzleFlash;
 	public int playerID;
 	public bool reloading;
@@ -73,7 +72,7 @@ public class Fire : MonoBehaviour {
 	// Use this for initialization
 	void Awake()
 	{
-		Invoke("Setup", Random.Range(0.1f, 0.2f));
+		Setup();
 	}
 	void Setup()
 	{
@@ -88,19 +87,12 @@ public class Fire : MonoBehaviour {
 			rootRB = transform.root.GetComponent<Rigidbody>();
 		}
 
-		if (netView == null)
-		{
-			netView = this.GetComponent<MetworkView>();
-		}
-		if (netView == null)
-		{
-			netView = this.GetComponentInParent<MetworkView>();
-		}
+		
 		magAmmo = magSize;
 		totalAmmo = maxAmmo;
 
-		Invoke(nameof(CreateObjectPool), Random.Range(0, 0.01f));
-		//
+		CreateObjectPool();
+		
 	}
 
 	public void Activate(GameObject player){
@@ -325,13 +317,11 @@ public class Fire : MonoBehaviour {
 			{
 				return null;
 			}
-
 		}
 		GameObject bullet = poolList.Pop ();
 		destroyedStack.Push (bullet);
 		bullet.SetActive (true);
 		return(bullet);
-
 	}
 
 

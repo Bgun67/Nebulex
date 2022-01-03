@@ -7,6 +7,7 @@ using Mirror;
 
 public class Player : NetworkBehaviour {
 	public Rigidbody rb;
+	public CapsuleCollider boundingCollider;
 	public Animator anim;
 	protected Player_IK player_IK;
 
@@ -53,6 +54,7 @@ public class Player : NetworkBehaviour {
 	public float suffocationTime;
 	public Damage damageScript;
 	public LadderController ladder;
+	
 
 	
 	[SyncVar]

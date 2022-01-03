@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Mirror;
 
-public class Chat : MonoBehaviour {
+public class Chat : NetworkBehaviour {
 
-
-	public MetworkView netView;
 
 	public Text txtChatLog;
 	public InputField txtField;
@@ -18,7 +17,7 @@ public class Chat : MonoBehaviour {
 	public bool showLog;
 
 	void Start(){
-		gameController = GameObject.FindObjectOfType<Game_Controller> ();
+		gameController = Game_Controller.Instance;
 	}
 
 	void FixedUpdate(){
@@ -43,55 +42,33 @@ public class Chat : MonoBehaviour {
 			Input.ResetInputAxes();
 		}
 	}
-	/*void Update(){
-		if (Input.GetKeyDown (KeyCode.Return)) {
-			if (!fieldActive) {
-				fieldActive = true;
-				EventSystem.current.SetSelectedGameObject (txtField.gameObject, null);
-				txtField.OnPointerClick (new PointerEventData (EventSystem.current));
-				showLog = true;
-				
-			} else {
-				fieldActive = false;
-				showLog = false;
-				OnSubmit();
-				
-			}
-		}
-		if(fieldActive){
-			Input.ResetInputAxes();
-		}
-	}*/
-
-
+	
 	public void OnSubmit(){
 		if (txtField.text.Length < 1) {
 			return;
 		}
 
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			netView.RPC ("RPC_SendMessage", MRPCMode.AllBuffered, new object[]{ gameController.localPlayer.GetComponent<Player_Controller>().playerName + ": " + txtField.text + "\n" , gameController.localTeam});
-		} else {
-			RPC_SendMessage (gameController.localPlayer.name + ": " + txtField.text + "\n", gameController.localTeam);
-		}
+		
+		Cmd_SendMessage (gameController.localPlayer.name + ": " + txtField.text + "\n", gameController.localTeam);
+		
 		txtField.text = "";
 		EventSystem.current.SetSelectedGameObject (null, null);
-		//txtChatLog.OnPointerClick (new PointerEventData (EventSystem.current));
 	}
+	[Server]
 	public static void LogToChat(string _message){
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			FindObjectOfType<Chat>().netView.RPC ("RPC_SendMessage", MRPCMode.AllBuffered, new object[]{ _message, 2});
-		} else {
-			FindObjectOfType<Chat>().RPC_SendMessage (_message, 2);
-		}
+		FindObjectOfType<Chat>().Rpc_SendMessage (_message, 2);
+	}
+	[Command]
+	void Cmd_SendMessage(string _message, int team){
+		Rpc_SendMessage(_message, team);
 	}
 
 	///<summary>
 	///Team 2 is everyone
 	///Team 0 and Team 1 are only those teams
 	///<summary>
-	[MRPC]
-	public void RPC_SendMessage(string message, int team){
+	[ClientRpc]
+	void Rpc_SendMessage(string message, int team){
 		switch(team){
 			case 2:
 			txtChatLog.text += "[All] " + message;
@@ -109,11 +86,6 @@ public class Chat : MonoBehaviour {
 			break;
 
 		}
-		
-		
-		
-
-		
 
 	}
 

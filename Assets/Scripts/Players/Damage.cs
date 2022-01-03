@@ -5,7 +5,9 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Mirror;
 
-public class Damage : NetworkBehaviour {
+
+
+public class Damage : NetworkBehaviour{
 	public int originalHealth;
 	[SyncVar (hook = "UpdateUIHook")]
 	public int currentHealth;

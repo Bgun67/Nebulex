@@ -58,7 +58,6 @@ public class Com_Controller : Player {
 	//private Game_Controller gameController;
 	//[SyncVar]
 	//public int playerID = -1;
-	public TextMesh nameTextMesh;
 	//public GameObject ragdoll;
 	
 
@@ -96,9 +95,6 @@ public class Com_Controller : Player {
 		//Program in jerseys, smooth lerp, reduce lag, 
 		if (CustomNetworkManager.IsServerMachine())
 		{
-			
-
-			nameTextMesh.text = "Bot " + (this.playerID).ToString();
 
 			List<Spawn_Point> _allSpawns = new List<Spawn_Point>(FindObjectsOfType<Spawn_Point>());
 			_allSpawns.RemoveAll(x => x.team != gameController.playerStats[playerID].team);
@@ -149,18 +145,7 @@ public class Com_Controller : Player {
 		fireScript.playerID = playerID;
 
 		int localTeam = gameController.localTeam;
-		//TODO move this code to the ui manager
-		if(Game_Controller.Instance.localPlayer != null){
-			if (gameController.playerStats[playerID].team == localTeam) {
-				nameTextMesh.color = new Color (0f, 50f, 255f);
-				nameTextMesh.gameObject.SetActive (true);
-
-			} else {
-				nameTextMesh.color = new Color (255f, 0f, 0f);
-				nameTextMesh.gameObject.SetActive (false);
-			}
-			nameTextMesh.transform.LookAt (gameController.localPlayer.transform);
-		}
+		
 
 		if (isServer)
 		{
