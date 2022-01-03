@@ -257,7 +257,7 @@ public class Game_Controller : NetworkBehaviour {
 				
 				//TODO: Assign these to spawn points
 				GameObject _bot = Instantiate(botPrefab, Vector3.zero, Quaternion.identity);
-				_bot.GetComponent<Com_Controller>().botID = i;
+				_bot.GetComponent<Com_Controller>().playerID = i;
 				bots.Add(_bot.GetComponent<Com_Controller>());
 				NetworkServer.Spawn(_bot);
 				

@@ -122,20 +122,12 @@ public class Damage : NetworkBehaviour {
 		//	fromID = Game_Controller.GetBotFromPlayerID(fromID).botID - 64;
 		//}
 
-		int thisID = 0;
-		if(this.GetComponent<Com_Controller>() != null){
-			//Again, the future offset will not be necessary
-			//TODO: Switch all the bots to the regular playerIDs + spawn the bots dynamically
-			thisID = this.GetComponent<Com_Controller>().botID;// - 64;
-		}
-		else if(this.GetComponent<Player_Controller>()!= null){
-			thisID = this.GetComponent<Player_Controller>().playerID;
+		int thisID = -1;
+		if(this.GetComponent<Player>()!= null){
+			thisID = this.GetComponent<Player>().playerID;
 		}
 
 		if(this.tag == "Player"){
-			
-			
-			//From ID of 65 is a bot
 			//Ignore friendly fire
 			if ((gameController.playerStats[fromID].team == gameController.playerStats[thisID].team) && !overrideTeam)
 			{
