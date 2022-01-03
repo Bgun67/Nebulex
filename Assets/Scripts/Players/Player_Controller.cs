@@ -1109,7 +1109,7 @@ public class Player_Controller : Player {
 
 				rotation = new Vector3(0, h2 * 2f, 0) * 5f * Time.deltaTime * 30f;
 				rb.transform.Rotate(rotation);
-				velocity = transform.TransformVector(new Vector3(h,z,v).normalized * moveSpeed);
+				velocity = transform.TransformVector(Vector3.ClampMagnitude(new Vector3(h,z,v),1) * moveSpeed);
 				//TODO: Make leaf fall down
 				velocity += transform.up * -9810f /Mathf.Clamp(0.01f, 10000f, (_hitDistance * _hitDistance)) * Time.deltaTime * 60f;
 
@@ -1143,13 +1143,13 @@ public class Player_Controller : Player {
 			float _originalLookTime = anim.GetFloat("Look Speed");
 			Vector3 _originalForward = transform.forward;
 
-			float _counter = Vector3.Dot(_aimDirection.normalized, _originalForward.normalized);
-			if (_counter < 0.97f)
+			float _counter = Mathf.Abs(0.5f-_originalLookTime);
+			if (_counter > 0.03f)
 			{
 				Vector3 _lerpedForward = Vector3.Slerp(_originalForward, _aimDirection, 0.3f);
 				Vector3 _lerpedUp = Vector3.ProjectOnPlane(transform.up, _lerpedForward);
 				rb.transform.rotation = Quaternion.LookRotation(_lerpedForward, _lerpedUp);
-				anim.SetFloat("Look Speed", 0.5f - 0.8f * Vector3.SignedAngle(_originalForward, transform.forward, transform.right) / 90f);
+				anim.SetFloat("Look Speed", 0.5f - 0.1f *(0.5f-_originalLookTime));
 			}
 
 
@@ -1363,7 +1363,7 @@ public class Player_Controller : Player {
 		Destroy (_ragdollGO, 5f);
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
 
-			_rb.velocity = Vector3.ClampMagnitude(rb.velocity, 20f);
+			_rb.velocity = Vector3.ClampMagnitude(rb.velocity*Random.Range(0.9f, 1.1f), 20f);
 			_rb.useGravity = rb.useGravity;
 		}
 		try{
@@ -1423,7 +1423,6 @@ public class Player_Controller : Player {
 			yield return new WaitForSeconds(0.5f);
 		}
 
-		//yield return new WaitUntil (() => Mathf.Abs (anim.GetCurrentAnimatorStateInfo (1).normalizedTime - 0.5f) < 0.05f);
 		Vector3 _aimDirection = mainCam.transform.forward;
 		float _originalLookTime = anim.GetFloat("Look Speed");
 		Vector3 _originalForward = transform.forward;

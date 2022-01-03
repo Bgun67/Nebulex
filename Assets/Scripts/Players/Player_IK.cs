@@ -18,11 +18,13 @@ public class Player_IK : MonoBehaviour
 
 	Vector3 rfTargetPos;
     Quaternion rfTargetRot;
-    Vector3 lfTargetPos;
+	Vector3 currentRHVelocity;
+	Vector3 lfTargetPos;
     Quaternion lfTargetRot;
-    
+	Vector3 currentLHVelocity;
 
-    private Animator anim;
+
+	private Animator anim;
     private Player_Controller player;
     private bool isBot = false;
 
@@ -101,7 +103,7 @@ public class Player_IK : MonoBehaviour
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
             if(player != null){
 				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
-				rhPosition = Vector3.Lerp(rhPosition, targetPosition, 0.5f);
+				rhPosition = Vector3.SmoothDamp(rhPosition, targetPosition, ref currentRHVelocity, 0.03f);
 			}
 			else
 			{
