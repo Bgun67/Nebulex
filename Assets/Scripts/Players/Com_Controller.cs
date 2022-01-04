@@ -23,6 +23,7 @@ public class Com_Controller : Player {
 		//public Player_Controller _controller;
 		public float _lastSpottedTime;
 		public float _distance;
+		public float _angle;
 		public bool _hasDied;
 	}
 	public bool isInSpace = false;
@@ -34,7 +35,7 @@ public class Com_Controller : Player {
 
 	//public Fire fireScript;
 	//public Damage damageScript;
-	Player_Controller[] players;
+	Player[] players;
 	Com_Controller[] bots;
 	const int NUM_BOTS = 16;
 	public TargetPlayer targetPlayer;
@@ -243,23 +244,9 @@ public class Com_Controller : Player {
 	//Checks which state the bot should be in
 	void CheckState(){
 		
-		//Raycast to check visibility to each player
-		//players = GameObject.FindObjectsOfType<Player_Controller>();
+		players = FindObjectsOfType<Player>();
 
-		List<GameObject> _playerObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
-		List<Player_Controller> _playerComponents = new List<Player_Controller>();
-		List<Com_Controller> _botComponents = new List<Com_Controller>();
-		
-		for(int i = 0; i < _playerObjects.Count; i++){
-			if(_playerObjects[i].GetComponent<Player_Controller>() != null){
-				_playerComponents.Add(_playerObjects[i].GetComponent<Player_Controller>());
-			}
-			else{
-				_botComponents.Add(_playerObjects[i].GetComponent<Com_Controller>());
-			}
-		}
-		players = _playerComponents.ToArray();
-		bots = _botComponents.ToArray();
+
 		
 
 		//bots = GameObject.FindObjectsOfType<Com_Controller>();
@@ -267,94 +254,62 @@ public class Com_Controller : Player {
 
 		//Check if our currently targetted player is still visible
 		if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 10f&&Vector3.Distance(transform.position, targetPlayer._transform.position)<50f) {
-			if (Vector3.Angle (targetPlayer._transform.position-this.transform.position, head.transform.forward) < 90f) {
-				if (!Physics.Linecast (this.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller> () != null) {
+			if (Vector3.Angle (targetPlayer._transform.position-head.transform.position, head.transform.forward) < 90f) {
+				if (!Physics.Linecast (head.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller> () != null) {
 										
 					targetPlayer._lastSpottedTime = Time.time;
-					targetPlayer._distance = Vector3.Distance(targetPlayer._transform.position, this.transform.position);
+					targetPlayer._distance = Vector3.Distance(targetPlayer._transform.position, head.transform.position);
 				}
 			}
 		} else {
 			targetPlayer = null;
 		}
-		if (targetPlayer == null)
+		//if (targetPlayer == null)
+		//{
+		// Find New Target
+		for (int i = 0; i < players.Length; i++)
 		{
-			for (int i = 0; i < players.Length; i++)
-			{
-				//TODO players[i].netObj.owner
-				if(gameController.playerStats[players[i].playerID].team == gameController.playerStats[playerID].team){
-					continue;
-				}
-				if (Vector3.Dot((players[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
-				{
-					//if (_hit.distance < 50f)
-					if(Vector3.Distance(this.transform.position, players[i].transform.position) < 50f)
-					{
-						if (!Physics.Linecast(this.transform.position, players[i].transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller>() != null)
-						{
-						
-							
-							//Check if the player is HALF of the distance of the previous player
-							if (targetPlayer != null)
-							{
-								if (_hit.distance > targetPlayer._distance - 5f)
-								{
-									continue;
-								}
-							}
-							targetPlayer = new TargetPlayer();
-							targetPlayer._transform = players[i].transform;
-							targetPlayer._distance = Vector3.Distance(players[i].transform.position, this.transform.position);
-							//targetPlayer._controller = players[i];
-							targetPlayer._lastSpottedTime = Time.time;
-							targetPlayer._hasDied = false;
-
-						}
-
-
-					}
-				}
+			//TODO players[i].netObj.owner
+			if(gameController.playerStats[players[i].playerID].team == gameController.playerStats[playerID].team){
+				continue;
 			}
-
-			for (int i = 0; i < bots.Length; i++)
+			float angle = Vector3.Angle((players[i].transform.position - head.transform.position).normalized, head.transform.forward);
+			if (angle > 120f)
 			{
-				if(gameController.playerStats[bots[i].playerID].team == gameController.playerStats[playerID].team || bots[i] == this){
-					continue;
-				}
-				if (Vector3.Dot((bots[i].transform.position-this.transform.position ).normalized, transform.forward) > 0.2f)
+				float distance = Vector3.Distance(head.transform.position, players[i].transform.position);
+				if(distance < 50f)
 				{
-					//if (_hit.distance < 50f)
-					if(Vector3.Distance(this.transform.position, bots[i].transform.position) < 50f)
+					if (!Physics.Linecast(head.transform.position, players[i].transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller>() != null)
 					{
-						if (!Physics.Linecast(this.transform.position, bots[i].transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Com_Controller>() != null)
-						{
+					
 						
-							
-							
-							//Check if the player is HALF of the distance of the previous player
-							if (targetPlayer != null)
+						//Check if the player is less than the distance of the previous player
+						if (targetPlayer != null)
+						{
+							if (distance*0.2f*angle*0.8f > targetPlayer._distance*0.2f+targetPlayer._angle*0.8f)
 							{
-								if (_hit.distance > targetPlayer._distance - 5f)
-								{
-									continue;
-								}
+								continue;
 							}
-							targetPlayer = new TargetPlayer();
-							targetPlayer._transform = bots[i].transform;
-							targetPlayer._distance = Vector3.Distance(bots[i].transform.position, this.transform.position);
-							//targetPlayer._controller = players[i];
-							targetPlayer._lastSpottedTime = Time.time;
-							targetPlayer._hasDied = false;
-
 						}
-
+						targetPlayer = new TargetPlayer();
+						targetPlayer._transform = players[i].transform;
+						targetPlayer._distance = distance;
+						targetPlayer._angle = angle;
+						//targetPlayer._controller = players[i];
+						targetPlayer._lastSpottedTime = Time.time;
+						targetPlayer._hasDied = false;
 
 					}
+
+
 				}
 			}
 		}
+
 		
-		TargetPlayer listenTargetPlayer = Listen(players, bots);
+		//}
+		
+		TargetPlayer listenTargetPlayer = Listen(players);
 		
 		//Check if the target player found from listening is more desirable than the current target
 		if(targetPlayer != null && listenTargetPlayer != null){
@@ -383,12 +338,12 @@ public class Com_Controller : Player {
 			botState = BotState.Patrol;
 		}
 	}
-	TargetPlayer Listen(Player_Controller[] _players, Com_Controller[] _bots)
+	TargetPlayer Listen(Player[] _players)
 	{
 		TargetPlayer _targetPlayer;
 		Transform heardPlayer = null;
 		float loudestSound = -1000f;
-		foreach (Player_Controller player in _players)
+		foreach (Player player in _players)
 		{
 			//TODO player.netObj.owner
 			if(gameController.playerStats[player.playerID].team == gameController.playerStats[playerID].team){
@@ -410,26 +365,7 @@ public class Com_Controller : Player {
 				heardPlayer = player.transform;
 			}
 		}
-		foreach (Com_Controller player in _bots)
-		{
-			if(gameController.playerStats[player.playerID].team == gameController.playerStats[playerID].team){
-				continue;
-			}
-			float[] samples = new float[2];
-			try
-			{
-				player.fireScript.shootSound.GetOutputData(samples, 0);
-			}
-			catch
-			{
-				continue;
-			}
-			float _volume = samples[0] / Vector3.Distance(player.transform.position, transform.position);
-			if ( _volume > loudestSound)
-			{
-				heardPlayer = player.transform;
-			}
-		}
+		
 		if (heardPlayer != null && Vector3.Distance(heardPlayer.transform.position, this.transform.position) < 50f)
 		{
 			_targetPlayer = new TargetPlayer();
@@ -490,7 +426,7 @@ public class Com_Controller : Player {
 	{
 		float sqrDistance = Vector3.Magnitude(targetPlayer._transform.position - transform.position);
 		
-		if ( sqrDistance> 7f)
+		if ( sqrDistance> 20f)
 		{
 			if(!isInSpace){
 				agent.destination = targetPlayer._transform.position;
@@ -513,12 +449,12 @@ public class Com_Controller : Player {
 			
 			Aim();
 		}
-		Quaternion _rotation = Quaternion.FromToRotation(fireScript.shotSpawn.transform.forward, (targetPlayer._transform.position+targetPlayer._transform.up * 1.5f - fireScript.shotSpawn.transform.position).normalized);
-		_rotation = Quaternion.Slerp( Quaternion.identity,_rotation, 0.05f);
-		this.transform.forward = _rotation * this.transform.forward;
+		Vector3 _rotation = Vector3.RotateTowards(fireScript.shotSpawn.forward, (targetPlayer._transform.position+targetPlayer._transform.up*1f-fireScript.shotSpawn.position).normalized, 3f, 100f);
+		//_rotation = Quaternion.Slerp( Quaternion.identity,_rotation, 0.05f);
+		transform.rotation = Quaternion.LookRotation(_rotation);// = _rotation * this.transform.forward;
 
-		Vector3 _distToPivot = transform.up*1.5f;
-		transform.position = _rotation * (-_distToPivot) + transform.position + _distToPivot;
+		//Vector3 _distToPivot = transform.up*1.5f;
+		//transform.position = _rotation * (-_distToPivot) + transform.position + _distToPivot;
 		
 		
 		//this.transform.forward = Vector3.Slerp(transform.forward,((targetPlayer._transform.position+targetPlayer._transform.up * 1.5f-fireScript.shotSpawn.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);//Vector3.Slerp(fireScript.shotSpawn.transform.forward, ((targetPlayer._transform.position-transform.position).normalized + (transform.forward - fireScript.shotSpawn.transform.forward)).normalized, 0.3f);
@@ -528,15 +464,15 @@ public class Com_Controller : Player {
 	{
 		anim.SetBool("Scope", true);
 		//use relative position
-		Vector3 _relativePosition = targetPlayer._transform.position+targetPlayer._transform.up * 1.5f - fireScript.shotSpawn.position;
+		Vector3 _relativePosition = targetPlayer._transform.position+targetPlayer._transform.up * 1f - head.position;
 		//Lerp towards player
 		if(!isInSpace){
-			transform.Rotate(0f,Vector3.SignedAngle( fireScript.shotSpawn.transform.forward, _relativePosition, Vector3.up)*lockOnRate,0f);
+			transform.Rotate(0f,Vector3.SignedAngle( head.forward, _relativePosition, Vector3.up)*lockOnRate,0f);
 		}
 		//animate so that it look up/down follows player
-		_angle = Vector3.SignedAngle(fireScript.shotSpawn.forward, _relativePosition, transform.right)/100f;
+		_angle = Vector3.SignedAngle(head.forward, _relativePosition, transform.right)/100f;
 		if(isInSpace){
-			_angle = Vector3.SignedAngle(fireScript.shotSpawn.forward, transform.forward, transform.right)/1000f;
+			_angle = Vector3.SignedAngle(head.forward, transform.forward, transform.right)/1000f;
 		}
 		anim.SetFloat("Look Speed", Mathf.Lerp(anim.GetFloat("Look Speed"),Mathf.Clamp01(anim.GetFloat("Look Speed")- _angle),lockOnRate));
 		Debug.DrawLine(transform.position, transform.position+_relativePosition, Color.white);
@@ -550,9 +486,9 @@ public class Com_Controller : Player {
 			//TODO: Stop navigation
 
 			//fire
-			fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+			fireScript.FireWeapon(fireScript.shotSpawn.transform.position, head.forward);
 			//Bots only exist on the server
-			Rpc_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+			Rpc_FireWeapon(fireScript.shotSpawn.transform.position, head.forward);
 		}
 
 	}
