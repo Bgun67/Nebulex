@@ -33,6 +33,9 @@ public class Player_IK : MonoBehaviour
 	float recoilMagnitude;
 	[SerializeField]
 	AnimationCurve recoilCurve;
+	[SerializeField]
+	AnimationCurve muzzleClimbMaxCurve;
+	float muzzleClimbMagnitude;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -59,6 +62,7 @@ public class Player_IK : MonoBehaviour
 	{
 		recoilMagnitude = magnitude;
 		recoilStartTime = Time.time;
+		muzzleClimbMagnitude += magnitude;
 	}
 	Vector3 GetRecoil()
 	{
@@ -68,18 +72,18 @@ public class Player_IK : MonoBehaviour
 		}
 		return -player.transform.forward * recoilMagnitude * recoilCurve.Evaluate(Time.time - recoilStartTime);
 	}
+	Vector3 GetMuzzleClimb()
+	{
+		if (Time.time - recoilStartTime > 1)
+		{
+			return Vector3.zero;
+		}
+		return player.transform.up*recoilMagnitude*4f * Mathf.Lerp(recoilCurve.Evaluate(Time.time - recoilStartTime), muzzleClimbMaxCurve.Evaluate(Time.time - recoilStartTime), muzzleClimbMagnitude);
+	}
     void Update(){
-        /*if(rhTarget != null){
-            if(player != null){
-				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
-				rhPosition = Vector3.Slerp(rhPosition, targetPosition, 0.99f);
-			}
-			else
-			{
-				rhPosition =  rhTarget.position;
-			}
-        }*/
-    }
+		muzzleClimbMagnitude = Mathf.Max(0, muzzleClimbMagnitude- Time.deltaTime);
+
+	}
 
 	void OnAnimatorIK(){
         //Pull the latest raycast data from the player
@@ -102,7 +106,7 @@ public class Player_IK : MonoBehaviour
             anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
             if(player != null){
-				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
+				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil()+GetMuzzleClimb()/50f;
 				rhPosition = Vector3.SmoothDamp(rhPosition, targetPosition, ref currentRHVelocity, 0.03f);
 			}
 			else
@@ -110,7 +114,7 @@ public class Player_IK : MonoBehaviour
 				rhPosition =  rhTarget.position;
 			}
 			anim.SetIKPosition(AvatarIKGoal.RightHand,rhPosition);
-			anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation);
+			anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation*Quaternion.Euler(-2f*GetMuzzleClimb()));
         }
         if(lhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);

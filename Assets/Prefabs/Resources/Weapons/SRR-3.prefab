@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360750746239572}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.014, y: 0.167, z: -0.013}
+  m_LocalPosition: {x: 0, y: 0.167, z: -0.013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4555555215612494}
@@ -148,7 +148,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 4.5905e-41, y: 1.2590692e-31, z: 4.5905e-41, w: 9.403955e-38}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -178,14 +178,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1586936629837550}
-  m_LocalRotation: {x: -0.025813576, y: -0.0087587675, z: -0.049791604, w: 0.99838763}
-  m_LocalPosition: {x: -0.01491951, y: 0.10921607, z: 0.7103983}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.105, z: 0.518}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4467599483552278}
   m_Father: {fileID: 4555555215612494}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -3.005, y: -0.85600007, z: -5.688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &198191471837166540
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4034,9 +4034,9 @@ ParticleSystem:
       properties: 0
       emitProbability: 1
   LightsModule:
-    enabled: 1
+    enabled: 0
     ratio: 0.5
-    light: {fileID: 0}
+    light: {fileID: 108640043731173494}
     randomDistribution: 1
     color: 0
     range: 1
@@ -5105,11 +5105,10 @@ MonoBehaviour:
   weaponAnim: {fileID: 0}
   recoilAmount: 0.25
   bulk: 0.5
-  aimAnimNumber: 1
   scopePosition: {fileID: 4893021308517778}
   ignoreParentVelocity: 0
-  netView: {fileID: 0}
   muzzleFlash: {fileID: 198191471837166540}
+  muzzleLight: {fileID: 1480695602682398}
   playerID: 0
   reloading: 0
   magGO: {fileID: 4647724497906362423}
