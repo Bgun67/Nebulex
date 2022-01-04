@@ -47,9 +47,12 @@ Rigidbody rb;
 			_damageScript = other.transform.root.GetComponent<Damage> ();
 		if(_damageScript != null){
 			print("Damage Script found");
-			_damageScript.TakeDamage (damagePower, fromID, other.transform.position+other.relativeVelocity);
+			if (fromID == Game_Controller.Instance.GetLocalPlayer()){
+				UI_Manager._instance.ShowHit();
+			}
+			_damageScript.TakeDamage(damagePower, fromID, other.transform.position + other.relativeVelocity);
 		}
-		
+
 		DisableBullet();
 		
 

@@ -832,7 +832,7 @@ public class Player_Controller : Player {
 
 	}*/
 	#region Region1
-
+	Vector3 currentCamVelocity;
 	protected override void Aim(){
 		if (fireScript == null||grappleActive)
 		{
@@ -844,7 +844,9 @@ public class Player_Controller : Player {
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
 			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
-			mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
+			mainCam.transform.position = Vector3.SmoothDamp(mainCam.transform.position, _scopePosition, ref currentCamVelocity, 0.07f);
+
+			//mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
 			mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation,Quaternion.LookRotation(_scopeTransform.forward, _scopeTransform.up),0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
 
 			player_IK.Scope(true);

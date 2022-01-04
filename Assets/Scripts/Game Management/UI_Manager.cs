@@ -33,6 +33,9 @@ public class UI_Manager : MonoBehaviour
 	private Text magAmmoText;
 	[SerializeField]
 	private Text totalAmmoText;
+	[SerializeField]
+	private GameObject hitMarks;
+
 
 	//Pie Menu
 	[SerializeField]
@@ -148,6 +151,12 @@ public class UI_Manager : MonoBehaviour
 			_color.a = Mathf.Clamp01(1f - (Time.time - hitDirections[i].time)/3f);
 			damageIndicators[i].color = _color;
 		}
+
+		//hit marking
+		if (Time.frameCount % 10f == 0)
+		{
+			hitMarks.SetActive(false);
+		}
 		
 		//Bot indicators
 		foreach(Player _player in FindObjectsOfType<Player>()){
@@ -205,6 +214,10 @@ public class UI_Manager : MonoBehaviour
 	public void Resume()
 	{
 		UI_Manager._instance.pauseMenu.Resume();
+	}
+	public void ShowHit()
+	{
+		hitMarks.SetActive(true);
 	}
 	void LaunchPie(){
 		for (int i = 0; i<pieQuadrants.Length; i++){
