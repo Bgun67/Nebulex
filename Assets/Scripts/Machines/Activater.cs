@@ -16,7 +16,7 @@ public class Activater : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		Invoke("Setup", 0.1f);
+		Invoke(nameof(Setup), 0.1f);
 	}
 	void Setup(){
 		netView = GetComponent<MetworkView>();

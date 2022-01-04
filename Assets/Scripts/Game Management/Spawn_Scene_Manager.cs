@@ -79,32 +79,11 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		}
 		Player_Controller _player = Game_Controller.Instance.localPlayer;
 		_player.transform.rotation = Quaternion.LookRotation(spawnPositions [index].forward,Vector3.up);
-		//_player.transform.up = Vector3.up;
 		_player.transform.position = spawnPositions [index].position;
 
 		
-		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			//TODO
-			//gameController.netView.RPC ("RPC_ActivatePlayer", MRPCMode.AllBuffered, new object[]{ _player.netObj.owner});
-			//CHECK
-			if (_player.isLocalPlayer) {
-				Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
-				Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
-
-			}
-		} else {
-			//Enables the player
-			//TODO
-			//gameController.RPC_ActivatePlayer (_player.netObj.owner);
-			Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
-			Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
-
-		}*/
-		
 		_player.Cmd_ActivatePlayer();
-		//CHECK
-		Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
-		Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
+		
 
 		//zoom down effect
 		_player.mainCamObj.transform.position = Game_Controller.Instance.sceneCam.transform.position;

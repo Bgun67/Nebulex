@@ -243,33 +243,19 @@ public class Player_Controller : Player {
 
 		airTime = suffocationTime;
 		grenadesNum = 4;
-		//pieQuadrants = UI_Manager._instance.pieQuadrants;
 		if (MInput.useMouse)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
 
 		}
-
-		mainCam.enabled = true;
-		
 		if (isLocalPlayer) {
-			
 			SetupWeapons ();
 			damageScript = this.GetComponent<Damage> ();
 			damageScript.healthShown = true;
-			InvokeRepeating ("UpdateUI", 1f, 1f);
+			InvokeRepeating (nameof(UpdateUI), 1f, 1f);
 			LoadPlayerData ();
 		}
-		//primarySelected = !primarySelected;
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			//TODO Move this to the ui manager
-			//netView.RPC ("RPC_ShowNameText", MRPCMode.AllBuffered, new object[]{ });
-			
-		} else {
-			
-			//RPC_ShowNameText ();
-
-		}
+		
 		
 		UpdateUI ();
 
@@ -288,7 +274,7 @@ public class Player_Controller : Player {
 
 		anim.SetFloat ("Look Speed", 0.5f);
 
-		Invoke ("Setup", 0.2f);
+		Invoke (nameof(Setup), 0.2f);
 	}
 	void OnDisable(){
 		try {
@@ -345,15 +331,14 @@ public class Player_Controller : Player {
 
 			return;
 		} else {
-			mainCamObj.SetActive(true);
-			minimapCam.SetActive(true);
-			iconCamera.SetActive (true);
+			//TODO: Remove if necessary
+			//mainCamObj.SetActive(true);
+			//minimapCam.SetActive(true);
+			//iconCamera.SetActive (true);
 			if(helmet.activeSelf)helmet.SetActive(false);
 		
 		}
 		
-
-		mainCamObj.GetComponent<AudioListener> ().enabled = true;
 		if (MInput.useMouse)
 		{
 			h2 = Mathf.Clamp(MInput.GetMouseDelta("Mouse X")* lookFactor*0.1f,-2f,2f);
@@ -741,8 +726,10 @@ public class Player_Controller : Player {
 		//Reload the players ammo
 		primaryWeapon.GetComponent<Fire>().RestockAmmo();
 		if (isLocalPlayer) {
-			Game_Controller.Instance.sceneCam.GetComponent<Camera>().enabled = false;
-			Game_Controller.Instance.sceneCam.GetComponent<AudioListener>().enabled = false;
+			Game_Controller.Instance.sceneCam.gameObject.SetActive(false);
+			mainCamObj.SetActive(true);
+			minimapCam.SetActive(true);
+			iconCamera.SetActive (true);
 		}
 	}
 
@@ -1393,10 +1380,7 @@ public class Player_Controller : Player {
 	}
 	public override void CoDie(){
 		
-		Game_Controller.Instance.sceneCam.enabled = true;
-		//TODO: Figure out what the fuck this does
-		//Game_Controller.Instance.GetComponent<AudioListener>().enabled = true;
-		//Reload the guns
+		Game_Controller.Instance.sceneCam.gameObject.SetActive(true);
 		
 		if (isLocalPlayer) {
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)

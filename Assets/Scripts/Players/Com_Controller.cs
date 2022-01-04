@@ -660,7 +660,6 @@ public class Com_Controller : Player {
 
 	#region Region2
 	public override void Die(){
-		print("Bot die");
 		//This keeps the bots from clumping
 		patrolIndex++;
 		if (patrolIndex >= patrolPositions.Length) {

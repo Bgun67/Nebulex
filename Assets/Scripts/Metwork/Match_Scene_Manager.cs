@@ -82,10 +82,7 @@ public class MapClass
 	{
 		while (this.enabled)
 		{
-
 			connection.QueryPHPMasterServer();
-			print("Querying");
-
 			yield return new WaitForSecondsRealtime(pollingTime);
 		}
 

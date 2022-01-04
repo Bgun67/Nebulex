@@ -319,6 +319,7 @@ public class Fire : MonoBehaviour {
 			}
 		}
 		GameObject bullet = poolList.Pop ();
+		bullet.GetComponent<Bullet_Controller>().DisableBullet();
 		destroyedStack.Push (bullet);
 		bullet.SetActive (true);
 		return(bullet);

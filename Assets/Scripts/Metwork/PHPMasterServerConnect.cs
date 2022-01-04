@@ -178,7 +178,6 @@ public class PHPMasterServerConnect : MonoBehaviour
 	private IEnumerator RegistrationLoop()
 	{
 		while (!registered && manager.isServerMachine){//NetworkServer.active) {
-			print("Registering");
             yield return StartCoroutine (RegisterHostCR());
     		yield return new WaitForSeconds(delayBetweenUpdates);
 		}
@@ -187,7 +186,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 	}
 
     private IEnumerator RegisterHostCR () {
-		Debug.Log("Attempting to register host: Try: " + retries.ToString());
+		
 	    string url = masterServerURL+"RegisterHost";
 	    url += "?gameType="+WWW.EscapeURL (gameType);
 	    url += "&gameName="+WWW.EscapeURL (gameName);
@@ -202,7 +201,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 		//TODO
 		url += "&externalIp="+"204.123.32.5";
 		
-	    Debug.Log (url);
+	    Debug.Log ("Attempting to register host: Try: " + retries.ToString() + " at url " + url);
 	
 	    WWW www = new WWW (url);
 	    yield return www;
@@ -217,11 +216,10 @@ public class PHPMasterServerConnect : MonoBehaviour
 			Debug.LogError (www.error);
 	        SendMessage ("OnRegisterHostFailed");
 		}
-		if (www.error != null && www.text == "Succeeded") {
+		if (www.error == null && www.text == "Succeeded") {
 			Debug.Log("Successfully registered host");
 			registered = true;
 		}
-		Debug.Log("Recieved transmision: " + www.text);
     }
 
 	public void UnregisterHost ()

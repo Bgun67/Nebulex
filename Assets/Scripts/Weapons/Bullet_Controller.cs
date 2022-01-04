@@ -13,7 +13,7 @@ public class Bullet_Controller : MonoBehaviour {
 	public GameObject blastSystem;
 	TrailRenderer trail;
 	public int fromID;
-Rigidbody rb;
+	Rigidbody rb;
 
 	// Use this for initialization
 	void OnEnable () {
@@ -46,7 +46,6 @@ Rigidbody rb;
 		if(_damageScript == null)
 			_damageScript = other.transform.root.GetComponent<Damage> ();
 		if(_damageScript != null){
-			print("Damage Script found");
 			if (fromID == Game_Controller.Instance.GetLocalPlayer()){
 				UI_Manager._instance.ShowHit();
 			}

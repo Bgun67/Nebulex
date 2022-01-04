@@ -58,6 +58,7 @@ public class Nav_Volume_Builder : MonoBehaviour
     }
 
     public void FindRoute(Vector3 start, Vector3 end){
+       
         plannedRoute.Clear();
         closedList.Clear();
         openList.Clear();
@@ -65,7 +66,7 @@ public class Nav_Volume_Builder : MonoBehaviour
         currentShortestLength = 1000000;
         currentClosestPosition = 1000000f;
         NavBlock endBlock = new NavBlock();
-        float shortestDistance = 1000000f;
+        float shortestDistance = float.MaxValue-1f;
         Vector3 closestPoint = Vector3.zero;
         foreach(NavBlock block in navVolume){
             block.cost = -1;
@@ -112,7 +113,7 @@ public class Nav_Volume_Builder : MonoBehaviour
         int startIndex = navVolume.IndexOf(startBlock);
         //print("Start Block Index: " + startIndex);
         //print("End Block Index: " + endIndex);
-
+       
         //Calculate the heuristic distance
         foreach(NavBlock _block in navVolume){
             Vector3 displacement = _block.m_bounds.ClosestPoint(end) - end;
@@ -131,6 +132,7 @@ public class Nav_Volume_Builder : MonoBehaviour
         navVolume[0].closestPoint = navVolume[startIndex].m_bounds.ClosestPoint(start);//m_bounds.center;
         closedList.Add(startIndex);
         int breakCounter = 1000;
+       
         while(currentBlockIndex != endIndex){
             
             breakCounter --;
@@ -181,11 +183,14 @@ public class Nav_Volume_Builder : MonoBehaviour
         currentBlockIndex = endIndex;
         plannedRoute.Add(end);
         breakCounter = 10000;
-
+       
         while(breakCounter > 0 && currentBlockIndex != startIndex){
             int bestLink = -1;
             float lowestGCost = 1000000;
-            //string listDump = "";
+            if(currentBlockIndex < 0 || currentBlockIndex >= navVolume.Count){
+                Debug.LogError("CurrentBlockIndex: " + currentBlockIndex);
+            }
+            
             foreach(int _link in navVolume[currentBlockIndex].links){
                 //listDump += currentBlockIndex.ToString() + ": [" + _link.ToString() + " " + (navVolume[_link].costs.G).ToString() + "]` ";
                 if(navVolume[_link].costs.G < lowestGCost){
@@ -204,7 +209,7 @@ public class Nav_Volume_Builder : MonoBehaviour
             plannedRoute.Add(navVolume[bestLink].closestPoint);
             breakCounter --;
         }
-
+        
         //Reverse the route so it goes from start to end
         //Remove the start point from the route
         plannedRoute.Reverse();

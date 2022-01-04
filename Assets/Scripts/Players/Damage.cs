@@ -70,13 +70,9 @@ public class Damage : NetworkBehaviour{
 
 	}
 	public void Reset(){
-		print ("Respawned");
-
 		this.gameObject.SetActive (false);
 		ShowLowHealthEffect(false);
-
-		Invoke ("Reactivate", resetTime);
-			
+		Invoke (nameof(Reactivate), resetTime);	
 
 	}
 	public void Reactivate(){
