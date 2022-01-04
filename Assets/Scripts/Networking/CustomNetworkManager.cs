@@ -52,6 +52,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
         //TODO: Solve for the edge case of a bot being dead as a player spawns
         if(Game_Controller.Instance.bots.Count > _playerID){
             Game_Controller.Instance.bots[_playerID].gameObject.SetActive(false);
+            Game_Controller.Instance.bots[_playerID].StopAllCoroutines();
         }
         NetworkServer.AddPlayerForConnection(conn, player);
     }

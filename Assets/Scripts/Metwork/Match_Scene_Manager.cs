@@ -204,7 +204,7 @@ public class Match_Scene_Manager : MonoBehaviour
 		{
 			//Metwork.Connect(hostData[index].gameName);
 			//TODO switch this to an IP instead;
-			manager.networkAddress = hostData[index].gameName;
+			manager.networkAddress = hostData[index].ip[0];
 			manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)hostData[index].port;
 			manager.StartClient();
 
@@ -258,25 +258,12 @@ public class Match_Scene_Manager : MonoBehaviour
 		}
 		else
 		{
-			//Metwork.Connect(hostData[index].gameName);
-			//TODO switch this to an IP instead;
 			manager.networkAddress = gameNameInput.text;
 			manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)int.Parse(portInput.text);
+			print("Directly connecting to: " + manager.networkAddress + " port: "+ manager.GetComponent<kcp2k.KcpTransport>().Port);
 			manager.StartClient();
-
 		}
-		//TODO?
-		//Metwork.onConnectedToServer += OnConnectedToMetServer;
-		//Metwork.onPlayerConnected += OnMetPlayerConnected;
-		//System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
-		//	"1200",
-		//	hostData[index].gameType,
-		//	hostData[index].comment
-		//}));
-
-
-		//connection.gameType = hostData[index].gameType;
-		//connection.gameName = hostData[index].gameName;
+		
 		//unsecure, but should not fail
 		try
 		{
