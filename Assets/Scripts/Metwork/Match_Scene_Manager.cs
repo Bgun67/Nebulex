@@ -20,7 +20,7 @@ public class Match_Scene_Manager : MonoBehaviour
 		LHXUltimaBase
 	}
 	[System.Serializable]
-public class MapClass
+	public class MapClass
 	{
 		//public MapType type;
 		public string sceneName;
@@ -30,15 +30,9 @@ public class MapClass
 	}
 	//public Network netView;
 	public InputField gameNameInput;
+	public InputField portInput;
 	public GameObject loadingPanel;
-	/*public class HostData
-	{
-		public int connectedPlayers;
-		public string gameName;
-		public string gameType;
-		public string guid;
-
-	}*/
+	
 
 	public bool testing;
 	public string portString;
@@ -49,6 +43,8 @@ public class MapClass
 	public MapClass[] maps;
 	public int currentMapNum;
 	public Text mapNameText;
+	public Text matchInfoText;
+
 	public Image mapImage;
 	public Button[] matchTypeButtons;
 
@@ -82,6 +78,15 @@ public class MapClass
 	{
 		while (this.enabled)
 		{
+			
+			if(manager.useLan){
+				matchInfoText.text = "SEARCHING FOR LAN MATCHES...";
+			}
+			else{
+				matchInfoText.text = "SEARCHING FOR ONLINE MATCHES...";
+			}
+			
+
 			connection.QueryPHPMasterServer();
 			yield return new WaitForSecondsRealtime(pollingTime);
 		}
@@ -97,6 +102,12 @@ public class MapClass
 		}
 		if (hostData != null && hostData.Length > 0)
 		{
+			if(manager.useLan){
+				matchInfoText.text = hostData.Length.ToString() + " LAN MATCHES FOUND";
+			}
+			else{
+				matchInfoText.text = hostData.Length.ToString() + " ONLINE MATCHES FOUND";
+			}
 			for (int i = 0; i < hostData.Length; i++)
 			{
 				string _mapDisplayedName = new List<MapClass>(maps).Find(x => x.sceneName == hostData[i].comment).displayedName;
@@ -107,7 +118,12 @@ public class MapClass
 		}
 		else
 		{
-			print("No games currently available");
+			if(manager.useLan){
+				matchInfoText.text = "NO LAN MATCHES FOUND";
+			}
+			else{
+				matchInfoText.text = "NO ONLINE MATCHES FOUND";
+			}
 			for (int i = 0; i < hostButtons.Length; i++)
 			{
 				hostButtons[i].gameObject.SetActive(false);
@@ -129,6 +145,12 @@ public class MapClass
 		for (int i = 0; i < hostButtons.Length; i++)
 		{
 			hostButtons[i].gameObject.SetActive(false);
+		}
+		if(manager.useLan){
+			matchInfoText.text = "SEARCHING FOR LAN MATCHES...";
+		}
+		else{
+			matchInfoText.text = "SEARCHING FOR ONLINE MATCHES...";
 		}
 		connection.QueryPHPMasterServer();
 	}
@@ -232,24 +254,29 @@ public class MapClass
 
 		if (testing)
 		{
-			//Network.Connect (localIP, 12345);//hostData [index].port);
+			
 		}
 		else
 		{
-			//Network.Connect (hostData [index].guid);
-			Metwork.Connect(gameNameInput.text);
+			//Metwork.Connect(hostData[index].gameName);
+			//TODO switch this to an IP instead;
+			manager.networkAddress = gameNameInput.text;
+			manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)int.Parse(portInput.text);
+			manager.StartClient();
 
 		}
+		//TODO?
+		//Metwork.onConnectedToServer += OnConnectedToMetServer;
+		//Metwork.onPlayerConnected += OnMetPlayerConnected;
+		//System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
+		//	"1200",
+		//	hostData[index].gameType,
+		//	hostData[index].comment
+		//}));
 
-		Metwork.onConnectedToServer += OnConnectedToMetServer;
-		Metwork.onPlayerConnected += OnMetPlayerConnected;
-		/*System.IO.File.WriteAllLines(Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon(new string[] {
-			"1200",
-			hostData[index].gameType,
-			maps[currentMapNum].sceneName
-		}));
-		connection.gameType = hostData[index].gameType;*/
-		connection.gameName = gameNameInput.text;
+
+		//connection.gameType = hostData[index].gameType;
+		//connection.gameName = hostData[index].gameName;
 		//unsecure, but should not fail
 		try
 		{
@@ -313,6 +340,10 @@ public class MapClass
 
 	}
 
+	public void OnUseLanChanged(bool _useLan){
+		manager.useLan = _useLan;
+	}
+	
 	public void StartServer()
 	{
 		if (isError)
@@ -324,6 +355,7 @@ public class MapClass
 		{
 			connection.comment = maps[currentMapNum].sceneName;
 			connection.gameName = gameNameInput.text;
+			manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)int.Parse(portInput.text);
 
 			manager.StartHost();
 			manager.onStartHost += OnMetServerInitialized;
@@ -333,25 +365,21 @@ public class MapClass
 			}
 			else
 			{
-				
-				//Metwork.onServerInitialized += OnMetServerInitialized;
-
-				
+		
 				//send server notifications
 				//TODO: Disabled for now
 				//SendDiscordNotification(gameNameInput.text);
 			}
-				//This line is only necessary for local builds
-				//MasterServer.RegisterHost (connection.gameType, gameNameInput.text, "");
+				
 				//unsecure, but should not fail
 				try { loadingPanel.SetActive(true); } catch { }
 				Invoke("DeactivateLoadPanel", 5f);
-				//Destroy the script, it no longer belongs
 			
 		}
 		else
 		{
-			print("Please input a game name");
+			gameNameInput.placeholder.GetComponent<Text>().text = $"<color=red>Server name required!</color>";
+			
 		}
 	}
 	void SendDiscordNotification(string matchName)
