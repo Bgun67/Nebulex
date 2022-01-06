@@ -11,7 +11,7 @@ public class MHostData{
 	public string gameType;
 	public string guid;
 	public int playerLimit;
-	public string[] ip;
+	public string ip;
 	public bool useNat;
 	public int port;
 	public bool passwordProtected;
@@ -140,8 +140,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 						continue;
 					string[] data = host.Split ("," [0]);
 					hostData [index] = new MHostData ();
-					hostData [index].ip = new string[1];
-					hostData [index].ip [0] = data [0];
+					hostData [index].ip = data [0];
 					hostData [index].port = int.Parse (data [1]);
 					hostData [index].useNat = (data [2] == "1");
 					hostData [index].guid = data [3];
