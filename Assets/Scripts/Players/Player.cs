@@ -556,7 +556,7 @@ public class Player : NetworkBehaviour {
 		{
 			this.GetComponent<Player_IK>().lhHint = fireScript.lhHint;
 		}
-		yield return new WaitForSeconds (1.26f);
+		yield return new WaitForSeconds (0.66f);
 		switchWeapons = false;
 		anim.SetBool ("Switch Weapons", false);
 		fireScript.playerID = playerID;

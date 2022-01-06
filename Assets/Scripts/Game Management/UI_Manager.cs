@@ -35,6 +35,7 @@ public class UI_Manager : MonoBehaviour
 	private Text totalAmmoText;
 	[SerializeField]
 	private GameObject hitMarks;
+	float hitMarkTime;
 
 
 	//Pie Menu
@@ -153,11 +154,11 @@ public class UI_Manager : MonoBehaviour
 		}
 
 		//hit marking
-		if (Time.frameCount % 10f == 0)
+		if (Time.time - hitMarkTime > 0.1f)
 		{
 			hitMarks.SetActive(false);
 		}
-		
+
 		//Bot indicators
 		foreach(Player _player in FindObjectsOfType<Player>()){
 			//The player is on our team, show them immediately
@@ -218,6 +219,7 @@ public class UI_Manager : MonoBehaviour
 	public void ShowHit()
 	{
 		hitMarks.SetActive(true);
+		hitMarkTime = Time.time;
 	}
 	void LaunchPie(){
 		for (int i = 0; i<pieQuadrants.Length; i++){

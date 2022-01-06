@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 
-
+[System.Serializable]
 public class MHostData{
 	public int connectedPlayers;
 	public string gameName;
@@ -28,6 +28,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 	public string comment = "Demo";
 
 	public float delayBetweenUpdates = 30.0f;
+	[SerializeField]
 	private MHostData[] hostData = null;
 
 	public int maxRetries = 3;
@@ -84,7 +85,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 		//Pick out only the appropriate game types
 		List<MHostData> _hostList = new List<MHostData>();
 		foreach (MHostData _host in hostData){
-			if(_host.gameType == gameType && _host.connectedPlayers > 0 && _host.connectedPlayers < _host.playerLimit){
+			if(_host.gameType == gameType && _host.connectedPlayers < _host.playerLimit){
 				_hostList.Add(_host);
 			}
 		}
@@ -133,7 +134,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 				string[] hosts = new string[www.text.Split (new char[]{';'}, System.StringSplitOptions.RemoveEmptyEntries).Length];
 				hosts = www.text.Split (new char[]{';'}, System.StringSplitOptions.RemoveEmptyEntries);
 				hostData = new MHostData[hosts.Length];
-				var index = 0;
+				int index = 0;
 				foreach (string host in hosts) {
 					if (host == "")
 						continue;

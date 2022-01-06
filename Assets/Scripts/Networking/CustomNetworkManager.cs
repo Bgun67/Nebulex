@@ -34,6 +34,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
 
     //Returns true if this machine is running the server
     public bool isServerMachine = false;
+    public bool useLan = false;
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         print("OnServerAddPlayer");
@@ -51,6 +52,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
         //TODO: Solve for the edge case of a bot being dead as a player spawns
         if(Game_Controller.Instance.bots.Count > _playerID){
             Game_Controller.Instance.bots[_playerID].gameObject.SetActive(false);
+            Game_Controller.Instance.bots[_playerID].StopAllCoroutines();
         }
         NetworkServer.AddPlayerForConnection(conn, player);
     }
@@ -63,8 +65,8 @@ public class CustomNetworkManager : Mirror.NetworkManager
         base.OnStartServer();
         isServerMachine = true;
         onStartServer?.Invoke();
-        //TODO: Make this not publically display the IP of private matches
-        FindObjectOfType<PHPMasterServerConnect>().RegisterHost();
+        if(!useLan)
+            FindObjectOfType<PHPMasterServerConnect>().RegisterHost();
 
     }
     public override void OnStartHost()
@@ -76,8 +78,9 @@ public class CustomNetworkManager : Mirror.NetworkManager
     public override void OnStopServer(){
         base.OnStopServer();
         isServerMachine = false;
-        GetComponent<PHPMasterServerConnect> ().UnregisterHost ();
-        print("On stop server");
+        if(!useLan)
+            GetComponent<PHPMasterServerConnect> ().UnregisterHost ();
+        
     }
     public override void OnStopHost(){
         base.OnStopHost();
