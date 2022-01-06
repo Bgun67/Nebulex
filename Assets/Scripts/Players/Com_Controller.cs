@@ -357,7 +357,11 @@ public class Com_Controller : Player {
 				botState = BotState.Hiding;
 
 			}
-			else
+			//else if(targetPlayer._acquiredTime*difficultySetting>0.1f)
+			//{
+			//	botState = BotState.Fighting;
+			//}
+			else 
 			{
 				botState = BotState.Fighting;
 			}
@@ -425,7 +429,7 @@ public class Com_Controller : Player {
 		}
 		else{
 			spaceDestination = patrolPositions[patrolIndex].transform.position;
-			Vector3 _rotation = Vector3.RotateTowards(this.transform.forward, (spaceDestination-this.transform.position).normalized, 3f*difficultySetting, 100f);
+			Vector3 _rotation = Vector3.RotateTowards(this.transform.forward, (spaceDestination-this.transform.position).normalized, 0.25f*3f*difficultySetting, 1.5f);
 			transform.rotation = Quaternion.LookRotation(_rotation);
 		}
 
@@ -493,7 +497,7 @@ public class Com_Controller : Player {
 			player_IK.Scope(false);
 			Aim();
 		}
-		Vector3 _rotation = Vector3.RotateTowards(fireScript.shotSpawn.forward, (targetPlayer._transform.position+targetPlayer._transform.up*1f-fireScript.shotSpawn.position).normalized, 3f*difficultySetting, 100f);
+		Vector3 _rotation = Vector3.RotateTowards(fireScript.shotSpawn.forward, (targetPlayer._transform.position+targetPlayer._transform.up*1f-fireScript.shotSpawn.position).normalized, 0.25f*3f*difficultySetting, 1.5f);
 		//_rotation = Quaternion.Slerp( Quaternion.identity,_rotation, 0.05f);
 		transform.rotation = Quaternion.LookRotation(_rotation);// = _rotation * this.transform.forward;
 
@@ -528,7 +532,7 @@ public class Com_Controller : Player {
 				agent.Stop();
 			}
 			//TODO: Stop navigation
-			float varianceFactor = 0.001f / (difficultySetting * (targetPlayer._acquiredTime + 1));
+			float varianceFactor = 0.001f / (difficultySetting * (targetPlayer._acquiredTime*0.01f + 1));
 			Vector3 variance = new Vector3(
 				Random.Range(-varianceFactor, varianceFactor),
 				Random.Range(-varianceFactor, varianceFactor),
