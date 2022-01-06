@@ -28,7 +28,7 @@ public class Com_Controller : Player {
 	public float[] difficulties = new float[]{
 		0.1f,0.5f, 0.7f, 1f, 2f
 	};
-
+	[System.Serializable]
 	public class TargetPlayer
 	{
 		public Transform _transform;
@@ -75,7 +75,7 @@ public class Com_Controller : Player {
 	//[SyncVar]
 	//public int playerID = -1;
 	//public GameObject ragdoll;
-	
+	float lastCheckFrame;
 
 
 
@@ -278,7 +278,7 @@ public class Com_Controller : Player {
 				{
 
 					targetPlayer._lastSpottedTime = Time.time;
-					targetPlayer._acquiredTime += 13f * Time.deltaTime / (Vector3.Distance(transform.position, targetPlayer._transform.position) + Vector3.Angle(targetPlayer._transform.position - head.transform.position, head.transform.forward));
+					targetPlayer._acquiredTime += (Time.time-lastCheckFrame) / (Vector3.Distance(transform.position, targetPlayer._transform.position) + Vector3.Angle(targetPlayer._transform.position - head.transform.position, head.transform.forward));
 					targetPlayer._distance = Vector3.Distance(targetPlayer._transform.position, head.transform.position);
 				}
 			}
@@ -319,7 +319,7 @@ public class Com_Controller : Player {
 						targetPlayer._transform = players[i].transform;
 						targetPlayer._distance = distance;
 						targetPlayer._angle = angle;
-						targetPlayer._acquiredTime += 13f * Time.deltaTime / (distance + angle);
+						targetPlayer._acquiredTime += (Time.time-lastCheckFrame) / (distance + angle);
 						//targetPlayer._controller = players[i];
 						targetPlayer._lastSpottedTime = Time.time;
 						targetPlayer._hasDied = false;
@@ -364,6 +364,7 @@ public class Com_Controller : Player {
 		} else {
 			botState = BotState.Patrol;
 		}
+		lastCheckFrame = Time.time;
 	}
 	TargetPlayer Listen(Player[] _players)
 	{
@@ -399,7 +400,7 @@ public class Com_Controller : Player {
 			_targetPlayer._transform = heardPlayer.transform;
 			_targetPlayer._distance = Vector3.Distance(heardPlayer.transform.position, this.transform.position);
 			//targetPlayer._controller = heardPlayer;
-			_targetPlayer._acquiredTime += 13f*Time.deltaTime / (Vector3.Distance(heardPlayer.transform.position, this.transform.position));
+			_targetPlayer._acquiredTime += (Time.time-lastCheckFrame) / (Vector3.Distance(heardPlayer.transform.position, this.transform.position));
 
 			_targetPlayer._lastSpottedTime = Time.time;
 			_targetPlayer._hasDied = false;
@@ -424,8 +425,8 @@ public class Com_Controller : Player {
 		}
 		else{
 			spaceDestination = patrolPositions[patrolIndex].transform.position;
-			this.transform.forward = Vector3.Slerp(this.transform.forward, (spaceDestination-this.transform.position).normalized, 0.1f);
-			
+			Vector3 _rotation = Vector3.RotateTowards(this.transform.forward, (spaceDestination-this.transform.position).normalized, 3f*difficultySetting, 100f);
+			transform.rotation = Quaternion.LookRotation(_rotation);
 		}
 
 		//
@@ -455,7 +456,7 @@ public class Com_Controller : Player {
 	{
 		float sqrDistance = Vector3.Magnitude(targetPlayer._transform.position - transform.position);
 		
-		if ( sqrDistance> 40f)
+		if ( sqrDistance*difficultySetting> 40f)
 		{
 			if(!isInSpace){
 				agent.destination = targetPlayer._transform.position;
@@ -466,7 +467,7 @@ public class Com_Controller : Player {
 				Debug.DrawLine(transform.position, spaceDestination, Color.red);
 			}
 		}
-		else if ( sqrDistance> 10f)
+		else if ( sqrDistance*difficultySetting> 10f)
 		{
 			if(!isInSpace){
 				agent.destination = targetPlayer._transform.position;
@@ -492,7 +493,7 @@ public class Com_Controller : Player {
 			player_IK.Scope(false);
 			Aim();
 		}
-		Vector3 _rotation = Vector3.RotateTowards(fireScript.shotSpawn.forward, (targetPlayer._transform.position+targetPlayer._transform.up*1f-fireScript.shotSpawn.position).normalized, 3f, 100f);
+		Vector3 _rotation = Vector3.RotateTowards(fireScript.shotSpawn.forward, (targetPlayer._transform.position+targetPlayer._transform.up*1f-fireScript.shotSpawn.position).normalized, 3f*difficultySetting, 100f);
 		//_rotation = Quaternion.Slerp( Quaternion.identity,_rotation, 0.05f);
 		transform.rotation = Quaternion.LookRotation(_rotation);// = _rotation * this.transform.forward;
 
