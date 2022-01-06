@@ -22,10 +22,11 @@ public class Com_Controller : Player {
 		Bad,
 		Easy,
 		Good,
+		Hard,
 		Legendary
 	}
 	public float[] difficulties = new float[]{
-		0.1f,0.7f, 1f, 2f
+		0.1f,0.5f, 0.7f, 1f, 2f
 	};
 
 	public class TargetPlayer
@@ -44,7 +45,7 @@ public class Com_Controller : Player {
 	
 	//public Animator anim;
 	public float _angle;
-	DifficultyLevel difficultyLevel = DifficultyLevel.Good;
+	public DifficultyLevel difficultyLevel = DifficultyLevel.Good;
 	float difficultySetting = 1f;
 
 	//public Fire fireScript;
@@ -269,9 +270,9 @@ public class Com_Controller : Player {
 		RaycastHit _hit;
 
 		//Check if our currently targetted player is still visible
-		if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 10f && Vector3.Distance(transform.position, targetPlayer._transform.position) < 50f)
+		if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 10f && Vector3.Distance(transform.position, targetPlayer._transform.position) < 50f*difficultySetting)
 		{
-			if (Vector3.Angle(targetPlayer._transform.position - head.transform.position, head.transform.forward) < 90f)
+			if (Vector3.Angle(targetPlayer._transform.position - head.transform.position, head.transform.forward) < 90f*difficultySetting)
 			{
 				if (!Physics.Linecast(head.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller>() != null)
 				{
@@ -297,10 +298,10 @@ public class Com_Controller : Player {
 				continue;
 			}
 			float angle = Vector3.Angle((players[i].transform.position - head.transform.position).normalized, head.transform.forward);
-			if (angle > 120f)
+			if (angle < 90f*difficultySetting)
 			{
 				float distance = Vector3.Distance(head.transform.position, players[i].transform.position);
-				if (distance < 50f)
+				if (distance < 50f*difficultySetting)
 				{
 					if (!Physics.Linecast(head.transform.position, players[i].transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller>() != null)
 					{
@@ -392,7 +393,7 @@ public class Com_Controller : Player {
 			}
 		}
 		
-		if (heardPlayer != null && Vector3.Distance(heardPlayer.transform.position, this.transform.position) < 50f)
+		if (heardPlayer != null && Vector3.Distance(heardPlayer.transform.position, this.transform.position) < 50f*difficultySetting)
 		{
 			_targetPlayer = new TargetPlayer();
 			_targetPlayer._transform = heardPlayer.transform;
@@ -454,7 +455,18 @@ public class Com_Controller : Player {
 	{
 		float sqrDistance = Vector3.Magnitude(targetPlayer._transform.position - transform.position);
 		
-		if ( sqrDistance> 10f)
+		if ( sqrDistance> 40f)
+		{
+			if(!isInSpace){
+				agent.destination = targetPlayer._transform.position;
+				Debug.DrawLine(transform.position, agent.destination, Color.red);
+			}
+			else{
+				spaceDestination = targetPlayer._transform.position;
+				Debug.DrawLine(transform.position, spaceDestination, Color.red);
+			}
+		}
+		else if ( sqrDistance> 10f)
 		{
 			if(!isInSpace){
 				agent.destination = targetPlayer._transform.position;
@@ -515,7 +527,7 @@ public class Com_Controller : Player {
 				agent.Stop();
 			}
 			//TODO: Stop navigation
-			float varianceFactor = 0.01f / (difficultySetting * (targetPlayer._acquiredTime + 1));
+			float varianceFactor = 0.001f / (difficultySetting * (targetPlayer._acquiredTime + 1));
 			Vector3 variance = new Vector3(
 				Random.Range(-varianceFactor, varianceFactor),
 				Random.Range(-varianceFactor, varianceFactor),
