@@ -270,7 +270,7 @@ public class Com_Controller : Player {
 		RaycastHit _hit;
 
 		//Check if our currently targetted player is still visible
-		if (targetPlayer != null && Time.time - targetPlayer._lastSpottedTime < 10f && Vector3.Distance(transform.position, targetPlayer._transform.position) < 50f*difficultySetting)
+		if (targetPlayer != null && targetPlayer._transform != null && Time.time - targetPlayer._lastSpottedTime < 10f && Vector3.Distance(transform.position, targetPlayer._transform.position) < 50f*difficultySetting)
 		{
 			if (Vector3.Angle(targetPlayer._transform.position - head.transform.position, head.transform.forward) < 90f*difficultySetting)
 			{
