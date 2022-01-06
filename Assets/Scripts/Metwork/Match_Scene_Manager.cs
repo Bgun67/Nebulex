@@ -76,6 +76,9 @@ public class Match_Scene_Manager : MonoBehaviour
         ChangeMap(0);
         StartCoroutine(GetMatches());
     }
+    void Start(){
+        networkDiscovery.StartDiscovery();
+    }
 
 
     public IEnumerator GetMatches()
@@ -86,7 +89,6 @@ public class Match_Scene_Manager : MonoBehaviour
             if (manager.useLan)
             {
                 matchInfoText.text = "SEARCHING FOR LAN MATCHES...";
-                networkDiscovery.StartDiscovery();
             }
             else
             {

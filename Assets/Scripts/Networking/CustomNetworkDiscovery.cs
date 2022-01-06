@@ -4,10 +4,7 @@ using UnityEngine;
 using Mirror;
 using Mirror.Discovery;
 using System.Net;
-using UnityEngine.Events;
 
-[System.Serializable]
-public class ServerFoundUnityEvent : UnityEvent<ServerResponse> { };
 
 public class DiscoveryRequest : NetworkMessage
 {
@@ -37,16 +34,15 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
 
     [Tooltip("Transport to be advertised during discovery")]
     private Transport transport;
-
-    [Tooltip("Invoked when a server is found")]
-    public ServerFoundUnityEvent OnServerFound;
     private Dictionary<string,MHostData> hostData = new Dictionary<string, MHostData>(); 
 
+    [HideInInspector]
     public string gameType = "";
     [HideInInspector]
 	public string gameName = "Nebulex";
     [HideInInspector]
 	public string comment = "Demo";
+    [HideInInspector]
     public string ip;
 	
     public override void Start()
@@ -83,6 +79,7 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
     /// <returns>The message to be sent back to the client or null</returns>
     protected override DiscoveryResponse ProcessRequest(DiscoveryRequest request, IPEndPoint endpoint)
     {
+        print("Processing Request");
         // In this case we don't do anything with the request
         // but other discovery implementations might want to use the data
         // in there,  This way the client can ask for
@@ -101,6 +98,8 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
 		    _response.connectedPlayers = GetComponent<CustomNetworkManager>().numPlayers;
 		    _response.port = GetComponent<kcp2k.KcpTransport>().Port;
 		    _response.ip = ip;
+            print("Returning Response");
+            
 
             return _response;
             
@@ -137,7 +136,7 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
     protected override void ProcessResponse(DiscoveryResponse response, IPEndPoint endpoint)
     {
         // we received a message from the remote endpoint
-        //response.EndPoint = endpoint;
+        //response.EndPoint = endpoint.Address;
 
         // although we got a supposedly valid url, we may not be able to resolve
         // the provided host
@@ -149,10 +148,10 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
         //};
         //response.uri = realUri.Uri;
 
-        OnDiscoveredServer(response);
+        OnDiscoveredServer(response, endpoint);
     }
 
-    public void OnDiscoveredServer(DiscoveryResponse info)
+    public void OnDiscoveredServer(DiscoveryResponse info, IPEndPoint endpoint)
     {
         if(!hostData.ContainsKey(info.ip)){
             MHostData data = new MHostData();
@@ -163,7 +162,7 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
             data.gameType = info.gameType;
             data.passwordProtected = info.passwordProtected;
             data.playerLimit = info.playerLimit;
-            data.port = info.port;
+            data.port = endpoint.Port;
             
             hostData.Add(info.ip, data);
             this.GetComponent<Match_Scene_Manager>().DisplayMatches();

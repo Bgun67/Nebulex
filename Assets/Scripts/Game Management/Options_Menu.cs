@@ -36,7 +36,7 @@ public class Options_Menu : MonoBehaviour {
 	{
 		AudioListener.volume = float.Parse(optionsInfo[0]);
 		MInput.useMouse = (optionsInfo[1] == "True");
-		print("Using mouse: " + MInput.useMouse);
+		//print("Using mouse: " + MInput.useMouse);
 		MInput.sensitivity = float.Parse(optionsInfo[2]);
 		//QualitySettings.SetQualityLevel(int.Parse(optionsInfo[3]));
 		if (optionsInfo[4] == "True")

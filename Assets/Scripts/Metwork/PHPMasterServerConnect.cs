@@ -104,7 +104,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 		//print ("Querying Harder");
 		atOnce = true;
 		string url = masterServerURL+"QueryMS?gameType="+WWW.EscapeURL(gameType);
-    	Debug.Log ("looking for URL " + url);
+    	//Debug.Log ("looking for URL " + url);
     	WWW www = new WWW (url);
     	yield return www;
 		Debug.Log(www.text);
@@ -129,7 +129,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 			hostData = null;
 			GetComponent<Match_Scene_Manager> ().DisplayMatches ();
 		} else {
-			Debug.Log("Received message");
+			//Debug.Log("Received message");
 			try{
 				string[] hosts = new string[www.text.Split (new char[]{';'}, System.StringSplitOptions.RemoveEmptyEntries).Length];
 				hosts = www.text.Split (new char[]{';'}, System.StringSplitOptions.RemoveEmptyEntries);
