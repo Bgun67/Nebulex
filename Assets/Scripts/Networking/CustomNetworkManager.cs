@@ -67,6 +67,8 @@ public class CustomNetworkManager : Mirror.NetworkManager
         onStartServer?.Invoke();
         if(!useLan)
             FindObjectOfType<PHPMasterServerConnect>().RegisterHost();
+        else
+            GetComponent<CustomNetworkDiscovery>().AdvertiseServer();
 
     }
     public override void OnStartHost()
@@ -80,6 +82,8 @@ public class CustomNetworkManager : Mirror.NetworkManager
         isServerMachine = false;
         if(!useLan)
             GetComponent<PHPMasterServerConnect> ().UnregisterHost ();
+        else
+            GetComponent<CustomNetworkDiscovery>().StopDiscovery();
         
     }
     public override void OnStopHost(){
