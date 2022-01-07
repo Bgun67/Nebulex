@@ -5039,7 +5039,6 @@ GameObject:
   - component: {fileID: 4555555215612494}
   - component: {fileID: 114041897218599616}
   - component: {fileID: 82216935135489244}
-  - component: {fileID: 114343764164266812}
   m_Layer: 0
   m_Name: SRR-3
   m_TagString: Untagged
@@ -5105,10 +5104,8 @@ MonoBehaviour:
   weaponAnim: {fileID: 0}
   recoilAmount: 0.25
   bulk: 0.5
-  aimAnimNumber: 1
   scopePosition: {fileID: 4893021308517778}
   ignoreParentVelocity: 0
-  netView: {fileID: 0}
   muzzleFlash: {fileID: 198191471837166540}
   playerID: 0
   reloading: 0
@@ -5210,19 +5207,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114343764164266812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991755903921898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewID: -1
 --- !u!1 &4647724497906362423
 GameObject:
   m_ObjectHideFlags: 0

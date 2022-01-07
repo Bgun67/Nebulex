@@ -35,7 +35,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   rb: {fileID: 0}
-  boundingCollider: {fileID: 5847382945693681454}
+  boundingCollider: {fileID: 5847611973995537976}
   anim: {fileID: 0}
   magBootsLayer:
     serializedVersion: 2
@@ -87,6 +87,12 @@ MonoBehaviour:
   grenadeModelPrefab: {fileID: 0}
   grenadeSpawn: {fileID: 0}
   grappleActive: 0
+  difficulties:
+  - 0.1
+  - 0.5
+  - 0.7
+  - 1
+  - 2
   isInSpace: 1
   physicsMask:
     serializedVersion: 2
@@ -103,6 +109,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _angle: 0
+  difficultyLevel: 1
+  targetPlayer:
+    _transform: {fileID: 0}
+    _acquiredTime: 0
+    _lastSpottedTime: 0
+    _distance: 0
+    _angle: 0
+    _hasDied: 0
   patrolIndex: 0
   maxSpeed: 7
   lockOnRate: 0.4
@@ -278,9 +292,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3736378137668493254}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &5847382945693681454 stripped
+--- !u!136 &5847611973995537976 stripped
 CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 7132676860201916648, guid: 783577177cb004841a4685d42797a477,
+  m_CorrespondingSourceObject: {fileID: 7132765047391468030, guid: 783577177cb004841a4685d42797a477,
     type: 3}
   m_PrefabInstance: {fileID: 3736378137668493254}
   m_PrefabAsset: {fileID: 0}

@@ -30,13 +30,14 @@ public class Player : NetworkBehaviour {
 	protected WalkState walkState = WalkState.Walking;
 	public bool useGravity;
 	//to be used for moving in space
-	protected float moveSpeed = 7f;
+	protected float moveSpeed = 5f;
 	protected float lookFactor = 1f;
 	[SyncVar (hook = nameof(LookTimeHook))]
 	protected float lookTime = 0.5f;
 	protected float scopeMoveFactor = 1f;
 	protected float moveFactor = 1f;
 	public float currentStepHeight;
+	[HideInInspector]
 	public bool enteringGravity = false;
 	protected bool exitingGravity = false;
 	protected float jumpWait;

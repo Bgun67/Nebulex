@@ -52,7 +52,6 @@ public class Com_Controller : Player {
 	//public Damage damageScript;
 	Player[] players;
 	Com_Controller[] bots;
-	const int NUM_BOTS = 16;
 	public TargetPlayer targetPlayer;
 	Transform currentCover;
 
@@ -191,7 +190,7 @@ public class Com_Controller : Player {
 		}
 
 		
-		if(Time.frameCount % NUM_BOTS == playerID && (lastSpaceDestination - spaceDestination).magnitude > 5f){
+		if(Time.frameCount % Game_Controller.Instance.maxPlayers == playerID && (lastSpaceDestination - spaceDestination).magnitude > 5f){
 			Nav_Volume_Builder._instance.FindRoute(this.transform.position, spaceDestination);
 			lastSpaceDestination = spaceDestination;
 			//Perform Deep copy

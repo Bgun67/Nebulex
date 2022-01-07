@@ -20,7 +20,7 @@ public class Damage : NetworkBehaviour{
 	public Transform initialPosition;
 	[Tooltip ("Make Longer than the carcass destroy time")]
 	public float resetTime;
-	int[] assistArray = new int[33];
+	int[] assistArray;
 	public Game_Controller gameController;
 
 	public bool regen;
@@ -47,6 +47,9 @@ public class Damage : NetworkBehaviour{
 	public float damageThreshold = 0f;
 
 	//public Metwork_Object netObj;
+	void Awake(){
+		assistArray = new int[Game_Controller.Instance.maxPlayers];
+	}
 
 	// Use this for initialization
 	void Start () {

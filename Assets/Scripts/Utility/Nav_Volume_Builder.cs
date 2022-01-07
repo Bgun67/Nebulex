@@ -30,6 +30,7 @@ public class Nav_Volume_Builder : MonoBehaviour
     public int numCubes;
     const int size = 60;
     public float scale = 5f;
+    public Collider playArea;
     
     public bool[,,] mesh = new bool[size,size,size];
     public List<NavBlock> navVolume = new List<NavBlock>();
@@ -308,17 +309,15 @@ public class Nav_Volume_Builder : MonoBehaviour
             for(int x = 0; x < size; x++){
                 for(int y = 0; y < size; y++){
                     for(int z = 0; z < size; z++){
-                        if(!Physics.CheckBox(this.transform.position - scale*new Vector3(x, y, z), scale/2.0f * new Vector3(1,1,1), Quaternion.identity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)){
-                            
-                            
-                            
+                        Vector3 _boxCenter = this.transform.position - scale*new Vector3(x, y, z);
+                        if(playArea.ClosestPoint(_boxCenter) == _boxCenter && !Physics.CheckBox(_boxCenter, scale/2.0f * Vector3.one, Quaternion.identity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)){
                             mesh[x,y,z] = true;
                             Vector3 extents = navVolume[currentBlockIndex].m_bounds.extents;
                             extents.x = scale/2f;
                             extents.y = scale/2f;
                             extents.z += scale/2f;
                             navVolume[currentBlockIndex].m_bounds.extents = extents;
-                            navVolume[currentBlockIndex].m_bounds.center = this.transform.position - new Vector3(scale*x, scale*y, scale*z - extents.z);
+                            navVolume[currentBlockIndex].m_bounds.center = this.transform.position - new Vector3(scale*x, scale*y, scale*z - extents.z+scale*0.5f);
                             numCubes ++;
                         }
                         else{
@@ -335,14 +334,6 @@ public class Nav_Volume_Builder : MonoBehaviour
             }
             navVolume.RemoveAll(block => block.m_bounds.extents.x == 0);
             foreach(NavBlock block in navVolume){
-                /*GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                box.GetComponent<MeshRenderer>().sharedMaterial = cubeMaterial;
-                DestroyImmediate(box.GetComponent<BoxCollider>());
-                                
-                box.transform.position = block.m_bounds.center;
-                box.transform.localScale = new Vector3(block.m_bounds.size.x, block.m_bounds.size.y, block.m_bounds.size.z);
-                box.transform.SetParent(this.transform);*/
-
                 foreach(NavBlock neighbour in navVolume.FindAll(otherBlock => 
                 (Mathf.Abs(otherBlock.m_bounds.center.x- block.m_bounds.center.x) < scale*1.1f &&
                 Mathf.Abs(otherBlock.m_bounds.center.y- block.m_bounds.center.y) < scale*1.1f &&
@@ -375,7 +366,7 @@ public class Nav_Volume_Builder : MonoBehaviour
             foreach(NavBlock block in navVolume){
                 GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 plane.transform.position = block.m_bounds.center;
-                plane.transform.localScale = block.m_bounds.size *0.8f;
+                plane.transform.localScale = block.m_bounds.size - Vector3.one * 0.2f;
                 plane.GetComponent<MeshRenderer>().material = cubeMaterial;
                 
                 plane.transform.SetParent(this.transform);

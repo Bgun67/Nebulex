@@ -15,7 +15,8 @@ public class Play_Area : MonoBehaviour
     void Update()
     {
         foreach(Rigidbody _rb in rbs){
-            _rb.AddForce(-(_rb.transform.position - this.transform.position) *  _rb.mass * 0.1f * 60f * Time.deltaTime);
+            if(_rb)
+                _rb.AddForce(-(_rb.transform.position - this.transform.position) *  _rb.mass * 0.1f * 60f * Time.deltaTime);
         }
         rbs.RemoveAll(x => x == null);
     }

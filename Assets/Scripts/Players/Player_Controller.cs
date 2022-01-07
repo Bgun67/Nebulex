@@ -15,83 +15,12 @@ public class Player_Controller : Player {
 	float strafeFactor;
 	float rollFactor;
 	bool jump;
-	//public Rigidbody rb;
-	//public Animator anim;
-	//Player_IK player_IK;
-
-	//public LayerMask magBootsLayer;
-	//Access to the left and right foot data
-	//[HideInInspector]
-	//public RaycastHit lfHit;
-	//[HideInInspector]
-	//public bool lfHitValid;
-	//[HideInInspector]
-	//public RaycastHit rfHit;
 
 	Vector3 previousNormal = new Vector3(0,1,0);
-	//public bool onLadder = false;
-	//public float forceFactor;
-	//public bool inVehicle = false;
-	//Transform lfRaycast;
-	//Transform rfRaycast;
-	
-	//public Game_Controller gameController;
-	//WalkState walkState = WalkState.Walking;
-	//public bool useGravity;
-	//to be used for moving in space
-	//float moveSpeed = 7f;
-	//float lookFactor = 1f;
-	//[SyncVar (hook = nameof(LookTimeHook))]
-	//float lookTime = 0.5f;
-	//float scopeMoveFactor = 1f;
-	//float moveFactor = 1f;
-	//public bool enteringGravity = false;
-	//bool exitingGravity = false;
-	//float jumpWait;
-	//float jumpHeldTime;
 	float originalFOV;
-	//public float jetpackFuel = 1f;
-	//public ParticleSystem[] jetpackJets;
-
-	//public bool refueling = false;
-	//controls whether the player has toggle the magboots on or off
-	//bool magBootsOn;
-	//bool magBootsLock = false;
-
-	//public float airTime;
-	//public float suffocationTime;
-	//public Damage damageScript;
-	//public LadderController ladder;
 	
-	//[SyncVar]
-	//public int playerID;
-	//TODO: Remove and replace with getplayername
-	//public string playerName = "Fred";
-	//public GameObject ragdoll;
+
 	
-	//public Animator knifeAnim;
-	//bool counterKnife;
-	//public Transform flagPosition;
-	//public Rigidbody shipRB;
-
-	/// <summary>
-	/// The player's team. 0 being team A and 1 being team B
-	/// </summary>
-	//public Material[] teamMaterials;
-	//public SkinnedMeshRenderer[] jerseyMeshes;
-
-	#region CrouchHeights
-	//[SyncVar (hook = nameof(CrouchHook))]
-	//bool isCrouched = false;
-	//float capsule_originalHeight1 = 1f;
-	//float capsule_originalHeight2 = 1f;
-	//float capsule_originalY1 = -0.035f;
-	//float capsule_originalY2 = -0.01f;
-	//float capsule_crouchHeight1 = 0.8f;
-	//float capsule_crouchHeight2 = 0.8f;
-	//float capsule_crouchY1 = -0.132f;
-	//float capsule_crouchY2 = -0.1f;
-	#endregion
 
 	[Header("UI")]
 	#region UI
@@ -106,8 +35,6 @@ public class Player_Controller : Player {
 	#endregion
 	[Header("Cameras")]
 	#region cameras
-	//public GameObject mainCamObj;
-	//Camera mainCam;
 	Vector3 originalCamPosition;
 	Quaternion originalCamRotation;
 	public GameObject minimapCam;
@@ -115,10 +42,6 @@ public class Player_Controller : Player {
 	#endregion
 	[Header("Sound")]
 	#region sound
-	//AudioWrapper wrapper;
-	//float thrusterSoundFactor = 0f;
-	//public AudioSource walkSound;
-	//public AudioClip[] walkClips;
 	public AudioSource breatheSound;
 
 	#endregion
@@ -126,59 +49,12 @@ public class Player_Controller : Player {
 	[Header("Weapons")]
 	#region weapons
 
-	//public Fire fireScript;
 	public string[] loadoutSettings;
-	//public Transform finger;
-	//public Transform rightHandPosition;
-	//public GameObject magGO;
-	//[SyncVar (hook = "SwitchWeapons")]
-	//public bool primarySelected = true;
-	//[Header("Primary")]
-	//public GameObject primaryWeapon;
-	//public GameObject primaryWeaponPrefab;
 	
-	//Weapon identifiers
-	//[SyncVar (hook = "LoadWeaponData")]
-	//public int primaryWeaponNum;
-	//[SyncVar (hook = "LoadWeaponData")]
-	//public int secondaryWeaponNum;
-	//[SyncVar (hook = "LoadWeaponData")]
-	//public int primaryScopeNum;
-	//[SyncVar (hook = "LoadWeaponData")]
-	//public int secondaryScopeNum;
-	//public Vector3 primaryLocalPosition;
-	//public Vector3 primaryLocalRotation;
-	
-	//float muzzleClimb = 0f;
-
-	//[Header("Secondary")]
-	//public GameObject secondaryWeapon;
-	//public GameObject secondaryWeaponPrefab;
-	//public Vector3 secondaryLocalPosition;
-	//public Vector3 secondaryLocalRotation;
-	
-	//[Header("Grenades")]
-	//int grenadesNum = 4;
-	//public GameObject grenadePrefab;
-	//public GameObject grenadeModelPrefab;
-	//GameObject grenadeModel;
-	//bool throwingGrenade = false;
-
-	//public Transform grenadeSpawn;
-	//[Header("Grapple")]
-	//public bool grappleActive;
 
 	#endregion
 
-	//Used to lerp the space rotation
-	//Vector3 previousRot = Vector3.zero;
-	//Vector3 previousVelocity = Vector3.zero;
-
-	/*public enum WalkState{
-		Walking,
-		Crouching,
-		Running
-	}*/
+	
 
 	void Awake()
 	{
@@ -331,10 +207,7 @@ public class Player_Controller : Player {
 
 			return;
 		} else {
-			//TODO: Remove if necessary
-			//mainCamObj.SetActive(true);
-			//minimapCam.SetActive(true);
-			//iconCamera.SetActive (true);
+			
 			if(helmet.activeSelf)helmet.SetActive(false);
 		
 		}
@@ -994,7 +867,7 @@ public class Player_Controller : Player {
 		Vector3 rotation = Vector3.zero;
 		float sprintFactor = 1f;
 		//TODO: Stow the player's gun
-		
+		//Boost
 		if (Input.GetButton("Sprint"))
 		{
 			if (jetpackFuel > 0.7f && refueling == true)
@@ -1013,8 +886,8 @@ public class Player_Controller : Player {
 				}
 				thrusterSoundFactor = 1f;
 
-				jetpackFuel -= Time.deltaTime * 2.5f;
-				sprintFactor = 1.5f;
+				jetpackFuel -= Time.deltaTime * 1f;
+				sprintFactor = 1.75f;
 			} else {
 				foreach (ParticleSystem jet in jetpackJets) {
 					jet.Stop ();
