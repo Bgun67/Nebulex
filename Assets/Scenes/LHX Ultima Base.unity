@@ -5104,7 +5104,7 @@ PrefabInstance:
         type: 3}
       propertyPath: netObj
       value: 
-      objectReference: {fileID: 2130778554}
+      objectReference: {fileID: 0}
     - target: {fileID: 114657864690997130, guid: 4b05326a4e4a2b843888b52e08e048f2,
         type: 3}
       propertyPath: teamAPosition
@@ -7589,59 +7589,13 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 349525571}
   m_Mesh: {fileID: 4300014, guid: c5b206e1b15449b469d185402c059811, type: 3}
---- !u!1 &353318080 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1596824452336162, guid: 4b05326a4e4a2b843888b52e08e048f2,
-    type: 3}
-  m_PrefabInstance: {fileID: 370275374}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &353318081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353318080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewID: 34
---- !u!114 &353318082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353318080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bcf06763714ae049b53c3a709b19882, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actualPosition: {x: 0, y: 0, z: 0}
-  isLocal: 0
-  netID: 34
-  owner: 0
-  rb: {fileID: 0}
-  netView: {fileID: 353318081}
-  rotationLerp: 0.2
-  snapLerp: 0.2
-  lerpRate: 20
-  snapDistance: 0
-  velocitySnapDist: 0.5
-  rotForceFactor: 30
-  velocityLerp: 0.2
-  sendRate: 10
-  isTwoPlane: 0
 --- !u!114 &353318087 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114657864690997130, guid: 4b05326a4e4a2b843888b52e08e048f2,
     type: 3}
   m_PrefabInstance: {fileID: 370275374}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353318080}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b5a6b7fa2ff71348b8d0ed9344e88e6, type: 3}
@@ -8082,7 +8036,7 @@ PrefabInstance:
         type: 3}
       propertyPath: netObj
       value: 
-      objectReference: {fileID: 353318082}
+      objectReference: {fileID: 0}
     - target: {fileID: 114657864690997130, guid: 4b05326a4e4a2b843888b52e08e048f2,
         type: 3}
       propertyPath: teamAPosition
@@ -19048,7 +19002,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   weaponsCatalog: {fileID: 11400000, guid: 5abe00967b8e02846b6c967f7f73198e, type: 2}
-  maxPlayers: 64
+  maxPlayers: 32
   botPrefab: {fileID: 5818669228569387566, guid: c390d38e0c0195a46bff24e0b6672828,
     type: 3}
   playerObjects: []
@@ -70348,59 +70302,13 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2122466750}
   m_Mesh: {fileID: 4300000, guid: 8b359c91392eded45b1eba711bebb60c, type: 3}
---- !u!1 &2130778552 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1596824452336162, guid: 4b05326a4e4a2b843888b52e08e048f2,
-    type: 3}
-  m_PrefabInstance: {fileID: 234864211}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2130778553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2130778552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewID: 33
---- !u!114 &2130778554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2130778552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bcf06763714ae049b53c3a709b19882, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actualPosition: {x: 0, y: 0, z: 0}
-  isLocal: 0
-  netID: 33
-  owner: 0
-  rb: {fileID: 0}
-  netView: {fileID: 2130778553}
-  rotationLerp: 0.2
-  snapLerp: 0.2
-  lerpRate: 20
-  snapDistance: 0
-  velocitySnapDist: 0.5
-  rotForceFactor: 30
-  velocityLerp: 0.2
-  sendRate: 10
-  isTwoPlane: 0
 --- !u!114 &2130778559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114657864690997130, guid: 4b05326a4e4a2b843888b52e08e048f2,
     type: 3}
   m_PrefabInstance: {fileID: 234864211}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2130778552}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b5a6b7fa2ff71348b8d0ed9344e88e6, type: 3}
