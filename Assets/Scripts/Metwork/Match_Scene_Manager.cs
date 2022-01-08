@@ -243,7 +243,9 @@ public class Match_Scene_Manager : MonoBehaviour
             //TODO switch this to an IP instead;
             manager.networkAddress = hostData[index].ip;
             manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)hostData[index].port;
-            manager.StartClient();
+            
+			print("Connecting to server: " + manager.networkAddress + " port: " + manager.GetComponent<kcp2k.KcpTransport>().Port);
+			manager.StartClient();
 
         }
         //TODO?

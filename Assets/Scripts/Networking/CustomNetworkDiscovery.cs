@@ -154,7 +154,8 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
     public void OnDiscoveredServer(DiscoveryResponse info, IPEndPoint endpoint)
     {
         if(!hostData.ContainsKey(info.ip)){
-            MHostData data = new MHostData();
+			print("Discovered server");
+			MHostData data = new MHostData();
             data.ip = info.ip;
             data.comment = info.comment;
             data.connectedPlayers = info.connectedPlayers;
@@ -162,11 +163,12 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
             data.gameType = info.gameType;
             data.passwordProtected = info.passwordProtected;
             data.playerLimit = info.playerLimit;
-            data.port = endpoint.Port;
+            data.port = info.port;
             
             hostData.Add(info.ip, data);
             Match_Scene_Manager.Instance.DisplayMatches();
         }
+		this.GetComponent<Match_Scene_Manager>().DisplayMatches();
         
     }
 

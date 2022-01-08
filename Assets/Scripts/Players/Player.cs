@@ -494,7 +494,8 @@ public class Player : NetworkBehaviour {
 	}
 	[ClientRpc(includeOwner=false)]
 	protected void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
-		fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+		if(fireScript)
+			fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
 	}
 
 	#endregion
