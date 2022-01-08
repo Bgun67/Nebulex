@@ -8,7 +8,7 @@ using Mirror;
 public class Game_Controller : NetworkBehaviour {
 
 	[System.Serializable]
-	public class PlayerStats{
+	public class PlayerStat{
 		public string name = "Default Name";
 		public int kills = 0;
 		public int deaths = 0;
@@ -17,6 +17,7 @@ public class Game_Controller : NetworkBehaviour {
 		public int team = -1;
 		public bool isBot = true;
 		public bool isFilled = false;
+		public int connectionID = -1;
 	}
 
 	[System.Serializable]
@@ -46,8 +47,8 @@ public class Game_Controller : NetworkBehaviour {
 	public List<Com_Controller> bots = new List<Com_Controller>();
 
 	[SerializeField]
-	public readonly SyncList<PlayerStats> playerStats = new SyncList<PlayerStats>();
-	public PlayerStats[] debugPlayerStats;
+	public readonly SyncList<PlayerStat> playerStats = new SyncList<PlayerStat>();
+	public PlayerStat[] debugPlayerStats;
 
 
 	public List<Transform> playerSpawnTransforms = new List<Transform> ();
@@ -148,7 +149,7 @@ public class Game_Controller : NetworkBehaviour {
 		//TODO
 		
 		for(int i = 0; i<maxPlayers; i++){
-			PlayerStats _player = new PlayerStats();
+			PlayerStat _player = new PlayerStat();
 			_player.name = "Player " + i.ToString();
 			_player.isBot = true;
 			//TODO: Properly assign the teams
@@ -157,7 +158,7 @@ public class Game_Controller : NetworkBehaviour {
 		}
 
 		//Force a copy of the debug array
-		OnPlayerSync(SyncList<PlayerStats>.Operation.OP_ADD, 0, new PlayerStats(), new PlayerStats());
+		OnPlayerSync(SyncList<PlayerStat>.Operation.OP_ADD, 0, new PlayerStat(), new PlayerStat());
 		
 		//CHECK
 		GetLocalPlayer();
@@ -261,7 +262,7 @@ public class Game_Controller : NetworkBehaviour {
 					_bot.gameObject.SetActive(false);
             		_bot.GetComponent<Com_Controller>().StopAllCoroutines();
 				}else{
-					PlayerStats _player = playerStats[i];
+					PlayerStat _player = playerStats[i];
 					_player.name = "Bot " + i.ToString();
 					playerStats[i] = _player;
 				}
@@ -287,7 +288,7 @@ public class Game_Controller : NetworkBehaviour {
 		//TODO
 		for (int i = 0; i < playerStats.Count; i++)
 		{
-			PlayerStats stat = playerStats[i];
+			PlayerStat stat = playerStats[i];
 			if (stat.name == "")
 			{
 				continue;
@@ -300,7 +301,7 @@ public class Game_Controller : NetworkBehaviour {
 	[MRPC]
 	public void RPC_UpdateplayerStatsEntry(int _index,string _name, int _kills, int _deaths, int _assists, int _score)
 	{
-		PlayerStats _stat = playerStats[_index];
+		PlayerStat _stat = playerStats[_index];
 		_stat.name = _name;
 		_stat.kills = _kills;
 		_stat.deaths = _deaths;
@@ -327,22 +328,42 @@ public class Game_Controller : NetworkBehaviour {
 		Physics.autoSimulation = true;
 		
 	}
-	/*Remove if unneeded
-	void UpdateHost(){
-		if(Metwork.isServer){
-			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
-			string _newScene = matchSettings[2];
-			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (_newScene);
-		}
-	}*/
+	
 
-	public int AssignPlayerID(){
+	public int AssignPlayerID(int connectionID){
 		int _playerID = -1;
 		for(int i = 0; i<playerStats.Count; i++){
 			if(playerStats[i].isBot == true){
-				playerStats[i].isBot = false;
+				PlayerStat playerStat = playerStats[i]; 
+				playerStat.connectionID = connectionID;
+				playerStat.isBot = false;
+				//Wipe data
+				playerStat.kills = 0;
+				playerStat.deaths = 0;
+				playerStat.assists = 0;
+				playerStat.score = 0;
+				
+				
+				playerStats[i] = playerStat;
+
 				_playerID = i;
-				//TODO: Change this to a new playerstat so it can be updated automatically
+				break;
+			}
+		}
+		if(_playerID == -1)
+			Debug.LogError("Invalid player ID: " + _playerID);
+		return _playerID;
+	}
+	public int RemovePlayerID(int connectionID){
+		int _playerID = -1;
+		for(int i = 0; i<playerStats.Count; i++){
+			if(playerStats[i].connectionID == connectionID){
+				PlayerStat playerStat = playerStats[i]; 
+				playerStat.isBot = true;
+				playerStat.connectionID = -1;
+				playerStats[i] = playerStat;
+
+				_playerID = i;
 				break;
 			}
 		}
@@ -575,10 +596,10 @@ public class Game_Controller : NetworkBehaviour {
 
 		}
 
-		List<PlayerStats> winners = new List<PlayerStats> ();
-		List<PlayerStats> losers = new List<PlayerStats> ();
+		List<PlayerStat> winners = new List<PlayerStat> ();
+		List<PlayerStat> losers = new List<PlayerStat> ();
 
-		foreach (PlayerStats player in playerStats) {
+		foreach (PlayerStat player in playerStats) {
 			if (player.name == "") {
 				continue;
 			}
@@ -608,11 +629,11 @@ public class Game_Controller : NetworkBehaviour {
 		winners.Sort((x,y) => y.score.CompareTo(x.score));
 		losers.Sort((x,y) => y.score.CompareTo(x.score));
 
-		foreach (PlayerStats player in winners) {
+		foreach (PlayerStat player in winners) {
 			winnerNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16)) + "\r\n";
 			winnerKillsText.text += player.kills.ToString() + "\t"  + player.deaths.ToString() + "\t" + player.assists.ToString() + "\r\n";
 		}
-		foreach (PlayerStats player in losers) {
+		foreach (PlayerStat player in losers) {
 			loserNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16))  + "\r\n";
 			loserKillsText.text += player.kills.ToString() + "\t"  + player.deaths.ToString() + "\t" + player.assists.ToString() + "\r\n";
 
@@ -728,7 +749,7 @@ public class Game_Controller : NetworkBehaviour {
 		}*/
 		//CHECK Player stats MUST be updated this way, otherwise the 
 		//Network will not notice that the list has changed
-		PlayerStats playerStat = playerStats [playerNum];
+		PlayerStat playerStat = playerStats [playerNum];
 		playerStat.score += assistAmount;
 		playerStat.assists++;
 		playerStats [playerNum] = playerStat;
@@ -739,7 +760,7 @@ public class Game_Controller : NetworkBehaviour {
 		
 	}
 	public void AddKill(int playerNum){
-		PlayerStats playerStat = playerStats [playerNum];
+		PlayerStat playerStat = playerStats [playerNum];
 		playerStat.kills++;
 		playerStat.score += 100;
 		playerStats [playerNum] = playerStat;
@@ -755,7 +776,7 @@ public class Game_Controller : NetworkBehaviour {
 	}
 	public void AddDeath(int playerNum){
 		//TODO: Send Cmd to allow players to kill themselves
-		PlayerStats playerStat = playerStats [playerNum];
+		PlayerStat playerStat = playerStats [playerNum];
 		playerStat.deaths++;
 		playerStats[playerNum] = playerStat;
 		if (playerStats [playerNum].team == 1) {
@@ -904,9 +925,9 @@ public class Game_Controller : NetworkBehaviour {
 		return Game_Controller.instance.playerStats[_player.playerID].team;
 	}
 
-	public void OnPlayerSync(SyncList<PlayerStats>.Operation op, int index, PlayerStats oldItem, PlayerStats newItem){
+	public void OnPlayerSync(SyncList<PlayerStat>.Operation op, int index, PlayerStat oldItem, PlayerStat newItem){
 		if(debugPlayerStats == null || debugPlayerStats.Length != playerStats.Count)
-			debugPlayerStats = new PlayerStats[playerStats.Count];
+			debugPlayerStats = new PlayerStat[playerStats.Count];
 		playerStats.CopyTo(debugPlayerStats, 0);
 	}
 

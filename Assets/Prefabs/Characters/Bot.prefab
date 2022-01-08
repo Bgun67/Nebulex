@@ -1,25 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &777028914461818058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818669228569387566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bc9a8cd8bf5ea6438dd98ba908fd99d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actualPosition: {x: 0, y: 0, z: 0}
-  isLocal: 0
-  owner: 0
-  netView: {fileID: 0}
-  rotationLerp: 0.2
-  snapLerp: 0.2
-  lerpRate: 20
-  sendRate: 30
 --- !u!114 &5803625690462232074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,7 +89,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _angle: 0
-  difficultyLevel: 1
+  difficultyLevel: 0
   targetPlayer:
     _transform: {fileID: 0}
     _acquiredTime: 0
@@ -170,6 +150,11 @@ PrefabInstance:
         type: 3}
       propertyPath: rhTarget
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3853579568177753606, guid: 783577177cb004841a4685d42797a477,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6342825759431691929, guid: 783577177cb004841a4685d42797a477,
         type: 3}

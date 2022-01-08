@@ -32,11 +32,12 @@ public class Match_Scene_Manager : MonoBehaviour
     public InputField gameNameInput;
     public InputField portInput;
     public GameObject loadingPanel;
+    public RectTransform loadingCircle;
 
 
     public bool testing;
-    public string portString;
-    public string localIP;
+    //public string portString;
+    //public string localIP;
     public float pollingTime = 10f;
 
     [Header("Map")]
@@ -56,12 +57,20 @@ public class Match_Scene_Manager : MonoBehaviour
 	//Used for finding lan servers
 	private CustomNetworkDiscovery networkDiscovery;
     public bool isError = false;
-    public CustomNetworkManager manager;
+    private CustomNetworkManager manager;
+    public static Match_Scene_Manager Instance{
+        get{
+            if(_instance == null)
+                _instance = FindObjectOfType<Match_Scene_Manager>();
+            return _instance;
+        }
+    }
+    private static Match_Scene_Manager _instance = null;
 
     // Use this for initialization
     void Awake()
     {
-        manager = GetComponent<CustomNetworkManager>();
+        manager = FindObjectOfType<CustomNetworkManager>();
         foreach (Button hostButton in hostButtons)
         {
             hostButton.gameObject.SetActive(false);
@@ -70,14 +79,18 @@ public class Match_Scene_Manager : MonoBehaviour
         {
             localIP = File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt")[3];
         }
-        connection = this.GetComponent<PHPMasterServerConnect>();
-		networkDiscovery = GetComponent<CustomNetworkDiscovery>();
+        connection = FindObjectOfType<PHPMasterServerConnect>();
+		networkDiscovery = FindObjectOfType<CustomNetworkDiscovery>();
         ChangeMatchType("Destruction");
         ChangeMap(0);
         StartCoroutine(GetMatches());
     }
     void Start(){
         networkDiscovery.StartDiscovery();
+    }
+
+    void Update(){
+        loadingCircle.Rotate(0,0,1f);
     }
 
 
@@ -107,11 +120,11 @@ public class Match_Scene_Manager : MonoBehaviour
     {
         if (manager.useLan)
         {
-            hostData = GetComponent<CustomNetworkDiscovery>().PollHostList();
+            hostData = networkDiscovery.PollHostList();
         }
         else
         {
-            hostData = GetComponent<PHPMasterServerConnect>().PollHostList();
+            hostData = connection.PollHostList();
         }
         foreach (Button hostButton in hostButtons)
         {
@@ -216,7 +229,6 @@ public class Match_Scene_Manager : MonoBehaviour
             }
         }
     }
-
 
     public void JoinServer(int index)
     {
@@ -329,7 +341,11 @@ public class Match_Scene_Manager : MonoBehaviour
 
     public void QuitToMainMenu()
     {
-        Metwork.Disconnect();
+        if(manager.isServerMachine){
+            manager.StopServer();
+        }
+        manager.StopClient();
+
         //if (mMetwork != null)
         //{
         //	Cleanup();

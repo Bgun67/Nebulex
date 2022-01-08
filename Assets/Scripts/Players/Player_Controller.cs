@@ -104,7 +104,7 @@ public class Player_Controller : Player {
 	//TODO: Make sure that the name is the right name
 	[Command]
 	void Cmd_SetPlayerName(string name){
-		Game_Controller.PlayerStats stat = Game_Controller.Instance.playerStats[playerID];
+		Game_Controller.PlayerStat stat = Game_Controller.Instance.playerStats[playerID];
 		stat.name = name;
 		Game_Controller.Instance.playerStats[playerID] = stat;
 	}

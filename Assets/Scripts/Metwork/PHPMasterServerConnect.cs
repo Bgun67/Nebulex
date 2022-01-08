@@ -59,8 +59,8 @@ public class PHPMasterServerConnect : MonoBehaviour
 				masterServerURL = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/network.config");
 			}
 			catch{};
-			Metwork.onPlayerConnected += _instance.OnMetPlayerConnected;
-			Metwork.onPlayerDisconnected += _instance.OnMetPlayerDisconnected;
+			//Metwork.onPlayerConnected += _instance.OnMetPlayerConnected;
+			//Metwork.onPlayerDisconnected += _instance.OnMetPlayerDisconnected;
 			
 			
 		}
@@ -118,16 +118,16 @@ public class PHPMasterServerConnect : MonoBehaviour
 	    }
 
 	    if (www.error != null) {
-	        SendMessage ("OnQueryMasterServerFailed");
+	        //Match_Scene_Manager.Instance.OnQueryMasterServerFailed();
 	    }
 	
 		if (www.text == "") {
 			atOnce = false;
-			GetComponent<Match_Scene_Manager> ().DisplayMatches ();
+			Match_Scene_Manager.Instance.DisplayMatches ();
 			yield break;
 		} else if (www.text == "empty") {
 			hostData = null;
-			GetComponent<Match_Scene_Manager> ().DisplayMatches ();
+			Match_Scene_Manager.Instance.DisplayMatches ();
 		} else {
 			//Debug.Log("Received message");
 			try{
@@ -159,7 +159,7 @@ public class PHPMasterServerConnect : MonoBehaviour
 				Debug.Log("Error parsing host data");
 			}
 			//try {
-				GetComponent<Match_Scene_Manager> ().DisplayMatches ();
+				Match_Scene_Manager.Instance.DisplayMatches ();
 			//} catch {
 			//	Debug.Log("Failed to display matches");
 			//}

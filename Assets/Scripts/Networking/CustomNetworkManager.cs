@@ -46,7 +46,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
         // instantiating a "Player" prefab gives it the name "Player(clone)"
         // => appending the connectionId is WAY more useful for debugging!
         player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
-        int _playerID = Game_Controller.Instance.AssignPlayerID();
+        int _playerID = Game_Controller.Instance.AssignPlayerID(conn.connectionId);
         player.GetComponent<Player_Controller>().playerID = _playerID;
         Game_Controller.Instance.playerObjects.Add(player.GetComponent<Player_Controller>());
         //TODO: Solve for the edge case of a bot being dead as a player spawns
@@ -55,6 +55,19 @@ public class CustomNetworkManager : Mirror.NetworkManager
             Game_Controller.Instance.bots[_playerID].StopAllCoroutines();
         }
         NetworkServer.AddPlayerForConnection(conn, player);
+    }
+    public override void OnServerDisconnect(NetworkConnection conn)
+    {
+        print("OnServerRemovePlayer");
+        
+        int _playerID = Game_Controller.Instance.RemovePlayerID(conn.connectionId);
+        
+        Game_Controller.Instance.playerObjects.RemoveAll(player => player.playerID == _playerID);
+        //TODO: Solve for the edge case of a bot being dead as a player spawns
+        if(Game_Controller.Instance.bots.Count > _playerID){
+            Game_Controller.Instance.bots[_playerID].gameObject.SetActive(true);
+        }
+        NetworkServer.RemovePlayerForConnection(conn, true);
     }
 
     public static bool IsServerMachine(){

@@ -47,15 +47,20 @@ public class Pause_Menu : MonoBehaviour {
 		Resume();
 	}
 	public void GoToMainMenu(){
-		try{
+		//try{
+			//Destroy(CustomNetworkManager.Instance.gameObject);
 			//Cleanup Metwork
-			Metwork.Disconnect();
-			//Destroy(GameObject.FindObjectOfType<Metwork>().gameObject);
-			//Destroy(GameObject.Find("WebRtcNetworkFactory").gameObject);
-		}
-		catch{
-			Debug.LogWarning("Failed to find one or more network components when quitting");
-		}
+			if(CustomNetworkManager.Instance.isServerMachine){
+            	CustomNetworkManager.Instance.StopServer();
+        	}
+       		CustomNetworkManager.Instance.StopClient();
+			   //This part will automatically send me out to the match scene
+			   //when the server is shut down
+			
+		//}
+		//catch{
+		//	Debug.LogWarning("Failed to find one or more network components when quitting");
+		//}
 		MInput.inputLock = MInput.InputLock.None;
 		SceneManager.LoadScene ("Start Scene");
 	}

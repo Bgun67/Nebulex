@@ -383,7 +383,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1014168913}
+      - m_Target: {fileID: 1971963948}
         m_TargetAssemblyTypeName: Match_Scene_Manager, Assembly-CSharp
         m_MethodName: ChangeMap
         m_Mode: 3
@@ -737,7 +737,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1014168913}
+      - m_Target: {fileID: 1971963948}
         m_TargetAssemblyTypeName: Match_Scene_Manager, Assembly-CSharp
         m_MethodName: OnUseLanChanged
         m_Mode: 6
@@ -1025,7 +1025,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1014168913}
+      - m_Target: {fileID: 1971963948}
         m_TargetAssemblyTypeName: Match_Scene_Manager, Assembly-CSharp
         m_MethodName: StartServer
         m_Mode: 1
@@ -1284,11 +1284,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: QuitToMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Match_Scene_Manager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -1696,7 +1701,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -2068,7 +2073,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -2211,7 +2216,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -2434,6 +2439,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1971963948}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeMatchType
+      objectReference: {fileID: 0}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Match_Scene_Manager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -2961,7 +2976,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1014168913}
+      - m_Target: {fileID: 1971963948}
         m_TargetAssemblyTypeName: Match_Scene_Manager, Assembly-CSharp
         m_MethodName: OnUseLanChanged
         m_Mode: 6
@@ -3451,7 +3466,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -3656,7 +3671,6 @@ GameObject:
   - component: {fileID: 1014168909}
   - component: {fileID: 1014168910}
   - component: {fileID: 1014168912}
-  - component: {fileID: 1014168913}
   - component: {fileID: 1014168914}
   - component: {fileID: 1014168911}
   m_Layer: 0
@@ -3757,101 +3771,6 @@ MonoBehaviour:
   - {fileID: 1240669990176014, guid: 7fa048afb6c5fe449807b1ab09a49965, type: 3}
   isServerMachine: 0
   useLan: 0
---- !u!114 &1014168913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1014168908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9691d6f6c287564eb9965e3c2c772ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameNameInput: {fileID: 53824277}
-  portInput: {fileID: 1315259354}
-  loadingPanel: {fileID: 1349117691}
-  testing: 0
-  portString: 12345
-  localIP: 192.168.2.40
-  pollingTime: 5
-  maps:
-  - sceneName: LHX Ultima Base
-    displayedName: LHX Ultima Base
-    mapImage: {fileID: 21300000, guid: 3bac2246d927eea4a943707437fe01cd, type: 3}
-    availableGames:
-    - 
-    - Team Deathmatch
-    - Capture The Flag
-    - 
-    - 
-  - sceneName: Crater
-    displayedName: Impact
-    mapImage: {fileID: 21300000, guid: 9056462f1e241b047988eb1ab9f94a8a, type: 3}
-    availableGames:
-    - 
-    - Team Deathmatch
-    - Capture The Flag
-    - 
-    - 
-  - sceneName: Fracture
-    displayedName: Fracture
-    mapImage: {fileID: 21300000, guid: 8c0f13881b8701948b9626826740f726, type: 3}
-    availableGames:
-    - Destruction
-    - Team Deathmatch
-    - Capture The Flag
-    - 
-    - 
-  - sceneName: Space
-    displayedName: Orbit (Dev.)
-    mapImage: {fileID: 21300000, guid: e40ac0ae2c43cbe499501a0600aa71ef, type: 3}
-    availableGames:
-    - Destruction
-    - Team Deathmatch
-    - Capture The Flag
-    - Astroball
-    - Meltdown
-  - sceneName: Kyrie
-    displayedName: Kyrie (Dev.)
-    mapImage: {fileID: 21300000, guid: e40ac0ae2c43cbe499501a0600aa71ef, type: 3}
-    availableGames:
-    - Destruction
-    - Team Deathmatch
-    - Capture The Flag
-    - Astroball
-    - Meltdown
-  - sceneName: Sector 9
-    displayedName: Sector 9
-    mapImage: {fileID: 21300000, guid: 6106ecc32a169254c8fb5c46bb86c913, type: 3}
-    availableGames:
-    - Team Deathmatch
-    - Capture The Flag
-  currentMapNum: 0
-  mapNameText: {fileID: 403301584}
-  matchInfoText: {fileID: 1767346554}
-  mapImage: {fileID: 947458407}
-  matchTypeButtons:
-  - {fileID: 1730796141}
-  - {fileID: 1177986820}
-  - {fileID: 1706499198}
-  - {fileID: 563608661}
-  - {fileID: 1170237171}
-  hostButtons:
-  - {fileID: 1246351260}
-  - {fileID: 1621661174}
-  - {fileID: 2072272909}
-  - {fileID: 797086062}
-  - {fileID: 1390585779}
-  - {fileID: 1188665912}
-  - {fileID: 185914574}
-  - {fileID: 122291464}
-  - {fileID: 925283552}
-  - {fileID: 1507406944}
-  connection: {fileID: 0}
-  isError: 0
-  manager: {fileID: 0}
 --- !u!114 &1014168914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4050,7 +3969,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -4275,6 +4194,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1971963948}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeMatchType
+      objectReference: {fileID: 0}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Match_Scene_Manager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -4520,6 +4449,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1971963948}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeMatchType
+      objectReference: {fileID: 0}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Match_Scene_Manager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 114480888663716436, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -4739,7 +4678,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -4940,7 +4879,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1014168913}
+      - m_Target: {fileID: 1971963948}
         m_TargetAssemblyTypeName: Match_Scene_Manager, Assembly-CSharp
         m_MethodName: ChangeMap
         m_Mode: 3
@@ -5015,7 +4954,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -6198,7 +6137,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -6342,6 +6281,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1971963948}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeMatchType
+      objectReference: {fileID: 0}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Match_Scene_Manager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -6771,7 +6720,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1014168913}
+      - m_Target: {fileID: 1971963948}
         m_TargetAssemblyTypeName: Match_Scene_Manager, Assembly-CSharp
         m_MethodName: DirectConnect
         m_Mode: 1
@@ -7058,6 +7007,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1971963948}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeMatchType
+      objectReference: {fileID: 0}
+    - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Match_Scene_Manager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 114154413800507512, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -7232,6 +7191,131 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9, type: 3}
+--- !u!1 &1971963947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1971963949}
+  - component: {fileID: 1971963948}
+  m_Layer: 0
+  m_Name: Match Scene Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1971963948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971963947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9691d6f6c287564eb9965e3c2c772ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameNameInput: {fileID: 53824277}
+  portInput: {fileID: 1315259354}
+  loadingPanel: {fileID: 1349117691}
+  testing: 0
+  portString: 12345
+  localIP: 192.168.2.40
+  pollingTime: 5
+  maps:
+  - sceneName: LHX Ultima Base
+    displayedName: LHX Ultima Base
+    mapImage: {fileID: 21300000, guid: 3bac2246d927eea4a943707437fe01cd, type: 3}
+    availableGames:
+    - 
+    - Team Deathmatch
+    - Capture The Flag
+    - 
+    - 
+  - sceneName: Crater
+    displayedName: Impact
+    mapImage: {fileID: 21300000, guid: 9056462f1e241b047988eb1ab9f94a8a, type: 3}
+    availableGames:
+    - 
+    - Team Deathmatch
+    - Capture The Flag
+    - 
+    - 
+  - sceneName: Fracture
+    displayedName: Fracture
+    mapImage: {fileID: 21300000, guid: 8c0f13881b8701948b9626826740f726, type: 3}
+    availableGames:
+    - Destruction
+    - Team Deathmatch
+    - Capture The Flag
+    - 
+    - 
+  - sceneName: Space
+    displayedName: Orbit (Dev.)
+    mapImage: {fileID: 21300000, guid: e40ac0ae2c43cbe499501a0600aa71ef, type: 3}
+    availableGames:
+    - Destruction
+    - Team Deathmatch
+    - Capture The Flag
+    - Astroball
+    - Meltdown
+  - sceneName: Kyrie
+    displayedName: Kyrie (Dev.)
+    mapImage: {fileID: 21300000, guid: e40ac0ae2c43cbe499501a0600aa71ef, type: 3}
+    availableGames:
+    - Destruction
+    - Team Deathmatch
+    - Capture The Flag
+    - Astroball
+    - Meltdown
+  - sceneName: Sector 9
+    displayedName: Sector 9
+    mapImage: {fileID: 21300000, guid: 6106ecc32a169254c8fb5c46bb86c913, type: 3}
+    availableGames:
+    - Team Deathmatch
+    - Capture The Flag
+  currentMapNum: 0
+  mapNameText: {fileID: 403301584}
+  matchInfoText: {fileID: 1767346554}
+  mapImage: {fileID: 947458407}
+  matchTypeButtons:
+  - {fileID: 1730796141}
+  - {fileID: 1177986820}
+  - {fileID: 1706499198}
+  - {fileID: 563608661}
+  - {fileID: 1170237171}
+  hostButtons:
+  - {fileID: 1246351260}
+  - {fileID: 1621661174}
+  - {fileID: 2072272909}
+  - {fileID: 797086062}
+  - {fileID: 1390585779}
+  - {fileID: 1188665912}
+  - {fileID: 185914574}
+  - {fileID: 122291464}
+  - {fileID: 925283552}
+  - {fileID: 1507406944}
+  connection: {fileID: 0}
+  isError: 0
+--- !u!4 &1971963949
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971963947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 383.61108, y: 82.65093, z: -300.60907}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2027731059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7251,9 +7335,19 @@ PrefabInstance:
       objectReference: {fileID: 269926316}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1014168913}
+      objectReference: {fileID: 1971963948}
+    - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 114625893446399960, guid: c28740b0db2e6034ea495aa2112ee1e5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
