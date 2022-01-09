@@ -873,7 +873,7 @@ public class Player_Controller : Player {
 		Vector3 rotation = Vector3.zero;
 		float sprintFactor = 1f;
 		//Boost
-		if (Input.GetButton("Sprint")&&!MInput.GetButton ("Left Trigger")&&!MInput.GetButton ("Fire1"))
+		if (Input.GetButton("Sprint")&&!MInput.GetButton ("Left Trigger")&&!Input.GetButton ("Fire1"))
 		{
 			if (jetpackFuel > 0.7f && refueling == true)
 			{
