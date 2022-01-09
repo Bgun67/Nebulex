@@ -58,6 +58,10 @@ public class Player_IK : MonoBehaviour
 	{
 		sprintFactor = Mathf.Lerp(sprintFactor,isSprinting?1f:0f, 0.3f);
 	}
+	public bool IsSprinting()
+	{
+		return sprintFactor>0.1f;
+	}
 	
 	public void Recoil(float magnitude)
 	{

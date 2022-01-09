@@ -366,7 +366,7 @@ public class Player_Controller : Player {
 			breatheSound.volume = 0f;
 		}
 		//TODO: Come up with a move elegant solution
-		if (Input.GetButton ("Fire1") && !UI_Manager._instance.pauseMenu.gameObject.activeSelf) {
+		if (Input.GetButton ("Fire1") && !player_IK.IsSprinting() && !UI_Manager._instance.pauseMenu.gameObject.activeSelf) {
 			Attack ();
 
 		}
@@ -705,7 +705,7 @@ public class Player_Controller : Player {
 			moveFactor = 0.75f;
 			return;
 		}
-		if (MInput.GetButton ("Left Trigger")&&!fireScript.reloading &&!switchWeapons && !throwingGrenade) {
+		if (MInput.GetButton ("Left Trigger")&&!player_IK.IsSprinting()&&!fireScript.reloading &&!switchWeapons && !throwingGrenade) {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
@@ -872,9 +872,8 @@ public class Player_Controller : Player {
 		Vector3 velocity = Vector3.zero;
 		Vector3 rotation = Vector3.zero;
 		float sprintFactor = 1f;
-		//TODO: Stow the player's gun
 		//Boost
-		if (Input.GetButton("Sprint")&&!MInput.GetButton ("Left Trigger"))
+		if (Input.GetButton("Sprint")&&!MInput.GetButton ("Left Trigger")&&!MInput.GetButton ("Fire1"))
 		{
 			if (jetpackFuel > 0.7f && refueling == true)
 			{
@@ -892,7 +891,7 @@ public class Player_Controller : Player {
 				}
 				thrusterSoundFactor = 1f;
 
-				jetpackFuel -= Time.deltaTime * 1f;
+				jetpackFuel -= Time.deltaTime * 0.7f;
 				sprintFactor = 1.75f;
 				player_IK.Sprint(true);
 			} else {
