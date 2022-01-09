@@ -24,15 +24,15 @@ public class Splash_Scene_Controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(SceneManager.GetActiveScene().name == "DiPolar Scene"){
+		//if(SceneManager.GetActiveScene().name == "DiPolar Scene"){
 			
-			if (Input.anyKeyDown) {
+		//	if (Input.anyKeyDown) {
 			
-				SceneManager.LoadScene ("Splash Scene");
-			}
+		//		SceneManager.LoadScene ("Splash Scene");
+		//	}
 			
-		}
-		if(SceneManager.GetActiveScene().name == "Splash Scene"){
+		//}
+		if(SceneManager.GetActiveScene().name == "Start Scene"){
 			shadow.color = new Color(0,0,0, Mathf.Clamp01(1.0f - (Time.time - initialTime) * 0.333f));
 		}
 

@@ -75,10 +75,7 @@ public class Match_Scene_Manager : MonoBehaviour
         {
             hostButton.gameObject.SetActive(false);
         }
-        if (testing)
-        {
-            localIP = File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt")[3];
-        }
+        
         connection = FindObjectOfType<PHPMasterServerConnect>();
 		networkDiscovery = FindObjectOfType<CustomNetworkDiscovery>();
         ChangeMatchType("Destruction");
@@ -90,7 +87,7 @@ public class Match_Scene_Manager : MonoBehaviour
     }
 
     void Update(){
-        loadingCircle.Rotate(0,0,1f);
+        loadingCircle.Rotate(0,0,2f * Time.deltaTime*60f);
     }
 
 

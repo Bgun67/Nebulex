@@ -17,8 +17,11 @@ public class BG_Sound : MonoBehaviour
 	}
 	void Update()
 	{
+		if(Time.time > 8f && !GetComponent<AudioSource>().isPlaying){
+			GetComponent<AudioSource>().Play();
+		}
 		this.GetComponent<AudioSource>().volume = volume;
-		if (SceneManager.GetActiveScene().name == "LobbyScene" || SceneManager.GetActiveScene().name == "TransistionScene")
+		if (FindObjectOfType<Game_Controller>() != null || SceneManager.GetActiveScene().name == "LobbyScene" || SceneManager.GetActiveScene().name == "TransistionScene")
 		{
 			volume = Mathf.Lerp(volume, 0f, 0.05f);
 		}

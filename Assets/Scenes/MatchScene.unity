@@ -1449,7 +1449,7 @@ PrefabInstance:
     - target: {fileID: 224982908114553126, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -115.5011
+      value: -115.50122
       objectReference: {fileID: 0}
     - target: {fileID: 224982908114553126, guid: ad0fba7bd1a7ee741a33d26e4e69b5d9,
         type: 3}
@@ -5085,7 +5085,7 @@ GameObject:
   - component: {fileID: 1238750791}
   - component: {fileID: 1238750793}
   m_Layer: 5
-  m_Name: Load Circle
+  m_Name: Loading Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5098,7 +5098,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1238750789}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -6940,7 +6940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.14683688, b: 0.5943396, a: 0.31764707}
+  m_Color: {r: 0, g: 0.20966712, b: 0.4056604, a: 0.3529412}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7223,9 +7223,8 @@ MonoBehaviour:
   gameNameInput: {fileID: 53824277}
   portInput: {fileID: 1315259354}
   loadingPanel: {fileID: 1349117691}
+  loadingCircle: {fileID: 1238750790}
   testing: 0
-  portString: 12345
-  localIP: 192.168.2.40
   pollingTime: 5
   maps:
   - sceneName: LHX Ultima Base

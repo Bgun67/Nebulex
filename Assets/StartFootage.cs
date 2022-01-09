@@ -30,7 +30,7 @@ public class StartFootage : MonoBehaviour
 		{
 			Profile.RestoreDataFile();
 
-			SceneManager.LoadScene("Splash Scene");
+			SceneManager.LoadScene("Start Scene");
 		}
 		else
 		{
@@ -256,7 +256,7 @@ public class StartFootage : MonoBehaviour
 			
 		}
 
-		SceneManager.LoadSceneAsync("Splash Scene");
+		SceneManager.LoadSceneAsync("Start Scene");
 
 		
 	}
