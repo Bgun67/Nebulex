@@ -56,7 +56,6 @@ public class Com_Controller : Player {
 	Transform currentCover;
 
 	public int patrolIndex = 0;
-	public float maxSpeed = 5f;
 	[Range(0f,1f)]
 	public float lockOnRate = 0.4f;
 	public Transform head;
@@ -123,7 +122,7 @@ public class Com_Controller : Player {
 				damageScript.initialPosition.position += Random.insideUnitSphere * Random.Range(0f, 10f);
 			}
 			//Randomize max speed
-			maxSpeed += Random.Range(-0.4f, 0.4f);
+			moveSpeed += Random.Range(-0.4f, 0.4f);
 			
 			
 			if(!isInSpace){
@@ -210,12 +209,13 @@ public class Com_Controller : Player {
 		}
 		if(spaceRoute.Count > 0){
 			Vector3 desiredDirection = (spaceRoute[0]-this.transform.position).normalized;
-			currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * maxSpeed, 0.05f);
+			currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * moveSpeed, 0.05f);
 			this.transform.position +=  currentVelocity * Time.deltaTime;
 			lastPosition = transform.position;
 		}
 		
-		
+		//player_IK.SetVelocity(rb.velocity);
+
 		
 	}
 	

@@ -380,7 +380,7 @@ public class Player_Controller : Player {
 			Knife ();
 		}
 		Aim ();
-
+		player_IK.SetVelocity(rb.velocity, h2);
 
 	}
 

@@ -37,6 +37,7 @@ public class Game_Settings : MonoBehaviour
     public struct GameplaySettings{
         public float lookSensitivity;
 		public bool holdToGroundLock;
+		public bool firstTime;
 	}
 
     public struct AudioSettings{
@@ -91,6 +92,7 @@ public class Game_Settings : MonoBehaviour
         //Restore default settings
         currGameplaySettings.lookSensitivity = 0.5f;
 		currGameplaySettings.holdToGroundLock = true;
+		currGameplaySettings.firstTime = true;
 		SaveGameSettings();
     }
     public static void RestoreAudioSettings(){

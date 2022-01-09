@@ -23,19 +23,19 @@ public class StartFootage : MonoBehaviour
 	public AudioClip[] sfxClips;
 	public WindowsVoice voice;
 	
-	static void CheckData(string[] playerInfo)
+	static bool IsFirstTime()
 	{
+		
 		//is first time
-		if (playerInfo[4] == "False")
+		if (Game_Settings.currGameplaySettings.firstTime)
 		{
-			Profile.RestoreDataFile();
-
-			SceneManager.LoadScene("Start Scene");
+			Game_Settings.currGameplaySettings.firstTime = false;
+			Game_Settings.SaveGameSettings();
+			return true;
 		}
 		else
 		{
-			playerInfo[4] = "False";
-			System.IO.File.WriteAllLines(Application.persistentDataPath + "/Player Data.txt", Util.ThiccWatermelon(playerInfo));
+			return false;
 		}
 	}
 	// Start is called before the first frame update
@@ -43,9 +43,24 @@ public class StartFootage : MonoBehaviour
 	void Start()
     {
 		Physics.autoSimulation = true;
-		StartCoroutine(RunSceneSequence());
+		
+		if (!IsFirstTime())
+		{
+			SceneManager.LoadScene("Start Scene");
+		}
+		else
+		{
+			StartCoroutine(RunSceneSequence());
+		}
 	}
-	
+	void Update()
+	{
+		if (Input.anyKeyDown)
+		{
+			SceneManager.LoadScene("Start Scene");
+		}
+	}
+
 
 	// Update is called once per frame
 	IEnumerator RunSceneSequence()
