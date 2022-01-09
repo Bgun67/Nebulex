@@ -18,11 +18,10 @@ public class Player_IK : MonoBehaviour
 
 	Vector3 rfTargetPos;
     Quaternion rfTargetRot;
-	Vector3 currentRHVelocity;
 	Vector3 lfTargetPos;
     Quaternion lfTargetRot;
-	Vector3 currentLHVelocity;
-
+	Vector3 currentLocalVelocity;
+	float currentTurning;
 
 	private Animator anim;
     private Player_Controller player;
@@ -66,10 +65,22 @@ public class Player_IK : MonoBehaviour
 		{
 			return Vector3.zero;
 		}
-		return -player.transform.forward * recoilMagnitude * recoilCurve.Evaluate(Time.time - recoilStartTime);
+		return -Vector3.forward * recoilMagnitude * recoilCurve.Evaluate(Time.time - recoilStartTime);
 	}
-    void Update(){
-        /*if(rhTarget != null){
+
+	public void SetVelocity(Vector3 currentVelocity)
+	{
+		currentLocalVelocity = transform.InverseTransformVector(currentVelocity);
+	}
+
+	public void SetVelocity(Vector3 currentVelocity, float turning = 0)
+	{
+		currentLocalVelocity = transform.InverseTransformVector(currentVelocity);
+		currentTurning = Mathf.Lerp(currentTurning,Mathf.Clamp(turning, -1,1f), 0.5f);
+	}
+
+	void Update(){
+		/*if(rhTarget != null){
             if(player != null){
 				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
 				rhPosition = Vector3.Slerp(rhPosition, targetPosition, 0.99f);
@@ -79,7 +90,9 @@ public class Player_IK : MonoBehaviour
 				rhPosition =  rhTarget.position;
 			}
         }*/
-    }
+
+	}
+	
 
 	void OnAnimatorIK(){
         //Pull the latest raycast data from the player
@@ -102,15 +115,15 @@ public class Player_IK : MonoBehaviour
             anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
             if(player != null){
-				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
-				rhPosition = Vector3.SmoothDamp(rhPosition, targetPosition, ref currentRHVelocity, 0.03f);
+				Vector3 targetPosition = transform.InverseTransformPoint(rhTarget.position) + rhOffset.z * Vector3.forward+Vector3.up*0.1f*scopedFactor+GetRecoil();
+				rhPosition = targetPosition - currentLocalVelocity*0.01f;
 			}
 			else
 			{
 				rhPosition =  rhTarget.position;
 			}
-			anim.SetIKPosition(AvatarIKGoal.RightHand,rhPosition);
-			anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation);
+			anim.SetIKPosition(AvatarIKGoal.RightHand,transform.TransformPoint(rhPosition));
+			anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation*Quaternion.AngleAxis(currentTurning*15f,-Vector3.right)*Quaternion.AngleAxis(GetRecoil().z*30f,Vector3.up));
         }
         if(lhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);
