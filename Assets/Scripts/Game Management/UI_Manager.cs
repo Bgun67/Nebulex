@@ -34,6 +34,8 @@ public class UI_Manager : MonoBehaviour
 	[SerializeField]
 	private Text totalAmmoText;
 	[SerializeField]
+	private GameObject reticle;
+	[SerializeField]
 	private GameObject hitMarks;
 	float hitMarkTime;
 
@@ -216,6 +218,11 @@ public class UI_Manager : MonoBehaviour
 	{
 		UI_Manager._instance.pauseMenu.Resume();
 	}
+	public void SetReticleVisibility(bool isVisible)
+	{
+		reticle.SetActive(isVisible);
+	}
+	
 	public void ShowHit()
 	{
 		hitMarks.SetActive(true);
