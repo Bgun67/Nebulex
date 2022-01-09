@@ -873,7 +873,7 @@ public class Player_Controller : Player {
 		Vector3 rotation = Vector3.zero;
 		float sprintFactor = 1f;
 		//Boost
-		if (Input.GetButton("Sprint")&&!MInput.GetButton ("Left Trigger")&&!MInput.GetButton ("Fire1"))
+		if (Input.GetButton("Sprint")&&!MInput.GetButton ("Left Trigger")&&!Input.GetButton ("Fire1"))
 		{
 			if (jetpackFuel > 0.7f && refueling == true)
 			{
@@ -918,7 +918,7 @@ public class Player_Controller : Player {
 			if(rb.velocity.magnitude < 3.5f){
 				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
 			}else{
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.006f*Time.deltaTime * 20f);
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
 			}
 		}
 		else{
