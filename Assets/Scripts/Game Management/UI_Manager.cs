@@ -162,7 +162,7 @@ public class UI_Manager : MonoBehaviour
 		//Bot indicators
 		foreach(Player _player in FindObjectsOfType<Player>()){
 			//The player is on our team, show them immediately
-			if(_player.gameObject.activeSelf && _player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
+			if(!Game_Controller.Instance.localPlayer.damageScript.isDead && _player.gameObject.activeSelf && _player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
 				int _id = _player.playerID;
 				
 				//Set color
@@ -189,6 +189,8 @@ public class UI_Manager : MonoBehaviour
 					nameIndicators[_id].gameObject.SetActive(false);
 				}
 				
+			}else{
+				nameIndicators[_player.playerID].gameObject.SetActive(false);
 			}
 		}
 	}

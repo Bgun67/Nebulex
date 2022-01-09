@@ -961,7 +961,7 @@ public class Player_Controller : Player {
 				Vector3 _lerpedUp =  Vector3.Slerp(transform.up,_hitNormal,0.3f);//*( 1f-_hitDistance/5.4f));
 				previousNormal = _lerpedUp;
 				rb.MoveRotation(Quaternion.LookRotation(_lerpedForward,_lerpedUp));
-				
+				Debug.DrawRay(rb.centerOfMass, transform.forward, Color.blue);
 				Debug.DrawRay(this.transform.position, Vector3.ProjectOnPlane(transform.forward,_hitNormal), Color.yellow);
 				Debug.DrawRay(_hit.point,_hitNormal, Color.green);
 
@@ -1028,7 +1028,12 @@ public class Player_Controller : Player {
 				Mathf.Lerp(previousRot.z, -h * rollFactor*5f*Time.deltaTime*60f , 0.1f)
 			);
 			previousRot = rotation;
-			rb.MoveRotation(transform.rotation*Quaternion.Euler(rotation));
+			//TODO
+			Vector3 _pivot = rb.position - transform.up * 1.5f;
+			rb.position = (Quaternion.Euler(rotation) * (rb.transform.position - _pivot) + _pivot);
+			
+			rb.rotation = (rb.transform.rotation*Quaternion.Euler(rotation));
+			Debug.DrawLine(transform.position + rb.centerOfMass,transform.position + rb.centerOfMass + 10f * transform.forward, Color.blue);
 			//rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.up, rotation.y);
 			//rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
 			//rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.forward, rotation.z);

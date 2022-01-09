@@ -675,8 +675,8 @@ public class Game_Controller : NetworkBehaviour {
 		endTimeText.text = "Next match in 20 sec";
 		eventSystem.SetActive(true);
 		SavePlayerScore();
-
-		Invoke("RestartGame", 20.0f);
+		if(NetworkServer.active)
+			Invoke(nameof(RestartGame), 20.0f);
 
 
 	}
@@ -801,18 +801,18 @@ public class Game_Controller : NetworkBehaviour {
 		string newScene = "LobbyScene";
 		switch(SceneManager.GetActiveScene().name){
 			case "LHX Ultima Base":
-				newScene = "Crater";
+				newScene = "Sector 9";
 				break;
-			case "Crater":
+			/*case "Crater":
 				newScene = "Fracture";
 				break;
 			case "Fracture":
 				newScene = "Space";
 				break;
 			case "Space":
-				newScene = "Sector 19";
-				break;
-			case "Sector 19":
+				newScene = "Sector 9";
+				break;*/
+			case "Sector 9":
 				newScene = "LHX Ultima Base";
 				break;
 			default:
@@ -835,8 +835,8 @@ public class Game_Controller : NetworkBehaviour {
 			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (newScene);
 		}
 
-		
-		SceneManager.LoadScene("TransistionScene");
+		CustomNetworkManager.Instance.ServerChangeScene(newScene);
+		//SceneManager.LoadScene("TransistionScene");
 		//TODO: Assign variable gameplayUI of gamecontroller in LHX ULTIMA
 		
 	

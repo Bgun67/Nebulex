@@ -165,7 +165,7 @@ public class Fire : MonoBehaviour {
 					if (ignoreParentVelocity) {
 						bullet.GetComponent<Rigidbody> ().velocity = (shotSpawnForward) * bulletVelocity;
 					} else {
-						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(transform.position) + (shotSpawnForward) * bulletVelocity;
+						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(shotSpawnPosition) + (shotSpawnForward) * bulletVelocity;
 					}
 					bullet.GetComponent<Bullet_Controller> ().damagePower = damagePower;
 

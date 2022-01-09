@@ -56,7 +56,9 @@ public class Chat : NetworkBehaviour {
 	}
 	[Server]
 	public static void LogToChat(string _message){
-		FindObjectOfType<Chat>().Rpc_SendMessage (_message, 2);
+		Chat chat = FindObjectOfType<Chat>();
+		if(chat)
+			chat.Rpc_SendMessage (_message, 2);
 	}
 	[Command]
 	void Cmd_SendMessage(string _message, int team){
