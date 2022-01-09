@@ -160,6 +160,7 @@ public class Com_Controller : Player {
 			CheckState();
 		}
 
+		player_IK.rhOffset = fireScript.rhOffset;
 		player_IK.rhTarget = rightHandPosition;
 		player_IK.lhTarget = fireScript.lhTarget;
 		fireScript.playerID = playerID;

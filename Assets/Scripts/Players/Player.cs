@@ -557,12 +557,12 @@ public class Player : NetworkBehaviour {
 		
 		fireScript.playerID = playerID;
 		//We want to move the right hand target back and forth depending how long the gun is
-		this.GetComponent<Player_IK>().rhOffset = fireScript.rhOffset;
-		this.GetComponent<Player_IK>().rhTarget = rightHandPosition;
-		this.GetComponent<Player_IK>().lhTarget = fireScript.lhTarget;
+		player_IK.rhOffset = fireScript.rhOffset;
+		player_IK.rhTarget = rightHandPosition;
+		player_IK.lhTarget = fireScript.lhTarget;
 		if (fireScript.lhHint)
 		{
-			this.GetComponent<Player_IK>().lhHint = fireScript.lhHint;
+			player_IK.lhHint = fireScript.lhHint;
 		}
 		yield return new WaitForSeconds (0.66f);
 		switchWeapons = false;

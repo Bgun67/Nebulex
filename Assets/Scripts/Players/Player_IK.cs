@@ -13,6 +13,7 @@ public class Player_IK : MonoBehaviour
 	public Transform lhHint;
 	public float scopeOffset = 0.2f;
 	float scopedFactor;
+	float sprintFactor;
 
 	public float footOffset = 0.1f;
 
@@ -52,6 +53,10 @@ public class Player_IK : MonoBehaviour
 		{
 			scopedFactor = Mathf.Lerp(scopedFactor, 0f, 0.5f);
 		}
+	}
+	public void Sprint(bool isSprinting)
+	{
+		sprintFactor = Mathf.Lerp(sprintFactor,isSprinting?1f:0f, 0.3f);
 	}
 	
 	public void Recoil(float magnitude)
@@ -115,7 +120,7 @@ public class Player_IK : MonoBehaviour
             anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
             if(player != null){
-				Vector3 targetPosition = transform.InverseTransformPoint(rhTarget.position) + rhOffset.z * Vector3.forward+Vector3.up*0.1f*scopedFactor+GetRecoil();
+				Vector3 targetPosition = transform.InverseTransformPoint(rhTarget.position) + rhOffset.z * Vector3.forward+Vector3.up*0.3f*scopedFactor+GetRecoil();
 				rhPosition = targetPosition - currentLocalVelocity*0.01f;
 			}
 			else
@@ -123,7 +128,13 @@ public class Player_IK : MonoBehaviour
 				rhPosition =  rhTarget.position;
 			}
 			anim.SetIKPosition(AvatarIKGoal.RightHand,transform.TransformPoint(rhPosition));
-			anim.SetIKRotation(AvatarIKGoal.RightHand,rhTarget.rotation*Quaternion.AngleAxis(currentTurning*15f,-Vector3.right)*Quaternion.AngleAxis(GetRecoil().z*30f,Vector3.up));
+			anim.SetIKRotation(
+				AvatarIKGoal.RightHand,
+				rhTarget.rotation*
+				Quaternion.AngleAxis(currentTurning*15f,-Vector3.right)*
+				Quaternion.AngleAxis(GetRecoil().z*30f,Vector3.up)*
+				Quaternion.AngleAxis(sprintFactor*45f,Vector3.right)
+			);
         }
         if(lhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);
@@ -132,7 +143,7 @@ public class Player_IK : MonoBehaviour
             anim.SetIKRotation(AvatarIKGoal.LeftHand,lhTarget.rotation);
 			if (lhHint)
 			{
-				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,lhBlend);  
+				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,lhBlend*(sprintFactor>0.1f?0:1));  
 				anim.SetIKHintPosition(AvatarIKHint.LeftElbow, lhHint.position);
 			}
 		}

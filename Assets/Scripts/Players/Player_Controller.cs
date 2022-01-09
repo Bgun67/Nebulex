@@ -143,7 +143,7 @@ public class Player_Controller : Player {
 			if (minimapUI != null) {
 				minimapUI.SetActive (true);
 			}
-
+			UI_Manager._instance.SetReticleVisibility(true);
 		}
 		previousNormal = transform.up;
 		previousRot = Vector3.zero;
@@ -874,7 +874,7 @@ public class Player_Controller : Player {
 		float sprintFactor = 1f;
 		//TODO: Stow the player's gun
 		//Boost
-		if (Input.GetButton("Sprint"))
+		if (Input.GetButton("Sprint")&&!MInput.GetButton ("Left Trigger"))
 		{
 			if (jetpackFuel > 0.7f && refueling == true)
 			{
@@ -894,18 +894,24 @@ public class Player_Controller : Player {
 
 				jetpackFuel -= Time.deltaTime * 1f;
 				sprintFactor = 1.75f;
+				player_IK.Sprint(true);
 			} else {
 				foreach (ParticleSystem jet in jetpackJets) {
 					jet.Stop ();
 				}
+				player_IK.Sprint(false);
 			}
 		
 			UpdateUI ();
 			
 			
 		}
-		
-		
+		else
+		{
+			player_IK.Sprint(false);
+		}
+
+
 		Vector3 desiredVelocity = transform.TransformVector(new Vector3(h*strafeFactor,z,v).normalized * moveSpeed * sprintFactor);
 		if(desiredVelocity.sqrMagnitude < rb.velocity.sqrMagnitude*0.5f){
 			//Decelerate the player more if they are almost at a standstill
@@ -1270,6 +1276,8 @@ public class Player_Controller : Player {
 		Game_Controller.Instance.sceneCam.gameObject.SetActive(true);
 		
 		if (isLocalPlayer) {
+			UI_Manager._instance.SetReticleVisibility(false);
+
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
 			{
 				SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
