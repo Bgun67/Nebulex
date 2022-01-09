@@ -918,7 +918,7 @@ public class Player_Controller : Player {
 			if(rb.velocity.magnitude < 3.5f){
 				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
 			}else{
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.06f*Time.deltaTime * 20f);
 			}
 		}
 		else{
