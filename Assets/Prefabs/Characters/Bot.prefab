@@ -35,6 +35,7 @@ MonoBehaviour:
   suffocationTime: 0
   damageScript: {fileID: 0}
   ladder: {fileID: 0}
+  icon: {fileID: 5807052955234383998}
   playerID: 0
   playerName: Fred
   ragdoll: {fileID: 1333036756815864, guid: b30042f9b29c8ab498091d0074f93a31, type: 3}
@@ -89,7 +90,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _angle: 0
-  difficultyLevel: 0
+  difficultyLevel: 1
   targetPlayer:
     _transform: {fileID: 0}
     _acquiredTime: 0
@@ -298,6 +299,12 @@ Transform:
 --- !u!4 &4243335988755084844 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 664583891530852842, guid: 783577177cb004841a4685d42797a477,
+    type: 3}
+  m_PrefabInstance: {fileID: 3736378137668493254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5807052955234383998 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7155239026187085752, guid: 783577177cb004841a4685d42797a477,
     type: 3}
   m_PrefabInstance: {fileID: 3736378137668493254}
   m_PrefabAsset: {fileID: 0}

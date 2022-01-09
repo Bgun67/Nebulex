@@ -55,6 +55,7 @@ public class Player : NetworkBehaviour {
 	public float suffocationTime;
 	public Damage damageScript;
 	public LadderController ladder;
+	public MeshRenderer icon;
 	
 
 	
@@ -494,8 +495,13 @@ public class Player : NetworkBehaviour {
 	}
 	[ClientRpc(includeOwner=false)]
 	protected void Rpc_FireWeapon(Vector3 shotSpawnPosition, Vector3 shotSpawnForward){
-		if(fireScript)
+		if(fireScript){
 			fireScript.FireWeapon(shotSpawnPosition, shotSpawnForward);
+			//TODO show the icon here
+			Color _originalColor = icon.material.color;
+			_originalColor.a = 1.0f;
+			icon.material.color = _originalColor;
+		}
 	}
 
 	#endregion

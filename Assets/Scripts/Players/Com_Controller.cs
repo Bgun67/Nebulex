@@ -140,6 +140,11 @@ public class Com_Controller : Player {
 
 
 	void Update(){
+		Color _originalColor = icon.material.color;
+		_originalColor.a -= Time.deltaTime;
+		_originalColor.a = Mathf.Clamp01(_originalColor.a);
+		icon.material.color = _originalColor;
+		
 		if(isInSpace){
 			agent.updateRotation = false;
 			agent.updateUpAxis = false;

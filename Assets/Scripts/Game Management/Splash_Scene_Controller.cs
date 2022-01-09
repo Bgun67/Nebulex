@@ -7,7 +7,6 @@ using UnityEngine.Video;
 
 
 public class Splash_Scene_Controller : MonoBehaviour {
-	public Text startText;
 	public Image shadow;
 	float initialTime = 0;
 

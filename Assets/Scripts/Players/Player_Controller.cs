@@ -167,6 +167,11 @@ public class Player_Controller : Player {
 	// Update is called once per frame
 	//was update
 	void Update () {
+		Color _originalColor = icon.material.color;
+		_originalColor.a -= Time.deltaTime*0.5f;
+		_originalColor.a = Mathf.Clamp01(_originalColor.a);
+		icon.material.color = _originalColor;
+
 		//Gather Raycast data from under the left and right feet
 		lfHitValid = Physics.Raycast(lfRaycast.position, -transform.up,out lfHit,1f,magBootsLayer,QueryTriggerInteraction.Ignore);
 		if(lfHitValid){
@@ -598,6 +603,7 @@ public class Player_Controller : Player {
 		this.gameObject.SetActive(true);
 		//Reload the players ammo
 		primaryWeapon.GetComponent<Fire>().RestockAmmo();
+		secondaryWeapon.GetComponent<Fire>().RestockAmmo();
 		if (isLocalPlayer) {
 			Game_Controller.Instance.sceneCam.gameObject.SetActive(false);
 			mainCamObj.SetActive(true);
@@ -1184,7 +1190,10 @@ public class Player_Controller : Player {
 			bool fired = fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 			Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 
-			if (fired) { player_IK.Recoil(fireScript.recoilAmount); };
+			if (fired) { 
+				player_IK.Recoil(fireScript.recoilAmount);
+				
+				};
 		}
 		UpdateUI ();
 	}
