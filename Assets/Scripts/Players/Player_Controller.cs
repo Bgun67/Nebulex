@@ -601,6 +601,7 @@ public class Player_Controller : Player {
 	[ClientRpc]
 	public void Rpc_ActivatePlayer(){
 		this.gameObject.SetActive(true);
+		switchWeapons = false;
 		//Reload the players ammo
 		primaryWeapon.GetComponent<Fire>().RestockAmmo();
 		secondaryWeapon.GetComponent<Fire>().RestockAmmo();
