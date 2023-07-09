@@ -124,14 +124,15 @@ public class Player_IK : MonoBehaviour
             anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
             anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
             if(player != null){
-				Vector3 targetPosition = transform.InverseTransformPoint(rhTarget.position) + rhOffset.z * Vector3.forward+Vector3.up*0.3f*scopedFactor+GetRecoil();
+				Vector3 targetPosition = transform.InverseTransformPoint(rhTarget.position) + Vector3.up*0.3f*scopedFactor+GetRecoil();
 				rhPosition = targetPosition - currentLocalVelocity*0.01f;
+				rhPosition = transform.TransformPoint(rhPosition);
 			}
 			else
 			{
-				rhPosition =  rhTarget.position;
+				rhPosition = rhTarget.position;
 			}
-			anim.SetIKPosition(AvatarIKGoal.RightHand,transform.TransformPoint(rhPosition));
+			anim.SetIKPosition(AvatarIKGoal.RightHand,rhPosition);
 			anim.SetIKRotation(
 				AvatarIKGoal.RightHand,
 				rhTarget.rotation*
@@ -145,6 +146,7 @@ public class Player_IK : MonoBehaviour
             anim.SetIKRotationWeight(AvatarIKGoal.LeftHand,lhBlend);  
             anim.SetIKPosition(AvatarIKGoal.LeftHand,lhTarget.position);
             anim.SetIKRotation(AvatarIKGoal.LeftHand,lhTarget.rotation);
+			Debug.DrawLine(lhTarget.position, lhTarget.position + Vector3.up, Color.yellow);
 			if (lhHint)
 			{
 				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,lhBlend*(sprintFactor>0.1f?0:1));  
