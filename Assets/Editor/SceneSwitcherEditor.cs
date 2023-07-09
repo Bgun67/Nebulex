@@ -125,13 +125,18 @@ namespace SceneSwitcher
 			//	EditorGUILayout.LabelField("There are no scenes available.");
 			
 			GUILayout.Space(5);
+			if(m_Scenes == null){
+				GUILayout.EndScrollView();
+				return;
+			}
 			
 			foreach(Scenes scene in m_Scenes)
 			{
-				if(SearchString == "" || StringContains(scene.sceneName, SearchString))
+				//Debug.Log(EditorBuildSettings.scenes.Where(x => Path.GetFileNameWithoutExtension(x.path) == scene.sceneName).Count);
+				if((SearchString == "" || StringContains(scene.sceneName, SearchString)) && EditorBuildSettings.scenes.Where(x => Path.GetFileNameWithoutExtension(x.path) == scene.sceneName).Count() > 0 )
 				{
 					EditorGUILayout.BeginHorizontal();
-					EditorGUIUtility.labelWidth = 70;
+					EditorGUIUtility.labelWidth = 70;;
 
 					string currentScene = "";
 					if(EditorApplication.currentScene.Contains(scene.sceneName))

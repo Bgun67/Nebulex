@@ -28,11 +28,11 @@ public class Nav_Volume_Builder : MonoBehaviour
     public bool buildCubemesh;
     public Bounds bounds;
     public int numCubes;
-    const int size = 60;
+    public int size = 60;
     public float scale = 5f;
     public Collider playArea;
     
-    public bool[,,] mesh = new bool[size,size,size];
+    public bool[,,] mesh;
     public List<NavBlock> navVolume = new List<NavBlock>();
 
     public int currentShortestLength = 1000000;
@@ -298,6 +298,8 @@ public class Nav_Volume_Builder : MonoBehaviour
     void Update()
     {
         if(buildCubemesh){
+            if(mesh == null)
+                mesh = new bool[size,size,size];
             buildCubemesh = false;
             numCubes = 0;
             while(transform.childCount > 0){

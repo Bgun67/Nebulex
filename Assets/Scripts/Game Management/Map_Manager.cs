@@ -20,7 +20,7 @@ public class Map_Manager : MonoBehaviour
 	///<summary>Use instead of the start function</summary>
 	protected virtual void MapSetup()
 	{
-
+		
 	}
 	///<summary>Use when you need to execute tasks that do not need to happen exactly at the start</summary>
 	protected virtual void DelayedSetup()

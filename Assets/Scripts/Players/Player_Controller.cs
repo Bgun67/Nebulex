@@ -919,7 +919,7 @@ public class Player_Controller : Player {
 			if(rb.velocity.magnitude < 3.5f){
 				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
 			}else{
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.06f*Time.deltaTime * 20f);
+				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.0036f*Time.deltaTime * 20f);
 			}
 		}
 		else{
@@ -935,7 +935,7 @@ public class Player_Controller : Player {
 
 
 			//Raycast from three different spots
-			bool hasHit1 = Physics.SphereCast(transform.position + transform.up * 0.1f,0.1f,- transform.up * 5.4f,out _hit,5.4f, magBootsLayer,  QueryTriggerInteraction.Ignore);
+			bool hasHit1 = Physics.SphereCast(transform.position - transform.up * 0.7f,0.1f,- transform.up * 5.4f,out _hit,5.4f, magBootsLayer,  QueryTriggerInteraction.Ignore);
 			bool hasHit2 = Physics.Linecast(transform.position - transform.right * 0.1f,transform.position+ transform.right * 0.15f- transform.up * 5.4f, out _hit2, magBootsLayer, QueryTriggerInteraction.Ignore);
 			bool hasHit3 = Physics.Linecast(transform.position + transform.right * 0.1f,transform.position- transform.right * 0.15f- transform.up * 5.4f, out _hit3, magBootsLayer,  QueryTriggerInteraction.Ignore);
 			//Hit distance is zero if no hit
@@ -1035,10 +1035,10 @@ public class Player_Controller : Player {
 			);
 			previousRot = rotation;
 			//TODO
-			Vector3 _pivot = rb.position - transform.up * 1.5f;
-			rb.position = (Quaternion.Euler(rotation) * (rb.transform.position - _pivot) + _pivot);
+			//Vector3 _pivot = rb.position - transform.up * 1.5f;
+			//rb.MovePosition(Quaternion.Euler(rotation) * (rb.transform.position - _pivot) + _pivot);
 			
-			rb.rotation = (rb.transform.rotation*Quaternion.Euler(rotation));
+			rb.MoveRotation(rb.transform.rotation*Quaternion.Euler(rotation));
 			Debug.DrawLine(transform.position + rb.centerOfMass,transform.position + rb.centerOfMass + 10f * transform.forward, Color.blue);
 			//rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.up, rotation.y);
 			//rb.transform.RotateAround(mainCam.transform.position, mainCam.transform.right, rotation.x);
