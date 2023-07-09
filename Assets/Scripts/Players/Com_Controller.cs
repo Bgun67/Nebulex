@@ -464,8 +464,9 @@ public class Com_Controller : Player {
 	void Fight()
 	{
 		float sqrDistance = Vector3.Magnitude(targetPlayer._transform.position - transform.position);
-		
-		if ( sqrDistance*difficultySetting> 40f)
+		RaycastHit _hit;
+		bool _canSeePlayer = !Physics.Linecast(head.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore);
+		if ( sqrDistance*difficultySetting> 40f || !_canSeePlayer)
 		{
 			if(!isInSpace){
 				agent.destination = targetPlayer._transform.position;
@@ -502,7 +503,7 @@ public class Com_Controller : Player {
 			player_IK.Scope(false);
 			Aim();
 		}
-		Vector3 _rotation = Vector3.RotateTowards(fireScript.shotSpawn.forward, (targetPlayer._transform.position+targetPlayer._transform.up*1f-fireScript.shotSpawn.position).normalized, 0.25f*3f*difficultySetting, 1.5f);
+		Vector3 _rotation = Vector3.RotateTowards(fireScript.shotSpawn.forward, (targetPlayer._transform.position-fireScript.shotSpawn.position).normalized, 0.25f*3f*difficultySetting, 1.5f);
 		//_rotation = Quaternion.Slerp( Quaternion.identity,_rotation, 0.05f);
 		transform.rotation = Quaternion.LookRotation(_rotation);// = _rotation * this.transform.forward;
 
@@ -517,7 +518,7 @@ public class Com_Controller : Player {
 	{
 
 		//use relative position
-		Vector3 _relativePosition = targetPlayer._transform.position+targetPlayer._transform.up * 1f - head.position;
+		Vector3 _relativePosition = targetPlayer._transform.position - head.position;
 		//Lerp towards player
 		if(!isInSpace){
 			transform.Rotate(0f,Vector3.SignedAngle( head.forward, _relativePosition, Vector3.up)*lockOnRate,0f);

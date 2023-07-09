@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace Crest
 {
-    [CustomEditor( typeof(OceanWaveSpectrum) )]
+    //Michael
+    //[CustomEditor( typeof(OceanWaveSpectrum) )]
     public class OceanWaveSpectrumEditor : Editor
     {
         private static GUIStyle ToggleButtonStyleNormal = null;
