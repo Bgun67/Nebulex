@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.UIElements;
 
 public class Game_Settings : MonoBehaviour
 {
+    [SerializeField]
+    private UIDocument m_UIDocument;
+    private VisualElement m_Root;
+
     public GameObject[] settingsPanels;
     [Header("Graphics Settings")]
     public UDBox MSAAUD;
@@ -16,7 +21,6 @@ public class Game_Settings : MonoBehaviour
 
     [Space]
     [Header("Gameplay Settings")]
-    public Slider lookSensitivitySlider;
 
     [Space]
     [Header("Audio Settings")]
@@ -138,6 +142,8 @@ public class Game_Settings : MonoBehaviour
 		ApplySettings();
 	}
 	void Start(){
+        m_Root = m_UIDocument.rootVisualElement;
+
 		if(useGUI)
             UpdateGUI();
 
@@ -207,8 +213,9 @@ public class Game_Settings : MonoBehaviour
         Screen.fullScreenMode = (FullScreenMode)currGraphicsSettings.fullScreenMode;
     }
 
-    public void ChangeLookSensitivity(){
-        currGameplaySettings.lookSensitivity = lookSensitivitySlider.value;
+    //TODO: Move these to the new JSON serialized and set the slider value at init
+    public void ChangeLookSensitivity(float value){
+        currGameplaySettings.lookSensitivity = value;
 		MInput.sensitivity = currGameplaySettings.lookSensitivity;
         ApplySettings();
     }
@@ -267,7 +274,8 @@ public class Game_Settings : MonoBehaviour
         fullscreenModeUD.index = currGraphicsSettings.fullScreenMode;
 
         //Gameplay Settings
-        lookSensitivitySlider.value = currGameplaySettings.lookSensitivity;
+        var sldr_MouseSensitivity = m_Root.Q<Slider>("sldr_MouseSensitivity");
+        sldr_MouseSensitivity.value = currGameplaySettings.lookSensitivity;
 
         //Audio Settings
         masterVolumeSlider.value = currAudioSettings.masterVolume;

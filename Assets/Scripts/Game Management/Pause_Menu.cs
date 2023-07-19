@@ -8,12 +8,14 @@ public class Pause_Menu : MonoBehaviour {
 	public GameObject confirmRecallPanel;
 	public GameObject settingsPanel;
 	public GameObject eventSystem;
+	public SettingsEventHandler handler;
 
 	// Use this for initialization
 	void OnEnable(){
 	}
 	public void Pause () {
 		this.gameObject.SetActive (true);
+		handler.Init();
 		//eventSystem.SetActive (true);
 
 		MInput.inputLock = MInput.InputLock.LockAll;
@@ -65,6 +67,7 @@ public class Pause_Menu : MonoBehaviour {
 		SceneManager.LoadScene ("Start Scene");
 	}
 	public void Resume(){
+		print("resume");
 		settingsPanel.SetActive(false);
 		this.gameObject.SetActive(false);
 		MInput.inputLock = MInput.InputLock.None;

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="UnityEngine.UIElements"
+    xsi:noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd"
+    xsi:schemaLocation="UnityEngine.UIElements ../UIElementsSchema/UnityEngine.UIElements.xsd">
+
+    <VisualElement class="root">
+        <Style src="styles/MenuStyle.uss" />
+        <Box class="sideBar">
+            <Label text="Paused" style="color:white"/>
+            <VisualElement>
+                <Button name="btn_Resume" text="Resume" />
+                <Button name="btn_Options" text="Options" />
+                <Button name="btn_Loadout" text="Loadout" />
+                <Button name="btn_Recall" text="Recall" />
+                <Button name="btn_Desert" text="Desert" />
+            </VisualElement>
+        </Box>
+        <Box class="body">
+            <VisualElement class="topBar">
+                <Button name="btn_Graphics" text="Graphics" />
+                <Button name="btn_Gameplay" text="Gameplay" />
+                <Button name="btn_Audio" text="Audio" />
+            </VisualElement>
+            <VisualElement class="settingsMenu" name="menu_Graphics">
+                <VisualElement class="labelPair">
+                    <Label text="MSAA Samples" />
+                    <Slider name="sldr_MSAASamples" low-value="0" high-value="4.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="VSync per Frame" />
+                    <SliderInt name="sldr_VSyncPerFrame" low-value="0" high-value="4.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Quality" />
+                    <Slider name="sldr_Quality" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Fullscreen Mode" />
+                    <Slider name="sldr_FullscreenMode" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+            </VisualElement>
+            <VisualElement class="settingsMenu" name="menu_Gameplay">
+                <VisualElement class="labelPair">
+                    <Label text="Mouse Sensitivity" />
+                    <Slider name="sldr_MouseSensitivity" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Hold to Ground Lock" />
+                    <Toggle name="tog_GroundLock" value="true"/>
+                </VisualElement>
+            </VisualElement>
+            <VisualElement class="settingsMenu" name="menu_Audio">
+                <VisualElement class="labelPair">
+                    <Label text="Master Volume" />
+                    <Slider name="sldr_MasterVolume" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Music Volume" />
+                    <Slider name="sldr_MusicVolume" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="SFX Volume" />
+                    <Slider name="sldr_SFXVolume" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Voice Prompt Volume" />
+                    <Slider name="sldr_VoicePromptVolume" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+            </VisualElement>
+        </Box>
+    </VisualElement>
+</UXML>
