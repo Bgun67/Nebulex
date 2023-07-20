@@ -149,10 +149,14 @@ public class Fire : MonoBehaviour {
 				
 				if (magAmmo > 0) {
 					fireDelay = Time.time + fireRate;
-					GameObject bullet = GetBullet ();
+
+					if(Physics.Raycast(shotSpawnPosition, shotSpawnForward, out RaycastHit hit, 200f)){
+						Damage damage = hit.transform.GetComponentInParent<Damage>();
+						if(damage){
+							damage.TakeDamage(damagePower, playerID, -shotSpawnForward);
+						}
+					}	
 					
-					bullet.transform.position = shotSpawnPosition;
-					bullet.transform.forward = shotSpawnForward;
 					fired++;
 					if (weaponAnim != null) {
 						try {
@@ -162,12 +166,7 @@ public class Fire : MonoBehaviour {
 						}
 					}
 		
-					if (ignoreParentVelocity) {
-						bullet.GetComponent<Rigidbody> ().velocity = (shotSpawnForward) * bulletVelocity;
-					} else {
-						bullet.GetComponent<Rigidbody> ().velocity = rootRB.GetPointVelocity(shotSpawnPosition) + (shotSpawnForward) * bulletVelocity;
-					}
-					bullet.GetComponent<Bullet_Controller> ().damagePower = damagePower;
+					
 
 					if (shootSound != null) {
 						shootSound.PlayOneShot (sound, 1f);
@@ -175,7 +174,6 @@ public class Fire : MonoBehaviour {
 					if (muzzleFlash != null) {
 						muzzleFlash.Play ();
 					}
-					bullet.GetComponent<Bullet_Controller> ().fromID = playerID;
 
 					magAmmo--;
 					if (magAmmo < 1) {
@@ -199,8 +197,8 @@ public class Fire : MonoBehaviour {
 		return false;
 
 	}
-	/*No longer needed
-	[Command]
+
+	/*[Command]
 	void Cmd_FireWeapon(Vector3 _position, Quaternion _rotation, Vector3 _velocity, int _damagePower, int _ID){
 		//Fire the gun on the clients
 		Rpc_FireWeapon(_position, _rotation,_velocity, _damagePower, _ID);
@@ -216,6 +214,7 @@ public class Fire : MonoBehaviour {
 		
 
 	}
+	/*
 	//CHECK: It is possible that this runs on all the clients (so it is repeated on the original client)
 	[ClientRpc]
 	void Rpc_FireWeapon(Vector3 _position, Quaternion _rotation, Vector3 _velocity, int _damagePower, int _ID){
