@@ -108,9 +108,6 @@ public class Gun_Creator : ScriptableWizard {
 		//netView.stateSynchronization = 0;
 		//netView.observed = null;
 
-		Loadout_Controller.gunLocalPositions.Add (name, Vector3.zero);
-		Loadout_Controller.gunLocalRotations.Add (name, Vector3.zero);
-
 
 
 		fireScript.bulletPrefab = (GameObject)Resources.Load("Weapons/Ammunition/Bullet");

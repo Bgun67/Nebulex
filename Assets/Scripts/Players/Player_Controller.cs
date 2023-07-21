@@ -50,7 +50,13 @@ public class Player_Controller : Player {
 	#region weapons
 
 	public string[] loadoutSettings;
-	
+	[SerializeField] AnimationCurve poweredDragCurve;	
+	[SerializeField] float poweredDragScale = 1;
+
+	[SerializeField] AnimationCurve unpoweredDragCurve;	
+	[SerializeField] float unpoweredDragScale = 1;
+	[Range(0, 5)]
+	[SerializeField]float unpoweredCutoff = 0.5f;
 
 	#endregion
 
@@ -911,20 +917,16 @@ public class Player_Controller : Player {
 			player_IK.Sprint(false);
 		}
 
+		Vector3 moveInput = Vector3.ClampMagnitude(new Vector3(h*strafeFactor,z,v), 1f);
+		Vector3 desiredVelocity = transform.TransformVector(moveInput * moveSpeed * sprintFactor);
+		float moveLerp = Mathf.Lerp( unpoweredDragCurve.Evaluate(rb.velocity.magnitude)*unpoweredDragScale, poweredDragCurve.Evaluate(rb.velocity.magnitude)*poweredDragScale, moveInput.magnitude/unpoweredCutoff);
+		
+		
+		//apply normal lerping
+		velocity = Vector3.Lerp(rb.velocity, desiredVelocity, moveLerp);
 
-		Vector3 desiredVelocity = transform.TransformVector(new Vector3(h*strafeFactor,z,v).normalized * moveSpeed * sprintFactor);
-		if(desiredVelocity.sqrMagnitude < rb.velocity.sqrMagnitude*0.5f){
-			//Decelerate the player more if they are almost at a standstill
-			//This makes it easier to stop the player
-			if(rb.velocity.magnitude < 3.5f){
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
-			}else{
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.0036f*Time.deltaTime * 20f);
-			}
-		}
-		else{
-			velocity = Vector3.Lerp(rb.velocity, desiredVelocity, 0.2f*Time.deltaTime * 20f);
-		}
+		
+			
 			
 		
 
@@ -1455,20 +1457,16 @@ public class Player_Controller : Player {
 		primaryWeaponPrefab = Game_Controller.Instance.weaponsCatalog.guns[primaryWeaponNum];//(GameObject)Resources.Load ("Weapons/" + settings [0]);
 		secondaryWeaponPrefab = Game_Controller.Instance.weaponsCatalog.guns[secondaryWeaponNum];//(GameObject)Resources.Load ("Weapons/" + settings [1]);
 
-		primaryLocalPosition = Loadout_Controller.gunLocalPositions [primaryWeaponPrefab.name];
-		secondaryLocalPosition = Loadout_Controller.gunLocalPositions [secondaryWeaponPrefab.name];
-
-		primaryLocalRotation = Loadout_Controller.gunLocalRotations [primaryWeaponPrefab.name];
-		secondaryLocalRotation = Loadout_Controller.gunLocalRotations [secondaryWeaponPrefab.name];
+		
 		//add the primary weapon to the finger
 		primaryWeapon = (GameObject)Instantiate (primaryWeaponPrefab, finger);
-		primaryWeapon.transform.localPosition = primaryLocalPosition;
-		primaryWeapon.transform.localRotation = Quaternion.Euler (primaryLocalRotation);
+		primaryWeapon.transform.localPosition = Vector3.zero;
+		primaryWeapon.transform.localRotation = Quaternion.identity;
 		primaryWeapon.GetComponent<Fire> ().OnReloadEvent = new Fire.ReloadEvent(Reload);
 
 		secondaryWeapon = (GameObject)Instantiate (secondaryWeaponPrefab, finger);
-		secondaryWeapon.transform.localPosition = secondaryLocalPosition;
-		secondaryWeapon.transform.localRotation = Quaternion.Euler (secondaryLocalRotation);
+		secondaryWeapon.transform.localPosition = Vector3.zero;
+		secondaryWeapon.transform.localRotation = Quaternion.identity;
 		secondaryWeapon.SetActive (false);
 		secondaryWeapon.GetComponent<Fire> ().OnReloadEvent = new Fire.ReloadEvent(Reload);
 
