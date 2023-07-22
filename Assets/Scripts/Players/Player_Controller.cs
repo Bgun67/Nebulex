@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
-using UnityEngine.PostProcessing;
 
 public class Player_Controller : Player {
 	float v;
@@ -878,7 +877,7 @@ public class Player_Controller : Player {
 		{
 			magBootsOn = false;
 		}
-		else if (Game_Settings.currGameplaySettings.holdToGroundLock)
+		else if (Game_Settings.currGameplaySettings.Get("hold_to_ground_lock", false))
 		{
 			magBootsOn = Input.GetButton("Jump");
 		}

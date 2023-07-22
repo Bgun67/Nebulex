@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.PostProcessing;
+//using UnityEngine.PostProcessing;
 
 namespace UnityStandardAssets.ImageEffects
 {
@@ -82,12 +82,12 @@ namespace UnityStandardAssets.ImageEffects
 
         private void AdjustDOF(float depth)
         {
-            print(depth);
+            /*print(depth);
             PostProcessingProfile profile = GetComponent<PostProcessingBehaviour>().profile;
             
             DepthOfFieldModel.Settings settings = profile.depthOfField.settings;
             settings.focusDistance = Mathf.Pow(10, Mathf.Lerp(Mathf.Log10(settings.focusDistance), Mathf.Log10(depth), m_DOFAdaptRate));
-            profile.depthOfField.settings = settings;
+            profile.depthOfField.settings = settings;*/
         }
     }
 }

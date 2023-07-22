@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
+
 using UnityEngine;
 
 namespace CurvedUIUtility.Editor
@@ -50,7 +50,7 @@ namespace CurvedUIUtility.Editor
             {
                 parent = UIHelper.GetOrCreateCanvasGameObject();
 
-                var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+                var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
                 if (prefabStage != null && !prefabStage.IsPartOfPrefabContents(parent))
                     parent = prefabStage.prefabContentsRoot;
             }

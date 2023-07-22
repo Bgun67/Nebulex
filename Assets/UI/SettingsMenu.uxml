@@ -8,7 +8,7 @@
     <VisualElement class="root">
         <Style src="styles/MenuStyle.uss" />
         <Box class="sideBar">
-            <Label text="Paused" style="color:white"/>
+            <Label text="Paused" name="txt_Paused" style="color:white"/>
             <VisualElement>
                 <Button name="btn_Resume" text="Resume" />
                 <Button name="btn_Options" text="Options" />
@@ -17,7 +17,7 @@
                 <Button name="btn_Desert" text="Desert" />
             </VisualElement>
         </Box>
-        <Box class="body">
+        <Box name="menu_Settings" class="body">
             <VisualElement class="topBar">
                 <Button name="btn_Graphics" text="Graphics" />
                 <Button name="btn_Gameplay" text="Gameplay" />
@@ -30,28 +30,32 @@
                 </VisualElement>
                 <VisualElement class="labelPair">
                     <Label text="VSync per Frame" />
-                    <SliderInt name="sldr_VSyncPerFrame" low-value="0" high-value="4.0" value="1.0"/>
+                    <Slider name="sldr_VSyncPerFrame" low-value="0" high-value="4.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Motion Blur" />
+                    <Slider name="sldr_MotionBlur" low-value="0" high-value="1.0" value="1.0"/>
                 </VisualElement>
                 <VisualElement class="labelPair">
                     <Label text="Quality" />
-                    <Slider name="sldr_Quality" low-value="0.0" high-value="2.0" value="1.0"/>
+                    <DropdownField name="cbo_Quality"/>
                 </VisualElement>
                 <VisualElement class="labelPair">
                     <Label text="Fullscreen Mode" />
-                    <Slider name="sldr_FullscreenMode" low-value="0.0" high-value="2.0" value="1.0"/>
+                    <DropdownField name="cbo_FullScreenMode"/>
                 </VisualElement>
             </VisualElement>
-            <VisualElement class="settingsMenu" name="menu_Gameplay">
+            <VisualElement class="settingsMenu" name="menu_Gameplay" style="display:none">
                 <VisualElement class="labelPair">
                     <Label text="Mouse Sensitivity" />
                     <Slider name="sldr_MouseSensitivity" low-value="0.0" high-value="2.0" value="1.0"/>
                 </VisualElement>
                 <VisualElement class="labelPair">
                     <Label text="Hold to Ground Lock" />
-                    <Toggle name="tog_GroundLock" value="true"/>
+                    <Toggle name="chk_GroundLock" value="true"/>
                 </VisualElement>
             </VisualElement>
-            <VisualElement class="settingsMenu" name="menu_Audio">
+            <VisualElement class="settingsMenu" name="menu_Audio" style="display:none">
                 <VisualElement class="labelPair">
                     <Label text="Master Volume" />
                     <Slider name="sldr_MasterVolume" low-value="0.0" high-value="2.0" value="1.0"/>

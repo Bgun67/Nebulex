@@ -2,32 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class Pause_Menu : MonoBehaviour {
 	public GameObject confirmQuitPanel;
 	public GameObject confirmRecallPanel;
-	public GameObject settingsPanel;
+	//public GameObject settingsPanel;
 	public GameObject eventSystem;
-	public SettingsEventHandler handler;
+
+	[SerializeField]
+    private UIDocument m_UIDocument;
+	private VisualElement m_Root;
 
 	// Use this for initialization
 	void OnEnable(){
+		BuildPage();
 	}
+	public void BuildPage()
+    {
+        m_Root = m_UIDocument.rootVisualElement;
+        var btn_Resume = m_Root.Q<Button>("btn_Resume");
+        btn_Resume.clickable.clicked += Resume;
+
+        var btn_Options = m_Root.Q<Button>("btn_Options");
+        btn_Options.clickable.clicked += Options;
+        var btn_Loadout = m_Root.Q<Button>("btn_Loadout");
+        btn_Loadout.clickable.clicked += GoToLoadoutScene;
+        var btn_Recall = m_Root.Q<Button>("btn_Recall");
+        btn_Recall.clickable.clicked += Recall;
+        var btn_Desert = m_Root.Q<Button>("btn_Desert");
+        btn_Desert.clickable.clicked += Quit;
+    }
+	
 	public void Pause () {
 		this.gameObject.SetActive (true);
-		handler.Init();
-		//eventSystem.SetActive (true);
 
 		MInput.inputLock = MInput.InputLock.LockAll;
-		Cursor.visible = true;
+        UnityEngine.Cursor.visible = true;
 	}
 	public void Recall(){
 		confirmRecallPanel.SetActive (true);
 	}
 	public void Options()
 	{
-		//SceneManager.LoadScene("Options", LoadSceneMode.Additive);
-		settingsPanel.SetActive(true);
+		var menu_Settings = m_Root.Q<Box>("menu_Settings");
+		menu_Settings.style.display = DisplayStyle.Flex;
 	}
 	public void Quit(){
 		confirmQuitPanel.SetActive (true);
@@ -67,12 +86,13 @@ public class Pause_Menu : MonoBehaviour {
 		SceneManager.LoadScene ("Start Scene");
 	}
 	public void Resume(){
-		print("resume");
-		settingsPanel.SetActive(false);
+		var menu_Settings = m_Root.Q<Box>("menu_Settings");
+		menu_Settings.style.display = DisplayStyle.None;
+
 		this.gameObject.SetActive(false);
 		MInput.inputLock = MInput.InputLock.None;
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
 		UI_Manager._instance.isPaused = false;
 
 		//eventSystem.SetActive (false);
