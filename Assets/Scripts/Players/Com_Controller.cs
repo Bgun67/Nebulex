@@ -389,7 +389,7 @@ public class Com_Controller : Player {
 			float[] samples = new float[2];
 			try
 			{
-				player.fireScript.shootSound.GetOutputData(samples, 0);
+				player.fireScript.source.GetOutputData(samples, 0);
 			}
 			catch
 			{

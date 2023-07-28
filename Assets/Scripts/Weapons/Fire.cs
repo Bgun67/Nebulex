@@ -38,11 +38,10 @@ public class Fire : MonoBehaviour {
 	public List<string> unavailableScopes = new List<string> ();
 	[Space()]
 	[Header("Sound")]
-	public AudioSource shootSound;
+	public AudioSource source;
 	public AudioClip triggerClick;
 	public AudioClip cockSound;
-	[HideInInspector]
-	public AudioClip sound;
+	public AudioClip shootSound;
 
 	[Space()]
 	public WaitForSeconds reloadWait;
@@ -59,6 +58,7 @@ public class Fire : MonoBehaviour {
 	public bool ignoreParentVelocity;
 	Rigidbody rootRB;
 	public ParticleSystem muzzleFlash;
+	public ParticleSystem bulletCasings;
 	public int playerID;
 	public bool reloading;
 	public delegate void ReloadEvent();
@@ -77,8 +77,8 @@ public class Fire : MonoBehaviour {
 	void Setup()
 	{
 		reloadWait = new WaitForSeconds(reloadTime);
-		shootSound = this.GetComponent<AudioSource>();
-		sound = shootSound.clip;
+		source = this.GetComponent<AudioSource>();
+
 		weaponAnim = this.GetComponent<Animator>();
 		fireRate = 1f / (fireRate / 60f);
 
@@ -168,12 +168,11 @@ public class Fire : MonoBehaviour {
 		
 					
 
-					if (shootSound != null) {
-						shootSound.PlayOneShot (sound, 1f);
-					}
-					if (muzzleFlash != null) {
-						muzzleFlash.Play ();
-					}
+					source?.PlayOneShot (shootSound, 1f);
+					
+					muzzleFlash?.Play ();
+					
+					bulletCasings?.Play();
 
 					magAmmo--;
 					if (magAmmo < 1) {
@@ -187,7 +186,7 @@ public class Fire : MonoBehaviour {
 				if (magAmmo <= 0) {
 					if (triggerClick != null)
 					{
-						shootSound.PlayOneShot(triggerClick, 0.3f);
+						source.PlayOneShot(triggerClick, 0.3f);
 					}
 					StartCoroutine (Reload ());
 
@@ -275,7 +274,7 @@ public class Fire : MonoBehaviour {
 		totalAmmo = maxAmmo;
 	}
 	void OnEnable(){
-		shootSound = this.GetComponent<AudioSource>();
+		source = this.GetComponent<AudioSource>();
 
 		if (reloading) {
 			reloading = false;
@@ -283,7 +282,7 @@ public class Fire : MonoBehaviour {
 		}
 		if (cockSound != null&&transform.parent!=null)
 		{
-			shootSound.PlayOneShot(cockSound, 0.3f);
+			source.PlayOneShot(cockSound, 0.3f);
 		}
 		
 		transform.root.SendMessage ("UpdateUI");

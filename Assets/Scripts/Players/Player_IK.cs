@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_IK : MonoBehaviour
-{
-    public Transform rhTarget;
+{	
+	public Transform gunPosition;
+	Transform gunTarget;
+	[HideInInspector] public  Transform gripPosition;
+	Transform gripTarget;
+
+    [HideInInspector] public Transform rhTarget;
     [HideInInspector]
     public Vector3 rhOffset = Vector3.zero;
 	public Vector3 rhPosition = Vector3.zero;
+	Quaternion rh2GoalOffset;
+	Quaternion lh2GoalOffset;
 
-	public Transform lhTarget;
+	[HideInInspector] public Transform lhTarget;
 	public Transform lhHint;
-	public float scopeOffset = 0.2f;
+	public Vector3 scopeOffset = Vector3.zero;
 	float scopedFactor;
 	float sprintFactor;
 
@@ -37,8 +44,14 @@ public class Player_IK : MonoBehaviour
 	// Start is called before the first frame update
 	void Awake()
     {
-        anim = this.GetComponent<Animator>();   
+        anim = this.GetComponentInChildren<Animator>();
+		anim.GetComponent<IK_Forwarder>().onAnimatorIK += OnAnimatorIK;   
         player = this.GetComponent<Player_Controller>();
+		gripTarget = new GameObject("Grip Target").transform;
+		gripTarget.transform.parent = transform;
+		gunTarget = new GameObject("Gun Target").transform;
+		gunTarget.transform.parent = transform;
+
         if(player==null)
             isBot = true;
     }
@@ -47,7 +60,7 @@ public class Player_IK : MonoBehaviour
 	{
 		if (isScoped)
 		{
-			scopedFactor = Mathf.Lerp(scopedFactor, scopeOffset, 0.5f);
+			scopedFactor = Mathf.Lerp(scopedFactor, 1, 0.5f);
 		}
 		else
 		{
@@ -88,7 +101,28 @@ public class Player_IK : MonoBehaviour
 		currentTurning = Mathf.Lerp(currentTurning,Mathf.Clamp(turning, -1,1f), 0.5f);
 	}
 
-	void Update(){
+	void CalculateHandPositions(){
+		Vector3 offset = gunPosition.TransformVector(GetRecoil()+Vector3.Lerp(Vector3.zero, scopeOffset, scopedFactor))-transform.TransformVector(currentLocalVelocity*0.01f);
+		gunTarget.position = gunPosition.position + offset;
+		gunTarget.rotation = gunPosition.rotation*
+				Quaternion.AngleAxis(currentTurning*15f,-Vector3.right)*
+				Quaternion.AngleAxis(GetRecoil().z*30f,Vector3.up)*
+				Quaternion.AngleAxis(sprintFactor*45f,Vector3.right);
+
+		print(gripPosition.parent.parent.parent);
+		Transform handTransform =  anim.GetBoneTransform(HumanBodyBones.RightHand);
+		Vector3 gripOffset = handTransform.InverseTransformVector(gripPosition.position-handTransform.position);
+		//Matrix4x4.Rotate(gunTarget.rotation)*Matrix4x4.Rotate(rh2GoalOffset)*Matrix4x4.Translate(gripOffset)
+		Debug.DrawLine(handTransform.position, handTransform.position+handTransform.TransformVector(gripOffset), Color.green);
+		Debug.DrawLine(gunTarget.position, gunTarget.position+gunTarget.TransformVector(gripOffset) , Color.red);
+		gripTarget.position = handTransform.position+handTransform.TransformVector(gripOffset);
+		gripTarget.rotation = gripPosition.rotation;
+		
+		rhTarget = gunTarget;
+		lhTarget = gripTarget;
+	}
+
+	void FixedUpdate(){
 		/*if(rhTarget != null){
             if(player != null){
 				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
@@ -99,6 +133,7 @@ public class Player_IK : MonoBehaviour
 				rhPosition =  rhTarget.position;
 			}
         }*/
+		CalculateHandPositions();
 
 	}
 	
@@ -122,24 +157,19 @@ public class Player_IK : MonoBehaviour
     
         if(rhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
-            anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
-            if(player != null){
-				Vector3 targetPosition = transform.InverseTransformPoint(rhTarget.position) + Vector3.up*0.3f*scopedFactor+GetRecoil();
-				rhPosition = targetPosition - currentLocalVelocity*0.01f;
-				rhPosition = transform.TransformPoint(rhPosition);
-			}
-			else
-			{
-				rhPosition = rhTarget.position;
-			}
-			anim.SetIKPosition(AvatarIKGoal.RightHand,rhPosition);
+            anim.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
+           
+			anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position);
+			Debug.DrawRay(rhTarget.position, rhTarget.forward, Color.blue, 0.1f);
 			anim.SetIKRotation(
 				AvatarIKGoal.RightHand,
-				rhTarget.rotation*
-				Quaternion.AngleAxis(currentTurning*15f,-Vector3.right)*
-				Quaternion.AngleAxis(GetRecoil().z*30f,Vector3.up)*
-				Quaternion.AngleAxis(sprintFactor*45f,Vector3.right)
+				rhTarget.rotation
 			);
+
+			Quaternion GR = rhTarget.rotation;
+			Quaternion SR = anim.GetBoneTransform(HumanBodyBones.RightHand).rotation;
+			rh2GoalOffset = Quaternion.Inverse(SR) * GR;
+
         }
         if(lhTarget != null) {
             anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);
@@ -152,6 +182,10 @@ public class Player_IK : MonoBehaviour
 				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,lhBlend*(sprintFactor>0.1f?0:1));  
 				anim.SetIKHintPosition(AvatarIKHint.LeftElbow, lhHint.position);
 			}
+
+			Quaternion GR = lhTarget.rotation;
+			Quaternion SR = anim.GetBoneTransform(HumanBodyBones.LeftHand).rotation;
+			lh2GoalOffset = Quaternion.Inverse(SR) * GR;
 		}
         if(!isBot && player.rfHit.distance <= 1f){
             //Right foot
@@ -178,6 +212,7 @@ public class Player_IK : MonoBehaviour
             //anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,0);
         }
     }
+
 
 
 

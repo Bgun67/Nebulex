@@ -57,6 +57,7 @@ public class Player_Controller : Player {
 	[SerializeField] float unpoweredDragScale = 1;
 	[Range(0, 5)]
 	[SerializeField]float unpoweredCutoff = 0.5f;
+	[SerializeField] Transform hipTransform;
 
 	#endregion
 
@@ -65,7 +66,7 @@ public class Player_Controller : Player {
 	void Awake()
 	{
 		rb = this.GetComponent<Rigidbody> ();
-		anim = this.GetComponent<Animator> ();
+		anim = this.GetComponentInChildren<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> ();
 		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
@@ -119,7 +120,7 @@ public class Player_Controller : Player {
 	public void Setup(){
 		gameController = FindObjectOfType<Game_Controller> ();
 		rb = this.GetComponent<Rigidbody> ();
-		anim = this.GetComponent<Animator> ();
+		anim = this.GetComponentInChildren<Animator> ();
 		mainCam = mainCamObj.GetComponent<Camera> (); 
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
 
@@ -364,7 +365,7 @@ public class Player_Controller : Player {
 			LoseAir ();
 		}
 
-		blackoutShader.ChangeConciousness (Mathf.Clamp01(Mathf.Pow(airTime / suffocationTime,2f)+0.3f) * 10f);
+		blackoutShader?.ChangeConciousness (Mathf.Clamp01(Mathf.Pow(airTime / suffocationTime,2f)+0.3f) * 10f);
 		if(isLocalPlayer){
 			breatheSound.volume = Mathf.Clamp01(Mathf.Pow((suffocationTime-airTime) / suffocationTime,2f)-0.3f);
 		}
@@ -619,91 +620,6 @@ public class Player_Controller : Player {
 		}
 	}
 
-	/*[MRPC]
-	public void RPC_SetActive(){
-		print ("Reactivating player");
-		this.gameObject.SetActive (true);
-	}
-	
-	[MRPC]
-	public void RPC_Sit(bool sitMode){
-		anim.SetBool ("Sitting", sitMode);
-	}
-	public void OpenKnife()
-	{
-		knifeAnim.SetBool("Knife", true);
-	}
-	public void RetractKnife()
-	{
-		knifeAnim.SetBool("Knife", false);
-	}*/
-	/*public void Knife(){
-		print("Attempting to knife");
-		if (isLocalPlayer)
-		{
-			return;
-		}
-		RaycastHit hit;
-		if (Physics.SphereCast (mainCamObj.transform.position,0.01f, mainCamObj.transform.forward, out hit, 2f)) {
-			if (hit.transform.root.tag == "Player") {
-				if (hit.transform.root.GetComponent<Animator>().GetBool("Knife"))
-				{
-					counterKnife = true;
-					return;
-				}
-				StartCoroutine(Stab(hit.transform.root.gameObject));
-				
-
-			}
-
-		}
-		//TODO:
-		//
-		//if (Metwork.peerType != MetworkPeerType.Disconnected)
-		//{
-		//	netView.RPC("RPC_Knife", MRPCMode.AllBuffered, new object[] { });
-		//}
-		//else
-		//{
-		//	RPC_Knife();
-		//}
-	}
-	IEnumerator Stab(GameObject _otherPlayer)
-	{
-		float i = 0;
-		while (i < 1.1f)
-		{
-			if (!_otherPlayer.activeInHierarchy)
-			{
-				break;
-			}
-			rb.MovePosition(Vector3.Lerp(transform.position, _otherPlayer.transform.position-transform.forward*1.1f, 0.3f));
-			yield return new WaitForEndOfFrame();
-			i += Time.deltaTime;
-		}
-		//TODO
-		
-		//if (Metwork.peerType != MetworkPeerType.Disconnected)
-		//{
-		//	_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
-		//				netObj.owner});
-		//}
-		//else
-		//{
-		//	_otherPlayer.GetComponent<Player_Controller>().RPC_GetKnifed(netObj.owner);
-		//	print("FOund player stabbing now");
-		//}
-	}
-	[MRPC]
-	public void RPC_Knife(){
-		anim.SetBool ("Knife",true);
-		Invoke("StopKnife", 0.2f);
-	}
-	public void StopKnife()
-	{
-		anim.SetBool("Knife", false);
-
-	}*/
 	#region Region1
 	Vector3 currentCamVelocity;
 	protected override void Aim(){
@@ -1180,6 +1096,10 @@ public class Player_Controller : Player {
 			Cmd_SetLookTime(lookUpDownTime);
 		}
 
+		if(magBootsLock){
+			hipTransform.localRotation = Quaternion.Euler(Vector3.right*(lookUpDownTime-0.5f)*90f);
+		}
+
 	
 	}
 	
@@ -1563,7 +1483,7 @@ public class Player_Controller : Player {
 			UI_Manager._instance.UpdateAmmo(fireScript.magAmmo, fireScript.magSize, fireScript.totalAmmo);
 		}
 		UI_Manager._instance.fuelBar.localScale = new Vector2(1f, jetpackFuel / 2f);
-		blackoutShader.ChangeBlood (Mathf.Clamp01(1-damageScript.currentHealth/100f));
+		blackoutShader?.ChangeBlood (Mathf.Clamp01(1-damageScript.currentHealth/100f));
 
 
 	}
