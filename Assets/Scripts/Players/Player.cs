@@ -522,8 +522,6 @@ public class Player : NetworkBehaviour {
 		
 	}
 
-
-
 	//Called by grav controller when entering / exiting gravity;
 	public virtual IEnumerator ExitGravity(){
 		yield return new WaitForSeconds(0.1f);
@@ -558,8 +556,8 @@ public class Player : NetworkBehaviour {
 		fireScript.playerID = playerID;
 		//We want to move the right hand target back and forth depending how long the gun is
 		player_IK.rhOffset = fireScript.rhOffset;
-		player_IK.rhTarget = rightHandPosition;
-		player_IK.lhTarget = fireScript.lhTarget;
+		player_IK.gunPosition = rightHandPosition;
+		player_IK.gripPosition = fireScript.lhTarget;
 		if (fireScript.lhHint)
 		{
 			player_IK.lhHint = fireScript.lhHint;
