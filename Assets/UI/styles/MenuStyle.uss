@@ -1,0 +1,58 @@
+VisualElement {
+    display: flex;
+}
+Label{
+    color: white;
+}
+
+.root{
+    height:100%;
+    flex-direction: row;
+}
+.sideBar{
+    background-color: rgba(255, 255, 255, 0.025);
+    height: 100%;
+    min-height: 100%;
+    width: 25%;
+}
+.topBar{
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(255, 255, 255, 0.025);
+    height: 5%;
+    align-content: stretch;
+}
+.topBar Button{
+    flex-grow: 1;
+    background-color: rgb(158, 158, 158);
+    border-width: 0px;
+    color:black;
+}
+.body{
+    background-color: rgba(125, 125, 255, 0.025);
+    height: 100%;
+    min-height: 100%;
+    width: 75%;
+}
+.settingsMenu{
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.labelPair{
+    padding: 20px;
+    width: 50%;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+.labelPair > *{
+    width: 50%;
+}
+
+Button {
+    background-color: transparent;
+    color: white;
+}
+Button:hover {
+    background-color: rgba(255, 255, 255, 0.025);
+    color: white;
+}

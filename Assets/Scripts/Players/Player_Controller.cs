@@ -35,6 +35,7 @@ public class Player_Controller : Player {
 	#endregion
 	[Header("Cameras")]
 	#region cameras
+	public float m_DOFAdaptRate;
 	Vector3 originalCamPosition;
 	Quaternion originalCamRotation;
 	public GameObject minimapCam;
@@ -368,6 +369,7 @@ public class Player_Controller : Player {
 		blackoutShader?.ChangeConciousness (Mathf.Clamp01(Mathf.Pow(airTime / suffocationTime,2f)+0.3f) * 10f);
 		if(isLocalPlayer){
 			breatheSound.volume = Mathf.Clamp01(Mathf.Pow((suffocationTime-airTime) / suffocationTime,2f)-0.3f);
+			AdjustDOF();
 		}
 		else{
 			breatheSound.volume = 0f;
@@ -391,8 +393,23 @@ public class Player_Controller : Player {
 
 	}
 
-	
-	public void OnPieEvent(int _segmentNumber)
+    private void AdjustDOF()
+    {
+		/*PostProcessingProfile profile = this.mainCamObj.GetComponent<PostProcessingBehaviour>().profile;
+		Vector3 camPosition = this.mainCamObj.transform.position;
+		Vector3 camForward = this.mainCamObj.transform.forward;
+		LayerMask camLayerMask = this.mainCamObj.GetComponent<Camera>().cullingMask;
+		RaycastHit hit;
+		float focusDistance = 10000.0f;
+		if(Physics.Raycast(camPosition, camForward, out hit, 10000.0f, camLayerMask)){
+			focusDistance = hit.distance;
+		}
+		DepthOfFieldModel.Settings settings = profile.depthOfField.settings;
+		settings.focusDistance = Mathf.Pow(10, Mathf.Lerp(Mathf.Log10(settings.focusDistance), Mathf.Log10(focusDistance), m_DOFAdaptRate));
+		profile.depthOfField.settings = settings;*/
+    }
+
+    public void OnPieEvent(int _segmentNumber)
 	{
 		if (_segmentNumber == -1 || !isLocalPlayer || !this.enabled)
 		{
@@ -782,7 +799,7 @@ public class Player_Controller : Player {
 		{
 			magBootsOn = false;
 		}
-		else if (Game_Settings.currGameplaySettings.holdToGroundLock)
+		else if (Game_Settings.currGameplaySettings.Get("hold_to_ground_lock", false))
 		{
 			magBootsOn = Input.GetButton("Jump");
 		}

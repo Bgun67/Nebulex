@@ -26,7 +26,7 @@ public class WindowsVoice : MonoBehaviour {
     }
 	}
   public static void Speak(string msg, float delay = 0f) {
-    int volume = (int)(Game_Settings.currAudioSettings.voicePromptVolume * 100.0f);
+    int volume = (int)(Game_Settings.currAudioSettings.Get("voice_prompt_volume", 0.5f) * 100.0f);
     print(volume.ToString());
     if ( delay == 0f )
       addToSpeechQueue("<volume level=\"" + volume.ToString() + "\"><voice required=\"Gender=Female;Age!=Child\"><rate speed=\"2\">" + msg + "</rate></voice></volume>");

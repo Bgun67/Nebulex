@@ -220,6 +220,7 @@ public class UI_Manager : MonoBehaviour
 	{
 		UI_Manager._instance.pauseMenu.Resume();
 	}
+
 	public void SetReticleVisibility(bool isVisible)
 	{
 		reticle.SetActive(isVisible);

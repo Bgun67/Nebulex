@@ -26,9 +26,9 @@ public class StartFootage : MonoBehaviour
 	{
 		
 		//is first time
-		if (Game_Settings.currGameplaySettings.firstTime)
+		if (Game_Settings.currGameplaySettings.Get("first_time", true))
 		{
-			Game_Settings.currGameplaySettings.firstTime = false;
+			Game_Settings.currGameplaySettings["first_time"] = false;
 			Game_Settings.SaveGameSettings();
 			return true;
 		}
