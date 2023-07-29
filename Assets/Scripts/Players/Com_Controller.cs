@@ -81,7 +81,7 @@ public class Com_Controller : Player {
 	void Start () {
 		
 		agent = GetComponent<NavMeshAgent>();
-		anim = GetComponent<Animator>();
+		anim = GetComponentInChildren<Animator>();
 		fireScript = GetComponentInChildren<Fire>();
 		damageScript = GetComponent<Damage>();
 		netView = GetComponent<MetworkView>();
@@ -161,8 +161,8 @@ public class Com_Controller : Player {
 		}
 
 		player_IK.rhOffset = fireScript.rhOffset;
-		player_IK.rhTarget = rightHandPosition;
-		player_IK.lhTarget = fireScript.lhTarget;
+		player_IK.gunPosition = rightHandPosition;
+		player_IK.gripPosition = fireScript.lhTarget;
 		fireScript.playerID = playerID;
 
 		int localTeam = gameController.localTeam;
