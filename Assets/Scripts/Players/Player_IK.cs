@@ -32,6 +32,7 @@ public class Player_IK : MonoBehaviour
 	float currentTurning;
 
 	private Animator anim;
+	AnimReceiver animReceiver;
     private Player_Controller player;
     private bool isBot = false;
 
@@ -45,6 +46,10 @@ public class Player_IK : MonoBehaviour
 	void Awake()
     {
         anim = this.GetComponentInChildren<Animator>();
+        animReceiver = this.GetComponent<AnimReceiver>();
+		animReceiver.Subscribe("GRAB_GRIP", GrabWeaponGrip);
+		animReceiver.Subscribe("GRAB_MAG", GrabWeaponMag);
+
 		anim.GetComponent<IK_Forwarder>().onAnimatorIK += OnAnimatorIK;   
         player = this.GetComponent<Player_Controller>();
 		gripTarget = new GameObject("Grip Target").transform;
@@ -102,6 +107,9 @@ public class Player_IK : MonoBehaviour
 	}
 
 	void CalculateHandPositions(){
+		if(!gripPosition){
+			return;
+		}
 		Vector3 offset = gunPosition.TransformVector(GetRecoil()+Vector3.Lerp(Vector3.zero, scopeOffset, scopedFactor))-transform.TransformVector(currentLocalVelocity*0.01f);
 		gunTarget.position = gunPosition.position + offset;
 		gunTarget.rotation = gunPosition.rotation*
@@ -109,32 +117,28 @@ public class Player_IK : MonoBehaviour
 				Quaternion.AngleAxis(GetRecoil().z*30f,Vector3.up)*
 				Quaternion.AngleAxis(sprintFactor*45f,Vector3.right);
 
-		print(gripPosition.parent.parent.parent);
 		Transform handTransform =  anim.GetBoneTransform(HumanBodyBones.RightHand);
 		Vector3 gripOffset = handTransform.InverseTransformVector(gripPosition.position-handTransform.position);
-		//Matrix4x4.Rotate(gunTarget.rotation)*Matrix4x4.Rotate(rh2GoalOffset)*Matrix4x4.Translate(gripOffset)
-		Debug.DrawLine(handTransform.position, handTransform.position+handTransform.TransformVector(gripOffset), Color.green);
-		Debug.DrawLine(gunTarget.position, gunTarget.position+gunTarget.TransformVector(gripOffset) , Color.red);
+
 		gripTarget.position = handTransform.position+handTransform.TransformVector(gripOffset);
 		gripTarget.rotation = gripPosition.rotation;
-		
-		rhTarget = gunTarget;
+	}
+
+	void GrabWeaponGrip(){
 		lhTarget = gripTarget;
+		rhTarget = gunTarget;
+	}
+
+	void GrabWeaponMag(){
+		if( player.fireScript.magGO) lhTarget = player.fireScript.magGO.transform;
+	}
+
+	void GrabWeaponBolt(){
+		if( player.fireScript.magGO)  lhTarget = player.fireScript.magGO.transform;
 	}
 
 	void FixedUpdate(){
-		/*if(rhTarget != null){
-            if(player != null){
-				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
-				rhPosition = Vector3.Slerp(rhPosition, targetPosition, 0.99f);
-			}
-			else
-			{
-				rhPosition =  rhTarget.position;
-			}
-        }*/
 		CalculateHandPositions();
-
 	}
 	
 
@@ -149,43 +153,24 @@ public class Player_IK : MonoBehaviour
             lfTargetRot = Quaternion.FromToRotation(transform.up, player.lfHit.normal) * transform.rotation;
         }
 
-        float rfBlend = anim.GetFloat("Right Foot IK Blend");
-        float lfBlend = anim.GetFloat("Left Foot IK Blend");
-
-        float lhBlend = anim.GetFloat("Left Hand IK Blend");
-        float rhBlend = anim.GetFloat("Right Hand IK Blend");
     
         if(rhTarget != null) {
-            anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
-            anim.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
-           
 			anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position);
-			Debug.DrawRay(rhTarget.position, rhTarget.forward, Color.blue, 0.1f);
 			anim.SetIKRotation(
 				AvatarIKGoal.RightHand,
 				rhTarget.rotation
 			);
 
-			Quaternion GR = rhTarget.rotation;
-			Quaternion SR = anim.GetBoneTransform(HumanBodyBones.RightHand).rotation;
-			rh2GoalOffset = Quaternion.Inverse(SR) * GR;
-
         }
         if(lhTarget != null) {
-            anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand,lhBlend);  
             anim.SetIKPosition(AvatarIKGoal.LeftHand,lhTarget.position);
             anim.SetIKRotation(AvatarIKGoal.LeftHand,lhTarget.rotation);
 			Debug.DrawLine(lhTarget.position, lhTarget.position + Vector3.up, Color.yellow);
 			if (lhHint)
 			{
-				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,lhBlend*(sprintFactor>0.1f?0:1));  
+				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,1*(sprintFactor>0.1f?0:1));  
 				anim.SetIKHintPosition(AvatarIKHint.LeftElbow, lhHint.position);
 			}
-
-			Quaternion GR = lhTarget.rotation;
-			Quaternion SR = anim.GetBoneTransform(HumanBodyBones.LeftHand).rotation;
-			lh2GoalOffset = Quaternion.Inverse(SR) * GR;
 		}
         if(!isBot && player.rfHit.distance <= 1f){
             //Right foot

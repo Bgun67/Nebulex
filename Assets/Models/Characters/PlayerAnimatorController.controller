@@ -25,6 +25,43 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-7668942103715041664
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b146e33f2c6885b41a7582b3a14673fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  goals: 0300000002000000
 --- !u!1107 &-6270220232169314668
 AnimatorStateMachine:
   serializedVersion: 6
@@ -74,6 +111,57 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: Look Speed
+--- !u!114 &-5403313497181219691
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364e05d28c66bbe4085293dcc7c2a2a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: GRAB_MAG
+  eventTime: 0.06
+--- !u!114 &-2905768801277112372
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b146e33f2c6885b41a7582b3a14673fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  goals: 0300000002000000
 --- !u!1102 &-2867130163671524681
 AnimatorState:
   serializedVersion: 6
@@ -101,6 +189,161 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: Right Hand Grip
+--- !u!114 &-1450993621885977925
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b146e33f2c6885b41a7582b3a14673fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -15.602314
+      outSlope: -15.602314
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.06413615
+      value: -0.0006723027
+      inSlope: -0.003330524
+      outSlope: -0.003330524
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.66522205
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.14231221
+      value: 0.9990539
+      inSlope: 0.0000014179267
+      outSlope: 0.0000014179267
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.6666666
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.24649175
+      value: 0.003871262
+      inSlope: -0.017025273
+      outSlope: -0.017025273
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.43076718
+      value: 0.0021790052
+      inSlope: -0.0735075
+      outSlope: -0.0735075
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.49877903
+      value: 0.9942899
+      inSlope: -0.011794478
+      outSlope: -0.011794478
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.59743565
+      value: 0.0005258322
+      inSlope: 0.058225326
+      outSlope: 0.058225326
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5831293
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.76584506
+      value: -0.0014047241
+      inSlope: -0.0000022491258
+      outSlope: -0.0000022491258
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.3940214
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 4.2766757
+      outSlope: 4.2766757
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  goals: 02000000
+--- !u!114 &-289868171624697600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b146e33f2c6885b41a7582b3a14673fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.027623937
+      outSlope: -0.027623937
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.89230776
+    - serializedVersion: 3
+      time: 0.1789906
+      value: -0.0037528924
+      inSlope: 0.03088383
+      outSlope: 0.03088383
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.78461534
+      outWeight: 0.09520451
+    - serializedVersion: 3
+      time: 0.7954704
+      value: 0.0031631174
+      inSlope: 0.034879815
+      outSlope: 0.034879815
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.69321346
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.018500544
+      outSlope: -0.018500544
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.6212013
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  goals: 03000000
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -1691,6 +1934,20 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &776667827248575192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364e05d28c66bbe4085293dcc7c2a2a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: GRAB_GRIP
+  eventTime: 0.59
 --- !u!1101 &1101000014263768900
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -3125,7 +3382,9 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7980480125694530974}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 5823104501655212346}
+  - {fileID: 1602817166694004882}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -3323,7 +3582,8 @@ AnimatorState:
   - {fileID: 1101850851026177388}
   - {fileID: 1101620444997151232}
   - {fileID: 1101459640678153488}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -7668942103715041664}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -3434,7 +3694,8 @@ AnimatorState:
   - {fileID: 1101474134498392626}
   - {fileID: 1101343667341576018}
   - {fileID: 1101245791670642686}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -2905768801277112372}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -3758,11 +4019,15 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Reload Smg
-  m_Speed: 2
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101750744239248042}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -1450993621885977925}
+  - {fileID: -289868171624697600}
+  - {fileID: -5403313497181219691}
+  - {fileID: 776667827248575192}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -3771,7 +4036,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -5361400986353085072, guid: c5e3b86bf2b1cbc4ca31b5e0fe6cc8b4,
+  m_Motion: {fileID: -203655887218126122, guid: e864d03929804e748b6ade2486b97af0,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -3928,6 +4193,20 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &1602817166694004882
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364e05d28c66bbe4085293dcc7c2a2a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: GRAB_GRIP
+  eventTime: 0.5
 --- !u!114 &1792194801215840655
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3967,6 +4246,52 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: Left Hand Grip
+--- !u!114 &5823104501655212346
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b146e33f2c6885b41a7582b3a14673fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.016987
+      outSlope: -2.016987
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4988263
+      value: -0.0061261654
+      inSlope: -0.004723668
+      outSlope: -0.004723668
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.0075397
+      outSlope: 2.0075397
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  goals: 0200000003000000
 --- !u!1101 &7980480125694530974
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
