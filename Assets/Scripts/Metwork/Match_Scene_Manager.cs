@@ -71,6 +71,7 @@ public class Match_Scene_Manager : MonoBehaviour
     void Awake()
     {
         manager = FindObjectOfType<CustomNetworkManager>();
+
         foreach (Button hostButton in hostButtons)
         {
             hostButton.gameObject.SetActive(false);
@@ -84,6 +85,10 @@ public class Match_Scene_Manager : MonoBehaviour
     }
     void Start(){
         networkDiscovery.StartDiscovery();
+        if (CustomNetworkManager.m_IsDedicatedServer){
+            
+			manager.StartServer();
+		}
     }
 
     void Update(){

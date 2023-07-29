@@ -11,6 +11,11 @@ public class Main_Menu_Controller : MonoBehaviour {
 	void Reset(){
 		creditsPanel = GameObject.Find("Credits Panel");
 	}
+	void Start(){
+		if (System.IO.File.Exists(Application.streamingAssetsPath + "/server_config.json")){
+			this.LoadMatchScene();
+		}
+	}
 	
 
 	// Update is called once per frame

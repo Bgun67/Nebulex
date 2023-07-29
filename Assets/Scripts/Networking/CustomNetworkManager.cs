@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Mirror;
 
+#if UNITY_EDITOR
+using ParrelSync;
+#endif
+
 
 public enum PlayerSpawnMethod { Random, RoundRobin }
 public enum NetworkManagerMode { Offline, ServerOnly, ClientOnly, Host }
@@ -26,6 +30,21 @@ public class CustomNetworkManager : Mirror.NetworkManager
 			return instance;
 		}
 	}
+
+    public static bool m_IsDedicatedServer { 
+        get{
+            #if UNITY_EDITOR
+                // Get the custom argument for this clone project.  
+                string customArgument = ClonesManager.GetArgument();
+                // Do what ever you need with the argument string.
+                Debug.Log("The custom argument of this clone project is: " + customArgument); 
+                return customArgument == "dedicated";           
+            #else
+                return UnityEngine.SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null;
+            #endif
+        } 
+    }
+
     public delegate void EventHandler();
     //Subscribe to this callback to get notified of the host starting
     public event EventHandler onStartHost;
