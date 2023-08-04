@@ -92,8 +92,13 @@ public class Player : NetworkBehaviour {
 
 	[Header("Cameras")]
 	#region cameras
-	public GameObject mainCamObj;
-	protected Camera mainCam;
+	public Camera mainCam;
+	[HideInInspector]
+	public GameObject mainCamObj{
+		get{
+			return mainCam.gameObject;
+		}
+	}
 	
 	#endregion
 	[Header("Sound")]
