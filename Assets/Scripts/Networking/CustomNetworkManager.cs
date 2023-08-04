@@ -37,8 +37,9 @@ public class CustomNetworkManager : Mirror.NetworkManager
                 // Get the custom argument for this clone project.  
                 string customArgument = ClonesManager.GetArgument();
                 // Do what ever you need with the argument string.
-                Debug.Log("The custom argument of this clone project is: " + customArgument); 
-                return customArgument == "dedicated";           
+                return customArgument == "dedicated";    
+            #elif UNITY_SERVER
+                return true;       
             #else
                 return UnityEngine.SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null;
             #endif
@@ -97,9 +98,10 @@ public class CustomNetworkManager : Mirror.NetworkManager
         base.OnStartServer();
         isServerMachine = true;
         onStartServer?.Invoke();
-        if(!useLan)
+        //TODO: Test that discovery can both be done locally and globally
+        //if(!useLan)
             FindObjectOfType<PHPMasterServerConnect>().RegisterHost();
-        else
+        //else
             GetComponent<CustomNetworkDiscovery>().AdvertiseServer();
 
     }

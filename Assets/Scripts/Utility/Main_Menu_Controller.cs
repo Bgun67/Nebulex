@@ -12,7 +12,7 @@ public class Main_Menu_Controller : MonoBehaviour {
 		creditsPanel = GameObject.Find("Credits Panel");
 	}
 	void Start(){
-		if (System.IO.File.Exists(Application.streamingAssetsPath + "/server_config.json")){
+		if (CustomNetworkManager.m_IsDedicatedServer){
 			this.LoadMatchScene();
 		}
 	}

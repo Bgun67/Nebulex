@@ -68,7 +68,6 @@ public class Player_Controller : Player {
 	{
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponentInChildren<Animator> ();
-		mainCam = mainCamObj.GetComponent<Camera> ();
 		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();

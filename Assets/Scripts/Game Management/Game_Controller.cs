@@ -134,11 +134,13 @@ public class Game_Controller : NetworkBehaviour {
 	public void Awake()
 	{
 		instance = Instance;
+		#if !UNITY_SERVER
 		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
 		UI_awayScoreText = UI_Manager.GetInstance.UI_AwayScoreText;
 
 		UI_homeColour = UI_Manager.GetInstance.UI_HomeColour;
 		UI_awayColour = UI_Manager.GetInstance.UI_AwayColour;
+		#endif
 
 		playerStats.Callback += OnPlayerSync;
 
@@ -507,10 +509,9 @@ public class Game_Controller : NetworkBehaviour {
 		int minutes = Mathf.FloorToInt(currentTime / 60f );
 		int seconds =Mathf.FloorToInt( currentTime % 60);
 
-		//UI_fpsText.text = "fps:"+fps;
-
 		//Update the scores of the teams, the local team being on the
 		//left side and the opposing team being on the right
+		#if !UNITY_SERVER
 		if (localPlayer != null && localTeam == 0) {
 			UI_homeScoreText.text = scoreA.ToString();
 			UI_awayScoreText.text = scoreB.ToString();
@@ -528,6 +529,7 @@ public class Game_Controller : NetworkBehaviour {
 			UI_awayColour.color = new Color(0,1f,0);
 			UI_homeColour.color = new Color(1f,0f,0);
 		}
+		#endif
 
 		//Update the time
 		UI_timeText.text = minutes.ToString("00")+":"+ seconds.ToString("00");
