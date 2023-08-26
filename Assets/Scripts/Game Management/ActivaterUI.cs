@@ -35,15 +35,13 @@ public class ActivaterUI : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void UpdateInfo(Activater activater)
+    public void UpdateInfo(Activater activater, Vector3 screenSpacePosition, float distance)
     {
-        Vector3 screenSpacePosition = Camera.main.WorldToScreenPoint(activater.Position);
-        if(!new Rect(0,0,Screen.width,Screen.height).Contains(screenSpacePosition)){
-            infoPanels[activater].gameObject.SetActive(false);
+        bool visible = screenSpacePosition.z>0&&new Rect(0,0,Screen.width,Screen.height).Contains(screenSpacePosition);
+        infoPanels[activater].gameObject.SetActive(visible);
 
-        }
         infoPanels[activater].transform.position = screenSpacePosition;
-        infoPanels[activater].UpdateData(activater.nextAvailableTime-Time.time, activater.text, 10f);
+        infoPanels[activater].UpdateData(activater.nextAvailableTime-Time.time, activater.text, distance);
         
     }
 

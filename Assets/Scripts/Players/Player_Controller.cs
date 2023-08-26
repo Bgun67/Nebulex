@@ -273,6 +273,7 @@ public class Player_Controller : Player {
 			UpdateUseHUD ();
 		}
 		if(Input.GetButtonUp("Use Item")){
+			print("button up");
 			UseItem();
 		}
 		if (Input.GetKeyDown ("/")) {
@@ -739,14 +740,15 @@ public class Player_Controller : Player {
 	void UpdateUseHUD(){
 		Activater bestActivater = null;
 		float bestDistance = Mathf.Infinity;
-		float bestAngle = 45f;
+		float bestAngle = 15f;
 
 		foreach(Activater activater in allActivaters){
 			Vector3 delta = activater.Position - mainCam.transform.position;
 			float distance = delta.magnitude;
 			float angle = Vector3.Angle(delta, mainCam.transform.forward);
+			Vector3 screenpoint = mainCam.WorldToScreenPoint(activater.Position);
 			UI_Manager.GetInstance.activaterUI.SetHighlight(targetActivater, false);
-			UI_Manager.GetInstance.activaterUI.UpdateInfo(activater);
+			UI_Manager.GetInstance.activaterUI.UpdateInfo(activater, screenpoint, distance);
 
 			if(distance>activater.maxDistance){
 				continue;
@@ -770,12 +772,14 @@ public class Player_Controller : Player {
 
 	public override void UseItem(){
 		if(targetActivater){
-			targetActivater.ActivateScript(gameObject);
+			CmdUseItem(targetActivater);
 			UI_Manager.GetInstance.activaterUI.Select(targetActivater);
 		}
 		UI_Manager.GetInstance.activaterUI.Close();
+	}
 
-
+	public void CmdUseItem(Activater targetActivater){
+		targetActivater.ActivateScript(gameObject);
 	}
 
 	public void SpaceMove(){

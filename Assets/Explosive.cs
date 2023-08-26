@@ -8,7 +8,7 @@ public class Explosive : MonoBehaviour
 {
     [SerializeField] VisualEffect vfx;
     // Start is called before the first frame update
-    public void Activate(Player_Controller player)
+    public void Activate(GameObject player)
     {
         vfx.Play();
     }

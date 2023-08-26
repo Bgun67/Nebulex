@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7df37f9abf027042b736acf57794e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vfx: {fileID: 0}
+  vfx: {fileID: 5859364139554372577}
 --- !u!2083052967 &5859364139554372577
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -220,16 +220,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  scriptsToActivate: []
+  scriptsToActivate:
+  - {fileID: 431943647782666980}
   maxPassengers: 0
   passengers: 0
   text: 
   maxDistance: Infinity
   raycast: 0
-  cooldown: 0
+  cooldown: 5
+  nextAvailableTime: 0
   center: {fileID: 0}
-  textPanel: {fileID: 5743258978744417217}
-  panelGlow: {fileID: 8024810877372259386}
 --- !u!1001 &3650806865309853796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -303,27 +303,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92f8b7fd6bcafe547b3dd99459213990, type: 3}
---- !u!114 &5743258978744417217 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9015751380727223205, guid: 92f8b7fd6bcafe547b3dd99459213990,
-    type: 3}
-  m_PrefabInstance: {fileID: 3650806865309853796}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &7120912900769270415 stripped
-Transform:
+--- !u!224 &7120912900769270415 stripped
+RectTransform:
   m_CorrespondingSourceObject: {fileID: 5798618777830597355, guid: 92f8b7fd6bcafe547b3dd99459213990,
-    type: 3}
-  m_PrefabInstance: {fileID: 3650806865309853796}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8024810877372259386 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6771055909116261470, guid: 92f8b7fd6bcafe547b3dd99459213990,
     type: 3}
   m_PrefabInstance: {fileID: 3650806865309853796}
   m_PrefabAsset: {fileID: 0}

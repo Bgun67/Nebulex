@@ -17,10 +17,9 @@ public class ActivaterInfoPanel : MonoBehaviour
         panelGlow.SetActive(highlighted);
     }
 
-    public void UpdateData(float nextAvailableTime, string text, float currentDistance){
-		float remainingTime = nextAvailableTime-Time.time;
-		string remainingTimeText = remainingTime>0? "<color=red>"+remainingTime+"</color>": "<color=green>Ready</color>";
-		textPanel.text = this.name+"\n"+text.Replace("useKey", GetUseKey())+"\n"+currentDistance+"\n"+remainingTimeText;
+    public void UpdateData(float remainingTime, string text, float currentDistance){
+		string remainingTimeText = remainingTime>0? "<color=red>"+remainingTime.ToString("0.00")+"s</color>": "<color=green>Ready</color>";
+		textPanel.text = this.name+"\n"+text.Replace("useKey", GetUseKey())+"\n"+currentDistance.ToString("0.0")+"m\n"+remainingTimeText;
 	}
 
     string GetUseKey()

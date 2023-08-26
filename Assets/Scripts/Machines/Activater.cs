@@ -12,18 +12,22 @@ public class Activater : NetworkBehaviour
 	public string text = "";
 	GameObject player;
 	public float maxDistance = Mathf.Infinity;
-    public bool raycast = false;
+	public bool raycast = false;
 	public float cooldown = 0;
-	public float nextAvailableTime = 0;
+	[HideInInspector][SyncVar] public float nextAvailableTime = 0;
 	[SerializeField] Transform center;
 
 
-	public Vector3 Position{
-		get{
-			if(center){
+	public Vector3 Position
+	{
+		get
+		{
+			if (center)
+			{
 				return center.position;
 			}
-			else {
+			else
+			{
 				return transform.position;
 			}
 		}
@@ -31,21 +35,23 @@ public class Activater : NetworkBehaviour
 
 	public void ActivateScript(GameObject player)
 	{
-		CmdActivateScript(player);
-	}
-
-	[Command]
-	public void CmdActivateScript(GameObject player)
-	{
-		if(Time.time<nextAvailableTime){
+		if (Time.time < nextAvailableTime)
+		{
 			return;
 		}
+		nextAvailableTime = Time.time + cooldown;
+		RpcActivateScript(player);
+	}
+
+	[ClientRpc]
+	public void RpcActivateScript(GameObject player)
+	{
+
 		foreach (MonoBehaviour scriptToActivate in scriptsToActivate)
 		{
 			print("Activating" + scriptToActivate.name);
 			scriptToActivate.SendMessage("Activate", player);
 		}
-		nextAvailableTime = Time.time+cooldown;
 	}
 
 	public void DeactivateScript(GameObject player)
@@ -73,5 +79,5 @@ public class Activater : NetworkBehaviour
 	{
 		passengers--;
 	}
-	
+
 }
