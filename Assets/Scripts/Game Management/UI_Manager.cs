@@ -139,6 +139,17 @@ public class UI_Manager : MonoBehaviour
 		return pieChoice;
 	}
 	void Update(){
+		#if UNITY_SERVER
+		return;
+		#endif
+		
+		if (CustomNetworkManager.m_IsDedicatedServer)
+			return;
+
+		Player_Controller localPlayer = Game_Controller.Instance.localPlayer;
+		if(!localPlayer)
+			return;
+
 		if (Input.GetButtonDown("Pause")){
 			if(!isPaused){
 				Pause();
@@ -167,7 +178,7 @@ public class UI_Manager : MonoBehaviour
 		//Bot indicators
 		foreach(Player _player in FindObjectsOfType<Player>()){
 			//The player is on our team, show them immediately
-			if(!Game_Controller.Instance.localPlayer.damageScript.isDead && _player.gameObject.activeSelf && _player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
+			if(!localPlayer.damageScript.isDead && _player.gameObject.activeSelf && _player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
 				int _id = _player.playerID;
 				
 				//Set color
@@ -180,14 +191,15 @@ public class UI_Manager : MonoBehaviour
 
 				Bounds bounds = _player.boundingCollider.bounds;
 				
-				Vector3 _position = Camera.main.WorldToScreenPoint(bounds.center);
+				Vector3 _position = localPlayer.mainCam.WorldToScreenPoint(bounds.center);
 				//Set distance
 				nameIndicators[_id].distText.text = _position.z.ToString("#.000") + " m";
 				
 				if(_position.z > 0){
 					nameIndicators[_id].gameObject.SetActive(true);
 					nameIndicators[_id].transform.position = _position;
-					nameIndicators[_id].transform.localScale = Vector3.one* nameIndicatorScale * Camera.main.nearClipPlane /(_position.z * Mathf.Tan(Camera.main.fieldOfView * Mathf.Deg2Rad * 0.5f));
+					nameIndicators[_id].transform.localScale = Vector3.one* nameIndicatorScale 
+						* localPlayer.mainCam.nearClipPlane / (_position.z * Mathf.Tan(localPlayer.mainCam.fieldOfView * Mathf.Deg2Rad * 0.5f));
 					
 				}
 				else{

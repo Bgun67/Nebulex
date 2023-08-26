@@ -166,7 +166,6 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
             data.port = info.port;
             
             hostData.Add(info.ip, data);
-            Match_Scene_Manager.Instance.DisplayMatches();
         }
 		Match_Scene_Manager.Instance.DisplayMatches();
         

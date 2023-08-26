@@ -1026,7 +1026,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 9426603634ffa0d428909270e40dfcd4, type: 2}
   jerseyMeshes:
   - {fileID: 0}
-  mainCamObj: {fileID: 4688155797463609798}
+  mainCam: {fileID: 3344395402140170601}
   walkSound: {fileID: 7078805959131489594}
   walkClips:
   - {fileID: 8300000, guid: efc3a3c96e3961944ac7d1fd519ce54f, type: 3}
@@ -1060,6 +1060,7 @@ MonoBehaviour:
   minimapUI: {fileID: 0}
   blackoutShader: {fileID: 0}
   helmet: {fileID: 4463365584604290837}
+  m_DOFAdaptRate: 0
   minimapCam: {fileID: 7141292712122820794}
   iconCamera: {fileID: 7140880912453699890}
   breatheSound: {fileID: 7078068542218190658}
@@ -1724,7 +1725,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3571243913047732918}
   - component: {fileID: 2036135956538936774}
-  - component: {fileID: 3697928167185910792}
   - component: {fileID: 7317611327665084340}
   m_Layer: 15
   m_Name: Gun Camera
@@ -1799,14 +1799,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &3697928167185910792
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8823685902132445350}
-  m_Enabled: 1
 --- !u!114 &7317611327665084340
 MonoBehaviour:
   m_ObjectHideFlags: 0

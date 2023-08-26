@@ -101,6 +101,10 @@ public class PHPMasterServerConnect : MonoBehaviour
 	
 	private IEnumerator QueryPHPMasterServerCR ()
 	{
+		if (!Match_Scene_Manager.Instance){
+			yield return new WaitForSeconds(1f);
+			yield break;
+		}
 		//print ("Querying Harder");
 		atOnce = true;
 		string url = masterServerURL+"QueryMS?gameType="+WWW.EscapeURL(gameType);
@@ -120,6 +124,10 @@ public class PHPMasterServerConnect : MonoBehaviour
 	    if (www.error != null) {
 	        //Match_Scene_Manager.Instance.OnQueryMasterServerFailed();
 	    }
+		if (!Match_Scene_Manager.Instance){
+			yield return new WaitForSeconds(1f);
+			yield break;
+		}
 	
 		if (www.text == "") {
 			atOnce = false;
