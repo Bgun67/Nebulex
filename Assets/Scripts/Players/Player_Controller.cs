@@ -65,6 +65,9 @@ public class Player_Controller : Player {
 	Activater[] allActivaters;
 	Activater targetActivater;
 
+	Grabbable grabbable;
+	[SerializeField] Transform grabbableTransform;
+
 	
 
 	void Awake()
@@ -266,6 +269,14 @@ public class Player_Controller : Player {
 			Reload ();
 		}
 
+		if(Input.GetButtonDown("Grab")) {
+			StartGrab();
+		}
+
+		if (Input.GetButtonUp ("Grab")) {
+			ReleaseGrab (false);
+		}
+
 		if (Input.GetButtonDown ("Use Item")) {
 			OpenUseHUD ();
 		}
@@ -387,7 +398,12 @@ public class Player_Controller : Player {
 		}
 		//TODO: Come up with a move elegant solution
 		if (Input.GetButton ("Fire1") && !player_IK.IsSprinting() && !UI_Manager._instance.pauseMenu.gameObject.activeSelf) {
-			Attack ();
+			if(grabbable){
+				ReleaseGrab (true);
+			}
+			else{
+				Attack ();
+			}
 
 		}
 		if (MInput.GetButtonDown ("Fire2")) {
@@ -401,6 +417,11 @@ public class Player_Controller : Player {
 		}
 		Aim ();
 		player_IK.SetVelocity(rb.velocity, h2);
+	}
+	void FixedUpdate(){
+		if(grabbable&&isServer){
+			Grab();
+		}
 
 	}
 
@@ -780,6 +801,33 @@ public class Player_Controller : Player {
 
 	public void CmdUseItem(Activater targetActivater){
 		targetActivater.ActivateScript(gameObject);
+	}
+
+	void StartGrab(){
+		grabbable = FindObjectsOfType<Grabbable>()[0];
+		grabbable.GetComponent<Rigidbody>().isKinematic = true;
+		player_IK.lhTarget = grabbable.handle;
+	}
+
+	Vector3 smoothVelocity;
+	public void Grab(){
+		
+		grabbable.GetComponent<Rigidbody>().MovePosition(Vector3.Lerp(grabbable.transform.position, grabbableTransform.position, 0.5f));
+		grabbable.GetComponent<Rigidbody>().MoveRotation( Quaternion.Slerp(grabbable.transform.rotation, grabbableTransform.rotation, 0.5f));
+	}
+
+	public void ReleaseGrab(bool shouldThrow){
+		grabbable.GetComponent<Rigidbody>().isKinematic = false;
+		if(shouldThrow){
+			grabbable.GetComponent<Rigidbody>().velocity = mainCam.transform.forward*5f;
+		}
+		else{
+			grabbable.GetComponent<Rigidbody>().velocity = rb.velocity;
+		}
+
+		grabbable= null;
+		player_IK.lhTarget = null;
+		Cmd_SwitchWeapons(!primarySelected);
 	}
 
 	public void SpaceMove(){
