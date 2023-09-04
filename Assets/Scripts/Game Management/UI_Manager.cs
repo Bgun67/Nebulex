@@ -12,6 +12,7 @@ public class UI_Manager : MonoBehaviour
 
 	public RectTransform healthBox;
 	public RectTransform healthBar;
+	public ActivaterUI activaterUI;
 	public Text healthText;
 
 	public RectTransform vehicleHealthBox;
@@ -92,7 +93,9 @@ public class UI_Manager : MonoBehaviour
 	public static OnPieEvent onPieEvent;
 	
 
-
+	void Awake(){
+		activaterUI = GetComponentInChildren<ActivaterUI>();
+	}
 
 	// Use this for initialization
 	void Start()

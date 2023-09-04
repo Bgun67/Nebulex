@@ -62,6 +62,12 @@ public class Player_Controller : Player {
 
 	#endregion
 
+	Activater[] allActivaters;
+	Activater targetActivater;
+
+	Grabbable grabbable;
+	[SerializeField] Transform grabbableTransform;
+
 	
 
 	void Awake()
@@ -259,10 +265,27 @@ public class Player_Controller : Player {
 			muzzleClimb = 0f;
 		}
 
+		if (Input.GetButtonDown ("Reload")) {
+			Reload ();
+		}
+
+		if(Input.GetButtonDown("Grab")) {
+			StartGrab();
+		}
+
+		if (Input.GetButtonUp ("Grab")) {
+			ReleaseGrab (false);
+		}
 
 		if (Input.GetButtonDown ("Use Item")) {
-			UseItem ();
-			
+			OpenUseHUD ();
+		}
+		if (Input.GetButton ("Use Item")) {
+			UpdateUseHUD ();
+		}
+		if(Input.GetButtonUp("Use Item")){
+			print("button up");
+			UseItem();
 		}
 		if (Input.GetKeyDown ("/")) {
 			Cmd_KillPlayer();
@@ -375,7 +398,12 @@ public class Player_Controller : Player {
 		}
 		//TODO: Come up with a move elegant solution
 		if (Input.GetButton ("Fire1") && !player_IK.IsSprinting() && !UI_Manager._instance.pauseMenu.gameObject.activeSelf) {
-			Attack ();
+			if(grabbable){
+				ReleaseGrab (true);
+			}
+			else{
+				Attack ();
+			}
 
 		}
 		if (MInput.GetButtonDown ("Fire2")) {
@@ -389,6 +417,11 @@ public class Player_Controller : Player {
 		}
 		Aim ();
 		player_IK.SetVelocity(rb.velocity, h2);
+	}
+	void FixedUpdate(){
+		if(grabbable&&isServer){
+			Grab();
+		}
 
 	}
 
@@ -452,8 +485,6 @@ public class Player_Controller : Player {
 			case 10:
 				break;
 			case 11:
-			grappleActive = !grappleActive;
-				Grapple(grappleActive);
 				break;
 			case 12:
 				
@@ -462,35 +493,7 @@ public class Player_Controller : Player {
 				break;
 		}
 	}
-	#region Grapple
-	void Grapple(bool _enabled)
-	{
-		print("grapling");
-		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
-		_grapple.BreakWire();
-		_grapple.anim.SetBool("Enabled", _enabled);
-		anim.SetBool("Grapple", _enabled);
 
-	}	
-	//signalled from grapple
-	[MRPC]
-	public void RPC_FireGrapple(int parent1, int parent2, Vector3 localPos1, Vector3 localPos2)
-	{
-		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
-		_grapple.ConnectGrapple(
-			Game_Controller.GetGameObjectFromNetID(parent1).transform,
-			Game_Controller.GetGameObjectFromNetID(parent2).transform,
-			localPos1,
-			localPos2
-		);
-	}
-	[MRPC]
-	public void RPC_BreakWire()
-	{
-		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
-		_grapple.BreakWire();
-	}
-	#endregion
 	public void ShowMag(int shown){
 		//TODO
 		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -750,40 +753,81 @@ public class Player_Controller : Player {
 	}
 
 	
+	void OpenUseHUD(){
+		allActivaters = FindObjectsOfType<Activater>();
+		UI_Manager.GetInstance.activaterUI.Open(allActivaters);
+	}
 
-	public override void UseItem(){
-		RaycastHit hit;
-		if (Physics.Raycast (mainCamObj.transform.position, mainCamObj.transform.forward, out hit)) {
-			
-			if (hit.distance < 20f) {
-				
-				try {
-					hit.collider.GetComponent<Activater> ().ActivateScript (this.gameObject);
+	void UpdateUseHUD(){
+		Activater bestActivater = null;
+		float bestDistance = Mathf.Infinity;
+		float bestAngle = 15f;
 
-				} catch {
-					try {
-						hit.collider.transform.parent.GetComponent<Activater> ().ActivateScript (this.gameObject);
-					} catch {
-						try{hit.transform.root.GetComponent<Activater> ().ActivateScript (this.gameObject);
-						}
-						catch{
-							fireScript.StartCoroutine (fireScript.Reload());
-						}
-					}
-				}
-				
-			} else {
-				fireScript.StartCoroutine (fireScript.Reload());
-				UpdateUI ();
+		foreach(Activater activater in allActivaters){
+			Vector3 delta = activater.Position - mainCam.transform.position;
+			float distance = delta.magnitude;
+			float angle = Vector3.Angle(delta, mainCam.transform.forward);
+			Vector3 screenpoint = mainCam.WorldToScreenPoint(activater.Position);
+			UI_Manager.GetInstance.activaterUI.SetHighlight(targetActivater, false);
+			UI_Manager.GetInstance.activaterUI.UpdateInfo(activater, screenpoint, distance);
+
+			if(distance>activater.maxDistance){
+				continue;
 			}
-			
-
-				
-		} else {
-			fireScript.StartCoroutine (fireScript.Reload());
-			UpdateUI ();
+			if(angle>bestAngle){
+				continue;
+			}
+			if(activater.raycast){
+				if (Physics.Linecast (mainCamObj.transform.position, activater.Position)) {
+					continue;
+				}
+			}
+			bestAngle = angle;
+			bestDistance = distance;
+			bestActivater = activater;
 		}
 
+		targetActivater = bestActivater;
+		UI_Manager.GetInstance.activaterUI.SetHighlight(targetActivater, true);
+	}
+
+	public override void UseItem(){
+		if(targetActivater){
+			CmdUseItem(targetActivater);
+			UI_Manager.GetInstance.activaterUI.Select(targetActivater);
+		}
+		UI_Manager.GetInstance.activaterUI.Close();
+	}
+
+	public void CmdUseItem(Activater targetActivater){
+		targetActivater.ActivateScript(gameObject);
+	}
+
+	void StartGrab(){
+		grabbable = FindObjectsOfType<Grabbable>()[0];
+		grabbable.GetComponent<Rigidbody>().isKinematic = true;
+		player_IK.lhTarget = grabbable.handle;
+	}
+
+	Vector3 smoothVelocity;
+	public void Grab(){
+		
+		grabbable.GetComponent<Rigidbody>().MovePosition(Vector3.Lerp(grabbable.transform.position, grabbableTransform.position, 0.5f));
+		grabbable.GetComponent<Rigidbody>().MoveRotation( Quaternion.Slerp(grabbable.transform.rotation, grabbableTransform.rotation, 0.5f));
+	}
+
+	public void ReleaseGrab(bool shouldThrow){
+		grabbable.GetComponent<Rigidbody>().isKinematic = false;
+		if(shouldThrow){
+			grabbable.GetComponent<Rigidbody>().velocity = mainCam.transform.forward*5f;
+		}
+		else{
+			grabbable.GetComponent<Rigidbody>().velocity = rb.velocity;
+		}
+
+		grabbable= null;
+		player_IK.lhTarget = null;
+		Cmd_SwitchWeapons(!primarySelected);
 	}
 
 	public void SpaceMove(){
@@ -1174,11 +1218,7 @@ public class Player_Controller : Player {
 				joint.connectedBody = null;
 			}
 		}
-		//disable the grapple
-		if (GetComponentInChildren<Harpoon_Gun>() != null)
-		{
-			Grapple(false);
-		}
+		
 		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
 		Destroy (_ragdollGO, 5f);
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
