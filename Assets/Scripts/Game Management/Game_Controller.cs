@@ -25,6 +25,7 @@ public class Game_Controller : NetworkBehaviour {
 		public const string Destruction = "Destruction";
 		public const string TeamDeathmatch = "Team Deathmatch";
 		public const string CTF = "Capture The Flag";
+		public const string ControlPoint = "Control Point";
 		public const string Meltdown = "Meltdown";
 		public const string Soccer = "AstroBall";
 
@@ -207,41 +208,41 @@ public class Game_Controller : NetworkBehaviour {
 			spawn.DeactivateSpawn();
 		}
 
-		if (gameMode == GameType.TeamDeathmatch)
-		{
-
+		foreach(GameItem item in FindObjectsOfType<GameItem>()){
+			item.Initialize(gameMode);
 		}
 
-		if (gameMode == GameType.CTF)
-		{
-			flagA.gameObject.SetActive(true);
-			flagA.StartGame();
-			flagB.gameObject.SetActive(true);
-			flagB.StartGame();
-			print("LEt's PlAy");
-		}
-		if (gameMode == GameType.Meltdown)
-		{
-			radiationField.SetActive(true);
-			radiationField.GetComponent<Radiation>().carrier = shipOneTransform.gameObject;
-			
-			shipTwoTransform.gameObject.SetActive(false);
-			shipTwoTransform = shipOneTransform;
+		switch (gameMode){
+			case GameType.TeamDeathmatch:
+				break;
+			case GameType.ControlPoint:
+				break;
+			case GameType.CTF:
+				flagA.gameObject.SetActive(true);
+				flagA.StartGame();
+				flagB.gameObject.SetActive(true);
+				flagB.StartGame();
+				print("LEt's PlAy");
+				break;
+		
+			case GameType.Meltdown:
+				radiationField.SetActive(true);
+				radiationField.GetComponent<Radiation>().carrier = shipOneTransform.gameObject;
+				
+				shipTwoTransform.gameObject.SetActive(false);
+				shipTwoTransform = shipOneTransform;
+				break;
 
+			case GameType.Soccer:
+				if (soccerField != null)
+				{
+					soccerField.SetActive(true);
+				}
+				break;
+			default:
+				Debug.LogWarning("Gamemode: " + gameMode + " not found");
+				break;
 		}
-		if (gameMode == GameType.Soccer)
-		{
-			if (soccerField != null)
-			{
-				soccerField.SetActive(true);
-			}
-		}
-		//call to server to sync the scores on all clients
-		//TODO
-		//if (Metwork.peerType != MetworkPeerType.Disconnected)
-		//{
-		//	netView.RPC("RPC_UpdateMatchInfo", MRPCMode.Server, new object[] { });
-		//}
 		Invoke("PhysicsUpdate", 1f);
 
 	}
@@ -249,10 +250,6 @@ public class Game_Controller : NetworkBehaviour {
 		if (CustomNetworkManager.IsServerMachine())
 		{
 			for(int i = 0; i<maxPlayers; i++){
-				
-				
-				
-				
 				//TODO: Assign these to spawn points
 				GameObject _bot = Instantiate(botPrefab, Vector3.zero, Quaternion.identity);
 				_bot.name = "Bot " + i;
@@ -460,6 +457,22 @@ public class Game_Controller : NetworkBehaviour {
 			break;
 		case "Capture The Flag":
 
+			break;
+		case GameType.ControlPoint:
+			ControlPoint[] cps = FindObjectsOfType<ControlPoint>();
+			scoreA = 0;
+			scoreB = 0;
+			foreach(ControlPoint cp in cps){
+				if (cp.m_Status == GameItem.ControlStatus.TeamA){
+					scoreA += 1;
+				}
+				else if (cp.m_Status == GameItem.ControlStatus.TeamB){
+					scoreB += 1;
+				}
+			}
+			if (scoreA >= cps.Length || scoreB >= cps.Length){
+				EndGame();
+			}
 			break;
 		case "Meltdown":
 			scoreA = carrierADmg.currentHealth;
