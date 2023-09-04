@@ -29,6 +29,8 @@ public class ControlPoint : GameItem
     private int m_TeamAPlayers = 0;
     private int m_TeamBPlayers = 0;
 
+    private float m_PreviousState = 0;
+
 
 
     public override string m_GameType{
@@ -53,16 +55,24 @@ public class ControlPoint : GameItem
 
         if(m_Progress >= 1.0f){
             m_Status = ControlStatus.TeamA;
+            m_PreviousState = 1.0f;
         }
-        else if(m_Progress >= 1.0f){
+        else if(m_Progress <= -1.0f){
             m_Status = ControlStatus.TeamB;
+            m_PreviousState = -1.0f;
         }
         else if (m_TeamAPlayers + m_TeamBPlayers == 0){
             m_Status = ControlStatus.Available;
-            m_Progress -= Mathf.Sign(m_Progress) * Time.deltaTime * UNLOAD_SPEED;
+            m_Progress += Mathf.Sign(m_PreviousState - m_Progress) * Time.deltaTime * UNLOAD_SPEED;
         }
         else{
             m_Status = ControlStatus.Contested;
+        }
+
+        //White flag progress achieved
+        if (Mathf.Abs(m_Progress) <= 0.05f){
+            //Return flag to zero (white) if no player present
+            m_PreviousState = 0.0f;
         }
 
         m_Progress = Mathf.Clamp(m_Progress, -1f, 1f);
