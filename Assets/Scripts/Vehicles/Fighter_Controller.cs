@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class Fighter_Controller : Ship_Controller
@@ -14,8 +15,8 @@ public class Fighter_Controller : Ship_Controller
 		}
 	}
 
-	[MRPC]
-	public override void RPC_Activate(int _pilot)
+	[ClientRpc]
+	public override void RPC_Activate(Player_Controller _pilot)
 	{
 		base.RPC_Activate(_pilot);
 		

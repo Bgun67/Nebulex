@@ -46,15 +46,15 @@ public class Reentry_Vehicle : Ship_Controller
 		previousEnginePitch = engineSound.pitch;
 		if (MInput.useMouse)
 		{
-			rb.AddRelativeTorque(MInput.GetMouseDelta("Mouse Y") * -0.2f * deltaThrustForce * torqueFactor,
-				MInput.GetMouseDelta("Mouse X") * 0.2f  * deltaThrustForce * torqueFactor,
-				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+			rb.angularVelocity = transform.TransformDirection(MInput.GetMouseDelta("Mouse Y") * -0.2f * moveFactors.angularSpeed,
+				MInput.GetMouseDelta("Mouse X") * 0.2f  * moveFactors.angularSpeed,
+				Input.GetAxis("Move X") * moveFactors.angularSpeed);
 		}
 		else
 		{
-			rb.AddRelativeTorque(MInput.GetAxis("Rotate X") * deltaThrustForce * torqueFactor,
-				MInput.GetAxis("Rotate Y")  * deltaThrustForce * torqueFactor,
-				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+			rb.angularVelocity = transform.TransformDirection(MInput.GetAxis("Rotate X") * moveFactors.angularSpeed,
+				MInput.GetAxis("Rotate Y")  * moveFactors.angularSpeed,
+				Input.GetAxis("Move X") * moveFactors.angularSpeed);
 		}
 	}
 

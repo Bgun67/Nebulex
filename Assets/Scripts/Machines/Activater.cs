@@ -40,19 +40,13 @@ public class Activater : NetworkBehaviour
 			return;
 		}
 		nextAvailableTime = Time.time + cooldown;
-		RpcActivateScript(player);
-	}
-
-	[ClientRpc]
-	public void RpcActivateScript(GameObject player)
-	{
-
 		foreach (MonoBehaviour scriptToActivate in scriptsToActivate)
 		{
 			print("Activating" + scriptToActivate.name);
 			scriptToActivate.SendMessage("Activate", player);
 		}
 	}
+
 
 	public void DeactivateScript(GameObject player)
 	{

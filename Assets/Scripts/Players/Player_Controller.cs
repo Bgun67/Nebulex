@@ -779,7 +779,8 @@ public class Player_Controller : Player {
 			}
 			if(activater.raycast){
 				if (Physics.Linecast (mainCamObj.transform.position, activater.Position)) {
-					continue;
+				//TODO Ignore this object and player
+				//	continue;
 				}
 			}
 			bestAngle = angle;

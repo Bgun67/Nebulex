@@ -26,13 +26,12 @@ public class Vehicle : NetworkBehaviour
 	protected float moveX;
 	protected float moveY;
 	protected float moveZ;
-	public Metwork_Object netObj;
 
 	public Fire fireScriptLeft;
 	public Fire fireScriptRight;
 
     protected void CheckOccupied(){
-		if (!(Metwork.isServer || Metwork.peerType == MetworkPeerType.Disconnected)) {
+		if (!(isServer)) {
 			return;
 		}
 		if (this.player == null && Vector3.SqrMagnitude (damageScript.initialPosition.position - transform.position) > 200f) {
@@ -99,27 +98,19 @@ public class Vehicle : NetworkBehaviour
 	}
 
 	public void Die(){
-
-		if(Metwork.peerType != MetworkPeerType.Disconnected){
-			if (player != null) {
-				netObj.netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{ player.GetComponent<Metwork_Object> ().netID });
-			} else {
-				netObj.netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{0});
-			}
+		if (player != null)
+		{
+			RPC_Die(player.gameObject);
 		}
-		else{
-			if (player != null) {
-				RPC_Die (player.GetComponent<Metwork_Object> ().netID);
-			} else {
-				RPC_Die (0);
-			}
+		else
+		{
+			RPC_Die(null);
 		}
-
 	}
 
 	//This function should essentially make the ship "like new"
-	[MRPC]
-	public void RPC_Die(int id){
+	[Command]
+	public void RPC_Die(GameObject player){
 		print ("Running ship controller die");
 		Navigation.DeregisterTarget (this.transform);
 		DisableAI();
@@ -128,7 +119,6 @@ public class Vehicle : NetworkBehaviour
 		Destroy(Instantiate (destroyedPrefabs [Random.Range (0, destroyedPrefabs.Length)], this.transform.position, transform.rotation),5f);
 		if (player != null) {
 			Exit ();
-			player = FindObjectOfType<Game_Controller> ().GetPlayerFromNetID (id);
 			player.GetComponent<Damage> ().TakeDamage(1000,0, transform.position, true);
 		}
 
@@ -143,54 +133,37 @@ public class Vehicle : NetworkBehaviour
 		
 	}
 
-	public void Activate(Player_Controller pilot){
-		//Ensure that the gameobject has the netObj set (Due to start() not being called yet)
-		if (netObj == null) {
-			netObj = this.GetComponent<Metwork_Object> ();
-		}
+//Called on the server
+	public void Activate(GameObject pilot){
+		print("Activating ship");
+		this.DisableAI();
+		NetworkConnectionToClient connectionToClient = pilot.GetComponent<NetworkIdentity>().connectionToClient;
+		//TODO: Find a better way of doing this maybe?
+		this.GetComponent<NetworkIdentity>().AssignClientAuthority(connectionToClient);
+		
+		
+		getInTime = Time.time;
+		//carrierPointer.SetActive (true);
+		OwnerActivate(connectionToClient, pilot.GetComponent<Player_Controller>());
+		RPC_Activate (pilot.GetComponent<Player_Controller>());
+	}
 
-		if (pilot.GetComponent<Metwork_Object> ().isLocal && this.player == null) {
-			this.DisableAI();
-			//TODO: Find a better way of doing this maybe?
-			pilot.GainAir ();
-			this.mainCamera.SetActive (true);
-			GetComponent<Damage> ().healthShown = true;
-			GetComponent<Damage> ().UpdateUI ();
-			getInTime = Time.time;
-			//carrierPointer.SetActive (true);
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netObj.netView.RPC ("RPC_Activate", MRPCMode.AllBuffered, pilot.GetComponent<Metwork_Object> ().owner);
-			} else {
-				RPC_Activate (pilot.GetComponent<Metwork_Object> ().owner);
-			}
-
-		}
-
-
+	[TargetRpc]
+	public virtual void OwnerActivate(NetworkConnection target, Player_Controller player){
+		this.mainCamera.SetActive (true);
+		GetComponent<Damage> ().healthShown = true;
+		GetComponent<Damage> ().UpdateUI ();
+		player.GainAir ();
 	}
 
 
-	[MRPC]
-	public virtual void RPC_Activate(int _pilot){
-		if (netObj == null) {
-			netObj = this.GetComponent<Metwork_Object> ();
-		}
-
+	[ClientRpc]
+	public virtual void RPC_Activate(Player_Controller player){
 		this.DisableAI();
-		anim = this.GetComponent<Animator> ();
-
-		
-
-		player = FindObjectOfType<Game_Controller>().GetPlayerFromNetID (_pilot);
+		anim = this.GetComponentInChildren<Animator> ();
 		player.inVehicle = true;
 		player.gameObject.SetActive (false);
-
-
-		netObj.owner = _pilot;
-		if (fireScriptLeft != null && fireScriptRight != null) {
-			fireScriptLeft.playerID = _pilot;
-			fireScriptRight.playerID = _pilot;
-		}
+		this.enabled = true;
 
 	}
 
@@ -203,19 +176,8 @@ public class Vehicle : NetworkBehaviour
 		GetComponent<Damage> ().healthShown = false;
 		GetComponent<Damage> ().UpdateUI ();
 
-		if (netObj == null) {
-			netObj = this.GetComponent<Metwork_Object> ();
-		}
-
-
-		if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			//Make the owner the server
-			netObj.netView.RPC ("RPC_Exit", MRPCMode.AllBuffered, new object[]{});
-
-		} else {
-			RPC_Exit ();
-
-		}
+		
+		RPC_Exit ();
 
 		this.enabled = false;
 	}
@@ -226,9 +188,7 @@ public class Vehicle : NetworkBehaviour
 	public virtual void RPC_Exit(){
 		
 		print ("RPC Exiting");
-		if (netObj == null) {
-			netObj = this.GetComponent<Metwork_Object> ();
-		}
+		
 		player.gameObject.SetActive (true);
 		player.GetComponent<Rigidbody> ().velocity = this.rb.velocity;
 		player.transform.position = this.transform.position+FindExitPoint();

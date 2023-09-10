@@ -10,7 +10,7 @@ using Mirror;
 public class Damage : NetworkBehaviour{
 	public int originalHealth;
 	[SyncVar (hook = "UpdateUIHook")]
-	public int currentHealth;
+	[HideInInspector] public int currentHealth;
 	public UnityEvent dieFunction;
 	public bool isVehicle = true;
 	//public Text UI_healthText;

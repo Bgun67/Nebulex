@@ -13,13 +13,11 @@ using Mirror;
 public class Ship_Controller : Vehicle {
 
 	
-	public List<Vector3> route;
+	[HideInInspector] public List<Vector3> route;
+	[SerializeField] protected ShipMovementProperties moveFactors;
 
 
-
-	public float thrust;
-	[Tooltip("Factor of the thrust that can rotate the ship")]
-	public float torqueFactor = 0.4f;
+	
 	public float upAngle;
 
 	protected float deltaThrustForce;
@@ -44,8 +42,7 @@ public class Ship_Controller : Vehicle {
 	// Use this for initialization
 	protected void Start () {
 		rb = this.GetComponent<Rigidbody> ();
-		netObj = this.GetComponent<Metwork_Object> ();
-		anim = this.GetComponent<Animator> ();
+		anim = this.GetComponentInChildren<Animator> ();
 		engineSound = this.GetComponent<AudioSource> ();
 		InvokeRepeating ("FindDirection", 0f, 2f);
 		InvokeRepeating ("CheckOccupied", 1f, 1f);
@@ -63,10 +60,7 @@ public class Ship_Controller : Vehicle {
 		ShipUpdate();
 	}
 	protected virtual void ShipUpdate(){
-		if (netObj == null) {
-			netObj = this.GetComponent<Metwork_Object> ();
-		}
-		if (!netObj.isLocal) {
+		if (!hasAuthority) {
 			return;
 		}
 		if (isAI) {
@@ -78,7 +72,7 @@ public class Ship_Controller : Vehicle {
 		try{ SimulateParticles (); } catch{}
 		moveY = Input.GetAxis ("Move Y");
 		moveZ = Input.GetAxis ("Move Z");
-		deltaThrustForce = Time.deltaTime * 35f * thrust;
+		deltaThrustForce = Time.deltaTime * moveFactors.thrustToMassRatio;
 		rb.velocity = Vector3.ClampMagnitude (rb.velocity, 1000f);
 		rb.angularVelocity = Vector3.ClampMagnitude (rb.angularVelocity, 10f);
 
@@ -94,8 +88,9 @@ public class Ship_Controller : Vehicle {
 
 
 	protected virtual void Fly(){
-		rb.AddRelativeForce (0f,moveY *deltaThrustForce* 2f,
-			moveZ *deltaThrustForce);
+
+		rb.AddRelativeForce (0f,moveY *deltaThrustForce* moveFactors.thrustFactor,
+			moveZ *deltaThrustForce, ForceMode.Acceleration);
 		
 		if(rb.useGravity){
 			if(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude < 300f){
@@ -103,22 +98,17 @@ public class Ship_Controller : Vehicle {
 				//entering gravity, activate landing
 				if (!landMode)
 				{
-					if (Metwork.peerType != MetworkPeerType.Disconnected)
-					{
-						netObj.netView.RPC("RPC_LandMode", MRPCMode.All, new object[] { true });
-					}
-					else
-					{
-						RPC_LandMode(true);
-					}
+					
+					RPC_LandMode(true);
+					
 					landMode = true;
 
 				}
-				rb.AddForce(rb.mass * 9.81f * Mathf.Clamp(1f/Vector3.Dot(Vector3.up, transform.up), 0.1f, 1f)*transform.up * 50f * Time.deltaTime);
+				rb.AddForce(rb.mass * 9.81f * Mathf.Clamp(1f/Vector3.Dot(Vector3.up, transform.up), 0.1f, 1f)*transform.up * moveFactors.hoverForceFactor * Time.deltaTime);
 				rb.AddTorque(Vector3.Cross(-transform.up,(transform.up - Vector3.up)*Vector3.Magnitude(transform.up - Vector3.up)*rb.mass*10f)*rb.mass/1000f);
 			}
 			else{
-				rb.AddRelativeForce(rb.mass * 9.81f * Mathf.Clamp(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude * 0.002f,0, 1.5f) * 50f * Time.deltaTime * Vector3.up);
+				rb.AddRelativeForce(rb.mass * 9.81f * Mathf.Clamp(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude * 0.002f,0, 1.5f) * moveFactors.hoverForceFactor * Time.deltaTime * Vector3.up);
 			}
 		}
 		else
@@ -126,14 +116,9 @@ public class Ship_Controller : Vehicle {
 			//exiting gravity, deactivate landing
 			if (landMode)
 			{
-				if (Metwork.peerType != MetworkPeerType.Disconnected)
-				{
-					netObj.netView.RPC("RPC_LandMode", MRPCMode.All, new object[] { false });
-				}
-				else
-				{
-					RPC_LandMode(false);
-				}
+				
+				RPC_LandMode(false);
+				
 				landMode = false;
 			}
 			rb.AddRelativeForce(0f, 0f, deltaThrustForce*0.4f);
@@ -143,15 +128,15 @@ public class Ship_Controller : Vehicle {
 		previousEnginePitch = engineSound.pitch;
 		if (MInput.useMouse)
 		{
-			rb.AddRelativeTorque(MInput.GetMouseDelta("Mouse Y") * -0.2f * deltaThrustForce * torqueFactor,
-				MInput.GetMouseDelta("Mouse X") * 0.2f  * deltaThrustForce * torqueFactor,
-				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+			rb.angularVelocity = transform.TransformDirection(MInput.GetMouseDelta("Mouse Y") * -moveFactors.pitchFactor * moveFactors.angularSpeed,
+				MInput.GetMouseDelta("Mouse X") * moveFactors.yawFactor  * moveFactors.angularSpeed,
+				Input.GetAxis("Move X") * moveFactors.rollFactor * -moveFactors.angularSpeed);
 		}
 		else
 		{
-			rb.AddRelativeTorque(MInput.GetAxis("Rotate X") * deltaThrustForce * torqueFactor,
-				MInput.GetAxis("Rotate Y")  * deltaThrustForce * torqueFactor,
-				Input.GetAxis("Move X") * deltaThrustForce * -torqueFactor);
+			rb.angularVelocity = transform.TransformDirection(MInput.GetAxis("Rotate X") * moveFactors.angularSpeed,
+				MInput.GetAxis("Rotate Y")  * moveFactors.angularSpeed,
+				Input.GetAxis("Move X") * moveFactors.angularSpeed);
 		}
 	}
 	public void RPC_LandMode(bool on)
@@ -206,14 +191,14 @@ public class Ship_Controller : Vehicle {
 	}
 
 	[MRPC]
-	public override void RPC_Activate(int _pilot)
+	public override void RPC_Activate(Player_Controller _pilot)
 	{
 		base.RPC_Activate(_pilot);
 		EnableThrusters();
 	}
 
 	protected void SimulateParticles(){
-		if (!netObj.isLocal) {
+		if (!isLocalPlayer) {
 			return;
 		}
 		if (moveY != 1f) {
@@ -224,11 +209,6 @@ public class Ship_Controller : Vehicle {
 		if (moveZ != 1f) {
 			for (int i = 0; i < rearThrusters.Length; i++) {
 				rearThrusters [i].emissionRate = 150f * (Mathf.Clamp (moveZ, 0.2f, 1f) * 1.3f);
-			}
-		}
-		if ((int)(Time.deltaTime * 10000f) % 2 == 0) {
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				netObj.netView.RPC ("RPC_SimulateParticles", MRPCMode.Others, new object[]{ moveY, moveZ });
 			}
 		}
 
@@ -304,7 +284,7 @@ public class Ship_Controller : Vehicle {
 
 
 
-		rb.AddRelativeTorque(horizontal * thrust * 2f *  torqueFactor * Vector3.up);
+		rb.angularVelocity = horizontal * 2f *  moveFactors.angularSpeed * Vector3.up;
 
 
 		float anglePitch = Vector3.SignedAngle (nextPosition,this.transform.position, Vector3.right) + 90f;
@@ -317,7 +297,7 @@ public class Ship_Controller : Vehicle {
 		float vertical = Mathf.Clamp (angle / -100f, -1f, 1f);
 		//rb.AddRelativeTorque(vertical * thrust * torqueFactor * Vector3.right);
 
-		rb.AddForce (Mathf.Clamp((nextPosition - transform.position).y/90f, -1,1) * thrust * 2f * Vector3.up);
+		rb.AddForce (Mathf.Clamp((nextPosition - transform.position).y/90f, -1,1) * moveFactors.thrustToMassRatio * 2f * Vector3.up, ForceMode.Acceleration);
 
 
 		float forward = 1f - (Mathf.Clamp(new Vector2(rb.velocity.x, rb.velocity.z).magnitude / (new Vector2((this.transform.position - nextPosition).x, (this.transform.position - nextPosition).z).magnitude), -1f,1f));
@@ -332,8 +312,8 @@ public class Ship_Controller : Vehicle {
 				WindowsVoice.Speak("Ten meters out.");
 			}
 		}
-		rb.AddForce (slowFactor * forward * thrust*Time.deltaTime * 60f * (nextPosition - transform.position).normalized);
-		rb.AddForce (slowFactor * gravityFactor * thrust * Vector3.up * Time.deltaTime * 45f);
+		rb.AddForce (slowFactor * forward * moveFactors.thrustToMassRatio*Time.deltaTime * 60f * (nextPosition - transform.position).normalized, ForceMode.Acceleration);
+		rb.AddForce (slowFactor * gravityFactor * moveFactors.thrustToMassRatio * Vector3.up * Time.deltaTime * 45f, ForceMode.Acceleration);
 
 
 		float upAngle = Vector2.SignedAngle (new Vector2 (transform.up.x, transform.up.y), Vector2.up);
