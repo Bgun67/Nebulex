@@ -50,7 +50,8 @@ Shader "Unlit/FlagPort"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.objectVertex = v.vertex.xyz;
-                float2 timeShift =  -float2(0, 1.0) * _Time.w * 0.1;
+                float stepChange = 1.0 - step(1.0f, abs(_Progress));
+                float2 timeShift =  -float2(1.0 - stepChange, stepChange) * _Time.w * 0.1;
                 o.uv = TRANSFORM_TEX(v.uv  + timeShift, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;

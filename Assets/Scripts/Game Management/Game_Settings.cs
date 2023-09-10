@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,6 +92,7 @@ public class Game_Settings : MonoBehaviour
         currGraphicsSettings = new JsonObject();
         currGraphicsSettings["msaa"] = 2;
         currGraphicsSettings["vsync"] = 1;
+        currGraphicsSettings["fov"] = 90.0;
         currGraphicsSettings["quality_level"] = QualitySettings.names.Length - 1;
         currGraphicsSettings["fullscreen_mode"] = (int)FullScreenMode.ExclusiveFullScreen;
 
@@ -179,13 +180,17 @@ public class Game_Settings : MonoBehaviour
         ToggleMenuVisibility(m_Root, "");
 
         //Graphics Settings
-        var sldr_MSAASamples = m_Root.Q<Slider>("sldr_MSAASamples");
+        var sldr_MSAASamples = m_Root.Q<SliderInt>("sldr_MSAASamples");
         sldr_MSAASamples.value = (int)currGraphicsSettings.Get("msaa", 2);
-        sldr_MSAASamples.RegisterValueChangedCallback(v => {ChangeMSAALevel(Mathf.RoundToInt(v.newValue));});
+        sldr_MSAASamples.RegisterValueChangedCallback(v => {ChangeMSAALevel(v.newValue);});
 
-        var sldr_VSyncPerFrame = m_Root.Q<Slider>("sldr_VSyncPerFrame");
+        var sldr_FOV = m_Root.Q<Slider>("sldr_FOV");
+        sldr_FOV.value = Game_Settings.FOV;
+        sldr_FOV.RegisterValueChangedCallback(v => {ChangeFOV(v.newValue);});
+
+        var sldr_VSyncPerFrame = m_Root.Q<SliderInt>("sldr_VSyncPerFrame");
         sldr_VSyncPerFrame.value = currGraphicsSettings.Get("vsync", 1);
-        sldr_VSyncPerFrame.RegisterValueChangedCallback(v => {ChangeVSyncLevel(Mathf.RoundToInt(v.newValue));});
+        sldr_VSyncPerFrame.RegisterValueChangedCallback(v => {ChangeVSyncLevel(v.newValue);});
 
         var cbo_Quality = m_Root.Q<DropdownField>("cbo_Quality");
         cbo_Quality.choices = new List<string>(QualitySettings.names);
@@ -282,6 +287,17 @@ public class Game_Settings : MonoBehaviour
         }
         ApplySettings();
     }
+
+    public static float FOV{
+        get{
+            return (float)currGraphicsSettings.Get("fov", 90f);
+        }
+    }
+    public void ChangeFOV(float fov){
+        currGraphicsSettings["fov"] = fov;
+        ApplySettings();
+    }
+
     public void ChangeQualityLevel(string level)
     {
         int _qualityLevel = Array.IndexOf(QualitySettings.names, level);
@@ -338,6 +354,10 @@ public class Game_Settings : MonoBehaviour
     }
     #endregion
 
+    private static float ToDecibels(float d){
+        return Mathf.Clamp(Mathf.Log10(d)*20.0f, -80.0f, 20.0f);
+    }
+
     public static void ApplySettings(){
         QualitySettings.antiAliasing = (int)currGraphicsSettings.Get("msaa", 2);
         QualitySettings.vSyncCount = currGraphicsSettings.Get("vsync", 1);
@@ -352,9 +372,9 @@ public class Game_Settings : MonoBehaviour
         float musicVol = currAudioSettings.Get("music_volume", 0.5f);
         float sfxVol = currAudioSettings.Get("sfx_volume", 0.5f);
 
-		masterMixer.SetFloat("Master Volume", Mathf.Log10(masterVol)*20.0f);
-        masterMixer.SetFloat("Music Volume", Mathf.Log10(musicVol)*20.0f);
-        masterMixer.SetFloat("SFX Volume", Mathf.Log10(sfxVol)*20.0f);
+		masterMixer.SetFloat("Master Volume", ToDecibels(masterVol));
+        masterMixer.SetFloat("Music Volume", ToDecibels(musicVol));
+        masterMixer.SetFloat("SFX Volume", ToDecibels(sfxVol));
         //masterMixer.SetFloat("Voice Prompt Volume", Mathf.Log10(currAudioSettings.voicePromptVolume)*20.0f);
 
         SaveGameSettings();
