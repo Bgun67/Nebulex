@@ -16,10 +16,6 @@ public class Ship_Controller : Vehicle {
 	[HideInInspector] public List<Vector3> route;
 	[SerializeField] protected ShipMovementProperties moveFactors;
 
-
-	
-	public float upAngle;
-
 	protected float deltaThrustForce;
 
 
@@ -361,12 +357,6 @@ public class Ship_Controller : Vehicle {
 
 		route = new List<Vector3>(caster.route); 
 
-	}
-
-	void CorrectPitch(){
-		upAngle = Vector3.SignedAngle (Vector3.up, transform.up, transform.forward);
-
-		rb.AddRelativeTorque (0f, 0f, upAngle*-1000f);
 	}
 
 	

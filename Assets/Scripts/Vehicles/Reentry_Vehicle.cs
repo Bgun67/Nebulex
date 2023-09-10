@@ -14,9 +14,7 @@ public class Reentry_Vehicle : Ship_Controller
 	void InvokeSky(){
 		DeOrbit(Vector3.one);
 	}
-    void CorrectPitch(){
-        return;
-    }
+   
 	//TODO: Move to updated code to main script
     protected override void Fly(){
 		rb.centerOfMass = cg;
