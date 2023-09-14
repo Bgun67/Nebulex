@@ -227,7 +227,7 @@ MonoBehaviour:
   shipRB: {fileID: 0}
   teamMaterials: []
   jerseyMeshes: []
-  mainCamObj: {fileID: 8274771426830298624}
+  mainCam: {fileID: 0}
   walkSound: {fileID: 0}
   walkClips: []
   fireScript: {fileID: 0}
@@ -251,12 +251,6 @@ MonoBehaviour:
   grenadeModelPrefab: {fileID: 0}
   grenadeSpawn: {fileID: 0}
   grappleActive: 0
-  difficulties:
-  - 0.1
-  - 0.5
-  - 0.7
-  - 1
-  - 2
   isInSpace: 1
   physicsMask:
     serializedVersion: 2
@@ -273,7 +267,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _angle: 0
-  difficultyLevel: 1
+  difficultyLevel: 2
+  difficulties:
+  - {fileID: 11400000, guid: eb3eb896ad7c9954d9d794893933acf2, type: 2}
+  - {fileID: 11400000, guid: 8d0f2d88ce14f004a90c5d7a8fcaa695, type: 2}
+  - {fileID: 11400000, guid: 42f74c9404e64e54fa2bd297c37cf763, type: 2}
   targetPlayer:
     _transform: {fileID: 0}
     _acquiredTime: 0
@@ -315,12 +313,6 @@ NavMeshAgent:
 --- !u!136 &5847611973995537976 stripped
 CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 7132765047391468030, guid: 783577177cb004841a4685d42797a477,
-    type: 3}
-  m_PrefabInstance: {fileID: 3736378137668493254}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8274771426830298624 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4688155797463609798, guid: 783577177cb004841a4685d42797a477,
     type: 3}
   m_PrefabInstance: {fileID: 3736378137668493254}
   m_PrefabAsset: {fileID: 0}

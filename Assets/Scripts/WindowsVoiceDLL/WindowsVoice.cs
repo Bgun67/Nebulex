@@ -35,7 +35,6 @@ public class WindowsVoice : MonoBehaviour
     {
 #if !UNITY_SERVER
       int volume = (int)(Game_Settings.currAudioSettings.Get("voice_prompt_volume", 0.5f) * 100.0f);
-      print(volume.ToString());
       if ( delay == 0f )
         addToSpeechQueue("<volume level=\"" + volume.ToString() + "\"><voice required=\"Gender=Female;Age!=Child\"><rate speed=\"2\">" + msg + "</rate></voice></volume>");
       else{}

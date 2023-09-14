@@ -17,9 +17,6 @@ public class Player_Controller : Player {
 	bool jump;
 
 	Vector3 previousNormal = new Vector3(0,1,0);
-	float originalFOV;
-	
-
 	
 
 	[Header("UI")]
@@ -77,7 +74,6 @@ public class Player_Controller : Player {
 		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
 		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
-		originalFOV = mainCam.fieldOfView;
 	}
 
 	// Use this for initialization
@@ -701,10 +697,10 @@ public class Player_Controller : Player {
 
 
 		if (zoomIn == true) {
-			mainCam.fieldOfView = Mathf.Lerp(i,0.5f*originalFOV,0.5f);
+			mainCam.fieldOfView = Mathf.Lerp(i,0.5f*Game_Settings.FOV,0.5f);
 		}else
 		{
-			mainCam.fieldOfView = Mathf.Lerp(i, originalFOV, 0.5f);
+			mainCam.fieldOfView = Mathf.Lerp(i, Game_Settings.FOV, 0.5f);
 		}
 	}
 	
@@ -882,7 +878,10 @@ public class Player_Controller : Player {
 				foreach (ParticleSystem jet in jetpackJets) {
 					jet.Stop ();
 				}
-				player_IK.Sprint(false);
+				// Always allow sprinting
+				sprintFactor = 1.75f;
+				player_IK.Sprint(true);
+				//player_IK.Sprint(false);
 			}
 		
 			UpdateUI ();
