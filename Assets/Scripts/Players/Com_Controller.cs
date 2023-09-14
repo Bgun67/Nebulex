@@ -669,7 +669,7 @@ public class Com_Controller : Player {
 
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
 
-			_rb.velocity = Vector3.ClampMagnitude(this.transform.forward, 20f);
+			_rb.velocity = Vector3.ClampMagnitude(Random.insideUnitSphere*Random.Range(0.9f, 1.1f), 20f);
 			_rb.useGravity = !isInSpace;
 		}
 		
