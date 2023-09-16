@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.02084306, g: 0.02909299, b: 0.03653615, a: 1}
+  m_IndirectSpecularColor: {r: 182.87933, g: 147.51456, b: 131.10057, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -423,7 +423,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.45882356, g: 0.6784314, b: 0.882353, a: 1}
-  m_Intensity: 9233.778
+  m_Intensity: 412.63397
   m_Range: 1000
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 9233.778
+  m_Intensity: 412.63397
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -531,7 +531,7 @@ MonoBehaviour:
   m_UseScreenSpaceShadows: 0
   m_InteractsWithSky: 1
   m_AngularDiameter: 0.5
-  m_FlareSize: 2
+  m_FlareSize: 0.25
   m_FlareTint: {r: 1, g: 1, b: 1, a: 1}
   m_FlareFalloff: 4
   m_SurfaceTexture: {fileID: 0}
@@ -2068,7 +2068,7 @@ PrefabInstance:
     - target: {fileID: 2079494426419617604, guid: f56231951baa15d41a100fb884d0d68d,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -3.8911743
+      value: -3.890808
       objectReference: {fileID: 0}
     - target: {fileID: 2079494426695218667, guid: f56231951baa15d41a100fb884d0d68d,
         type: 3}
@@ -28279,7 +28279,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 600000
+  m_Intensity: 150000
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -28356,7 +28356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 600000
+  m_Intensity: 150000
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -28386,8 +28386,8 @@ MonoBehaviour:
   m_AreaLightShadowCone: 120
   m_UseScreenSpaceShadows: 0
   m_InteractsWithSky: 1
-  m_AngularDiameter: 0.5
-  m_FlareSize: 2
+  m_AngularDiameter: 0
+  m_FlareSize: 0.25
   m_FlareTint: {r: 1, g: 1, b: 1, a: 1}
   m_FlareFalloff: 4
   m_SurfaceTexture: {fileID: 0}

@@ -444,8 +444,8 @@ public class Game_Controller : NetworkBehaviour {
 		
 		switch (gameMode) {
 		case "Destruction":
-			scoreA = carrierADmg.currentHealth;
-			scoreB = carrierBDmg.currentHealth;
+			scoreA = (int)carrierADmg.currentHealth;
+			scoreB = (int)carrierBDmg.currentHealth;
 			if (scoreA <= 0 || scoreB <= 0) {
 				EndGame ();
 			}
@@ -475,8 +475,8 @@ public class Game_Controller : NetworkBehaviour {
 			}
 			break;
 		case "Meltdown":
-			scoreA = carrierADmg.currentHealth;
-			scoreB = carrierADmg.originalHealth-carrierADmg.currentHealth;
+			scoreA = (int)carrierADmg.currentHealth;
+			scoreB = (int)carrierADmg.originalHealth-(int)carrierADmg.currentHealth;
 
 			if (scoreA <= 0) {
 				EndGame ();
@@ -556,8 +556,8 @@ public class Game_Controller : NetworkBehaviour {
 		
 		switch (gameMode) {
 		case "Destruction":
-			scoreA = carrierADmg.currentHealth;
-			scoreB = carrierBDmg.currentHealth;
+			scoreA = (int)carrierADmg.currentHealth;
+			scoreB = (int)carrierBDmg.currentHealth;
 			if (scoreA > scoreB) {
 				winningTeam = 0;
 			}
@@ -597,8 +597,8 @@ public class Game_Controller : NetworkBehaviour {
 			}
 			break;
 		case "Meltdown":
-			scoreA = carrierADmg.currentHealth;
-			scoreB = carrierADmg.originalHealth-carrierADmg.currentHealth;
+			scoreA = (int)carrierADmg.currentHealth;
+			scoreB = (int)carrierADmg.originalHealth-(int)carrierADmg.currentHealth;
 			if (scoreA >0) {
 				winningTeam = 0;
 			}

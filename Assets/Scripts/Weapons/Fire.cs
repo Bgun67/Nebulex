@@ -92,8 +92,6 @@ public class Fire : MonoBehaviour
         magAmmo = magSize;
         totalAmmo = maxAmmo;
 
-        CreateObjectPool();
-
     }
 
     public void Activate(GameObject player)
@@ -319,55 +317,6 @@ public class Fire : MonoBehaviour
 
         transform.root.SendMessage("UpdateUI");
 
-    }
-
-    void UpdateUI()
-    {
-        return;
-    }
-
-    void CreateObjectPool()
-    {
-        for (int i = 0; i < magSize; i++)
-        {
-            GameObject _bullet = GameObject.Instantiate(bulletPrefab, new Vector3(0f, 1000f, 0f), Quaternion.identity);
-            _bullet.SetActive(false);
-            _bullet.hideFlags = HideFlags.HideInInspector;
-            _bullet.hideFlags = HideFlags.HideInHierarchy;
-
-            poolList.Push(_bullet);
-
-            //yield return wait;
-        }
-    }
-    GameObject GetBullet()
-    {
-        if (poolList.Count == 0)
-        {
-            if (destroyedStack.Count > 0)
-            {
-                ReturnBullets();
-            }
-            else
-            {
-                return null;
-            }
-        }
-        GameObject bullet = poolList.Pop();
-        bullet.GetComponent<Bullet_Controller>().DisableBullet();
-        destroyedStack.Push(bullet);
-        bullet.SetActive(true);
-        return (bullet);
-    }
-
-
-    void ReturnBullets()
-    {
-
-        foreach (GameObject _bullet in destroyedStack)
-        {
-            poolList.Push(_bullet);
-        }
     }
 
 }

@@ -68,7 +68,7 @@ public class Ship_Controller : Vehicle {
 		try{ SimulateParticles (); } catch{}
 		moveY = Input.GetAxis ("Move Y");
 		moveZ = Input.GetAxis ("Move Z");
-		deltaThrustForce = Time.deltaTime * moveFactors.thrustToMassRatio;
+		deltaThrustForce = Time.deltaTime * moveFactors.cruiseVelocity;
 		rb.velocity = Vector3.ClampMagnitude (rb.velocity, 1000f);
 		rb.angularVelocity = Vector3.ClampMagnitude (rb.angularVelocity, 10f);
 
@@ -84,9 +84,9 @@ public class Ship_Controller : Vehicle {
 
 
 	protected virtual void Fly(){
-
-		rb.AddRelativeForce (0f,moveY *deltaThrustForce* moveFactors.thrustFactor,
-			moveZ *deltaThrustForce, ForceMode.Acceleration);
+		
+		/*rb.AddRelativeForce (0f,moveY *deltaThrustForce* moveFactors.thrustFactor,
+			moveZ *deltaThrustForce, ForceMode.Acceleration);*/
 		
 		if(rb.useGravity){
 			if(Vector3.Project(rb.velocity, transform.forward).sqrMagnitude < 300f){
@@ -117,16 +117,20 @@ public class Ship_Controller : Vehicle {
 				
 				landMode = false;
 			}
-			rb.AddRelativeForce(0f, 0f, deltaThrustForce*0.4f);
+
+			Vector3 moveInputVector = new Vector3(0f, moveY, 1f)*moveFactors.cruiseVelocity*(Input.GetButton("Sprint")?moveFactors.boostFactor:1f);
+			rb.velocity = Vector3.Lerp(rb.velocity, transform.TransformDirection(moveInputVector), moveFactors.movementLerpRate);
 		}
 
 		engineSound.pitch = Mathf.Lerp(previousEnginePitch,Mathf.Clamp(Mathf.Abs(moveZ+moveX+moveY),0,0.1f) + (Time.frameCount % 5f)*0.003f  + 0.85f, 0.3f);
 		previousEnginePitch = engineSound.pitch;
 		if (MInput.useMouse)
 		{
-			rb.angularVelocity = transform.TransformDirection(MInput.GetMouseDelta("Mouse Y") * -moveFactors.pitchFactor * moveFactors.angularSpeed,
-				MInput.GetMouseDelta("Mouse X") * moveFactors.yawFactor  * moveFactors.angularSpeed,
-				Input.GetAxis("Move X") * moveFactors.rollFactor * -moveFactors.angularSpeed);
+			Vector3 inputAngularVelocity = new Vector3(
+				Input.GetAxis("Move Z") * moveFactors.pitchFactor,
+				Input.GetAxis("Move Y") *moveFactors.yawFactor,
+				Input.GetAxis("Move X") * -moveFactors.rollFactor)* moveFactors.angularSpeed;
+			rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, transform.TransformDirection(inputAngularVelocity), moveFactors.angularLerpRate);
 		}
 		else
 		{
@@ -293,7 +297,7 @@ public class Ship_Controller : Vehicle {
 		float vertical = Mathf.Clamp (angle / -100f, -1f, 1f);
 		//rb.AddRelativeTorque(vertical * thrust * torqueFactor * Vector3.right);
 
-		rb.AddForce (Mathf.Clamp((nextPosition - transform.position).y/90f, -1,1) * moveFactors.thrustToMassRatio * 2f * Vector3.up, ForceMode.Acceleration);
+		rb.AddForce (Mathf.Clamp((nextPosition - transform.position).y/90f, -1,1) * moveFactors.cruiseVelocity * 2f * Vector3.up, ForceMode.Acceleration);
 
 
 		float forward = 1f - (Mathf.Clamp(new Vector2(rb.velocity.x, rb.velocity.z).magnitude / (new Vector2((this.transform.position - nextPosition).x, (this.transform.position - nextPosition).z).magnitude), -1f,1f));
@@ -308,8 +312,8 @@ public class Ship_Controller : Vehicle {
 				WindowsVoice.Speak("Ten meters out.");
 			}
 		}
-		rb.AddForce (slowFactor * forward * moveFactors.thrustToMassRatio*Time.deltaTime * 60f * (nextPosition - transform.position).normalized, ForceMode.Acceleration);
-		rb.AddForce (slowFactor * gravityFactor * moveFactors.thrustToMassRatio * Vector3.up * Time.deltaTime * 45f, ForceMode.Acceleration);
+		rb.AddForce (slowFactor * forward * moveFactors.cruiseVelocity*Time.deltaTime * 60f * (nextPosition - transform.position).normalized, ForceMode.Acceleration);
+		rb.AddForce (slowFactor * gravityFactor * moveFactors.cruiseVelocity * Vector3.up * Time.deltaTime * 45f, ForceMode.Acceleration);
 
 
 		float upAngle = Vector2.SignedAngle (new Vector2 (transform.up.x, transform.up.y), Vector2.up);
