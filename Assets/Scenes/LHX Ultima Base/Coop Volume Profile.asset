@@ -1,6 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4669149390011399385
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: Coop Volume Profile
+  m_EditorClassIdentifier: 
+  components:
+  - {fileID: 8204556456302118598}
+  - {fileID: 469946734867424119}
+  - {fileID: 2842062637779423408}
+--- !u!114 &469946734867424119
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -31,7 +47,7 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &-2530881743655380601
+--- !u!114 &2842062637779423408
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,20 +91,20 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   type:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   sphericalMode:
     m_OverrideState: 0
     m_Value: 1
   seaLevel:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: -92349.28
   planetaryRadius:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 6378100
   planetCenterPosition:
     m_OverrideState: 1
-    m_Value: {x: 0, y: -5000000, z: -8000000}
+    m_Value: {x: -5000000, y: -2000000, z: -6000000}
   airDensityR:
     m_OverrideState: 0
     m_Value: 0.04534
@@ -100,16 +116,16 @@ MonoBehaviour:
     m_Value: 0.23264056
   airTint:
     m_OverrideState: 0
-    m_Value: {r: 0.9, g: 0.9, b: 1, a: 1}
+    m_Value: {r: 1, g: 0.44936255, b: 0, a: 1}
   airMaximumAltitude:
     m_OverrideState: 0
     m_Value: 55261.973
   aerosolDensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.089
   aerosolTint:
-    m_OverrideState: 0
-    m_Value: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0.069811285, g: 1, b: 0.8883118, a: 1}
   aerosolMaximumAltitude:
     m_OverrideState: 0
     m_Value: 8289.296
@@ -139,7 +155,7 @@ MonoBehaviour:
     m_Value: {fileID: 8900000, guid: dbbe0136f5e6edf42ac226f2b35d4f77, type: 3}
   planetRotation:
     m_OverrideState: 1
-    m_Value: {x: 0, y: -59, z: 0}
+    m_Value: {x: -75.9, y: -98, z: -14.26}
   spaceEmissionTexture:
     m_OverrideState: 1
     m_Value: {fileID: 8900000, guid: 5a672cb61ef32734b9c28539c9c42494, type: 2}
@@ -167,7 +183,7 @@ MonoBehaviour:
   horizonZenithShift:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &-2499874426995909350
+--- !u!114 &8204556456302118598
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -195,19 +211,3 @@ MonoBehaviour:
   scale:
     m_OverrideState: 0
     m_Value: 1
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: Global Volume Profile
-  m_EditorClassIdentifier: 
-  components:
-  - {fileID: -2499874426995909350}
-  - {fileID: -4669149390011399385}
-  - {fileID: -2530881743655380601}
