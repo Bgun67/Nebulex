@@ -88,12 +88,12 @@ public class Match_Scene_Manager : MonoBehaviour
         if (CustomNetworkManager.m_IsDedicatedServer){
             int mapNum = 0;
             string gameName = "Dedicated Server";
-            int port = 7778;
+            int port = 7;
 
             try{
                 string configJson = System.IO.File.ReadAllText(Application.persistentDataPath + "/server_config.json");
                 JsonObject serverConfig = JsonObject.FromJson(configJson);
-                port = serverConfig.Get("port", 7778);
+                port = serverConfig.Get("port", 7777);
             }
             catch{
                 Debug.LogWarning("Could not read server config file, using defaults");
@@ -102,7 +102,7 @@ public class Match_Scene_Manager : MonoBehaviour
             networkDiscovery.comment = maps[mapNum].sceneName;
             connection.gameName = gameName;
             networkDiscovery.gameName = gameName;
-            manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)7778;
+            manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)7777;
 
 			manager.StartServer();
             manager.onStartServer += OnMetServerInitialized;

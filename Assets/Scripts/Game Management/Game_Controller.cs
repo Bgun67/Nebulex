@@ -30,6 +30,21 @@ public class Game_Controller : NetworkBehaviour {
 		public const string Soccer = "AstroBall";
 
 	}
+	
+	public enum GameControllerState{
+		MatchStarting,
+		MatchRunning,
+		MatchEnding
+
+	}
+
+	private Dictionary<GameControllerState, IMatchState> m_StateClasses = new Dictionary<GameControllerState, IMatchState>(){
+		{GameControllerState.MatchStarting, new StartMatchState()},
+		{GameControllerState.MatchRunning, new RunningMatchState()},
+		{GameControllerState.MatchEnding, new EndMatchState()}
+	};
+	private IMatchState m_CurrentState = null;
+	
 	private static Game_Controller instance;
 	public static Game_Controller Instance{
 		get{
@@ -39,6 +54,9 @@ public class Game_Controller : NetworkBehaviour {
 			return instance;
 		}
 	}
+
+	[SerializeField]
+	public GameControllerState m_State = GameControllerState.MatchStarting;
 	public Weapons_Catalog weaponsCatalog;
 	public int maxPlayers = 32;
 	public GameObject botPrefab;
@@ -95,8 +113,8 @@ public class Game_Controller : NetworkBehaviour {
 	[Header("UI Variables")]
 	public int matchLength;
 	[SyncVar]
-	//TODO: make this not an int
-	public int currentTime;
+	public double currentTime;
+
 	public float fps;
 	[SyncVar]
 	public int scoreA;
@@ -104,10 +122,10 @@ public class Game_Controller : NetworkBehaviour {
 	public int scoreB;
 	[Header( "UI Objects")]
 	public Text UI_timeText;
-	Text UI_homeScoreText;
-	Image UI_homeColour;
-	Text UI_awayScoreText;
-	Image UI_awayColour;
+	public Text UI_homeScoreText;
+	public Image UI_homeColour;
+	public Text UI_awayScoreText;
+	public Image UI_awayColour;
 	public Text UI_fpsText;
 	public GameObject eventSystem;
 	public GameObject gameplayUI;
@@ -121,7 +139,6 @@ public class Game_Controller : NetworkBehaviour {
 	public Text endTimeText;
 	public Text endScoreText;
 	public GameObject winPanel;
-	public double initialTime;
 
 	public bool GameClipMode = false;
 	public GameObject GameClipCameraPrefab;
@@ -174,22 +191,13 @@ public class Game_Controller : NetworkBehaviour {
 		if (SceneManager.GetActiveScene().name != "LobbyScene")
 		{
 			//TODO This should only runn on the server
-			InvokeRepeating("GameUpdate", 1f, 1f);
-			InvokeRepeating("UpdateUI", 1f, 0.1f);
 			InvokeRepeating("UpdateHost", 130f, 10f);
 		}
-		if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
-		{
-			SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
-		}
-
-
 
 		try
 		{
 			string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
 			this.matchLength = int.Parse(matchSettings[0]);
-			initialTime = Time.time;//Network.time;
 			this.gameMode = matchSettings[1];
 		}
 		catch
@@ -198,11 +206,9 @@ public class Game_Controller : NetworkBehaviour {
 
 			string[] matchSettings = Profile.RestoreMatchFile();
 			this.matchLength = int.Parse(matchSettings[0]);
-			//TODO: Update
-			initialTime = Time.time;//Network.time;
 			this.gameMode = matchSettings[1];
 		}
-		currentTime = matchLength;
+		//currentTime = matchLength;
 		
 		foreach(Spawn_Point spawn in FindObjectsOfType<Spawn_Point>()){
 			spawn.DeactivateSpawn();
@@ -245,6 +251,12 @@ public class Game_Controller : NetworkBehaviour {
 		}
 		Invoke("PhysicsUpdate", 1f);
 
+		if (CustomNetworkManager.IsServerMachine()){
+			print("Starting State Machine");
+			//StartCoroutine(RunStateMachine());
+			ChangeMatchState(GameControllerState.MatchStarting);
+		}
+
 	}
 	void Start(){
 		if (CustomNetworkManager.IsServerMachine())
@@ -270,6 +282,66 @@ public class Game_Controller : NetworkBehaviour {
 			}
 		}
 	}
+
+	// ////////////////////////////////////////////////
+	// State Machine stuff
+	// ///////////////////////////////////////////////
+	//TODO: Remove when done
+	/*IEnumerator RunStateMachine(){
+		//TODO: This set the instance in the normal way instead of start for UImanager and remove this line
+		print("Start first");
+		yield return new WaitForSecondsRealtime(0.1f);
+		print("End yield");
+		//TODO: Create shutdown signal
+		while(true){
+			switch (m_State){
+				case GameControllerState.MatchLoading:
+					print("Match loading");
+					yield return this.LoadMatch();
+					print("Done loading");
+					break;
+				case GameControllerState.MatchStarting:
+					yield return this.StartMatch();
+					break;
+				case GameControllerState.MatchRunning:
+					yield return this.GameUpdate();
+					break;
+				case GameControllerState.MatchEnding:
+					yield return this.EndGame();
+					break;
+				case GameControllerState.MatchEnded:
+					yield return this.MatchEnded();
+					break;
+				case GameControllerState.MatchRestarting:
+					yield return this.RestartGame();
+					break;
+			}
+			yield return new WaitForEndOfFrame();
+		}
+	}*/
+
+	public void ChangeMatchState(GameControllerState newState){
+		if (m_CurrentState != null){
+			m_CurrentState.OnExit(this);
+		}
+		m_CurrentState = m_StateClasses[newState];
+		if (isServer){
+			RPC_ChangeMatchState(newState);
+		}
+
+		m_CurrentState.OnEnter(this);
+	}
+
+	//Warning: We ALWAYS call client rpc's on the server explicitly
+	//because they might not be run on server onlys IIRC
+	[ClientRpc(includeOwner = false)] 
+	public void RPC_ChangeMatchState(GameControllerState newState){
+		if(!isServer)
+			this.ChangeMatchState(newState);
+	}
+
+	//TODO: Assign the enum states somewhere
+
 
 	//Invoked when the game mode has changed
 	void SetGameMode(string oldValue, string newValue){
@@ -371,31 +443,6 @@ public class Game_Controller : NetworkBehaviour {
 		return _playerID;
 	}
 
-	/*TODO: Remove
-	[MRPC]
-	public void RPC_AddPlayerStat(string name, int _owner, bool _isBot){
-		PlayerStats stat = playerStats[_owner];
-		stat.name = name;
-		stat.kills = 0;
-		stat.deaths = 0;
-		stat.score = 0;
-		stat.isBot = _isBot;
-		stat.isFilled = true;
-
-		//De (re)activate the bot here
-		int _botIndex = _owner > 64 ? _owner : _owner + 64;
-		if(GetBotFromPlayerID(_botIndex) != null)
-			GetBotFromPlayerID(_botIndex).gameObject.SetActive(_isBot);
-		
-		
-
-		//zero is left empty to comply with one indexed
-		playerStats[_owner] =  stat;
-		RPC_SetTeam ();
-
-	}*/
-
-
 	public void RPC_SetTeam(){
 		
 		for(int i = 1; i<playerStats.Count; i++) {
@@ -414,88 +461,6 @@ public class Game_Controller : NetworkBehaviour {
 		
 	}
 	
-
-
-	public void GameUpdate(){
-		//unlock cursor
-		if (Input.GetKey(KeyCode.Escape))
-		{
-			Cursor.lockState = CursorLockMode.None;
-			Cursor.visible = true;
-		}
-		
-
-		foreach (Player_Controller player in GameObject.FindObjectsOfType<Player_Controller>()) {
-			if (player.isLocalPlayer) {
-				localPlayer = player;
-			}
-		}
-
-		currentTime = currentTime - 1;
-		if (currentTime <= 0) {
-			EndGame ();
-		}
-		//TODO: Do through syncvar in damage class
-		//if (Metwork.peerType != MetworkPeerType.Disconnected) {
-			//UpdateShipHealths ();
-		//}
-
-		fps = 1f / Time.deltaTime;
-		
-		switch (gameMode) {
-		case "Destruction":
-			scoreA = (int)carrierADmg.currentHealth;
-			scoreB = (int)carrierBDmg.currentHealth;
-			if (scoreA <= 0 || scoreB <= 0) {
-				EndGame ();
-			}
-			break;
-		case "Team Deathmatch":
-			if (scoreA >= 100 || scoreB >= 100) {
-				EndGame ();
-			}
-			break;
-		case "Capture The Flag":
-
-			break;
-		case GameType.ControlPoint:
-			ControlPoint[] cps = FindObjectsOfType<ControlPoint>();
-			scoreA = 0;
-			scoreB = 0;
-			foreach(ControlPoint cp in cps){
-				if (cp.m_Status == GameItem.ControlStatus.TeamA){
-					scoreA += 1;
-				}
-				else if (cp.m_Status == GameItem.ControlStatus.TeamB){
-					scoreB += 1;
-				}
-			}
-			if (scoreA >= cps.Length || scoreB >= cps.Length){
-				EndGame();
-			}
-			break;
-		case "Meltdown":
-			scoreA = (int)carrierADmg.currentHealth;
-			scoreB = (int)carrierADmg.originalHealth-(int)carrierADmg.currentHealth;
-
-			if (scoreA <= 0) {
-				EndGame ();
-			}
-			break;
-		case "Soccer":
-
-			break;
-		default:
-			break;
-		}
-
-
-
-	}
-	[MRPC]
-	public void RPC_UpdateTime(int _time){
-		currentTime = _time;
-	}
 	public void UpdateShipHealths(){
 		if(carrierADmg == null){
 			return;
@@ -517,184 +482,7 @@ public class Game_Controller : NetworkBehaviour {
 			carrierBDmg.currentHealth = _damage;
 		}
 	}
-
-	public void UpdateUI(){
-		int minutes = Mathf.FloorToInt(currentTime / 60f );
-		int seconds =Mathf.FloorToInt( currentTime % 60);
-
-		//Update the scores of the teams, the local team being on the
-		//left side and the opposing team being on the right
-		#if !UNITY_SERVER
-		if (localPlayer != null && localTeam == 0) {
-			UI_homeScoreText.text = scoreA.ToString();
-			UI_awayScoreText.text = scoreB.ToString();
-			UI_homeColour.color = new Color(0,1f,0);
-			UI_awayColour.color = new Color(1f,0f,0);
-		} else if (localTeam == 1){
-			UI_homeScoreText.text = scoreB.ToString();
-			UI_awayScoreText.text = scoreA.ToString();
-			UI_awayColour.color = new Color(0,1f,0);
-			UI_homeColour.color = new Color(1f,0f,0);
-		}
-		else {
-			UI_homeScoreText.text = scoreB.ToString() + "*";
-			UI_awayScoreText.text = scoreA.ToString();
-			UI_awayColour.color = new Color(0,1f,0);
-			UI_homeColour.color = new Color(1f,0f,0);
-		}
-		#endif
-
-		//Update the time
-		UI_timeText.text = minutes.ToString("00")+":"+ seconds.ToString("00");
-
-
-	}
-	public void EndGame(){
-		//Time.timeScale = 0.5f;
-		CancelInvoke ("GameUpdate");
-		CancelInvoke ("UpdateUI");
-		
-		switch (gameMode) {
-		case "Destruction":
-			scoreA = (int)carrierADmg.currentHealth;
-			scoreB = (int)carrierBDmg.currentHealth;
-			if (scoreA > scoreB) {
-				winningTeam = 0;
-			}
-			else if (scoreA < scoreB) {
-				winningTeam = 1;
-			}
-			 else {
-				winningTeam = -1;
-			}
-			break;
-		case "Team Deathmatch":
-			if (scoreA > scoreB) {
-				winningTeam = 0;
-			}
-			else if (scoreA < scoreB) {
-				winningTeam = 1;
-			}
-			 else {
-				winningTeam = -1;
-			}
-			break;
-		case "Capture The Flag":
-			//Check if the overrideWinner is the default
-			//If it isn't that means one have the flags have been captured
-			if (overrideWinner != 1000) {
-				winningTeam = overrideWinner;
-			}
-			//The game has timed out
-			else if (scoreA > scoreB) {
-				winningTeam = 0;
-			}
-			else if (scoreA < scoreB) {
-				winningTeam = 1;
-			}
-			 else {
-				winningTeam = -1;
-			}
-			break;
-		case "Meltdown":
-			scoreA = (int)carrierADmg.currentHealth;
-			scoreB = (int)carrierADmg.originalHealth-(int)carrierADmg.currentHealth;
-			if (scoreA >0) {
-				winningTeam = 0;
-			}
-			else {
-				winningTeam = 1;
-			}
-			break;
-		default:
-			break;
-
-		}
-
-		List<PlayerStat> winners = new List<PlayerStat> ();
-		List<PlayerStat> losers = new List<PlayerStat> ();
-
-		foreach (PlayerStat player in playerStats) {
-			if (player.name == "") {
-				continue;
-			}
-			if (player.team == winningTeam) {
-				player.score += 50;
-				winners.Add (player);
-			}
-			//Tie
-			else if(winningTeam == -1){
-				player.score += 50;
-				if(player.team == 0){
-					winners.Add (player);
-				}
-				else{
-					losers.Add (player);
-				}
-			} else {
-				losers.Add (player);
-			}
-
-		}
-		winnerNamesText.text = "";
-		winnerKillsText.text = "";
-		loserNamesText.text = "";
-		loserKillsText.text = "";
-
-		winners.Sort((x,y) => y.score.CompareTo(x.score));
-		losers.Sort((x,y) => y.score.CompareTo(x.score));
-
-		foreach (PlayerStat player in winners) {
-			winnerNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16)) + "\r\n";
-			winnerKillsText.text += player.kills.ToString() + "\t"  + player.deaths.ToString() + "\t" + player.assists.ToString() + "\r\n";
-		}
-		foreach (PlayerStat player in losers) {
-			loserNamesText.text += player.name.Substring(0,Mathf.Min(player.name.Length,16))  + "\r\n";
-			loserKillsText.text += player.kills.ToString() + "\t"  + player.deaths.ToString() + "\t" + player.assists.ToString() + "\r\n";
-
-		}
-		//Hide the pause menu, all the players should be destroyed anyway so everything should be peachy
-		UI_Manager._instance.pauseMenu.gameObject.SetActive(false);
-		if(SceneManager.GetSceneByName("SpawnScene").isLoaded == true){
-			SceneManager.UnloadSceneAsync("SpawnScene");
-		}
-		endOfGameUI.SetActive (true);
-		gameplayUI.SetActive (false);
-
-		if (playerStats[localPlayer.playerID].team == winningTeam)
-		{
-			winningTeamText.text = "Your Team Wins!";
-		}
-		else if(winningTeam == -1){
-			winningTeamText.text = "Tie Game!";
-		}
-		else
-		{
-			winningTeamText.text = "Your Team Lost!";
-		}
-		if (scoreA < 0) {
-			scoreA = 0;
-		}
-		if (scoreB < 0) {
-			scoreB = 0;
-		}
-		endScoreText.text = scoreA + ":" + scoreB;
-		int minutes = Mathf.FloorToInt(currentTime / 60f );
-		int seconds =Mathf.FloorToInt( currentTime % 60);
-		if (minutes > 0) {
-
-			endTimeText.text = "Remaining Time: " + minutes.ToString ("00") + ":" + seconds.ToString ("00");
-		} else {
-			endTimeText.text = "Remaining Time: 0:00"; 
-		}
-		endTimeText.text = "Next match in 20 sec";
-		eventSystem.SetActive(true);
-		SavePlayerScore();
-		if(NetworkServer.active)
-			Invoke(nameof(RestartGame), 20.0f);
-
-
-	}
+	
 	public void SavePlayerScore(){
 		string[] data = Util.LushWatermelon(System.IO.File.ReadAllLines (Application.persistentDataPath+"/Player Data.txt"));
 		int previousScore = int.Parse( data [1]);
@@ -710,7 +498,6 @@ public class Game_Controller : NetworkBehaviour {
 	public void RPC_EndGame(){
 
 	}
-
 	public static GameObject GetGameObjectFromNetID(int _netID){
 		//CHECK Function never really used
 		Metwork_Object[] netObjects = GameObject.FindObjectsOfType<Metwork_Object> ();
@@ -724,17 +511,6 @@ public class Game_Controller : NetworkBehaviour {
 		return GameObject.CreatePrimitive(PrimitiveType.Sphere);
 	}
 
-	/*TODO Remove
-	public static Com_Controller GetBotFromPlayerID(int _playerID){
-		for (int i = 0; i < Instance.bots.Count; i++) {
-			if (Instance.bots[i].botID == _playerID) {
-				return Instance.bots[i];
-			}
-		}
-		print ("Failed to find Bot " + _playerID.ToString());
-		return null;
-	}*/
-
 	//safer than get gameobject but slower
 	public Player_Controller GetPlayerFromNetID(int _netID){
 		
@@ -747,11 +523,6 @@ public class Game_Controller : NetworkBehaviour {
 		Debug.LogWarning ("Could not find player with id: " + _netID.ToString());
 		return null;//GameObject.CreatePrimitive(PrimitiveType.Sphere);
 	}
-
-	//[MRPC]
-	//public void RPC_ActivatePlayer(int _owner){
-//		GetPlayerFromNetID (_owner).gameObject.SetActive (true);
-	//}
 
 	public void AddAssist(int playerNum, int assistAmount){
 		/*TODO This can be done through a synced hash list
@@ -808,58 +579,14 @@ public class Game_Controller : NetworkBehaviour {
 
 	}
 
-	public void RestartGame()
-	{
-		print("Loading next scene Scene");
-		//FindObjectOfType<Network_Manager>().minStartingPlayers = 8;
-		//SceneManager.LoadScene("LobbyScene");
-		string newScene = "LobbyScene";
-		switch(SceneManager.GetActiveScene().name){
-			case "LHX Ultima Base":
-				newScene = "Sector 9";
-				break;
-			/*case "Crater":
-				newScene = "Fracture";
-				break;
-			case "Fracture":
-				newScene = "Space";
-				break;
-			case "Space":
-				newScene = "Sector 9";
-				break;*/
-			case "Sector 9":
-				newScene = "LHX Ultima Base";
-				break;
-			default:
-				newScene = "MatchScene";
-				break;
-		}
-		
-		string[] matchSettings = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Match Settings.txt"));
-		//TODO: Update to support all match types
-		if(gameMode == "Team Deathmatch" || gameMode == "Capture The Flag"){
-			matchSettings[2] = newScene;
-			System.IO.File.WriteAllLines (Application.persistentDataPath + "/Match Settings.txt", Util.ThiccWatermelon (matchSettings));
-		}
-		else{
-			newScene = matchSettings[2];
-		}
-		
-		
-		if(isServer){
-			FindObjectOfType<PHPMasterServerConnect>().UpdateHost (newScene);
-		}
-
-		CustomNetworkManager.Instance.ServerChangeScene(newScene);
-		//SceneManager.LoadScene("TransistionScene");
-		//TODO: Assign variable gameplayUI of gamecontroller in LHX ULTIMA
-		
 	
-
-	}
 	
 	void Update()
 	{
+		if (m_CurrentState != null){
+			m_CurrentState.OnUpdate(this);
+		}
+
 		if (Input.GetKeyDown("0") && false)
 		{
 			GameClipMode = !GameClipMode;

@@ -14,19 +14,13 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 	public Camera sceneCam;
 
 	Game_Controller gameController;
-	public GameObject eventSystem;
 
 
 	// Use this for initialization
 	void Awake () {
 		gameController = Game_Controller.Instance;
-		if (eventSystem == null) {
-			eventSystem = GameObject.Find ("EventSystem");
-
-		}
+		
 		sceneCam = gameController.sceneCam;
-		eventSystem.SetActive (true);
-		//sceneCam.transform.position = Vector3.Lerp(Vector3.zero, sceneCam.transform.position, 0.5f);
 		sceneCam.GetComponent<Camera>().orthographic = true;
 		sceneCam.GetComponent<Camera>().orthographicSize = 5f;
 
@@ -64,9 +58,6 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		sceneCam.GetComponent<Camera>().orthographicSize = Mathf.Lerp(sceneCam.GetComponent<Camera>().orthographicSize,Mathf.Max(_bounds.extents.x,_bounds.extents.z)*1.5f, 0.3f);
 		_bounds.center = new Vector3(_bounds.center.x, 1500f, _bounds.center.z);
 		sceneCam.transform.position = _bounds.center;
-		
-		
-
 	}
 
 
@@ -88,8 +79,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		//zoom down effect
 		_player.mainCamObj.transform.position = Game_Controller.Instance.sceneCam.transform.position;
 		_player.mainCamObj.transform.rotation = Game_Controller.Instance.sceneCam.transform.rotation;
-		SceneManager.UnloadSceneAsync ("SpawnScene");
-		this.enabled = (false);
+		this.gameObject.SetActive(false);
 
 
 	}

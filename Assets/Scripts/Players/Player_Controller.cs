@@ -152,7 +152,7 @@ public class Player_Controller : Player {
 			if (minimapUI != null) {
 				minimapUI.SetActive (true);
 			}
-			UI_Manager._instance.SetReticleVisibility(true);
+			UI_Manager.Instance.SetReticleVisibility(true);
 		}
 		previousNormal = transform.up;
 		previousRot = Vector3.zero;
@@ -393,7 +393,7 @@ public class Player_Controller : Player {
 			breatheSound.volume = 0f;
 		}
 		//TODO: Come up with a move elegant solution
-		if (Input.GetButton ("Fire1") && !player_IK.IsSprinting() && !UI_Manager._instance.pauseMenu.gameObject.activeSelf) {
+		if (Input.GetButton ("Fire1") && !player_IK.IsSprinting() && !UI_Manager.Instance.pauseMenu.gameObject.activeSelf) {
 			if(grabbable){
 				ReleaseGrab (true);
 			}
@@ -1254,12 +1254,8 @@ public class Player_Controller : Player {
 		Game_Controller.Instance.sceneCam.gameObject.SetActive(true);
 		
 		if (isLocalPlayer) {
-			UI_Manager._instance.SetReticleVisibility(false);
-
-			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
-			{
-				SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
-			}
+			UI_Manager.Instance.SetReticleVisibility(false);
+			UI_Manager.Instance.m_SpawnUI.SetActive(true);
 		}
 	}
 
@@ -1362,7 +1358,7 @@ public class Player_Controller : Player {
 		yield return StartCoroutine(base.Co_SwitchWeapons(_primary));
 
 		if(isLocalPlayer){
-			UI_Manager._instance.ChangeWeapon (primarySelected);
+			UI_Manager.Instance.ChangeWeapon (primarySelected);
 		}	
 		
 	}
@@ -1536,9 +1532,9 @@ public class Player_Controller : Player {
 			return;
 		}
 		if (fireScript != null) {
-			UI_Manager._instance.UpdateAmmo(fireScript.magAmmo, fireScript.magSize, fireScript.totalAmmo);
+			UI_Manager.Instance.UpdateAmmo(fireScript.magAmmo, fireScript.magSize, fireScript.totalAmmo);
 		}
-		UI_Manager._instance.fuelBar.localScale = new Vector2(1f, jetpackFuel / 2f);
+		UI_Manager.Instance.fuelBar.localScale = new Vector2(1f, jetpackFuel / 2f);
 		blackoutShader?.ChangeBlood (Mathf.Clamp01(1-damageScript.currentHealth/100f));
 
 

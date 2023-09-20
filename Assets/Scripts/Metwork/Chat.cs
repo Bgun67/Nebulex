@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Mirror;
+using TMPro;
 
 public class Chat : NetworkBehaviour {
 
 
 	public Text txtChatLog;
-	public InputField txtField;
+	public TMP_InputField txtField;
 
 	public Game_Controller gameController;
 
