@@ -88,8 +88,8 @@ public class RunningMatchState : IMatchState{
 
 		switch (gc.gameMode) {
 		case "Destruction":
-			gc.scoreA = gc.carrierADmg.currentHealth;
-			gc.scoreB = gc.carrierBDmg.currentHealth;
+			gc.scoreA = (int)gc.carrierADmg.currentHealth;
+			gc.scoreB = (int)gc.carrierBDmg.currentHealth;
 			if (gc.scoreA <= 0 || gc.scoreB <= 0) {
 				gc.ChangeMatchState(Game_Controller.GameControllerState.MatchEnding);
 			}
@@ -119,8 +119,8 @@ public class RunningMatchState : IMatchState{
 			}
 			break;
 		case "Meltdown":
-			gc.scoreA = gc.carrierADmg.currentHealth;
-			gc.scoreB = gc.carrierADmg.originalHealth-gc.carrierADmg.currentHealth;
+			gc.scoreA = (int)gc.carrierADmg.currentHealth;
+			gc.scoreB = (int)gc.carrierADmg.originalHealth-(int)gc.carrierADmg.currentHealth;
 
 			if (gc.scoreA <= 0) {
 				gc.ChangeMatchState(Game_Controller.GameControllerState.MatchEnding);
@@ -179,8 +179,8 @@ public class EndMatchState : IMatchState{
 		
 		switch (gc.gameMode) {
 		case "Destruction":
-			gc.scoreA = gc.carrierADmg.currentHealth;
-			gc.scoreB = gc.carrierBDmg.currentHealth;
+			gc.scoreA = (int)gc.carrierADmg.currentHealth;
+			gc.scoreB = (int)gc.carrierBDmg.currentHealth;
 			if (gc.scoreA > gc.scoreB) {
 				gc.winningTeam = 0;
 			}
@@ -220,8 +220,8 @@ public class EndMatchState : IMatchState{
 			}
 			break;
 		case "Meltdown":
-			gc.scoreA = gc.carrierADmg.currentHealth;
-			gc.scoreB = gc.carrierADmg.originalHealth-gc.carrierADmg.currentHealth;
+			gc.scoreA = (int)gc.carrierADmg.currentHealth;
+			gc.scoreB = (int)gc.carrierADmg.originalHealth-(int)gc.carrierADmg.currentHealth;
 			if (gc.scoreA >0) {
 				gc.winningTeam = 0;
 			}
