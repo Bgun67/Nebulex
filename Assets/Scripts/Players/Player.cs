@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
+using Cinemachine;
+using Unity.Services.Analytics;
 
 public class Player : NetworkBehaviour {
 	public Rigidbody rb;
@@ -73,6 +75,7 @@ public class Player : NetworkBehaviour {
 	/// <summary>
 	/// The player's team. 0 being team A and 1 being team B
 	/// </summary>
+	public PlayerRenderer playerRenderer;
 	public Material[] teamMaterials;
 	public SkinnedMeshRenderer[] jerseyMeshes;
 
@@ -92,13 +95,9 @@ public class Player : NetworkBehaviour {
 
 	[Header("Cameras")]
 	#region cameras
-	public Camera mainCam;
-	[HideInInspector]
-	public GameObject mainCamObj{
-		get{
-			return mainCam.gameObject;
-		}
-	}
+	public CinemachineVirtualCamera virtualCam;
+	//Reference to the Cinemachine brain camera, moves around.
+	[HideInInspector] public Camera mainCam;
 	
 	#endregion
 	[Header("Sound")]
@@ -164,8 +163,13 @@ public class Player : NetworkBehaviour {
 		Crouching,
 		Running
 	}
+	protected virtual void Awake(){
+		playerRenderer = GetComponentInChildren<PlayerRenderer>();
+	}
 
-	
+	public override void OnStartClient(){
+		playerRenderer.SetLocal(isLocalPlayer);
+	}
 
 	protected void Reload(){
 		if(isLocalPlayer){
@@ -228,7 +232,7 @@ public class Player : NetworkBehaviour {
 		//	_dropGrenadeFactor = 0.05f;
 		//}
 		
-		Cmd_SpawnGrenade(mainCam.transform.forward * 10.0f * _dropGrenadeFactor, grenadeSpawn.position, grenadeSpawn.rotation);
+		Cmd_SpawnGrenade(virtualCam.transform.forward * 10.0f * _dropGrenadeFactor, grenadeSpawn.position, grenadeSpawn.rotation);
 	}
 	[Command]
 	public void Cmd_SpawnGrenade(Vector3 _velocity, Vector3 _position, Quaternion _rotation){
@@ -285,7 +289,7 @@ public class Player : NetworkBehaviour {
 			return;
 		}
 		RaycastHit hit;
-		if (Physics.SphereCast (mainCamObj.transform.position,0.01f, mainCamObj.transform.forward, out hit, 2f)) {
+		if (Physics.SphereCast (virtualCam.transform.position,0.01f, virtualCam.transform.forward, out hit, 2f)) {
 			if (hit.transform.root.tag == "Player") {
 				if (hit.transform.root.GetComponent<Animator>().GetBool("Knife"))
 				{
@@ -478,8 +482,8 @@ public class Player : NetworkBehaviour {
 		if (!grappleActive)
 		{
 			//Spread of the gun
-			fireScript.shotSpawn.transform.forward = this.mainCam.transform.forward 
-													+ muzzleClimb * fireScript.recoilAmount * mainCam.transform.up * 0.3f
+			fireScript.shotSpawn.transform.forward = this.virtualCam.transform.forward 
+													+ muzzleClimb * fireScript.recoilAmount * virtualCam.transform.up * 0.3f
 													+ fireScript.recoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
 													;
 			if(muzzleClimb < 0.6f){

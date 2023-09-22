@@ -64,7 +64,6 @@ public class Game_Controller : NetworkBehaviour {
 
 	public Transform shipOneTransform;
 	public Transform shipTwoTransform;
-	public Camera sceneCam;
 	//public MetworkView netView;
 
 	public Flag flagA;
@@ -858,80 +857,7 @@ public class Game_Controller : NetworkBehaviour {
 
 	}
 	
-	void Update()
-	{
-		if (Input.GetKeyDown("0") && false)
-		{
-			GameClipMode = !GameClipMode;
-			if (GameClipMode)
-			{
-				localPlayer.mainCamObj.SetActive(false);
-
-				foreach (TextMesh textMesh in FindObjectsOfType<TextMesh>())
-				{
-					textMesh.text = "";
-				}
-				GameClipCamera = Instantiate(GameClipCameraPrefab, localPlayer.transform.position, localPlayer.transform.rotation).GetComponent<Camera>();
-			}
-			else
-			{
-				localPlayer.mainCamObj.SetActive(true);
-				localPlayer.mainCamObj.transform.position = GameClipCamera.transform.position;
-				localPlayer.helmet.SetActive(false);
-				Destroy(GameClipCamera.gameObject);
-			}
-		}
-		if (GameClipMode)
-		{
-			if (GameClipTarget == null)
-			{
-				GameClipTarget = localPlayer.transform;
-			}
-			localPlayer.helmet.SetActive(true);
-			GameClipCamera.transform.LookAt(GameClipTarget.position);
-			Vector3 targetPosition = GameClipTarget.position - GameClipCamera.transform.forward * GameClipCameraOffset;
-			GameClipCamera.transform.position = Vector3.Lerp(GameClipCamera.transform.position, targetPosition, 0.5f);
-			GameClipCamera.transform.RotateAround(GameClipTarget.transform.position, Vector3.up, Input.GetAxis("Rotate Y")*5f);
-			GameClipCamera.transform.RotateAround(GameClipTarget.transform.position, Vector3.right, Input.GetAxis("Rotate X")*5f);
-			if (Input.GetKey(KeyCode.PageUp))
-			{
-				GameClipCameraOffset++;
-			}
-			else if (Input.GetKey(KeyCode.PageDown)){
-				GameClipCameraOffset--;
-			}
-			if (Input.GetKeyDown(KeyCode.I)){
-				GameClipCamera.enabled = !GameClipCamera.enabled;
-			}
-			if (Input.GetKeyDown("j"))
-			{
-				if (GameClipTarget != localPlayer.transform)
-				{
-					GameClipTarget = localPlayer.transform;
-				}
-				else
-				{
-					foreach (Ship_Controller ship in FindObjectsOfType<Ship_Controller>())
-					{
-						if (ship.player == localPlayer.gameObject)
-						{
-							GameClipTarget = ship.transform;
-							break;
-						}
-					}
-					foreach (Turret_Controller turret in FindObjectsOfType<Turret_Controller>())
-					{
-						if (turret.player == localPlayer.gameObject)
-						{
-							GameClipTarget = turret.transform;
-							break;
-						}
-					}
-				}
-			}
-			GameClipCamera.depth = 3;
-		}
-	}
+	
 	public static int GetTeam(int _viewID){
 		return Game_Controller.instance.playerStats[_viewID].team;
 	}

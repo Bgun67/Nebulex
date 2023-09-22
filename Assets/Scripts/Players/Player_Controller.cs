@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
+using Cinemachine;
 
 public class Player_Controller : Player {
 	float v;
@@ -67,13 +68,15 @@ public class Player_Controller : Player {
 
 	
 
-	void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		rb = this.GetComponent<Rigidbody> ();
 		anim = this.GetComponentInChildren<Animator> ();
 		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
-		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
+		mainCam = FindObjectOfType<CinemachineBrain>().GetComponent<Camera>();
+		blackoutShader = mainCam.GetComponent<Blackout_Effects> ();
 	}
 
 	// Use this for initialization
@@ -82,8 +85,8 @@ public class Player_Controller : Player {
 		gameController = Game_Controller.Instance;
 		
 		
-		originalCamPosition = mainCamObj.transform.localPosition;
-		originalCamRotation = mainCamObj.transform.localRotation;
+		originalCamPosition = virtualCam.transform.localPosition;
+		originalCamRotation = virtualCam.transform.localRotation;
 
 		//Feet raycasts
 		lfRaycast = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
@@ -120,11 +123,6 @@ public class Player_Controller : Player {
 	// runs after start basically the same
 	//Check remove this function if possible
 	public void Setup(){
-		gameController = FindObjectOfType<Game_Controller> ();
-		rb = this.GetComponent<Rigidbody> ();
-		anim = this.GetComponentInChildren<Animator> ();
-		mainCam = mainCamObj.GetComponent<Camera> (); 
-		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
 
 		airTime = suffocationTime;
 		grenadesNum = 4;
@@ -212,7 +210,7 @@ public class Player_Controller : Player {
 		}
 
 		if (!isLocalPlayer) {
-			mainCamObj.SetActive(false);
+			virtualCam.enabled = false;
 			minimapCam.SetActive(false);
 			iconCamera.SetActive (false);
 
@@ -628,8 +626,7 @@ public class Player_Controller : Player {
 		primaryWeapon.GetComponent<Fire>().RestockAmmo();
 		secondaryWeapon.GetComponent<Fire>().RestockAmmo();
 		if (isLocalPlayer) {
-			Game_Controller.Instance.sceneCam.gameObject.SetActive(false);
-			mainCamObj.SetActive(true);
+			virtualCam.enabled = true;
 			minimapCam.SetActive(true);
 			iconCamera.SetActive (true);
 		}
@@ -647,11 +644,11 @@ public class Player_Controller : Player {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
-			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
-			mainCam.transform.position = Vector3.SmoothDamp(mainCam.transform.position, _scopePosition, ref currentCamVelocity, 0.07f);
+			float _distance = Vector3.Distance(virtualCam.transform.position, _scopePosition);
+			virtualCam.transform.position = Vector3.SmoothDamp(virtualCam.transform.position, _scopePosition, ref currentCamVelocity, 0.07f);
 
 			//mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
-			mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation,Quaternion.LookRotation(_scopeTransform.forward, _scopeTransform.up),0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
+			virtualCam.transform.rotation = Quaternion.Lerp(virtualCam.transform.rotation,Quaternion.LookRotation(_scopeTransform.forward, _scopeTransform.up),0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
 
 			player_IK.Scope(true);
 			Zoom(true);
@@ -666,8 +663,8 @@ public class Player_Controller : Player {
 			}
 
 		} else {
-			mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition,originalCamPosition,0.2f*Time.deltaTime/0.034f);
-			mainCam.transform.localRotation = Quaternion.Lerp(mainCam.transform.localRotation, originalCamRotation, 0.1f);
+			virtualCam.transform.localPosition = Vector3.Lerp(virtualCam.transform.localPosition,originalCamPosition,0.2f*Time.deltaTime/0.034f);
+			virtualCam.transform.localRotation = Quaternion.Lerp(virtualCam.transform.localRotation, originalCamRotation, 0.1f);
 
 			Zoom(false);
 			player_IK.Scope(false);
@@ -693,14 +690,14 @@ public class Player_Controller : Player {
 	//zooms the camera on scope
 
 	public void Zoom(bool zoomIn){
-		float i = mainCam.fieldOfView;
+		float i = virtualCam.m_Lens.FieldOfView;
 
 
 		if (zoomIn == true) {
-			mainCam.fieldOfView = Mathf.Lerp(i,0.5f*Game_Settings.FOV,0.5f);
+			virtualCam.m_Lens.FieldOfView = Mathf.Lerp(i,0.5f*Game_Settings.FOV,0.5f);
 		}else
 		{
-			mainCam.fieldOfView = Mathf.Lerp(i, Game_Settings.FOV, 0.5f);
+			virtualCam.m_Lens.FieldOfView = Mathf.Lerp(i, Game_Settings.FOV, 0.5f);
 		}
 	}
 	
@@ -760,9 +757,9 @@ public class Player_Controller : Player {
 		float bestAngle = 15f;
 
 		foreach(Activater activater in allActivaters){
-			Vector3 delta = activater.Position - mainCam.transform.position;
+			Vector3 delta = activater.Position - virtualCam.transform.position;
 			float distance = delta.magnitude;
-			float angle = Vector3.Angle(delta, mainCam.transform.forward);
+			float angle = Vector3.Angle(delta, virtualCam.transform.forward);
 			Vector3 screenpoint = mainCam.WorldToScreenPoint(activater.Position);
 			UI_Manager.GetInstance.activaterUI.SetHighlight(targetActivater, false);
 			UI_Manager.GetInstance.activaterUI.UpdateInfo(activater, screenpoint, distance);
@@ -774,7 +771,7 @@ public class Player_Controller : Player {
 				continue;
 			}
 			if(activater.raycast){
-				if (Physics.Linecast (mainCamObj.transform.position, activater.Position)) {
+				if (Physics.Linecast (virtualCam.transform.position, activater.Position)) {
 				//TODO Ignore this object and player
 				//	continue;
 				}
@@ -816,7 +813,7 @@ public class Player_Controller : Player {
 	public void ReleaseGrab(bool shouldThrow){
 		grabbable.GetComponent<Rigidbody>().isKinematic = false;
 		if(shouldThrow){
-			grabbable.GetComponent<Rigidbody>().velocity = mainCam.transform.forward*5f;
+			grabbable.GetComponent<Rigidbody>().velocity = virtualCam.transform.forward*5f;
 		}
 		else{
 			grabbable.GetComponent<Rigidbody>().velocity = rb.velocity;
@@ -981,7 +978,7 @@ public class Player_Controller : Player {
 		}
 		
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
-		if (Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f)
+		if (Vector3.Distance(virtualCam.transform.localPosition, originalCamPosition) > 3f)
 		{
 			velocity = Vector3.zero;
 			rotation = Vector3.zero;
@@ -991,7 +988,7 @@ public class Player_Controller : Player {
 			anim.SetBool("Float", true);
 
 			//Try to right the player's body and camera (as in exit gravity)
-			Vector3 _aimDirection = mainCam.transform.forward;
+			Vector3 _aimDirection = virtualCam.transform.forward;
 			float _originalLookTime = anim.GetFloat("Look Speed");
 			Vector3 _originalForward = transform.forward;
 
@@ -1173,8 +1170,8 @@ public class Player_Controller : Player {
 		if (!grappleActive)
 		{
 			//Spread of the gun
-			fireScript.shotSpawn.transform.forward = this.mainCam.transform.forward 
-													+ muzzleClimb * fireScript.recoilAmount * mainCam.transform.up * 0.3f
+			fireScript.shotSpawn.transform.forward = this.virtualCam.transform.forward 
+													+ muzzleClimb * fireScript.recoilAmount * virtualCam.transform.up * 0.3f
 													+ fireScript.recoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
 													;
 			if(muzzleClimb < 0.6f){
@@ -1242,17 +1239,15 @@ public class Player_Controller : Player {
         this.transform.position = Vector3.up * 10000f;
         this.gameObject.SetActive (false);
 
-		if(!isLocalPlayer){
-			_ragdollGO.GetComponentInChildren<Camera>().gameObject.SetActive(false);
+		if(isLocalPlayer){
+			_ragdollGO.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>().enabled = (true);
 		}
 		else{
 			Invoke(nameof(CoDie), 4f);
 		}
 	}
 	public override void CoDie(){
-		
-		Game_Controller.Instance.sceneCam.gameObject.SetActive(true);
-		
+				
 		if (isLocalPlayer) {
 			UI_Manager._instance.SetReticleVisibility(false);
 
@@ -1278,11 +1273,11 @@ public class Player_Controller : Player {
 
 
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
-		while(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f){
+		while(Vector3.Distance(virtualCam.transform.localPosition, originalCamPosition) > 3f){
 			yield return new WaitForSeconds(0.5f);
 		}
 
-		Vector3 _aimDirection = mainCam.transform.forward;
+		Vector3 _aimDirection = virtualCam.transform.forward;
 		float _originalLookTime = anim.GetFloat("Look Speed");
 		Vector3 _originalForward = transform.forward;
 		float _counter = 0;
@@ -1322,7 +1317,7 @@ public class Player_Controller : Player {
 		float _counter = 0f;
 
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
-		while(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f){
+		while(Vector3.Distance(virtualCam.transform.localPosition, originalCamPosition) > 3f){
 			yield return new WaitForSeconds(0.5f);
 		}
 
@@ -1332,8 +1327,8 @@ public class Player_Controller : Player {
 		}else{
 			newForwardVector = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
 		}
-		Vector3 _originalForward = mainCam.transform.forward;
-		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/250f);
+		Vector3 _originalForward = virtualCam.transform.forward;
+		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,virtualCam.transform.forward, transform.right)/250f);
 		
 		while (_counter < 1f)
 		{
@@ -1439,13 +1434,15 @@ public class Player_Controller : Player {
 		primaryWeapon.transform.localPosition = Vector3.zero;
 		primaryWeapon.transform.localRotation = Quaternion.identity;
 		primaryWeapon.GetComponent<Fire> ().OnReloadEvent = new Fire.ReloadEvent(Reload);
+		
 
 		secondaryWeapon = (GameObject)Instantiate (secondaryWeaponPrefab, finger);
 		secondaryWeapon.transform.localPosition = Vector3.zero;
 		secondaryWeapon.transform.localRotation = Quaternion.identity;
 		secondaryWeapon.SetActive (false);
 		secondaryWeapon.GetComponent<Fire> ().OnReloadEvent = new Fire.ReloadEvent(Reload);
-
+		
+		
 		//scopes now
 		if(primaryScopeNum >= 0){
 			GameObject primaryScope = Game_Controller.Instance.weaponsCatalog.scopes[primaryScopeNum];
@@ -1455,6 +1452,7 @@ public class Player_Controller : Player {
 			GameObject secondaryScope = Game_Controller.Instance.weaponsCatalog.scopes[secondaryScopeNum];
 			Instantiate (secondaryScope, secondaryWeapon.GetComponent<Fire> ().scopePosition);
 		}
+
 
 		//CHECK The latency on this switch may be too much to bear, it may be better to do it locally
 		SwitchWeapons(true, true);

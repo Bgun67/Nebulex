@@ -14,8 +14,8 @@ public class Impact : Map_Manager
 	{
 		foreach (Player_Controller player in players)
 		{
-			GameObject.Instantiate(seaCameraObjs[0], player.mainCamObj.transform);
-			GameObject.Instantiate(seaCameraObjs[1], player.mainCamObj.transform);
+			GameObject.Instantiate(seaCameraObjs[0], player.virtualCam.transform);
+			GameObject.Instantiate(seaCameraObjs[1], player.virtualCam.transform);
 		}
 		foreach (Ship_Controller ship in FindObjectsOfType<Ship_Controller>())
 		{

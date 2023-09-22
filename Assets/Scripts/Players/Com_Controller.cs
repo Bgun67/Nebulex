@@ -57,7 +57,6 @@ public class Com_Controller : Player {
 	public int patrolIndex = 0;
 	[Range(0f,1f)]
 	public float lockOnRate = 0.4f;
-	public Transform head;
 	//public Transform rightHandPosition;
 	public BotState botState;
     NavMeshAgent agent;
@@ -91,16 +90,8 @@ public class Com_Controller : Player {
 		lastPosition = this.transform.position;
 
 		fireScript.totalAmmo = (int)10000;
-		print(fireScript.damagePower);
 		fireScript.damagePower = (int)(difficultySetting.DamageFactor*fireScript.damagePower);
-		print(fireScript.damagePower);
 
-		//TODO: Remove
-		//gameController.bots.Add(this);
-		if (head == null)
-		{
-			head = GameObject.Find("Player Camera").transform;
-		}
 
 		anim.SetFloat("Look Speed", 0.5f);
 		anim.SetBool("Head Turn Enabled", true);
@@ -257,14 +248,14 @@ public class Com_Controller : Player {
 		//Check if our currently targetted player is still visible
 		if (targetPlayer != null && targetPlayer._transform != null && Time.time - targetPlayer._lastSpottedTime < difficultySetting.AttentionSpan && Vector3.Distance(transform.position, targetPlayer._transform.position) < difficultySetting.ViewDistance)
 		{
-			if (Vector3.Angle(targetPlayer._transform.position - head.transform.position, head.transform.forward) < difficultySetting.ViewAngle)
+			if (Vector3.Angle(targetPlayer._transform.position - virtualCam.transform.position, virtualCam.transform.forward) < difficultySetting.ViewAngle)
 			{
-				if (!Physics.Linecast(head.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller>() != null)
+				if (!Physics.Linecast(virtualCam.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller>() != null)
 				{
 
 					targetPlayer._lastSpottedTime = Time.time;
-					targetPlayer._acquiredTime += (Time.time-lastCheckFrame) / (Vector3.Distance(transform.position, targetPlayer._transform.position) + Vector3.Angle(targetPlayer._transform.position - head.transform.position, head.transform.forward));
-					targetPlayer._distance = Vector3.Distance(targetPlayer._transform.position, head.transform.position);
+					targetPlayer._acquiredTime += (Time.time-lastCheckFrame) / (Vector3.Distance(transform.position, targetPlayer._transform.position) + Vector3.Angle(targetPlayer._transform.position - virtualCam.transform.position, virtualCam.transform.forward));
+					targetPlayer._distance = Vector3.Distance(targetPlayer._transform.position, virtualCam.transform.position);
 				}
 			}
 		}
@@ -282,13 +273,13 @@ public class Com_Controller : Player {
 			{
 				continue;
 			}
-			float angle = Vector3.Angle((players[i].transform.position - head.transform.position).normalized, head.transform.forward);
+			float angle = Vector3.Angle((players[i].transform.position - virtualCam.transform.position).normalized, virtualCam.transform.forward);
 			if (angle < difficultySetting.ViewAngle)
 			{
-				float distance = Vector3.Distance(head.transform.position, players[i].transform.position);
+				float distance = Vector3.Distance(virtualCam.transform.position, players[i].transform.position);
 				if (distance < difficultySetting.ViewDistance)
 				{
-					if (!Physics.Linecast(head.transform.position, players[i].transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller>() != null)
+					if (!Physics.Linecast(virtualCam.transform.position, players[i].transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore) || _hit.transform.root.GetComponent<Player_Controller>() != null)
 					{
 
 
@@ -445,7 +436,7 @@ public class Com_Controller : Player {
 	{
 		float distance = Vector3.Magnitude(targetPlayer._transform.position - transform.position);
 		RaycastHit _hit;
-		bool _canSeePlayer = !Physics.Linecast(head.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore);
+		bool _canSeePlayer = !Physics.Linecast(virtualCam.transform.position, targetPlayer._transform.position, out _hit, physicsMask, QueryTriggerInteraction.Ignore);
 		//target out of range, move forward before firing
 		if ( distance>difficultySetting.FiringRange || !_canSeePlayer)
 		{
@@ -493,15 +484,15 @@ public class Com_Controller : Player {
 	{
 
 		//use relative position
-		Vector3 _relativePosition = targetPlayer._transform.position - head.position;
+		Vector3 _relativePosition = targetPlayer._transform.position - virtualCam.transform.position;
 		//Lerp towards player
 		if(!isInSpace){
-			transform.Rotate(0f,Vector3.SignedAngle( head.forward, _relativePosition, Vector3.up)*lockOnRate,0f);
+			transform.Rotate(0f,Vector3.SignedAngle( virtualCam.transform.forward, _relativePosition, Vector3.up)*lockOnRate,0f);
 		}
 		//animate so that it look up/down follows player
-		_angle = Vector3.SignedAngle(head.forward, _relativePosition, transform.right)/100f;
+		_angle = Vector3.SignedAngle(virtualCam.transform.forward, _relativePosition, transform.right)/100f;
 		if(isInSpace){
-			_angle = Vector3.SignedAngle(head.forward, transform.forward, transform.right)/1000f;
+			_angle = Vector3.SignedAngle(virtualCam.transform.forward, transform.forward, transform.right)/1000f;
 		}
 		anim.SetFloat("Look Speed", Mathf.Lerp(anim.GetFloat("Look Speed"),Mathf.Clamp01(anim.GetFloat("Look Speed")- _angle),lockOnRate));
 		Debug.DrawLine(transform.position, transform.position+_relativePosition, Color.white);
@@ -518,11 +509,11 @@ public class Com_Controller : Player {
 				Mathf.Sin(Mathf.Deg2Rad*Random.Range(-varianceFactor, varianceFactor)),
 				1f);
 			//fire
-			fireScript.FireWeapon(head.position+head.transform.forward*0.5f, head.TransformDirection(variance));
-			Debug.DrawRay(head.position+head.transform.forward*0.5f, head.TransformDirection(variance)*100f, Color.magenta);
+			fireScript.FireWeapon(virtualCam.transform.position+virtualCam.transform.forward*0.5f, virtualCam.transform.TransformDirection(variance));
+			Debug.DrawRay(virtualCam.transform.position+virtualCam.transform.forward*0.5f, virtualCam.transform.TransformDirection(variance)*100f, Color.magenta);
 
 			//Bots only exist on the server
-			Rpc_FireWeapon(head.position+head.transform.forward*0.5f, head.TransformDirection(variance));
+			Rpc_FireWeapon(virtualCam.transform.position+virtualCam.transform.forward*0.5f, virtualCam.transform.TransformDirection(variance));
 		}
 
 	}
@@ -662,9 +653,7 @@ public class Com_Controller : Player {
 		Quaternion rotation = this.transform.rotation;
 		
 		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
-		
-		_ragdollGO.GetComponentInChildren<Camera>().gameObject.SetActive(false);
-		
+				
 		Destroy (_ragdollGO, 5f);
 
 		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){

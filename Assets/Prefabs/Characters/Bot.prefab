@@ -33,6 +33,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6015351896927115316, guid: 783577177cb004841a4685d42797a477,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6342825759431691929, guid: 783577177cb004841a4685d42797a477,
         type: 3}
       propertyPath: m_IsActive
@@ -153,12 +158,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6226886315898191558}
   m_SourcePrefab: {fileID: 100100000, guid: 783577177cb004841a4685d42797a477, type: 3}
---- !u!4 &718120941465882229 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4192023525903815091, guid: 783577177cb004841a4685d42797a477,
-    type: 3}
-  m_PrefabInstance: {fileID: 3736378137668493254}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2476137074644149950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1263059113644063096, guid: 783577177cb004841a4685d42797a477,
@@ -227,6 +226,7 @@ MonoBehaviour:
   shipRB: {fileID: 0}
   teamMaterials: []
   jerseyMeshes: []
+  virtualCam: {fileID: 6962735118797768690}
   mainCam: {fileID: 0}
   walkSound: {fileID: 0}
   walkClips: []
@@ -281,7 +281,6 @@ MonoBehaviour:
     _hasDied: 0
   patrolIndex: 0
   lockOnRate: 0.4
-  head: {fileID: 718120941465882229}
   botState: 0
   netView: {fileID: 0}
   spaceDestination: {x: 0, y: 0, z: 0}
@@ -316,6 +315,18 @@ CapsuleCollider:
     type: 3}
   m_PrefabInstance: {fileID: 3736378137668493254}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6962735118797768690 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6015351896927115316, guid: 783577177cb004841a4685d42797a477,
+    type: 3}
+  m_PrefabInstance: {fileID: 3736378137668493254}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5811821926075383722
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -44,7 +44,6 @@ public class Soccer_Net : MonoBehaviour {
 			carrier.GetComponent<Rigidbody> ().isKinematic = true;
 			gameController.shipTwoTransform.gameObject.SetActive (false);
 			gameController.shipTwoTransform = gameController.shipOneTransform;
-			gameController.sceneCam.GetComponent<Camera> ().fieldOfView = 28f;
 			foreach (Player_Controller player in FindObjectsOfType<Player_Controller> ()) {
 				player.GetComponent<Player_Controller> ().suffocationTime = 20000f;
 			}

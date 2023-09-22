@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class Spawn_Scene_Manager : MonoBehaviour {
 
@@ -11,7 +12,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 
 	public GameObject[] spawnButtons;
 	public Transform[] spawnPositions;
-	public Camera sceneCam;
+	public Cinemachine.CinemachineVirtualCamera sceneCam;
 
 	Game_Controller gameController;
 	public GameObject eventSystem;
@@ -24,11 +25,9 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			eventSystem = GameObject.Find ("EventSystem");
 
 		}
-		sceneCam = gameController.sceneCam;
 		eventSystem.SetActive (true);
 		//sceneCam.transform.position = Vector3.Lerp(Vector3.zero, sceneCam.transform.position, 0.5f);
-		sceneCam.GetComponent<Camera>().orthographic = true;
-		sceneCam.GetComponent<Camera>().orthographicSize = 5f;
+		sceneCam.enabled = true;
 
 	}
 	
@@ -56,12 +55,12 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			_bounds.Encapsulate(spawnPoints[i].transform.position);
 
 			//TODO: Unsafe code implementation
-			Vector3 buttonPos = gameController.sceneCam.GetComponent<Camera>().WorldToScreenPoint (spawnPoints[i].transform.position);
+			Vector3 buttonPos = FindObjectOfType<CinemachineBrain>().GetComponent<Camera>().WorldToScreenPoint (spawnPoints[i].transform.position);
 			buttonPos.z = 0f;
 			spawnButtons [i].SetActive (true);
 			spawnButtons[i].transform.position = buttonPos;
 		}
-		sceneCam.GetComponent<Camera>().orthographicSize = Mathf.Lerp(sceneCam.GetComponent<Camera>().orthographicSize,Mathf.Max(_bounds.extents.x,_bounds.extents.z)*1.5f, 0.3f);
+		sceneCam.m_Lens.OrthographicSize = Mathf.Lerp(sceneCam.m_Lens.OrthographicSize ,Mathf.Max(_bounds.extents.x,_bounds.extents.z)*1.5f, 0.3f);
 		_bounds.center = new Vector3(_bounds.center.x, 1500f, _bounds.center.z);
 		sceneCam.transform.position = _bounds.center;
 		
@@ -86,8 +85,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		
 
 		//zoom down effect
-		_player.mainCamObj.transform.position = Game_Controller.Instance.sceneCam.transform.position;
-		_player.mainCamObj.transform.rotation = Game_Controller.Instance.sceneCam.transform.rotation;
+		sceneCam.enabled = false;
 		SceneManager.UnloadSceneAsync ("SpawnScene");
 		this.enabled = (false);
 
