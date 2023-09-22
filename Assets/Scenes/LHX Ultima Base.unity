@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 121.70431, g: 102.69564, b: 97.52361, a: 1}
+  m_IndirectSpecularColor: {r: 122.71103, g: 103.32498, b: 97.7829, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -20346,6 +20346,10 @@ MonoBehaviour:
   scoreA: 0
   scoreB: 0
   UI_timeText: {fileID: 2079494425633914391}
+  UI_homeScoreText: {fileID: 0}
+  UI_homeColour: {fileID: 0}
+  UI_awayScoreText: {fileID: 0}
+  UI_awayColour: {fileID: 0}
   UI_fpsText: {fileID: 0}
   eventSystem: {fileID: 946033348}
   gameplayUI: {fileID: 2079494426595190137}
@@ -20358,7 +20362,6 @@ MonoBehaviour:
   endTimeText: {fileID: 721487747}
   endScoreText: {fileID: 295968541}
   winPanel: {fileID: 1293353405}
-  initialTime: 0
   GameClipMode: 0
   GameClipCameraPrefab: {fileID: 1515916516115208, guid: b5a1054250d0b004fa6bf347442487cd,
     type: 3}
@@ -30089,8 +30092,7 @@ Transform:
   m_LocalPosition: {x: 56.12, y: 24.7, z: 72.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 77366264}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -293,7 +293,7 @@ public class Fire : MonoBehaviour
 
         }
 
-        transform.root.SendMessage("UpdateUI");
+        //transform.root.SendMessage("UpdateUI");
 
     }
     public void RestockAmmo()
@@ -315,7 +315,7 @@ public class Fire : MonoBehaviour
             source.PlayOneShot(cockSound, 0.3f);
         }
 
-        transform.root.SendMessage("UpdateUI");
+        //transform.root.SendMessage("UpdateUI");
 
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
+using System;
 
 public class Game_Controller : NetworkBehaviour {
 
@@ -32,6 +33,7 @@ public class Game_Controller : NetworkBehaviour {
 	}
 	
 	public enum GameControllerState{
+		NotStarted,
 		MatchStarting,
 		MatchRunning,
 		MatchEnding
@@ -56,7 +58,8 @@ public class Game_Controller : NetworkBehaviour {
 	}
 
 	[SerializeField]
-	public GameControllerState m_State = GameControllerState.MatchStarting;
+	[SyncVar (hook = nameof(SetMatchState))]
+	public GameControllerState m_State = GameControllerState.NotStarted;
 	public Weapons_Catalog weaponsCatalog;
 	public int maxPlayers = 32;
 	public GameObject botPrefab;
@@ -286,39 +289,6 @@ public class Game_Controller : NetworkBehaviour {
 	// ////////////////////////////////////////////////
 	// State Machine stuff
 	// ///////////////////////////////////////////////
-	//TODO: Remove when done
-	/*IEnumerator RunStateMachine(){
-		//TODO: This set the instance in the normal way instead of start for UImanager and remove this line
-		print("Start first");
-		yield return new WaitForSecondsRealtime(0.1f);
-		print("End yield");
-		//TODO: Create shutdown signal
-		while(true){
-			switch (m_State){
-				case GameControllerState.MatchLoading:
-					print("Match loading");
-					yield return this.LoadMatch();
-					print("Done loading");
-					break;
-				case GameControllerState.MatchStarting:
-					yield return this.StartMatch();
-					break;
-				case GameControllerState.MatchRunning:
-					yield return this.GameUpdate();
-					break;
-				case GameControllerState.MatchEnding:
-					yield return this.EndGame();
-					break;
-				case GameControllerState.MatchEnded:
-					yield return this.MatchEnded();
-					break;
-				case GameControllerState.MatchRestarting:
-					yield return this.RestartGame();
-					break;
-			}
-			yield return new WaitForEndOfFrame();
-		}
-	}*/
 
 	public void ChangeMatchState(GameControllerState newState){
 		if (m_CurrentState != null){
@@ -326,22 +296,33 @@ public class Game_Controller : NetworkBehaviour {
 		}
 		m_CurrentState = m_StateClasses[newState];
 		if (isServer){
-			RPC_ChangeMatchState(newState);
+			m_State = newState;
 		}
 
 		m_CurrentState.OnEnter(this);
 	}
+	
+	public void SetMatchState(GameControllerState oldState, GameControllerState newState){
+		if(!isServer){
+			//Loop through all the states so they all get run
+			var allStates = Enum.GetValues(typeof(GameControllerState));
 
-	//Warning: We ALWAYS call client rpc's on the server explicitly
-	//because they might not be run on server onlys IIRC
-	[ClientRpc(includeOwner = false)] 
-	public void RPC_ChangeMatchState(GameControllerState newState){
-		if(!isServer)
-			this.ChangeMatchState(newState);
+			if (oldState < newState){
+				for(int i = 1 + (int)oldState; i <= (int)newState; i++){
+					this.ChangeMatchState((GameControllerState) i);
+				}
+			}
+			else{
+				for(int i = 1 + (int)oldState; i < allStates.Length; i++){
+					this.ChangeMatchState((GameControllerState) i);
+				}
+				for(int i = 1; i <= (int)newState; i++){
+					this.ChangeMatchState((GameControllerState) i);
+				}
+			}
+			
+		}
 	}
-
-	//TODO: Assign the enum states somewhere
-
 
 	//Invoked when the game mode has changed
 	void SetGameMode(string oldValue, string newValue){
@@ -673,9 +654,14 @@ public class Game_Controller : NetworkBehaviour {
 		playerStats.CopyTo(debugPlayerStats, 0);
 	}
 
-	//public static int GetTeam(GameObject _player){
-	//	return Game_Controller.instance.playerStats[_player.GetComponent<Metwork_Object>().netID].team;
-	//}
+    public void ServerAddPlayer(NetworkConnection conn)
+    {
+		return;
+    }
+
+    //public static int GetTeam(GameObject _player){
+    //	return Game_Controller.instance.playerStats[_player.GetComponent<Metwork_Object>().netID].team;
+    //}
 
 
 
