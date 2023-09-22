@@ -527,8 +527,8 @@ public class Player : NetworkBehaviour {
 	public virtual void Rpc_Die(){
 		
 	}
-	public virtual void CoDie(){
-		
+	public virtual IEnumerator CoDie(GameObject ragdollGO){
+		yield break;
 	}
 
 	//Called by grav controller when entering / exiting gravity;

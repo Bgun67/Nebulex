@@ -630,9 +630,9 @@ public class Com_Controller : Player {
 		Rpc_Die();
 	}
 
-	public override void CoDie(){
+	public override IEnumerator CoDie(GameObject ragdoll){
 		
-		
+		yield return new WaitForSeconds(4f);
 		if (Metwork.peerType == MetworkPeerType.Disconnected || Metwork.isServer)
 		{
 			damageScript.Reset ();
@@ -677,8 +677,7 @@ public class Com_Controller : Player {
 
         this.transform.position = Vector3.up * 10000f;
         this.gameObject.SetActive (false);
-		Invoke(nameof(CoDie), 4f);
-
+		StartCoroutine(CoDie(_ragdollGO));
 	}
 
     #endregion

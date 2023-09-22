@@ -1208,17 +1208,11 @@ public class Player_Controller : Player {
 		Vector3 position = this.transform.position;
 		Quaternion rotation = this.transform.rotation;
 		inVehicle = false;
-		//disconnect all joints
-		ConfigurableJoint[] joints = FindObjectsOfType<ConfigurableJoint>();
-		foreach (ConfigurableJoint joint in joints) {
-			if (joint.connectedBody == rb) {
-				joint.connectedBody = null;
-			}
-		}
 		
-		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
-		Destroy (_ragdollGO, 5f);
-		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
+		
+		GameObject ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
+		Destroy (ragdollGO, 10f);
+		foreach(Rigidbody _rb in ragdollGO.GetComponentsInChildren<Rigidbody>()){
 
 			_rb.velocity = Vector3.ClampMagnitude(rb.velocity*Random.Range(0.9f, 1.1f), 20f);
 			_rb.useGravity = rb.useGravity;
@@ -1236,19 +1230,21 @@ public class Player_Controller : Player {
 
 
 
-        this.transform.position = Vector3.up * 10000f;
+        //this.transform.position = Vector3.up * 10000f;
         this.gameObject.SetActive (false);
 
 		if(isLocalPlayer){
-			_ragdollGO.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>().enabled = (true);
+			ragdollGO.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>().enabled = true;
+			virtualCam.enabled = false;
 		}
-		else{
-			Invoke(nameof(CoDie), 4f);
-		}
+
+		StartCoroutine(CoDie(ragdollGO));
+		
 	}
-	public override void CoDie(){
-				
+	public override IEnumerator CoDie(GameObject ragdollGO){
+		yield return new WaitForSeconds(4f);
 		if (isLocalPlayer) {
+			ragdollGO.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>().enabled = false;
 			UI_Manager._instance.SetReticleVisibility(false);
 
 			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
