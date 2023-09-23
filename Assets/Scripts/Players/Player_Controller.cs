@@ -29,6 +29,7 @@ public class Player_Controller : Player {
 	public Blackout_Effects blackoutShader;
 
 	public GameObject helmet;
+	GameObject ragdollGO;
 
 	#endregion
 	[Header("Cameras")]
@@ -1210,7 +1211,7 @@ public class Player_Controller : Player {
 		inVehicle = false;
 		
 		
-		GameObject ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
+		ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
 		Destroy (ragdollGO, 10f);
 		foreach(Rigidbody _rb in ragdollGO.GetComponentsInChildren<Rigidbody>()){
 
@@ -1230,19 +1231,16 @@ public class Player_Controller : Player {
 
 
 
-        //this.transform.position = Vector3.up * 10000f;
-        this.gameObject.SetActive (false);
-
 		if(isLocalPlayer){
 			ragdollGO.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>().enabled = true;
 			virtualCam.enabled = false;
 		}
 
-		StartCoroutine(CoDie(ragdollGO));
+		Invoke(nameof(CoDie), 4f);
+        this.gameObject.SetActive (false);
 		
 	}
-	public override IEnumerator CoDie(GameObject ragdollGO){
-		yield return new WaitForSeconds(4f);
+	public override void CoDie(){
 		if (isLocalPlayer) {
 			ragdollGO.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>().enabled = false;
 			UI_Manager._instance.SetReticleVisibility(false);
