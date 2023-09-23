@@ -93,7 +93,7 @@ public class Pause_Menu : MonoBehaviour {
 		MInput.inputLock = MInput.InputLock.None;
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
-		UI_Manager._instance.isPaused = false;
+		UI_Manager.Instance.isPaused = false;
 
 		//eventSystem.SetActive (false);
 	}

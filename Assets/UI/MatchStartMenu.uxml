@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/styles/GlobalStyle.uss?fileID=7433441132597879392&amp;guid=fe218c745313f3642961a1878338522e&amp;type=3#GlobalStyle" />
+    <ui:VisualElement name="BackgroundImage" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Textures/Skybox/starry-background-high-res.jpg?fileID=2800000&amp;guid=b27c48243f42d6f45bb501ac4de9024e&amp;type=3#starry-background-high-res&apos;);">
+        <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgba(103, 103, 103, 0.62); flex-direction: row; background-image: none; -unity-text-outline-color: rgba(108, 108, 108, 0);">
+            <ui:VisualElement name="LeftSplitter" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-basis: 50%;">
+                <ui:Label tabindex="-1" text="Scene Name" display-tooltip-when-elided="true" name="lbl_Scene" />
+                <ui:ScrollView horizontal-scroller-visibility="Hidden" style="flex-grow: 1;">
+                    <ui:Label tabindex="-1" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." display-tooltip-when-elided="true" style="white-space: normal;" />
+                </ui:ScrollView>
+            </ui:VisualElement>
+            <ui:VisualElement name="RightSplitter" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-basis: 50%;">
+                <ui:Label tabindex="-1" text="Game Mode" display-tooltip-when-elided="true" name="lbl_GameMode" style="-unity-text-align: upper-right;" />
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-basis: 80%; background-image: url(&apos;project://database/Assets/Textures/Map%20Images/LHX-Ultima-Base.JPG?fileID=2800000&amp;guid=3bac2246d927eea4a943707437fe01cd&amp;type=3#LHX-Ultima-Base&apos;); -unity-background-scale-mode: scale-and-crop;" />
+                <ui:VisualElement name="HLayout" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-basis: auto; height: 0; justify-content: flex-end; max-height: 20px;">
+                    <ui:Label tabindex="-1" text="0:30" display-tooltip-when-elided="true" name="lbl_TimeRemaining" enable-rich-text="false" style="-unity-text-align: middle-left;" />
+                    <ui:Button text="Deploy" name="btn_Deploy" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

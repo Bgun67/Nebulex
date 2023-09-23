@@ -15,7 +15,6 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 	public Cinemachine.CinemachineVirtualCamera sceneCam;
 
 	Game_Controller gameController;
-	public GameObject eventSystem;
 
 
 	// Use this for initialization
@@ -25,10 +24,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 			eventSystem = GameObject.Find ("EventSystem");
 
 		}
-		eventSystem.SetActive (true);
-		//sceneCam.transform.position = Vector3.Lerp(Vector3.zero, sceneCam.transform.position, 0.5f);
 		sceneCam.enabled = true;
-
 	}
 	
 	// Update is called once per frame
@@ -63,9 +59,6 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 		sceneCam.m_Lens.OrthographicSize = Mathf.Lerp(sceneCam.m_Lens.OrthographicSize ,Mathf.Max(_bounds.extents.x,_bounds.extents.z)*1.5f, 0.3f);
 		_bounds.center = new Vector3(_bounds.center.x, 1500f, _bounds.center.z);
 		sceneCam.transform.position = _bounds.center;
-		
-		
-
 	}
 
 
@@ -86,8 +79,7 @@ public class Spawn_Scene_Manager : MonoBehaviour {
 
 		//zoom down effect
 		sceneCam.enabled = false;
-		SceneManager.UnloadSceneAsync ("SpawnScene");
-		this.enabled = (false);
+		this.gameObject.SetActive(false);
 
 
 	}

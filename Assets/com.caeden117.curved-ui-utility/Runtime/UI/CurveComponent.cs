@@ -85,8 +85,12 @@ namespace CurvedUIUtility
             {
                 cachedMesh = CreateNewMesh();
             }
-
+            try{
             verts.FillMesh(cachedMesh);
+            }
+            catch{
+                //Michael
+            }
 
             UpdateCurvature();
 

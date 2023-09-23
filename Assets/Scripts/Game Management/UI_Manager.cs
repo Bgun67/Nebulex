@@ -6,7 +6,17 @@ using UnityEngine.UI;
 public class UI_Manager : MonoBehaviour
 {
 
-	public static UI_Manager _instance;
+	private static UI_Manager _instance;
+	//TODO: Go through and change all _instances to use Instance
+	// Then make above private
+	public static UI_Manager Instance{
+		get{
+			if (_instance == null){
+				_instance = FindObjectOfType<UI_Manager>();
+			}
+			return _instance;
+		}
+	}
 
 	public Pause_Menu pauseMenu;
 
@@ -91,6 +101,9 @@ public class UI_Manager : MonoBehaviour
 
 	public delegate void OnPieEvent(int _selectedSegment);
 	public static OnPieEvent onPieEvent;
+
+	public StartGameUI m_StartGameUI;
+	public GameObject m_SpawnUI;
 	
 
 	void Awake(){
@@ -100,7 +113,8 @@ public class UI_Manager : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		UI_Manager._instance = this;
+		//if
+		//UI_Manager._instance = this;
 
 		hitDirections = new List<HitDirection>();
 
@@ -228,12 +242,12 @@ public class UI_Manager : MonoBehaviour
 	{
 		isPaused = true;
 		Cursor.lockState = CursorLockMode.None;
-		UI_Manager._instance.pauseMenu.gameObject.SetActive(true);
-		UI_Manager._instance.pauseMenu.Pause();
+		this.pauseMenu.gameObject.SetActive(true);
+		this.pauseMenu.Pause();
 	}
 	public void Resume()
 	{
-		UI_Manager._instance.pauseMenu.Resume();
+		this.pauseMenu.Resume();
 	}
 
 	public void SetReticleVisibility(bool isVisible)
@@ -422,7 +436,7 @@ public class UI_Manager : MonoBehaviour
 
 
 	void OnDestroy(){
-		UI_Manager._instance = null;
+		//UI_Manager._instance = null;
 		UI_Manager.onPieEvent = null;
 	}
 	

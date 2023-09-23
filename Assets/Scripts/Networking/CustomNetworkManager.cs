@@ -75,6 +75,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
             Game_Controller.Instance.bots[_playerID].StopAllCoroutines();
         }
         NetworkServer.AddPlayerForConnection(conn, player);
+        Game_Controller.Instance.ServerAddPlayer(conn);
     }
     public override void OnServerDisconnect(NetworkConnection conn)
     {
