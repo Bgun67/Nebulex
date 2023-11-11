@@ -40,9 +40,9 @@ public class Passenger_Enter : MonoBehaviour {
 	}
 	public void Exit()
 	{
-		if (UI_Manager.GetInstance.vehicleHealthBox != null)
+		if (UI_Manager.Instance.vehicleHealthBox != null)
 		{
-			UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(false);
+			UI_Manager.Instance.vehicleHealthBox.gameObject.SetActive(false);
 		}
 		
 		transform.root.SendMessage("Exit");
@@ -64,9 +64,9 @@ public class Passenger_Enter : MonoBehaviour {
 		if (Time.time - lastTime < 2f) {
 			return;
 		}
-		if (UI_Manager.GetInstance.vehicleHealthBox != null)
+		if (UI_Manager.Instance.vehicleHealthBox != null)
 		{
-			UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(true);
+			UI_Manager.Instance.vehicleHealthBox.gameObject.SetActive(true);
 		}
 		if (player == null||!player.isLocalPlayer) {
 			player = _player.GetComponent<Player_Controller>();

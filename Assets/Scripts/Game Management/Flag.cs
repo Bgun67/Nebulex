@@ -11,7 +11,7 @@ public class Flag : MonoBehaviour {
 
 	public Rigidbody stand;
 
-	public Rigidbody rb;
+	[HideInInspector] public Rigidbody rb;
 	public Metwork_Object netObj;
 	Game_Controller gameController;
 	public Transform target;

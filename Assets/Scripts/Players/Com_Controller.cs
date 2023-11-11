@@ -47,7 +47,6 @@ public class Com_Controller : Player {
 	ComDifficulty[] difficulties;
 	ComDifficulty difficultySetting;
 
-	//public Fire fireScript;
 	//public Damage damageScript;
 	Player[] players;
 	Com_Controller[] bots;
@@ -91,6 +90,7 @@ public class Com_Controller : Player {
 
 		fireScript.totalAmmo = (int)10000;
 		fireScript.damagePower = (int)(difficultySetting.DamageFactor*fireScript.damagePower);
+		fireScript.GetComponent<Fire> ().OnReloadEvent = new Fire.ReloadEvent(Reload);
 
 
 		anim.SetFloat("Look Speed", 0.5f);
@@ -651,11 +651,12 @@ public class Com_Controller : Player {
 		Vector3 position = this.transform.position;
 		Quaternion rotation = this.transform.rotation;
 		
-		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
-				
-		Destroy (_ragdollGO, 5f);
+		GameObject ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
+		ragdollGO.GetComponent<PlayerRenderer>().SetTeam(Game_Controller.GetTeam(this));
+	
+		Destroy (ragdollGO, 5f);
 
-		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
+		foreach(Rigidbody _rb in ragdollGO.GetComponentsInChildren<Rigidbody>()){
 
 			_rb.velocity = Vector3.ClampMagnitude(Random.insideUnitSphere*Random.Range(0.9f, 1.1f), 20f);
 			_rb.useGravity = !isInSpace;

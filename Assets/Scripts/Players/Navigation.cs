@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Camera))]
 public class Navigation : MonoBehaviour {
 
 	[System.Serializable]
@@ -71,7 +70,7 @@ public class Navigation : MonoBehaviour {
 	// Update is called once per frame
 	void OnPreRender () {
 		if (cam == null) {
-			cam = this.GetComponent<Camera> ();
+			cam = FindObjectOfType<Cinemachine.CinemachineBrain>().GetComponent<Camera> ();
 		}
 		//This is there almost exclusively for the scene camera
 		if (!this.cam.enabled) {

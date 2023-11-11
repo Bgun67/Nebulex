@@ -51,7 +51,7 @@ public class Game_Controller : NetworkBehaviour {
 	public static Game_Controller Instance{
 		get{
 			if(instance == null){
-				instance = FindObjectOfType<Game_Controller>();
+				instance = FindObjectOfType<Game_Controller>(true);
 			}
 			return instance;
 		}
@@ -124,10 +124,6 @@ public class Game_Controller : NetworkBehaviour {
 	public int scoreB;
 	[Header( "UI Objects")]
 	public Text UI_timeText;
-	public Text UI_homeScoreText;
-	public Image UI_homeColour;
-	public Text UI_awayScoreText;
-	public Image UI_awayColour;
 	public Text UI_fpsText;
 	public GameObject eventSystem;
 	public GameObject gameplayUI;
@@ -153,16 +149,15 @@ public class Game_Controller : NetworkBehaviour {
 	//Awake runs before any players are added
 	public void Awake()
 	{
-		instance = Instance;
-		#if !UNITY_SERVER
-		UI_homeScoreText = UI_Manager.GetInstance.UI_HomeScoreText;
-		UI_awayScoreText = UI_Manager.GetInstance.UI_AwayScoreText;
+				Debug.Log("Awake");
 
-		UI_homeColour = UI_Manager.GetInstance.UI_HomeColour;
-		UI_awayColour = UI_Manager.GetInstance.UI_AwayColour;
-		#endif
+		instance = Instance;
+				Debug.Log("Instance Found");
+		
+		Debug.Log("164");
 
 		playerStats.Callback += OnPlayerSync;
+		Debug.Log("167");
 
 		//netView = this.GetComponent<MetworkView>();
 		//Add the bots (we're going to ignore this for now)
@@ -178,16 +173,20 @@ public class Game_Controller : NetworkBehaviour {
 			_player.team = i%2;
 			playerStats.Add(_player);
 		}
+		Debug.Log("183");
 
 		//Force a copy of the debug array
 		OnPlayerSync(SyncList<PlayerStat>.Operation.OP_ADD, 0, new PlayerStat(), new PlayerStat());
-		
+				Debug.Log("187");
+
 		//CHECK
 		GetLocalPlayer();
-		
+				Debug.Log("191");
+
 		Physics.autoSimulation = false;
 		//eventSystem.SetActive (false);
 		RPC_SetTeam();
+				Debug.Log("196");
 
 
 		if (SceneManager.GetActiveScene().name != "LobbyScene")
@@ -195,6 +194,7 @@ public class Game_Controller : NetworkBehaviour {
 			//TODO This should only runn on the server
 			InvokeRepeating("UpdateHost", 130f, 10f);
 		}
+				Debug.Log("204");
 
 		try
 		{
@@ -211,14 +211,17 @@ public class Game_Controller : NetworkBehaviour {
 			this.gameMode = matchSettings[1];
 		}
 		//currentTime = matchLength;
-		
+						Debug.Log("221");
+
 		foreach(Spawn_Point spawn in FindObjectsOfType<Spawn_Point>()){
 			spawn.DeactivateSpawn();
 		}
+						Debug.Log("226");
 
 		foreach(GameItem item in FindObjectsOfType<GameItem>()){
 			item.Initialize(gameMode);
 		}
+						Debug.Log("231");
 
 		switch (gameMode){
 			case GameType.TeamDeathmatch:
@@ -251,13 +254,17 @@ public class Game_Controller : NetworkBehaviour {
 				Debug.LogWarning("Gamemode: " + gameMode + " not found");
 				break;
 		}
+								Debug.Log("264");
+
 		Invoke("PhysicsUpdate", 1f);
+								Debug.Log("267");
 
 		if (CustomNetworkManager.IsServerMachine()){
 			print("Starting State Machine");
 			//StartCoroutine(RunStateMachine());
 			ChangeMatchState(GameControllerState.MatchStarting);
 		}
+								Debug.Log("274");
 
 	}
 	void Start(){
@@ -572,7 +579,7 @@ public class Game_Controller : NetworkBehaviour {
 	public static int GetTeam(int _viewID){
 		return Game_Controller.instance.playerStats[_viewID].team;
 	}
-	public static int GetTeam(Player_Controller _player){
+	public static int GetTeam(Player _player){
 		//TODO _player.netObj.netID
 		return Game_Controller.instance.playerStats[_player.playerID].team;
 	}

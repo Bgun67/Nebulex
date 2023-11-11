@@ -261,7 +261,7 @@ public class Player_Controller : Player {
 		}
 
 		if (Input.GetButtonDown ("Reload")) {
-			Reload ();
+			StartCoroutine(fireScript.Reload());
 		}
 
 		if(Input.GetButtonDown("Grab")) {
@@ -749,7 +749,7 @@ public class Player_Controller : Player {
 	
 	void OpenUseHUD(){
 		allActivaters = FindObjectsOfType<Activater>();
-		UI_Manager.GetInstance.activaterUI.Open(allActivaters);
+		UI_Manager.Instance.activaterUI.Open(allActivaters);
 	}
 
 	void UpdateUseHUD(){
@@ -762,8 +762,8 @@ public class Player_Controller : Player {
 			float distance = delta.magnitude;
 			float angle = Vector3.Angle(delta, virtualCam.transform.forward);
 			Vector3 screenpoint = mainCam.WorldToScreenPoint(activater.Position);
-			UI_Manager.GetInstance.activaterUI.SetHighlight(targetActivater, false);
-			UI_Manager.GetInstance.activaterUI.UpdateInfo(activater, screenpoint, distance);
+			UI_Manager.Instance.activaterUI.SetHighlight(targetActivater, false);
+			UI_Manager.Instance.activaterUI.UpdateInfo(activater, screenpoint, distance);
 
 			if(distance>activater.maxDistance){
 				continue;
@@ -783,15 +783,15 @@ public class Player_Controller : Player {
 		}
 
 		targetActivater = bestActivater;
-		UI_Manager.GetInstance.activaterUI.SetHighlight(targetActivater, true);
+		UI_Manager.Instance.activaterUI.SetHighlight(targetActivater, true);
 	}
 
 	public override void UseItem(){
 		if(targetActivater){
 			CmdUseItem(targetActivater);
-			UI_Manager.GetInstance.activaterUI.Select(targetActivater);
+			UI_Manager.Instance.activaterUI.Select(targetActivater);
 		}
-		UI_Manager.GetInstance.activaterUI.Close();
+		UI_Manager.Instance.activaterUI.Close();
 	}
 
 	public void CmdUseItem(Activater targetActivater){
@@ -1212,6 +1212,7 @@ public class Player_Controller : Player {
 		
 		
 		ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
+		ragdollGO.GetComponent<PlayerRenderer>().SetTeam(Game_Controller.GetTeam(this));
 		Destroy (ragdollGO, 10f);
 		foreach(Rigidbody _rb in ragdollGO.GetComponentsInChildren<Rigidbody>()){
 

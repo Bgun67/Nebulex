@@ -169,22 +169,12 @@ public class Player : NetworkBehaviour {
 
 	public override void OnStartClient(){
 		playerRenderer.SetLocal(isLocalPlayer);
+		playerRenderer.SetTeam(Game_Controller.GetTeam(this));
 	}
 
 	protected void Reload(){
 		if(isLocalPlayer){
 			anim.SetTrigger ("Reload");
-			if (fireScript.magGO)
-			{
-				/*anim.MatchTarget(
-					fireScript.magGO.transform.position,
-					fireScript.magGO.transform.rotation,
-					AvatarTarget.LeftHand,
-					new MatchTargetWeightMask(Vector3.one, 1f),
-					0.5f,
-					1f
-				);*/
-			}
 			Cmd_Reload();
 		}
 	}

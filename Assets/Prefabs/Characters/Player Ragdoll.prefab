@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4243867241403298}
+  - component: {fileID: 4594716141754022753}
   m_Layer: 0
   m_Name: Player Ragdoll
   m_TagString: Untagged
@@ -32,6 +33,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4594716141754022753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333036756815864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4b5a000062739468d3e880d6b97ab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyMeshes: {fileID: 0}
+  teamMeshes:
+  - {fileID: 4984277816749715834}
+  - {fileID: 7434476763488102825}
+  - {fileID: 5194252687794127907}
+  fpsMeshes: {fileID: 0}
+  teamAColor: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  teamBColor: {r: 0.5372549, g: 0.30588236, b: 0.007843138, a: 1}
 --- !u!1 &1657895971194675054
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +143,7 @@ MonoBehaviour:
     NearClipPlane: 0.01
     FarClipPlane: 5000
     Dutch: 0
-    ModeOverride: 0
+    ModeOverride: 2
     LensShift: {x: 0, y: 0}
     GateFit: 2
     FocusDistance: 10
@@ -135,7 +156,7 @@ MonoBehaviour:
     BarrelClipping: 0.25
     Anamorphism: 0
   m_Transitions:
-    m_BlendHint: 0
+    m_BlendHint: 2
     m_InheritPosition: 0
     m_OnCameraLive:
       m_PersistentCalls:
@@ -1722,6 +1743,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1756899875497269685}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &4984277816749715834 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6722314469949089999, guid: 76e0bf71192d7644086950e6344989e7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1756899875497269685}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5194252687794127907 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5797384429611982230, guid: 76e0bf71192d7644086950e6344989e7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1756899875497269685}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6256451201188854497 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5670773108829332308, guid: 76e0bf71192d7644086950e6344989e7,
@@ -2182,6 +2215,12 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!137 &7434476763488102825 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 9173078291042267164, guid: 76e0bf71192d7644086950e6344989e7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1756899875497269685}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7464444443768224929 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2590945388255980, guid: 76e0bf71192d7644086950e6344989e7,

@@ -57,7 +57,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
     public bool useLan = false;
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
-        print("OnServerAddPlayer");
+        Debug.Log("OnServerAddPlayer");
         Transform startPos = GetStartPosition();
         GameObject player = startPos != null
             ? Instantiate(playerPrefab, startPos.position, startPos.rotation)

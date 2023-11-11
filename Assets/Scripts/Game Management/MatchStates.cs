@@ -14,7 +14,7 @@ public interface IMatchState{
 }
 
 public class StartMatchState : IMatchState{
-    float START_GAME_WAIT = 5f;
+    float START_GAME_WAIT = 15f;
     private double m_EnterTime{
         get; set;
     }
@@ -145,21 +145,21 @@ public class RunningMatchState : IMatchState{
 		//TODO: Move this entire function to the UI manager
 		#if !UNITY_SERVER
 		if (gc.localPlayer != null && gc.localTeam == 0) {
-			gc.UI_homeScoreText.text = gc.scoreA.ToString();
-			gc.UI_awayScoreText.text = gc.scoreB.ToString();
-			gc.UI_homeColour.color = new Color(0,1f,0);
-			gc.UI_awayColour.color = new Color(1f,0f,0);
+			UI_Manager.Instance.UI_HomeScoreText.text = gc.scoreA.ToString();
+			UI_Manager.Instance.UI_AwayScoreText.text = gc.scoreB.ToString();
+			UI_Manager.Instance.UI_HomeColour.color = new Color(0,1f,0);
+			UI_Manager.Instance.UI_AwayColour.color = new Color(1f,0f,0);
 		} else if (gc.localTeam == 1){
-			gc.UI_homeScoreText.text = gc.scoreB.ToString();
-			gc.UI_awayScoreText.text = gc.scoreA.ToString();
-			gc.UI_awayColour.color = new Color(0,1f,0);
-			gc.UI_homeColour.color = new Color(1f,0f,0);
+			UI_Manager.Instance.UI_HomeScoreText.text = gc.scoreB.ToString();
+			UI_Manager.Instance.UI_AwayScoreText.text = gc.scoreA.ToString();
+			UI_Manager.Instance.UI_AwayColour.color = new Color(0,1f,0);
+			UI_Manager.Instance.UI_HomeColour.color = new Color(1f,0f,0);
 		}
 		else {
-			gc.UI_homeScoreText.text = gc.scoreB.ToString() + "*";
-			gc.UI_awayScoreText.text = gc.scoreA.ToString();
-			gc.UI_awayColour.color = new Color(0,1f,0);
-			gc.UI_homeColour.color = new Color(1f,0f,0);
+			UI_Manager.Instance.UI_HomeScoreText.text = gc.scoreB.ToString() + "*";
+			UI_Manager.Instance.UI_AwayScoreText.text = gc.scoreA.ToString();
+			UI_Manager.Instance.UI_AwayColour.color = new Color(0,1f,0);
+			UI_Manager.Instance.UI_HomeColour.color = new Color(1f,0f,0);
 		}
 		#endif
 

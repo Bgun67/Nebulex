@@ -12,7 +12,7 @@ public class UI_Manager : MonoBehaviour
 	public static UI_Manager Instance{
 		get{
 			if (_instance == null){
-				_instance = FindObjectOfType<UI_Manager>();
+				_instance = FindObjectOfType<UI_Manager>(true);
 			}
 			return _instance;
 		}
@@ -114,7 +114,6 @@ public class UI_Manager : MonoBehaviour
 	void Start()
 	{
 		//if
-		//UI_Manager._instance = this;
 
 		hitDirections = new List<HitDirection>();
 
@@ -134,19 +133,6 @@ public class UI_Manager : MonoBehaviour
 			nameIndicators[i].transform.SetParent(this.transform, false);
 			nameIndicators[i].gameObject.SetActive(false);
 		}
-	}
-	public static UI_Manager GetInstance{
-		get{
-			if (_instance == null)
-			{
-				return FindObjectOfType<UI_Manager>();
-			}
-			else
-			{
-				return _instance;
-			}
-		}
-
 	}
 
 	public static int GetPieChoice(){
@@ -436,7 +422,6 @@ public class UI_Manager : MonoBehaviour
 
 
 	void OnDestroy(){
-		//UI_Manager._instance = null;
 		UI_Manager.onPieEvent = null;
 	}
 	

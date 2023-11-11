@@ -99,7 +99,7 @@ public class Damage : NetworkBehaviour{
 	{
 		
 		if(isLocalPlayer && this.tag == "Player"){
-			UI_Manager.GetInstance.UpdateHitDirection(_hitDirection, this.transform);
+			UI_Manager.Instance.UpdateHitDirection(_hitDirection, this.transform);
 			GlobalSound.HurtSound();
 		}
 
@@ -329,33 +329,33 @@ public class Damage : NetworkBehaviour{
 		if (healthShown == true) {
 			if (isVehicle)
 			{
-				UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(true);
-				UI_Manager.GetInstance.vehicleHealthText.text = "+" + (int)currentHealth;
-				UI_Manager.GetInstance.vehicleHealthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
-				UI_Manager.GetInstance.vehicleHealthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
+				UI_Manager.Instance.vehicleHealthBox.gameObject.SetActive(true);
+				UI_Manager.Instance.vehicleHealthText.text = "+" + (int)currentHealth;
+				UI_Manager.Instance.vehicleHealthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
+				UI_Manager.Instance.vehicleHealthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
 			}
 			else
 			{
-				UI_Manager.GetInstance.healthBox.gameObject.SetActive(true);
-				UI_Manager.GetInstance.healthText.text = "+" + (int)currentHealth;
-				UI_Manager.GetInstance.healthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
-				UI_Manager.GetInstance.healthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
+				UI_Manager.Instance.healthBox.gameObject.SetActive(true);
+				UI_Manager.Instance.healthText.text = "+" + (int)currentHealth;
+				UI_Manager.Instance.healthBar.offsetMin = new Vector2(128f - (float)currentHealth / (float)originalHealth * 128f, -16f);
+				UI_Manager.Instance.healthBar.offsetMax = new Vector2(256f - (float)currentHealth / (float)originalHealth * 128f, 0f);
 			}
 			//None of the below is ever called I think
 		} else {
 			//UI_healthText.text = "";
 			if (isVehicle)
 			{
-				if (UI_Manager.GetInstance.vehicleHealthBox != null)
+				if (UI_Manager.Instance.vehicleHealthBox != null)
 				{
-					UI_Manager.GetInstance.vehicleHealthBox.gameObject.SetActive(false);
+					UI_Manager.Instance.vehicleHealthBox.gameObject.SetActive(false);
 				}
 			}
 			else
 			{
-				if (UI_Manager.GetInstance.healthBox != null)
+				if (UI_Manager.Instance.healthBox != null)
 				{
-					UI_Manager.GetInstance.healthBox.gameObject.SetActive(false);
+					UI_Manager.Instance.healthBox.gameObject.SetActive(false);
 				}
 			}
 

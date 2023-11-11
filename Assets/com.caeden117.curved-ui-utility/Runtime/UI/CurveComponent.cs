@@ -85,16 +85,19 @@ namespace CurvedUIUtility
             {
                 cachedMesh = CreateNewMesh();
             }
+            
             try{
-            verts.FillMesh(cachedMesh);
+                print("Mesh: " + this.gameObject.name);
+                verts.FillMesh(cachedMesh);
+                UpdateCurvature();
+                vertexHelperPositions.SetValue(verts, newVertices);
+                print("Mesh Done: " + this.gameObject.name);
             }
             catch{
                 //Michael
             }
 
-            UpdateCurvature();
 
-            vertexHelperPositions.SetValue(verts, newVertices);
         }
 
         private void Update()
