@@ -122,7 +122,6 @@ public class Flag : MonoBehaviour {
 		if (player!= null || _player== null) {
 			return;
 		}
-		print("Trigger Enter");
 
 		//Check if the player matches the flag's team
 		if (_player.GetTeam() == this.team) {

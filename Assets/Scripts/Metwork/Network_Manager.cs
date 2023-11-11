@@ -60,7 +60,6 @@ public class Network_Manager : MonoBehaviour {
 		WWW www = new WWW(url);
 		yield return www;
 		if(www.error != null){
-			print("Watchdog Miss");
 			if(kickFailed){
 				//Metwork._instance.StartRecoverConnection(Metwork.isServer,Metwork.roomName);
 				kickFailed = false;
@@ -80,7 +79,6 @@ public class Network_Manager : MonoBehaviour {
 		minStartingPlayers = 1;
 		//We have sufficient players, move to the game. Checking if we are connected is unnecessary as we
 		//must be connected anyway
-		print("We Starting");
 		if (Metwork.peerType != MetworkPeerType.Disconnected)
 		{
 			netView.RPC("RPC_LoadScene", MRPCMode.AllBuffered, new object[] { "TransistionScene", _map});
@@ -90,7 +88,6 @@ public class Network_Manager : MonoBehaviour {
 			RPC_LoadScene("TransistionScene", _map);
 		}
 		sceneMode = SceneMode.Game;
-		print("Invoked RPC");
 	}
 
 	void OnSceneLoaded(Scene _scene, LoadSceneMode _mode){

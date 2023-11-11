@@ -11,6 +11,11 @@ public class StartGameUI : MonoBehaviour
     private Label m_LblTimeRemaining;
     private Button m_BtnDeploy;
 
+    void Awake()
+    {
+       
+    }
+
     void OnEnable(){
         var m_Root = m_UIDocument.rootVisualElement;
         m_LblTimeRemaining = m_Root.Q<Label>("lbl_TimeRemaining");

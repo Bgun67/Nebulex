@@ -34,7 +34,6 @@ public class Surface_Pathfinding : MonoBehaviour
             i++;
         }
         mesh = new Mesh();
-        print(mesh.isReadable);
         mesh.CombineMeshes(combine,true);
         meshFilter.sharedMesh = mesh;
         meshCollider.sharedMesh = mesh;
@@ -60,7 +59,7 @@ public class Surface_Pathfinding : MonoBehaviour
             //vertices[j] = vertices[j] + normals[j] * 0.2f;
             j++;
         }
-        print(vertices.Count);
+
         j=0;
         while(j < vertices.Count){
             

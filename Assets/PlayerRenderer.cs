@@ -14,7 +14,6 @@ public class PlayerRenderer : MonoBehaviour
     // Start is called before the first frame update
     public void SetTeam(int team)
     {
-        print(team);
         foreach(Renderer renderer in teamMeshes){
             foreach(Material mat in renderer.materials){
                 mat.color= team!=0? teamAColor: teamBColor;

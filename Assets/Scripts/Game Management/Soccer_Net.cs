@@ -106,7 +106,6 @@ public class Soccer_Net : MonoBehaviour {
 			
 			if (ball.transform.position.sqrMagnitude > 40000f)
 			{
-				print("Too far out at:" + ball.transform.position);
 				StartCoroutine(ResetBall());
 				CancelInvoke("CheckBall");
 				InvokeRepeating("CheckBall", 3.1f, 1f);

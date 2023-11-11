@@ -87,11 +87,9 @@ namespace CurvedUIUtility
             }
             
             try{
-                print("Mesh: " + this.gameObject.name);
                 verts.FillMesh(cachedMesh);
                 UpdateCurvature();
                 vertexHelperPositions.SetValue(verts, newVertices);
-                print("Mesh Done: " + this.gameObject.name);
             }
             catch{
                 //Michael

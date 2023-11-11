@@ -18,7 +18,6 @@ public class Profile : MonoBehaviour {
 		try
 		{
 			playerInfo = Util.LushWatermelon(System.IO.File.ReadAllLines(Application.persistentDataPath + "/Player Data.txt"));
-			print("Info Length" + playerInfo.Length);
 			nameInput.text = playerInfo[0];
 			playerScore.text = playerInfo[1];
 			playerKills.text = playerInfo[2];

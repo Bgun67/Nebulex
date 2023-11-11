@@ -12,3 +12,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f0efd2fa0fa8dc4f80be323456a236f, type: 3}
   m_Name: Difficulty Level Hard
   m_EditorClassIdentifier: 
+  <AttentionSpan>k__BackingField: 10
+  <ViewDistance>k__BackingField: 50
+  <ViewAngle>k__BackingField: 70
+  <ListenDistance>k__BackingField: 70
+  <PatrolRotationSpeed>k__BackingField: 0.75
+  <FiringRange>k__BackingField: 20
+  <AdvanceDistance>k__BackingField: 10
+  <FightingRotationSpeed>k__BackingField: 0.75
+  <LockOnRate>k__BackingField: 0.4
+  <MaxAimOffsetBeforeFiring>k__BackingField: 20
+  <AccuracyOverTime>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 40
+      inSlope: -115.06386
+      outSlope: -115.06386
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.029342724
+    - serializedVersion: 3
+      time: 1.0014672
+      value: 5
+      inSlope: -7.9107633
+      outSlope: -7.9107633
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.087441295
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <DamageFactor>k__BackingField: 0.3

@@ -19,7 +19,6 @@ public class Impact : Map_Manager
 		}
 		foreach (Ship_Controller ship in FindObjectsOfType<Ship_Controller>())
 		{
-			print("Instantiating");
 			GameObject.Instantiate(seaCameraObjs[0], ship.mainCamera.transform);
 			GameObject.Instantiate(seaCameraObjs[1], ship.mainCamera.transform);
 		}
