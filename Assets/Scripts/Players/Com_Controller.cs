@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -652,6 +652,7 @@ public class Com_Controller : Player {
 		Quaternion rotation = this.transform.rotation;
 		
 		GameObject ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
+		
 		ragdollGO.GetComponent<PlayerRenderer>().SetTeam(Game_Controller.GetTeam(this));
 	
 		Destroy (ragdollGO, 5f);

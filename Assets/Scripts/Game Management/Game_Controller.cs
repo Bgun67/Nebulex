@@ -294,22 +294,25 @@ public class Game_Controller : NetworkBehaviour {
 	}
 	
 	public void SetMatchState(GameControllerState oldState, GameControllerState newState){
+
+		StartCoroutine(CoSetMatchState(oldState, newState));
+	}
+	IEnumerator CoSetMatchState(GameControllerState oldState, GameControllerState newState){
 		if(!isServer){
+			yield return new WaitForEndOfFrame();
 			//Loop through all the states so they all get run
 			var allStates = Enum.GetValues(typeof(GameControllerState));
+			
+			int currentState = (int)oldState;
 
-			if (oldState < newState){
-				for(int i = 1 + (int)oldState; i <= (int)newState; i++){
-					this.ChangeMatchState((GameControllerState) i);
+			for(int i=0; i<allStates.Length; i++){
+				currentState = (currentState+1)%allStates.Length;
+				this.ChangeMatchState((GameControllerState) currentState);
+
+				if(currentState==(int)newState){
+					break;
 				}
-			}
-			else{
-				for(int i = 1 + (int)oldState; i < allStates.Length; i++){
-					this.ChangeMatchState((GameControllerState) i);
-				}
-				for(int i = 1; i <= (int)newState; i++){
-					this.ChangeMatchState((GameControllerState) i);
-				}
+
 			}
 			
 		}

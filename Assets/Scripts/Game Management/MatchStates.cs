@@ -27,7 +27,7 @@ public class StartMatchState : IMatchState{
 
 		//Show start game ui
 		UI_Manager.Instance.m_StartGameUI.gameObject.SetActive(true);
-		
+
 	}
 
     public void OnUpdate(Game_Controller gc){
