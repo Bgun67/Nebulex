@@ -13,6 +13,7 @@ public class Fire : MonoBehaviour
     }
     #region GunInfo
     [Header("Gun Info")]
+    public WeaponProperties weaponProperties;
     float fireDelay;
     public Transform shotSpawn;
     //This is rarely used and many need to be removed
@@ -30,7 +31,6 @@ public class Fire : MonoBehaviour
     public int magAmmo;
     public int maxAmmo;
     public int totalAmmo;
-    public GameObject bulletPrefab;
     public int damagePower;
     public float bulletVelocity;
     public FireTypes fireType;

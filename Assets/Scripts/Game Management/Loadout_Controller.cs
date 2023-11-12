@@ -138,9 +138,6 @@ public class Loadout_Controller : MonoBehaviour {
 					weaponDataText.text+="SKill Level: " +tmpFire.skillLevel+"\n";
 
 		}
-		if (tmpFire.bulletPrefab.GetComponent<Bullet_Controller> ().isExplosive) {
-			weaponDataText.text += "Explosive Rounds\n";
-		}
 
 
 

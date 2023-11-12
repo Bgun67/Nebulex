@@ -109,11 +109,6 @@ public class Gun_Creator : ScriptableWizard {
 		//netView.observed = null;
 
 
-
-		fireScript.bulletPrefab = (GameObject)Resources.Load("Weapons/Ammunition/Bullet");
-
-
-
 	}
 	
 
