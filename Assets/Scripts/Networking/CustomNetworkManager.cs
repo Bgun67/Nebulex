@@ -78,10 +78,10 @@ public class CustomNetworkManager : Mirror.NetworkManager
         base.OnStartServer();
         isServerMachine = true;
         onStartServer?.Invoke();
+        //TODO: Test that discovery can both be done locally and globally
         if(!useLan)
             FindObjectOfType<PHPMasterServerConnect>().RegisterHost();
-        else
-            GetComponent<CustomNetworkDiscovery>().AdvertiseServer();
+        GetComponent<CustomNetworkDiscovery>().AdvertiseServer();
 
     }
     public override void OnStartHost()

@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Pause_Menu : MonoBehaviour {
-	public GameObject confirmQuitPanel;
-	public GameObject confirmRecallPanel;
-	public GameObject settingsPanel;
+	//public GameObject confirmQuitPanel;
+	//public GameObject confirmRecallPanel;
+	//public GameObject settingsPanel;
 	public GameObject eventSystem;
 
 	// Use this for initialization
@@ -20,7 +20,10 @@ public class Pause_Menu : MonoBehaviour {
 		Cursor.visible = true;
 	}
 	public void Recall(){
-		confirmRecallPanel.SetActive (true);
+		// TODO: Put these back in again in UI_Toolkit
+		// WHICH IS WHAT UNITY IS SWITCHING TO, BRADEN
+		//confirmRecallPanel.SetActive (true);
+		this.KillPlayer();
 	}
 	public void Options()
 	{
@@ -28,13 +31,14 @@ public class Pause_Menu : MonoBehaviour {
 		settingsPanel.SetActive(true);
 	}
 	public void Quit(){
-		confirmQuitPanel.SetActive (true);
+		//confirmQuitPanel.SetActive (true);
+		this.GoToMainMenu();
 	}
-	public void Deny(){
-		confirmQuitPanel.SetActive (false);
-		confirmRecallPanel.SetActive (false);
+	//public void Deny(){
+	//	confirmQuitPanel.SetActive (false);
+	//	confirmRecallPanel.SetActive (false);
 
-	}
+	//}
 	public void KillPlayer(){
 		Player_Controller player = FindObjectOfType<Game_Controller>().localPlayer;
 
@@ -43,7 +47,7 @@ public class Pause_Menu : MonoBehaviour {
 		{
 			player.GetComponent<Damage>().TakeDamage(200, 0, player.transform.position + player.transform.forward, true);
 		}
-		confirmRecallPanel.SetActive(false);
+		//confirmRecallPanel.SetActive(false);
 		Resume();
 	}
 	public void GoToMainMenu(){

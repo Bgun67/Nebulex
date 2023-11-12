@@ -140,7 +140,7 @@ namespace Mirror.Discovery
             serverUdpClient = new UdpClient(serverBroadcastListenPort)
             {
                 EnableBroadcast = true,
-                MulticastLoopback = false
+                MulticastLoopback = true
             };
 
             // listen for client pings
