@@ -11,7 +11,7 @@ public class Flag : MonoBehaviour {
 
 	public Rigidbody stand;
 
-	public Rigidbody rb;
+	[HideInInspector] public Rigidbody rb;
 	public Metwork_Object netObj;
 	Game_Controller gameController;
 	public Transform target;
@@ -122,7 +122,6 @@ public class Flag : MonoBehaviour {
 		if (player!= null || _player== null) {
 			return;
 		}
-		print("Trigger Enter");
 
 		//Check if the player matches the flag's team
 		if (_player.GetTeam() == this.team) {

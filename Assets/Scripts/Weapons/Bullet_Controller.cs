@@ -47,7 +47,7 @@ public class Bullet_Controller : MonoBehaviour {
 			_damageScript = other.transform.root.GetComponent<Damage> ();
 		if(_damageScript != null){
 			if (fromID == Game_Controller.Instance.GetLocalPlayer()){
-				UI_Manager._instance.ShowHit();
+				UI_Manager.Instance.ShowHit();
 			}
 			_damageScript.TakeDamage(damagePower, fromID, other.transform.position + other.relativeVelocity);
 		}

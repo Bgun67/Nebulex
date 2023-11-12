@@ -110,9 +110,9 @@ namespace SceneSwitcher
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(2);
 			
-			SearchString = GUILayout.TextField(SearchString, (GUIStyle)"ToolbarSeachTextField");
+			SearchString = GUILayout.TextField(SearchString, (GUIStyle)"ToolbarSearchTextField");
 			
-			GUIStyle searchCancelStyle = (SearchString == "") ? (GUIStyle)"ToolbarSeachCancelButtonEmpty" : (GUIStyle)"ToolbarSeachCancelButton";
+			GUIStyle searchCancelStyle = (SearchString == "") ? (GUIStyle)"ToolbarSearchCancelButtonEmpty" : (GUIStyle)"ToolbarSearchCancelButton";
 			
 			if (GUILayout.Button ("", searchCancelStyle))
 				SearchString = "";

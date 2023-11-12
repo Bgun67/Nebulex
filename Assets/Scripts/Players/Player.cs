@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
+using Cinemachine;
+using Unity.Services.Analytics;
 
 public class Player : NetworkBehaviour {
 	public Rigidbody rb;
@@ -73,6 +75,7 @@ public class Player : NetworkBehaviour {
 	/// <summary>
 	/// The player's team. 0 being team A and 1 being team B
 	/// </summary>
+	public PlayerRenderer playerRenderer;
 	public Material[] teamMaterials;
 	public SkinnedMeshRenderer[] jerseyMeshes;
 
@@ -92,8 +95,9 @@ public class Player : NetworkBehaviour {
 
 	[Header("Cameras")]
 	#region cameras
-	public GameObject mainCamObj;
-	protected Camera mainCam;
+	public CinemachineVirtualCamera virtualCam;
+	//Reference to the Cinemachine brain camera, moves around.
+	[HideInInspector] public Camera mainCam;
 	
 	#endregion
 	[Header("Sound")]
@@ -159,23 +163,18 @@ public class Player : NetworkBehaviour {
 		Crouching,
 		Running
 	}
+	protected virtual void Awake(){
+		playerRenderer = GetComponentInChildren<PlayerRenderer>();
+	}
 
-	
+	public override void OnStartClient(){
+		playerRenderer.SetLocal(isLocalPlayer);
+		playerRenderer.SetTeam(Game_Controller.GetTeam(this));
+	}
 
 	protected void Reload(){
 		if(isLocalPlayer){
 			anim.SetTrigger ("Reload");
-			if (fireScript.magGO)
-			{
-				/*anim.MatchTarget(
-					fireScript.magGO.transform.position,
-					fireScript.magGO.transform.rotation,
-					AvatarTarget.LeftHand,
-					new MatchTargetWeightMask(Vector3.one, 1f),
-					0.5f,
-					1f
-				);*/
-			}
 			Cmd_Reload();
 		}
 	}
@@ -223,7 +222,7 @@ public class Player : NetworkBehaviour {
 		//	_dropGrenadeFactor = 0.05f;
 		//}
 		
-		Cmd_SpawnGrenade(mainCam.transform.forward * 10.0f * _dropGrenadeFactor, grenadeSpawn.position, grenadeSpawn.rotation);
+		Cmd_SpawnGrenade(virtualCam.transform.forward * 10.0f * _dropGrenadeFactor, grenadeSpawn.position, grenadeSpawn.rotation);
 	}
 	[Command]
 	public void Cmd_SpawnGrenade(Vector3 _velocity, Vector3 _position, Quaternion _rotation){
@@ -280,7 +279,7 @@ public class Player : NetworkBehaviour {
 			return;
 		}
 		RaycastHit hit;
-		if (Physics.SphereCast (mainCamObj.transform.position,0.01f, mainCamObj.transform.forward, out hit, 2f)) {
+		if (Physics.SphereCast (virtualCam.transform.position,0.01f, virtualCam.transform.forward, out hit, 2f)) {
 			if (hit.transform.root.tag == "Player") {
 				if (hit.transform.root.GetComponent<Animator>().GetBool("Knife"))
 				{
@@ -473,8 +472,8 @@ public class Player : NetworkBehaviour {
 		if (!grappleActive)
 		{
 			//Spread of the gun
-			fireScript.shotSpawn.transform.forward = this.mainCam.transform.forward 
-													+ muzzleClimb * fireScript.recoilAmount * mainCam.transform.up * 0.3f
+			fireScript.shotSpawn.transform.forward = this.virtualCam.transform.forward 
+													+ muzzleClimb * fireScript.recoilAmount * virtualCam.transform.up * 0.3f
 													+ fireScript.recoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
 													;
 			if(muzzleClimb < 0.6f){
@@ -519,10 +518,8 @@ public class Player : NetworkBehaviour {
 		
 	}
 	public virtual void CoDie(){
-		
+
 	}
-
-
 
 	//Called by grav controller when entering / exiting gravity;
 	public virtual IEnumerator ExitGravity(){
@@ -558,8 +555,8 @@ public class Player : NetworkBehaviour {
 		fireScript.playerID = playerID;
 		//We want to move the right hand target back and forth depending how long the gun is
 		player_IK.rhOffset = fireScript.rhOffset;
-		player_IK.rhTarget = rightHandPosition;
-		player_IK.lhTarget = fireScript.lhTarget;
+		player_IK.gunPosition = rightHandPosition;
+		player_IK.gripPosition = fireScript.lhTarget;
 		if (fireScript.lhHint)
 		{
 			player_IK.lhHint = fireScript.lhHint;

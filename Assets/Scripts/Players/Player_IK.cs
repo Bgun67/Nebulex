@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_IK : MonoBehaviour
-{
-    public Transform rhTarget;
+{	
+	public Transform gunPosition;
+	Transform gunTarget;
+	[HideInInspector] public  Transform gripPosition;
+	Transform gripTarget;
+
+    [HideInInspector] public Transform rhTarget;
     [HideInInspector]
     public Vector3 rhOffset = Vector3.zero;
 	public Vector3 rhPosition = Vector3.zero;
+	Quaternion rh2GoalOffset;
+	Quaternion lh2GoalOffset;
 
-	public Transform lhTarget;
+	[HideInInspector] public Transform lhTarget;
 	public Transform lhHint;
-	public float scopeOffset = 0.2f;
+	public Vector3 scopeOffset = Vector3.zero;
 	float scopedFactor;
 	float sprintFactor;
 
@@ -25,6 +32,7 @@ public class Player_IK : MonoBehaviour
 	float currentTurning;
 
 	private Animator anim;
+	AnimReceiver animReceiver;
     private Player_Controller player;
     private bool isBot = false;
 
@@ -37,8 +45,18 @@ public class Player_IK : MonoBehaviour
 	// Start is called before the first frame update
 	void Awake()
     {
-        anim = this.GetComponent<Animator>();   
+        anim = this.GetComponentInChildren<Animator>();
+        animReceiver = this.GetComponent<AnimReceiver>();
+		animReceiver.Subscribe("GRAB_GRIP", GrabWeaponGrip);
+		animReceiver.Subscribe("GRAB_MAG", GrabWeaponMag);
+
+		anim.GetComponent<IK_Forwarder>().onAnimatorIK += OnAnimatorIK;   
         player = this.GetComponent<Player_Controller>();
+		gripTarget = new GameObject("Grip Target").transform;
+		gripTarget.transform.parent = transform;
+		gunTarget = new GameObject("Gun Target").transform;
+		gunTarget.transform.parent = transform;
+
         if(player==null)
             isBot = true;
     }
@@ -47,7 +65,7 @@ public class Player_IK : MonoBehaviour
 	{
 		if (isScoped)
 		{
-			scopedFactor = Mathf.Lerp(scopedFactor, scopeOffset, 0.5f);
+			scopedFactor = Mathf.Lerp(scopedFactor, 1, 0.5f);
 		}
 		else
 		{
@@ -88,18 +106,39 @@ public class Player_IK : MonoBehaviour
 		currentTurning = Mathf.Lerp(currentTurning,Mathf.Clamp(turning, -1,1f), 0.5f);
 	}
 
-	void Update(){
-		/*if(rhTarget != null){
-            if(player != null){
-				Vector3 targetPosition = rhTarget.position + rhOffset.z * player.finger.transform.forward+player.transform.up*scopedFactor+GetRecoil();
-				rhPosition = Vector3.Slerp(rhPosition, targetPosition, 0.99f);
-			}
-			else
-			{
-				rhPosition =  rhTarget.position;
-			}
-        }*/
+	void CalculateHandPositions(){
+		if(!gripPosition){
+			return;
+		}
+		Vector3 offset = gunPosition.TransformVector(GetRecoil()+Vector3.Lerp(Vector3.zero, scopeOffset, scopedFactor))-transform.TransformVector(currentLocalVelocity*0.01f);
+		gunTarget.position = gunPosition.position + offset;
+		gunTarget.rotation = gunPosition.rotation*
+				Quaternion.AngleAxis(currentTurning*15f,-Vector3.right)*
+				Quaternion.AngleAxis(GetRecoil().z*30f,Vector3.up)*
+				Quaternion.AngleAxis(sprintFactor*45f,Vector3.right);
 
+		Transform handTransform =  anim.GetBoneTransform(HumanBodyBones.RightHand);
+		Vector3 gripOffset = handTransform.InverseTransformVector(gripPosition.position-handTransform.position);
+
+		gripTarget.position = handTransform.position+handTransform.TransformVector(gripOffset);
+		gripTarget.rotation = gripPosition.rotation;
+	}
+
+	void GrabWeaponGrip(){
+		lhTarget = gripTarget;
+		rhTarget = gunTarget;
+	}
+
+	void GrabWeaponMag(){
+		if( player.fireScript.magGO) lhTarget = player.fireScript.magGO.transform;
+	}
+
+	void GrabWeaponBolt(){
+		if( player.fireScript.magGO)  lhTarget = player.fireScript.magGO.transform;
+	}
+
+	void FixedUpdate(){
+		CalculateHandPositions();
 	}
 	
 
@@ -114,42 +153,22 @@ public class Player_IK : MonoBehaviour
             lfTargetRot = Quaternion.FromToRotation(transform.up, player.lfHit.normal) * transform.rotation;
         }
 
-        float rfBlend = anim.GetFloat("Right Foot IK Blend");
-        float lfBlend = anim.GetFloat("Left Foot IK Blend");
-
-        float lhBlend = anim.GetFloat("Left Hand IK Blend");
-        float rhBlend = anim.GetFloat("Right Hand IK Blend");
     
         if(rhTarget != null) {
-            anim.SetIKPositionWeight(AvatarIKGoal.RightHand,rhBlend);
-            anim.SetIKRotationWeight(AvatarIKGoal.RightHand,rhBlend);
-            if(player != null){
-				Vector3 targetPosition = transform.InverseTransformPoint(rhTarget.position) + Vector3.up*0.3f*scopedFactor+GetRecoil();
-				rhPosition = targetPosition - currentLocalVelocity*0.01f;
-				rhPosition = transform.TransformPoint(rhPosition);
-			}
-			else
-			{
-				rhPosition = rhTarget.position;
-			}
-			anim.SetIKPosition(AvatarIKGoal.RightHand,rhPosition);
+			anim.SetIKPosition(AvatarIKGoal.RightHand,rhTarget.position);
 			anim.SetIKRotation(
 				AvatarIKGoal.RightHand,
-				rhTarget.rotation*
-				Quaternion.AngleAxis(currentTurning*15f,-Vector3.right)*
-				Quaternion.AngleAxis(GetRecoil().z*30f,Vector3.up)*
-				Quaternion.AngleAxis(sprintFactor*45f,Vector3.right)
+				rhTarget.rotation
 			);
+
         }
         if(lhTarget != null) {
-            anim.SetIKPositionWeight(AvatarIKGoal.LeftHand,lhBlend);
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand,lhBlend);  
             anim.SetIKPosition(AvatarIKGoal.LeftHand,lhTarget.position);
             anim.SetIKRotation(AvatarIKGoal.LeftHand,lhTarget.rotation);
 			Debug.DrawLine(lhTarget.position, lhTarget.position + Vector3.up, Color.yellow);
 			if (lhHint)
 			{
-				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,lhBlend*(sprintFactor>0.1f?0:1));  
+				anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow,1*(sprintFactor>0.1f?0:1));  
 				anim.SetIKHintPosition(AvatarIKHint.LeftElbow, lhHint.position);
 			}
 		}
@@ -178,6 +197,7 @@ public class Player_IK : MonoBehaviour
             //anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot,0);
         }
     }
+
 
 
 

@@ -300,7 +300,7 @@ TextureImporter:
       213: 21300196
     second: Ammo-spritesheet_98
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -317,10 +317,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -329,12 +331,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -352,11 +354,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -368,6 +374,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -380,6 +387,33 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
@@ -2474,9 +2508,108 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      Ammo-spritesheet_0: 21300000
+      Ammo-spritesheet_1: 21300002
+      Ammo-spritesheet_10: 21300020
+      Ammo-spritesheet_11: 21300022
+      Ammo-spritesheet_12: 21300024
+      Ammo-spritesheet_13: 21300026
+      Ammo-spritesheet_14: 21300028
+      Ammo-spritesheet_15: 21300030
+      Ammo-spritesheet_16: 21300032
+      Ammo-spritesheet_17: 21300034
+      Ammo-spritesheet_18: 21300036
+      Ammo-spritesheet_19: 21300038
+      Ammo-spritesheet_2: 21300004
+      Ammo-spritesheet_20: 21300040
+      Ammo-spritesheet_21: 21300042
+      Ammo-spritesheet_22: 21300044
+      Ammo-spritesheet_23: 21300046
+      Ammo-spritesheet_24: 21300048
+      Ammo-spritesheet_25: 21300050
+      Ammo-spritesheet_26: 21300052
+      Ammo-spritesheet_27: 21300054
+      Ammo-spritesheet_28: 21300056
+      Ammo-spritesheet_29: 21300058
+      Ammo-spritesheet_3: 21300006
+      Ammo-spritesheet_30: 21300060
+      Ammo-spritesheet_31: 21300062
+      Ammo-spritesheet_32: 21300064
+      Ammo-spritesheet_33: 21300066
+      Ammo-spritesheet_34: 21300068
+      Ammo-spritesheet_35: 21300070
+      Ammo-spritesheet_36: 21300072
+      Ammo-spritesheet_37: 21300074
+      Ammo-spritesheet_38: 21300076
+      Ammo-spritesheet_39: 21300078
+      Ammo-spritesheet_4: 21300008
+      Ammo-spritesheet_40: 21300080
+      Ammo-spritesheet_41: 21300082
+      Ammo-spritesheet_42: 21300084
+      Ammo-spritesheet_43: 21300086
+      Ammo-spritesheet_44: 21300088
+      Ammo-spritesheet_45: 21300090
+      Ammo-spritesheet_46: 21300092
+      Ammo-spritesheet_47: 21300094
+      Ammo-spritesheet_48: 21300096
+      Ammo-spritesheet_49: 21300098
+      Ammo-spritesheet_5: 21300010
+      Ammo-spritesheet_50: 21300100
+      Ammo-spritesheet_51: 21300102
+      Ammo-spritesheet_52: 21300104
+      Ammo-spritesheet_53: 21300106
+      Ammo-spritesheet_54: 21300108
+      Ammo-spritesheet_55: 21300110
+      Ammo-spritesheet_56: 21300112
+      Ammo-spritesheet_57: 21300114
+      Ammo-spritesheet_58: 21300116
+      Ammo-spritesheet_59: 21300118
+      Ammo-spritesheet_6: 21300012
+      Ammo-spritesheet_60: 21300120
+      Ammo-spritesheet_61: 21300122
+      Ammo-spritesheet_62: 21300124
+      Ammo-spritesheet_63: 21300126
+      Ammo-spritesheet_64: 21300128
+      Ammo-spritesheet_65: 21300130
+      Ammo-spritesheet_66: 21300132
+      Ammo-spritesheet_67: 21300134
+      Ammo-spritesheet_68: 21300136
+      Ammo-spritesheet_69: 21300138
+      Ammo-spritesheet_7: 21300014
+      Ammo-spritesheet_70: 21300140
+      Ammo-spritesheet_71: 21300142
+      Ammo-spritesheet_72: 21300144
+      Ammo-spritesheet_73: 21300146
+      Ammo-spritesheet_74: 21300148
+      Ammo-spritesheet_75: 21300150
+      Ammo-spritesheet_76: 21300152
+      Ammo-spritesheet_77: 21300154
+      Ammo-spritesheet_78: 21300156
+      Ammo-spritesheet_79: 21300158
+      Ammo-spritesheet_8: 21300016
+      Ammo-spritesheet_80: 21300160
+      Ammo-spritesheet_81: 21300162
+      Ammo-spritesheet_82: 21300164
+      Ammo-spritesheet_83: 21300166
+      Ammo-spritesheet_84: 21300168
+      Ammo-spritesheet_85: 21300170
+      Ammo-spritesheet_86: 21300172
+      Ammo-spritesheet_87: 21300174
+      Ammo-spritesheet_88: 21300176
+      Ammo-spritesheet_89: 21300178
+      Ammo-spritesheet_9: 21300018
+      Ammo-spritesheet_90: 21300180
+      Ammo-spritesheet_91: 21300182
+      Ammo-spritesheet_92: 21300184
+      Ammo-spritesheet_93: 21300186
+      Ammo-spritesheet_94: 21300188
+      Ammo-spritesheet_95: 21300190
+      Ammo-spritesheet_96: 21300192
+      Ammo-spritesheet_97: 21300194
+      Ammo-spritesheet_98: 21300196
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

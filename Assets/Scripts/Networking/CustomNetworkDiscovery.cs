@@ -168,7 +168,8 @@ public class CustomNetworkDiscovery : NetworkDiscoveryBase<DiscoveryRequest, Dis
             
             hostData.Add(ip, data);
         }
-		this.GetComponent<Match_Scene_Manager>().DisplayMatches();
+        if (Match_Scene_Manager.Instance)
+		    Match_Scene_Manager.Instance.DisplayMatches();
         
     }
 

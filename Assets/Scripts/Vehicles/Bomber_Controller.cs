@@ -46,7 +46,7 @@ public class Bomber_Controller : Ship_Controller
 	}
 
 	[MRPC]
-	public override void RPC_Activate(int _pilot)
+	public override void RPC_Activate(Player_Controller _pilot)
 	{
 		base.RPC_Activate(_pilot);
 		
@@ -65,20 +65,13 @@ public class Bomber_Controller : Ship_Controller
 			SwitchWeapons ();
 		}
 		if(Input.GetButtonDown("Jump")){
-			if (Metwork.peerType != MetworkPeerType.Disconnected) {
-				if (anim.GetBool ("Lower Gear")) {
-					netObj.netView.RPC ("RPC_LowerGear", MRPCMode.AllBuffered, new object[]{ false });
-				} else {
-					netObj.netView.RPC ("RPC_LowerGear", MRPCMode.AllBuffered, new object[]{ true });
-
-				}
-			} else {
+			
 				if (anim.GetBool ("Lower Gear")) {
 					RPC_LowerGear (false);
 				} else {
 					RPC_LowerGear (true);
 				}
-			}
+			
 		}
 
 

@@ -6,12 +6,23 @@ using UnityEngine.UI;
 public class UI_Manager : MonoBehaviour
 {
 
-	public static UI_Manager _instance;
+	private static UI_Manager _instance;
+	//TODO: Go through and change all _instances to use Instance
+	// Then make above private
+	public static UI_Manager Instance{
+		get{
+			if (_instance == null){
+				_instance = FindObjectOfType<UI_Manager>(true);
+			}
+			return _instance;
+		}
+	}
 
 	public Pause_Menu pauseMenu;
 
 	public RectTransform healthBox;
 	public RectTransform healthBar;
+	public ActivaterUI activaterUI;
 	public Text healthText;
 
 	public RectTransform vehicleHealthBox;
@@ -90,14 +101,19 @@ public class UI_Manager : MonoBehaviour
 
 	public delegate void OnPieEvent(int _selectedSegment);
 	public static OnPieEvent onPieEvent;
+
+	public StartGameUI m_StartGameUI;
+	public GameObject m_SpawnUI;
 	
 
-
+	void Awake(){
+		activaterUI = GetComponentInChildren<ActivaterUI>();
+	}
 
 	// Use this for initialization
 	void Start()
 	{
-		UI_Manager._instance = this;
+		//if
 
 		hitDirections = new List<HitDirection>();
 
@@ -118,24 +134,22 @@ public class UI_Manager : MonoBehaviour
 			nameIndicators[i].gameObject.SetActive(false);
 		}
 	}
-	public static UI_Manager GetInstance{
-		get{
-			if (_instance == null)
-			{
-				return FindObjectOfType<UI_Manager>();
-			}
-			else
-			{
-				return _instance;
-			}
-		}
-
-	}
 
 	public static int GetPieChoice(){
 		return pieChoice;
 	}
 	void Update(){
+		#if UNITY_SERVER
+		return;
+		#endif
+		
+		if (CustomNetworkManager.m_IsDedicatedServer)
+			return;
+
+		Player_Controller localPlayer = Game_Controller.Instance.localPlayer;
+		if(!localPlayer)
+			return;
+
 		if (Input.GetButtonDown("Pause")){
 			if(!isPaused){
 				Pause();
@@ -164,7 +178,7 @@ public class UI_Manager : MonoBehaviour
 		//Bot indicators
 		foreach(Player _player in FindObjectsOfType<Player>()){
 			//The player is on our team, show them immediately
-			if(!Game_Controller.Instance.localPlayer.damageScript.isDead && _player.gameObject.activeSelf && _player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
+			if(!localPlayer.damageScript.isDead && _player.gameObject.activeSelf && _player.GetTeam() == Game_Controller.Instance.localTeam && _player != Game_Controller.Instance.localPlayer){
 				int _id = _player.playerID;
 				
 				//Set color
@@ -177,14 +191,15 @@ public class UI_Manager : MonoBehaviour
 
 				Bounds bounds = _player.boundingCollider.bounds;
 				
-				Vector3 _position = Camera.main.WorldToScreenPoint(bounds.center);
+				Vector3 _position = localPlayer.mainCam.WorldToScreenPoint(bounds.center);
 				//Set distance
 				nameIndicators[_id].distText.text = _position.z.ToString("#.000") + " m";
 				
 				if(_position.z > 0){
 					nameIndicators[_id].gameObject.SetActive(true);
 					nameIndicators[_id].transform.position = _position;
-					nameIndicators[_id].transform.localScale = Vector3.one* nameIndicatorScale * Camera.main.nearClipPlane /(_position.z * Mathf.Tan(Camera.main.fieldOfView * Mathf.Deg2Rad * 0.5f));
+					nameIndicators[_id].transform.localScale = Vector3.one* nameIndicatorScale 
+						* localPlayer.mainCam.nearClipPlane / (_position.z * Mathf.Tan(localPlayer.mainCam.fieldOfView * Mathf.Deg2Rad * 0.5f));
 					
 				}
 				else{
@@ -213,13 +228,14 @@ public class UI_Manager : MonoBehaviour
 	{
 		isPaused = true;
 		Cursor.lockState = CursorLockMode.None;
-		UI_Manager._instance.pauseMenu.gameObject.SetActive(true);
-		UI_Manager._instance.pauseMenu.Pause();
+		this.pauseMenu.gameObject.SetActive(true);
+		this.pauseMenu.Pause();
 	}
 	public void Resume()
 	{
-		UI_Manager._instance.pauseMenu.Resume();
+		this.pauseMenu.Resume();
 	}
+
 	public void SetReticleVisibility(bool isVisible)
 	{
 		reticle.SetActive(isVisible);
@@ -406,7 +422,6 @@ public class UI_Manager : MonoBehaviour
 
 
 	void OnDestroy(){
-		UI_Manager._instance = null;
 		UI_Manager.onPieEvent = null;
 	}
 	

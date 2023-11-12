@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Mirror;
 
+#if UNITY_EDITOR
+using ParrelSync;
+#endif
+
 
 public enum PlayerSpawnMethod { Random, RoundRobin }
 public enum NetworkManagerMode { Offline, ServerOnly, ClientOnly, Host }
@@ -26,6 +30,22 @@ public class CustomNetworkManager : Mirror.NetworkManager
 			return instance;
 		}
 	}
+
+    public static bool m_IsDedicatedServer { 
+        get{
+            #if UNITY_EDITOR
+                // Get the custom argument for this clone project.  
+                string customArgument = ClonesManager.GetArgument();
+                // Do what ever you need with the argument string.
+                return customArgument == "dedicated";    
+            #elif UNITY_SERVER
+                return true;       
+            #else
+                return UnityEngine.SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null;
+            #endif
+        } 
+    }
+
     public delegate void EventHandler();
     //Subscribe to this callback to get notified of the host starting
     public event EventHandler onStartHost;
@@ -37,7 +57,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
     public bool useLan = false;
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
-        print("OnServerAddPlayer");
+        Debug.Log("OnServerAddPlayer");
         Transform startPos = GetStartPosition();
         GameObject player = startPos != null
             ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
@@ -55,6 +75,7 @@ public class CustomNetworkManager : Mirror.NetworkManager
             Game_Controller.Instance.bots[_playerID].StopAllCoroutines();
         }
         NetworkServer.AddPlayerForConnection(conn, player);
+        Game_Controller.Instance.ServerAddPlayer(conn);
     }
     public override void OnServerDisconnect(NetworkConnection conn)
     {

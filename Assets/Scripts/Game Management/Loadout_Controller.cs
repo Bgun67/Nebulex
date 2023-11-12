@@ -6,100 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class Loadout_Controller : MonoBehaviour {
-	/*public static Dictionary<string, Vector3> gunLocalPositions = new Dictionary<string,Vector3>()
-	{
-		{"SRR-3", new Vector3(2.285f,-1.224f,3.107f)}, //new Vector3(-0.067f,0.241f,-0.22f)
-		{"Oynix-93", new Vector3(-0.207f,0.222f,0.417f)},
-		{"Ratpak", new Vector3(0.691f,-0.242f,1.5011f)},//new Vector3(-0.149f,0.161f,0.301f)
-		{"NTO-MSQ0", new Vector3(-0.13f,0.4f,0.16f)},
-		{"Biron", new Vector3(-0.13f,0.4f,0.16f)},
-
-
-		{"FN-227", new Vector3(-0.125f,-0.168f,0.07f)},
-		{"Q-338", new Vector3(-0.125f,-0.168f,0.07f)},
-		//{"Q-338", new Vector3(0f,0.11f,-0.09f)},
-
-		{"Thunderstroke", new Vector3(-0.276f,-0.064f,0.364f)},
-		{"ATX-Heavy", new Vector3(-0.26f,0.08f,0.94f)},
-
-		{"MT0A3", new Vector3(-0.26f,0.08f,0.94f)},
-
-
-		{"SIT", new Vector3(-0.164f,0.0962f,0.3289f)}
-
-
-	};
-	public static Dictionary<string, Vector3> gunLocalRotations = new Dictionary<string,Vector3>()
-	{
-		{"SRR-3", new Vector3(15.954f,-9.464f,-12.07f)}, //new Vector3(168.4f,263.9f,196.296f)
-		{"Oynix-93", new Vector3(20.133f,-13.94f,-7.824f)},
-		{"Ratpak", new Vector3(15.3f,-11.77f,-6.636f)},//new Vector3(6.4f,79.98f,15.4f)
-		{"NTO-MSQ0", new Vector3(18.69f,-12.46f,-8.8f)},
-		{"Biron", new Vector3(18.69f,-12.46f,-8.8f)},
-
-
-
-		{"FN-227", new Vector3(14.4f,-13.2f,-8.2f)},
-		{"Q-338", new Vector3(14.4f,-13.2f,-8.2f)},
-		//{"Q-338", new Vector3(9.92f,77.481f,59.078f)},
-		
-
-		{"Thunderstroke", new Vector3(-0.311f,-9.989f,-8.383f)},
-		{"ATX-Heavy", new Vector3(21.191f,-8.791f,-7.971f)},
-
-		{"MT0A3", new Vector3(21.191f,-8.791f,-7.971f)},
-
-
-		{"SIT", new Vector3(11.55f,-9.26f,-7.1f)}
-	};*/
-	public static Dictionary<string, Vector3> gunLocalPositions = new Dictionary<string,Vector3>()
-	{
-		{"SRR-3", Vector3.zero}, //new Vector3(-0.067f,0.241f,-0.22f)
-		{"Oynix-93", Vector3.zero},
-		{"Ratpak", Vector3.zero},//new Vector3(-0.149f,0.161f,0.301f)
-		{"NTO-MSQ0", Vector3.zero},
-		{"Biron",Vector3.zero},
-
-
-		{"FN-227", Vector3.zero},
-		{"Q-338", Vector3.zero},
-		//{"Q-338", new Vector3(0f,0.11f,-0.09f)},
-
-		{"Thunderstroke", Vector3.zero},
-		{"ATX-Heavy", Vector3.zero},
-
-		{"MT0A3", Vector3.zero},
-
-
-		{"SIT", Vector3.zero}
-
-
-	};
-	public static Dictionary<string, Vector3> gunLocalRotations = new Dictionary<string,Vector3>()
-	{
-		{"SRR-3", Vector3.zero}, //new Vector3(168.4f,263.9f,196.296f)
-		{"Oynix-93", Vector3.zero},
-		{"Ratpak", Vector3.zero},//new Vector3(6.4f,79.98f,15.4f)
-		{"NTO-MSQ0", Vector3.zero},
-		{"Biron", Vector3.zero},
-
-
-
-		{"FN-227", Vector3.zero},
-		{"Q-338", Vector3.zero},
-		//{"Q-338", new Vector3(9.92f,77.481f,59.078f)},
-		
-
-		{"Thunderstroke", Vector3.zero},
-		{"ATX-Heavy", Vector3.zero},
-
-		{"MT0A3", Vector3.zero},
-
-
-		{"SIT", Vector3.zero}
-	};
-
-
+	
 
 	[Header("Primary")]
 
@@ -173,39 +80,44 @@ public class Loadout_Controller : MonoBehaviour {
 		}
 	}
 	public void ShowWeapon(){
-		try{	
-			if (weapon != null) {
-				Destroy (weapon);
-				weapon = null;
-			}
-			if (selectedGun == 0) {
-				GameObject primaryWeaponPrefab = (GameObject)Resources.Load ("Weapons/" + loadoutData [0]);
-				Vector3 primaryLocalPosition = gunLocalPositions [loadoutData [0]];
-				Vector3 primaryLocalRotation = gunLocalRotations [loadoutData [0]];
-				//add the primary weapon to the finger
-				weapon = (GameObject)Instantiate (primaryWeaponPrefab, finger);
-				weapon.transform.localPosition = primaryLocalPosition;
-				weapon.transform.localRotation = Quaternion.Euler (primaryLocalRotation);
-				GameObject primaryScope = (GameObject)Resources.Load ("Weapons/Scopes/" + loadoutData [2]);
-				Instantiate (primaryScope, weapon.GetComponent<Fire> ().scopePosition);
+        //	
+        if (weapon != null)
+        {
+            Destroy(weapon);
+            weapon = null;
+        }
+        GameObject weaponPrefab = null;
+        GameObject scopePrefab = null;
+        try
+        {
+            if (selectedGun == 0)
+            {
+
+                weaponPrefab = (GameObject)Resources.Load("Weapons/" + loadoutData[0]);
+                scopePrefab = (GameObject)Resources.Load("Weapons/Scopes/" + loadoutData[2]);
 
 
-			} else {
-				GameObject secondaryWeaponPrefab = (GameObject)Resources.Load ("Weapons/" + loadoutData [1]);
-				Vector3 secondaryLocalPosition = gunLocalPositions [loadoutData [1]];
-				Vector3 secondaryLocalRotation = gunLocalRotations [loadoutData [1]];
-				//add the primary weapon to the finger
-				weapon = (GameObject)Instantiate (secondaryWeaponPrefab, finger);
-				weapon.transform.localPosition = secondaryLocalPosition;
-				weapon.transform.localRotation = Quaternion.Euler (secondaryLocalRotation);
-				GameObject secondaryScope = (GameObject)Resources.Load ("Weapons/Scopes/" + loadoutData [3]);
-				Instantiate (secondaryScope, weapon.GetComponent<Fire> ().scopePosition);
-			}
-			DisplayGunInfo();
-		} catch {
-			print ("Sorry. Braden.exe has encountered an error");
-			loadoutData = Profile.RestoreLoadoutFile ();
-		}
+            }
+            else
+            {
+                weaponPrefab = (GameObject)Resources.Load("Weapons/" + loadoutData[1]);
+                scopePrefab = (GameObject)Resources.Load("Weapons/Scopes/" + loadoutData[3]);
+            }
+        }
+        catch (System.Exception e)
+        {
+            print("Sorry. Braden.exe has encountered an error" + e);
+            loadoutData = Profile.RestoreLoadoutFile();
+        }
+
+        //add the primary weapon to the finger
+        weapon = (GameObject)Instantiate(weaponPrefab, finger);
+        weapon.transform.localPosition = Vector3.zero;
+        weapon.transform.localRotation = Quaternion.identity;
+        Instantiate(scopePrefab, weapon.GetComponent<Fire>().scopePosition);
+
+        DisplayGunInfo();
+		
 	}
 	void DisplayGunInfo(){
 		Fire tmpFire = weapon.GetComponent<Fire> ();

@@ -14,7 +14,7 @@ public class Flight_Ring_Controller : MonoBehaviour {
 		if (other.transform.root.GetComponent<Ship_Controller> ()) {
 			print ("Changing COlor");
 			this.GetComponent<MeshRenderer> ().material.color = new Color(0f,1f,0f);
-			other.transform.root.GetComponent<Ship_Controller> ().thrust += 100f;
+			//TODO other.transform.root.GetComponent<Ship_Controller> ().thrustToMassRatio += 0.3f;
 			other.transform.root.GetComponentInChildren<Fire> ().damagePower += 10;
 			Invoke ("ResetColor", 5f);
 
@@ -31,7 +31,7 @@ public class Flight_Ring_Controller : MonoBehaviour {
 	void OnCollisionEnter(Collision other){
 		if (other.transform.root.GetComponent<Ship_Controller> ()) {
 			this.GetComponent<MeshRenderer> ().material.color = new Color(1f,0f,0f);
-			other.transform.root.GetComponent<Ship_Controller> ().thrust = 15000f;
+			//TODO other.transform.root.GetComponent<Ship_Controller> ().thrustToMassRatio = 1f;
 			other.transform.root.GetComponentInChildren<Fire> ().damagePower = 20;
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_ChangeColorRed", MRPCMode.Others, new object[]{});

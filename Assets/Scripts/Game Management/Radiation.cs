@@ -24,7 +24,6 @@ public class Radiation : MonoBehaviour {
 	// Use this for initialization
 	IEnumerator StartStorm()
 	{
-		print("Starting Radiaition storm");
 		GetComponent<AudioSource>().Play();
 		yield return new WaitForSeconds(10f);
 

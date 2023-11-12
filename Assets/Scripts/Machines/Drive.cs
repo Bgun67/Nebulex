@@ -34,7 +34,6 @@ public class Drive : MonoBehaviour {
 	}
 	public void Activate(GameObject _player)
 	{
-		print("activating");
 		anim = GetComponent<Animator>();
 
 		anim.SetBool("LightsOn", true);
@@ -70,7 +69,6 @@ public class Drive : MonoBehaviour {
 	[MRPC]
 	public void RPC_Exit(int id)
 	{
-		print("Exiting Shredder");
 		anim.SetBool("LightsOn", false);
 		headlight.SetActive(false);
 		underbodyLight.SetActive(true);
@@ -158,7 +156,6 @@ public class Drive : MonoBehaviour {
 		}
 	}
 	public void Die(){
-		print("dying");
 		if(Metwork.peerType  != MetworkPeerType.Disconnected){
 			if (driversSeat.player != null) {
 				netObj.netView.RPC ("RPC_Die", MRPCMode.AllBuffered, new object[]{ driversSeat.player.GetComponent<Metwork_Object> ().netID });

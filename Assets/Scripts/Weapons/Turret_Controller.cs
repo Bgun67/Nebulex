@@ -41,7 +41,7 @@ public class Turret_Controller : NetworkBehaviour
 		print(pilot.name);
 		if (player == null)
 		{
-			pilot.mainCamObj.SetActive(false);
+			pilot.virtualCam.enabled = false;
 			netView = this.GetComponent<MetworkView>();
 
 
@@ -80,7 +80,7 @@ public class Turret_Controller : NetworkBehaviour
 	public void Exit()
 	{
 		//Switch to the player camera
-		player.mainCamObj.SetActive(true);
+		player.virtualCam.enabled = true;
 		this.mainCamera.SetActive(false);
 
 		GetComponent<Damage>().healthShown = false;

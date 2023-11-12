@@ -22,7 +22,8 @@ public class Flag_Port : MonoBehaviour {
 		if (_flag.team != this.team) {
 			//Swallow it forever
 			gameController.overrideWinner = this.team;
-			gameController.EndGame ();
+			//TODO: Deal with this later
+			//gameController.EndGame ();
 		}
 	}
 }

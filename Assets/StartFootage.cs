@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Media;
 using UnityEngine.SceneManagement;
-using UnityEngine.PostProcessing;
 
 public class StartFootage : MonoBehaviour
 {
@@ -27,9 +26,9 @@ public class StartFootage : MonoBehaviour
 	{
 		
 		//is first time
-		if (Game_Settings.currGameplaySettings.firstTime)
+		if (Game_Settings.currGameplaySettings.Get("first_time", true))
 		{
-			Game_Settings.currGameplaySettings.firstTime = false;
+			Game_Settings.currGameplaySettings["first_time"] = false;
 			Game_Settings.SaveGameSettings();
 			return true;
 		}
@@ -149,7 +148,9 @@ public class StartFootage : MonoBehaviour
 	}
 	IEnumerator FocusCamera()
 	{
-		float i = 0;
+				yield return new WaitForEndOfFrame();
+
+		/*float i = 0;
 		DepthOfFieldModel.Settings _settings = mainCam.GetComponent<PostProcessingBehaviour>().profile.depthOfField.settings;
 		while (i <=2f)
 		{
@@ -177,7 +178,7 @@ public class StartFootage : MonoBehaviour
 			yield return new WaitForSeconds(0.02f);
 			i+=0.06f;
 
-		}
+		}*/
 	}
 	IEnumerator DepressurizeAirLock()
 	{
@@ -228,7 +229,8 @@ public class StartFootage : MonoBehaviour
 	}
 	IEnumerator MoveCamera(Vector3 newPosition, Quaternion newRotation)
 	{
-		StartCoroutine(ShineLight());
+		yield return new WaitForEndOfFrame();
+		/*StartCoroutine(ShineLight());
 		float i = 0;
 		GrainModel.Settings _settings1 = mainCam.GetComponent<PostProcessingBehaviour>().profile.grain.settings;
 
@@ -249,7 +251,7 @@ public class StartFootage : MonoBehaviour
 			music.volume = 1f;//Mathf.Clamp01(i*10f+0.2f);
 			yield return new WaitForEndOfFrame();
 			
-		}
+		}*/
 	}
 	IEnumerator ShineLight()
 	{

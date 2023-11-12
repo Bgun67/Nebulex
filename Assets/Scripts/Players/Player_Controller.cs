@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
+using Cinemachine;
 
 public class Player_Controller : Player {
 	float v;
@@ -17,9 +18,6 @@ public class Player_Controller : Player {
 	bool jump;
 
 	Vector3 previousNormal = new Vector3(0,1,0);
-	float originalFOV;
-	
-
 	
 
 	[Header("UI")]
@@ -31,10 +29,12 @@ public class Player_Controller : Player {
 	public Blackout_Effects blackoutShader;
 
 	public GameObject helmet;
+	GameObject ragdollGO;
 
 	#endregion
 	[Header("Cameras")]
 	#region cameras
+	public float m_DOFAdaptRate;
 	Vector3 originalCamPosition;
 	Quaternion originalCamRotation;
 	public GameObject minimapCam;
@@ -50,21 +50,34 @@ public class Player_Controller : Player {
 	#region weapons
 
 	public string[] loadoutSettings;
-	
+	[SerializeField] AnimationCurve poweredDragCurve;	
+	[SerializeField] float poweredDragScale = 1;
+
+	[SerializeField] AnimationCurve unpoweredDragCurve;	
+	[SerializeField] float unpoweredDragScale = 1;
+	[Range(0, 5)]
+	[SerializeField]float unpoweredCutoff = 0.5f;
+	[SerializeField] Transform hipTransform;
 
 	#endregion
 
+	Activater[] allActivaters;
+	Activater targetActivater;
+
+	Grabbable grabbable;
+	[SerializeField] Transform grabbableTransform;
+
 	
 
-	void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		rb = this.GetComponent<Rigidbody> ();
-		anim = this.GetComponent<Animator> ();
-		mainCam = mainCamObj.GetComponent<Camera> ();
+		anim = this.GetComponentInChildren<Animator> ();
 		player_IK = GetComponent<Player_IK>();
 		wrapper = GetComponent<AudioWrapper>();
-		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
-		originalFOV = mainCam.fieldOfView;
+		mainCam = FindObjectOfType<CinemachineBrain>().GetComponent<Camera>();
+		blackoutShader = mainCam.GetComponent<Blackout_Effects> ();
 	}
 
 	// Use this for initialization
@@ -73,8 +86,8 @@ public class Player_Controller : Player {
 		gameController = Game_Controller.Instance;
 		
 		
-		originalCamPosition = mainCamObj.transform.localPosition;
-		originalCamRotation = mainCamObj.transform.localRotation;
+		originalCamPosition = virtualCam.transform.localPosition;
+		originalCamRotation = virtualCam.transform.localRotation;
 
 		//Feet raycasts
 		lfRaycast = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
@@ -111,11 +124,6 @@ public class Player_Controller : Player {
 	// runs after start basically the same
 	//Check remove this function if possible
 	public void Setup(){
-		gameController = FindObjectOfType<Game_Controller> ();
-		rb = this.GetComponent<Rigidbody> ();
-		anim = this.GetComponent<Animator> ();
-		mainCam = mainCamObj.GetComponent<Camera> (); 
-		blackoutShader = mainCamObj.GetComponent<Blackout_Effects> ();
 
 		airTime = suffocationTime;
 		grenadesNum = 4;
@@ -143,7 +151,7 @@ public class Player_Controller : Player {
 			if (minimapUI != null) {
 				minimapUI.SetActive (true);
 			}
-			UI_Manager._instance.SetReticleVisibility(true);
+			UI_Manager.Instance.SetReticleVisibility(true);
 		}
 		previousNormal = transform.up;
 		previousRot = Vector3.zero;
@@ -203,7 +211,7 @@ public class Player_Controller : Player {
 		}
 
 		if (!isLocalPlayer) {
-			mainCamObj.SetActive(false);
+			virtualCam.enabled = false;
 			minimapCam.SetActive(false);
 			iconCamera.SetActive (false);
 
@@ -252,10 +260,27 @@ public class Player_Controller : Player {
 			muzzleClimb = 0f;
 		}
 
+		if (Input.GetButtonDown ("Reload")) {
+			StartCoroutine(fireScript.Reload());
+		}
+
+		if(Input.GetButtonDown("Grab")) {
+			StartGrab();
+		}
+
+		if (Input.GetButtonUp ("Grab")) {
+			ReleaseGrab (false);
+		}
 
 		if (Input.GetButtonDown ("Use Item")) {
-			UseItem ();
-			
+			OpenUseHUD ();
+		}
+		if (Input.GetButton ("Use Item")) {
+			UpdateUseHUD ();
+		}
+		if(Input.GetButtonUp("Use Item")){
+			print("button up");
+			UseItem();
 		}
 		if (Input.GetKeyDown ("/")) {
 			Cmd_KillPlayer();
@@ -358,16 +383,22 @@ public class Player_Controller : Player {
 			LoseAir ();
 		}
 
-		blackoutShader.ChangeConciousness (Mathf.Clamp01(Mathf.Pow(airTime / suffocationTime,2f)+0.3f) * 10f);
+		blackoutShader?.ChangeConciousness (Mathf.Clamp01(Mathf.Pow(airTime / suffocationTime,2f)+0.3f) * 10f);
 		if(isLocalPlayer){
 			breatheSound.volume = Mathf.Clamp01(Mathf.Pow((suffocationTime-airTime) / suffocationTime,2f)-0.3f);
+			AdjustDOF();
 		}
 		else{
 			breatheSound.volume = 0f;
 		}
 		//TODO: Come up with a move elegant solution
-		if (Input.GetButton ("Fire1") && !player_IK.IsSprinting() && !UI_Manager._instance.pauseMenu.gameObject.activeSelf) {
-			Attack ();
+		if (Input.GetButton ("Fire1") && !player_IK.IsSprinting() && !UI_Manager.Instance.pauseMenu.gameObject.activeSelf) {
+			if(grabbable){
+				ReleaseGrab (true);
+			}
+			else{
+				Attack ();
+			}
 
 		}
 		if (MInput.GetButtonDown ("Fire2")) {
@@ -381,11 +412,31 @@ public class Player_Controller : Player {
 		}
 		Aim ();
 		player_IK.SetVelocity(rb.velocity, h2);
+	}
+	void FixedUpdate(){
+		if(grabbable&&isServer){
+			Grab();
+		}
 
 	}
 
-	
-	public void OnPieEvent(int _segmentNumber)
+    private void AdjustDOF()
+    {
+		/*PostProcessingProfile profile = this.mainCamObj.GetComponent<PostProcessingBehaviour>().profile;
+		Vector3 camPosition = this.mainCamObj.transform.position;
+		Vector3 camForward = this.mainCamObj.transform.forward;
+		LayerMask camLayerMask = this.mainCamObj.GetComponent<Camera>().cullingMask;
+		RaycastHit hit;
+		float focusDistance = 10000.0f;
+		if(Physics.Raycast(camPosition, camForward, out hit, 10000.0f, camLayerMask)){
+			focusDistance = hit.distance;
+		}
+		DepthOfFieldModel.Settings settings = profile.depthOfField.settings;
+		settings.focusDistance = Mathf.Pow(10, Mathf.Lerp(Mathf.Log10(settings.focusDistance), Mathf.Log10(focusDistance), m_DOFAdaptRate));
+		profile.depthOfField.settings = settings;*/
+    }
+
+    public void OnPieEvent(int _segmentNumber)
 	{
 		if (_segmentNumber == -1 || !isLocalPlayer || !this.enabled)
 		{
@@ -429,8 +480,6 @@ public class Player_Controller : Player {
 			case 10:
 				break;
 			case 11:
-			grappleActive = !grappleActive;
-				Grapple(grappleActive);
 				break;
 			case 12:
 				
@@ -439,35 +488,7 @@ public class Player_Controller : Player {
 				break;
 		}
 	}
-	#region Grapple
-	void Grapple(bool _enabled)
-	{
-		print("grapling");
-		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
-		_grapple.BreakWire();
-		_grapple.anim.SetBool("Enabled", _enabled);
-		anim.SetBool("Grapple", _enabled);
 
-	}	
-	//signalled from grapple
-	[MRPC]
-	public void RPC_FireGrapple(int parent1, int parent2, Vector3 localPos1, Vector3 localPos2)
-	{
-		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
-		_grapple.ConnectGrapple(
-			Game_Controller.GetGameObjectFromNetID(parent1).transform,
-			Game_Controller.GetGameObjectFromNetID(parent2).transform,
-			localPos1,
-			localPos2
-		);
-	}
-	[MRPC]
-	public void RPC_BreakWire()
-	{
-		Harpoon_Gun _grapple = GetComponentInChildren<Harpoon_Gun>();
-		_grapple.BreakWire();
-	}
-	#endregion
 	public void ShowMag(int shown){
 		//TODO
 		/*if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -606,98 +627,12 @@ public class Player_Controller : Player {
 		primaryWeapon.GetComponent<Fire>().RestockAmmo();
 		secondaryWeapon.GetComponent<Fire>().RestockAmmo();
 		if (isLocalPlayer) {
-			Game_Controller.Instance.sceneCam.gameObject.SetActive(false);
-			mainCamObj.SetActive(true);
+			virtualCam.enabled = true;
 			minimapCam.SetActive(true);
 			iconCamera.SetActive (true);
 		}
 	}
 
-	/*[MRPC]
-	public void RPC_SetActive(){
-		print ("Reactivating player");
-		this.gameObject.SetActive (true);
-	}
-	
-	[MRPC]
-	public void RPC_Sit(bool sitMode){
-		anim.SetBool ("Sitting", sitMode);
-	}
-	public void OpenKnife()
-	{
-		knifeAnim.SetBool("Knife", true);
-	}
-	public void RetractKnife()
-	{
-		knifeAnim.SetBool("Knife", false);
-	}*/
-	/*public void Knife(){
-		print("Attempting to knife");
-		if (isLocalPlayer)
-		{
-			return;
-		}
-		RaycastHit hit;
-		if (Physics.SphereCast (mainCamObj.transform.position,0.01f, mainCamObj.transform.forward, out hit, 2f)) {
-			if (hit.transform.root.tag == "Player") {
-				if (hit.transform.root.GetComponent<Animator>().GetBool("Knife"))
-				{
-					counterKnife = true;
-					return;
-				}
-				StartCoroutine(Stab(hit.transform.root.gameObject));
-				
-
-			}
-
-		}
-		//TODO:
-		//
-		//if (Metwork.peerType != MetworkPeerType.Disconnected)
-		//{
-		//	netView.RPC("RPC_Knife", MRPCMode.AllBuffered, new object[] { });
-		//}
-		//else
-		//{
-		//	RPC_Knife();
-		//}
-	}
-	IEnumerator Stab(GameObject _otherPlayer)
-	{
-		float i = 0;
-		while (i < 1.1f)
-		{
-			if (!_otherPlayer.activeInHierarchy)
-			{
-				break;
-			}
-			rb.MovePosition(Vector3.Lerp(transform.position, _otherPlayer.transform.position-transform.forward*1.1f, 0.3f));
-			yield return new WaitForEndOfFrame();
-			i += Time.deltaTime;
-		}
-		//TODO
-		
-		//if (Metwork.peerType != MetworkPeerType.Disconnected)
-		//{
-		//	_otherPlayer.GetComponent<MetworkView>().RPC("RPC_GetKnifed", MRPCMode.AllBuffered, new object[] {
-		//				netObj.owner});
-		//}
-		//else
-		//{
-		//	_otherPlayer.GetComponent<Player_Controller>().RPC_GetKnifed(netObj.owner);
-		//	print("FOund player stabbing now");
-		//}
-	}
-	[MRPC]
-	public void RPC_Knife(){
-		anim.SetBool ("Knife",true);
-		Invoke("StopKnife", 0.2f);
-	}
-	public void StopKnife()
-	{
-		anim.SetBool("Knife", false);
-
-	}*/
 	#region Region1
 	Vector3 currentCamVelocity;
 	protected override void Aim(){
@@ -710,11 +645,11 @@ public class Player_Controller : Player {
 			Transform _scopeTransform = fireScript.scopePosition;
 			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
 
-			float _distance = Vector3.Distance(mainCam.transform.position, _scopePosition);
-			mainCam.transform.position = Vector3.SmoothDamp(mainCam.transform.position, _scopePosition, ref currentCamVelocity, 0.07f);
+			float _distance = Vector3.Distance(virtualCam.transform.position, _scopePosition);
+			virtualCam.transform.position = Vector3.SmoothDamp(virtualCam.transform.position, _scopePosition, ref currentCamVelocity, 0.07f);
 
 			//mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,_scopePosition,0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
-			mainCam.transform.rotation = Quaternion.Lerp(mainCam.transform.rotation,Quaternion.LookRotation(_scopeTransform.forward, _scopeTransform.up),0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
+			virtualCam.transform.rotation = Quaternion.Lerp(virtualCam.transform.rotation,Quaternion.LookRotation(_scopeTransform.forward, _scopeTransform.up),0.7f);//Mathf.Clamp(0.01f/(_distance),0f,0.5f));
 
 			player_IK.Scope(true);
 			Zoom(true);
@@ -729,8 +664,8 @@ public class Player_Controller : Player {
 			}
 
 		} else {
-			mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition,originalCamPosition,0.2f*Time.deltaTime/0.034f);
-			mainCam.transform.localRotation = Quaternion.Lerp(mainCam.transform.localRotation, originalCamRotation, 0.1f);
+			virtualCam.transform.localPosition = Vector3.Lerp(virtualCam.transform.localPosition,originalCamPosition,0.2f*Time.deltaTime/0.034f);
+			virtualCam.transform.localRotation = Quaternion.Lerp(virtualCam.transform.localRotation, originalCamRotation, 0.1f);
 
 			Zoom(false);
 			player_IK.Scope(false);
@@ -756,14 +691,14 @@ public class Player_Controller : Player {
 	//zooms the camera on scope
 
 	public void Zoom(bool zoomIn){
-		float i = mainCam.fieldOfView;
+		float i = virtualCam.m_Lens.FieldOfView;
 
 
 		if (zoomIn == true) {
-			mainCam.fieldOfView = Mathf.Lerp(i,0.5f*originalFOV,0.5f);
+			virtualCam.m_Lens.FieldOfView = Mathf.Lerp(i,0.5f*Game_Settings.FOV,0.5f);
 		}else
 		{
-			mainCam.fieldOfView = Mathf.Lerp(i, originalFOV, 0.5f);
+			virtualCam.m_Lens.FieldOfView = Mathf.Lerp(i, Game_Settings.FOV, 0.5f);
 		}
 	}
 	
@@ -812,40 +747,82 @@ public class Player_Controller : Player {
 	}
 
 	
+	void OpenUseHUD(){
+		allActivaters = FindObjectsOfType<Activater>();
+		UI_Manager.Instance.activaterUI.Open(allActivaters);
+	}
 
-	public override void UseItem(){
-		RaycastHit hit;
-		if (Physics.Raycast (mainCamObj.transform.position, mainCamObj.transform.forward, out hit)) {
-			
-			if (hit.distance < 20f) {
-				
-				try {
-					hit.collider.GetComponent<Activater> ().ActivateScript (this.gameObject);
+	void UpdateUseHUD(){
+		Activater bestActivater = null;
+		float bestDistance = Mathf.Infinity;
+		float bestAngle = 15f;
 
-				} catch {
-					try {
-						hit.collider.transform.parent.GetComponent<Activater> ().ActivateScript (this.gameObject);
-					} catch {
-						try{hit.transform.root.GetComponent<Activater> ().ActivateScript (this.gameObject);
-						}
-						catch{
-							fireScript.StartCoroutine (fireScript.Reload());
-						}
-					}
-				}
-				
-			} else {
-				fireScript.StartCoroutine (fireScript.Reload());
-				UpdateUI ();
+		foreach(Activater activater in allActivaters){
+			Vector3 delta = activater.Position - virtualCam.transform.position;
+			float distance = delta.magnitude;
+			float angle = Vector3.Angle(delta, virtualCam.transform.forward);
+			Vector3 screenpoint = mainCam.WorldToScreenPoint(activater.Position);
+			UI_Manager.Instance.activaterUI.SetHighlight(targetActivater, false);
+			UI_Manager.Instance.activaterUI.UpdateInfo(activater, screenpoint, distance);
+
+			if(distance>activater.maxDistance){
+				continue;
 			}
-			
-
-				
-		} else {
-			fireScript.StartCoroutine (fireScript.Reload());
-			UpdateUI ();
+			if(angle>bestAngle){
+				continue;
+			}
+			if(activater.raycast){
+				if (Physics.Linecast (virtualCam.transform.position, activater.Position)) {
+				//TODO Ignore this object and player
+				//	continue;
+				}
+			}
+			bestAngle = angle;
+			bestDistance = distance;
+			bestActivater = activater;
 		}
 
+		targetActivater = bestActivater;
+		UI_Manager.Instance.activaterUI.SetHighlight(targetActivater, true);
+	}
+
+	public override void UseItem(){
+		if(targetActivater){
+			CmdUseItem(targetActivater);
+			UI_Manager.Instance.activaterUI.Select(targetActivater);
+		}
+		UI_Manager.Instance.activaterUI.Close();
+	}
+
+	public void CmdUseItem(Activater targetActivater){
+		targetActivater.ActivateScript(gameObject);
+	}
+
+	void StartGrab(){
+		grabbable = FindObjectsOfType<Grabbable>()[0];
+		grabbable.GetComponent<Rigidbody>().isKinematic = true;
+		player_IK.lhTarget = grabbable.handle;
+	}
+
+	Vector3 smoothVelocity;
+	public void Grab(){
+		
+		grabbable.GetComponent<Rigidbody>().MovePosition(Vector3.Lerp(grabbable.transform.position, grabbableTransform.position, 0.5f));
+		grabbable.GetComponent<Rigidbody>().MoveRotation( Quaternion.Slerp(grabbable.transform.rotation, grabbableTransform.rotation, 0.5f));
+	}
+
+	public void ReleaseGrab(bool shouldThrow){
+		grabbable.GetComponent<Rigidbody>().isKinematic = false;
+		if(shouldThrow){
+			grabbable.GetComponent<Rigidbody>().velocity = virtualCam.transform.forward*5f;
+		}
+		else{
+			grabbable.GetComponent<Rigidbody>().velocity = rb.velocity;
+		}
+
+		grabbable= null;
+		player_IK.lhTarget = null;
+		Cmd_SwitchWeapons(!primarySelected);
 	}
 
 	public void SpaceMove(){
@@ -860,7 +837,7 @@ public class Player_Controller : Player {
 		{
 			magBootsOn = false;
 		}
-		else if (Game_Settings.currGameplaySettings.holdToGroundLock)
+		else if (Game_Settings.currGameplaySettings.Get("hold_to_ground_lock", false))
 		{
 			magBootsOn = Input.GetButton("Jump");
 		}
@@ -899,7 +876,10 @@ public class Player_Controller : Player {
 				foreach (ParticleSystem jet in jetpackJets) {
 					jet.Stop ();
 				}
-				player_IK.Sprint(false);
+				// Always allow sprinting
+				sprintFactor = 1.75f;
+				player_IK.Sprint(true);
+				//player_IK.Sprint(false);
 			}
 		
 			UpdateUI ();
@@ -911,20 +891,16 @@ public class Player_Controller : Player {
 			player_IK.Sprint(false);
 		}
 
+		Vector3 moveInput = Vector3.ClampMagnitude(new Vector3(h*strafeFactor,z,v), 1f);
+		Vector3 desiredVelocity = transform.TransformVector(moveInput * moveSpeed * sprintFactor);
+		float moveLerp = Mathf.Lerp( unpoweredDragCurve.Evaluate(rb.velocity.magnitude)*unpoweredDragScale, poweredDragCurve.Evaluate(rb.velocity.magnitude)*poweredDragScale, moveInput.magnitude/unpoweredCutoff);
+		
+		
+		//apply normal lerping
+		velocity = Vector3.Lerp(rb.velocity, desiredVelocity, moveLerp);
 
-		Vector3 desiredVelocity = transform.TransformVector(new Vector3(h*strafeFactor,z,v).normalized * moveSpeed * sprintFactor);
-		if(desiredVelocity.sqrMagnitude < rb.velocity.sqrMagnitude*0.5f){
-			//Decelerate the player more if they are almost at a standstill
-			//This makes it easier to stop the player
-			if(rb.velocity.magnitude < 3.5f){
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f*Time.deltaTime * 20f);
-			}else{
-				velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.0036f*Time.deltaTime * 20f);
-			}
-		}
-		else{
-			velocity = Vector3.Lerp(rb.velocity, desiredVelocity, 0.2f*Time.deltaTime * 20f);
-		}
+		
+			
 			
 		
 
@@ -1003,7 +979,7 @@ public class Player_Controller : Player {
 		}
 		
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
-		if (Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f)
+		if (Vector3.Distance(virtualCam.transform.localPosition, originalCamPosition) > 3f)
 		{
 			velocity = Vector3.zero;
 			rotation = Vector3.zero;
@@ -1013,7 +989,7 @@ public class Player_Controller : Player {
 			anim.SetBool("Float", true);
 
 			//Try to right the player's body and camera (as in exit gravity)
-			Vector3 _aimDirection = mainCam.transform.forward;
+			Vector3 _aimDirection = virtualCam.transform.forward;
 			float _originalLookTime = anim.GetFloat("Look Speed");
 			Vector3 _originalForward = transform.forward;
 
@@ -1178,6 +1154,10 @@ public class Player_Controller : Player {
 			Cmd_SetLookTime(lookUpDownTime);
 		}
 
+		if(magBootsLock){
+			hipTransform.localRotation = Quaternion.Euler(Vector3.right*(lookUpDownTime-0.5f)*90f);
+		}
+
 	
 	}
 	
@@ -1191,8 +1171,8 @@ public class Player_Controller : Player {
 		if (!grappleActive)
 		{
 			//Spread of the gun
-			fireScript.shotSpawn.transform.forward = this.mainCam.transform.forward 
-													+ muzzleClimb * fireScript.recoilAmount * mainCam.transform.up * 0.3f
+			fireScript.shotSpawn.transform.forward = this.virtualCam.transform.forward 
+													+ muzzleClimb * fireScript.recoilAmount * virtualCam.transform.up * 0.3f
 													+ fireScript.recoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
 													;
 			if(muzzleClimb < 0.6f){
@@ -1229,21 +1209,12 @@ public class Player_Controller : Player {
 		Vector3 position = this.transform.position;
 		Quaternion rotation = this.transform.rotation;
 		inVehicle = false;
-		//disconnect all joints
-		ConfigurableJoint[] joints = FindObjectsOfType<ConfigurableJoint>();
-		foreach (ConfigurableJoint joint in joints) {
-			if (joint.connectedBody == rb) {
-				joint.connectedBody = null;
-			}
-		}
-		//disable the grapple
-		if (GetComponentInChildren<Harpoon_Gun>() != null)
-		{
-			Grapple(false);
-		}
-		GameObject _ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
-		Destroy (_ragdollGO, 5f);
-		foreach(Rigidbody _rb in _ragdollGO.GetComponentsInChildren<Rigidbody>()){
+		
+		
+		ragdollGO = (GameObject)Instantiate (ragdoll, position, rotation);
+		ragdollGO.GetComponent<PlayerRenderer>().SetTeam(Game_Controller.GetTeam(this));
+		Destroy (ragdollGO, 10f);
+		foreach(Rigidbody _rb in ragdollGO.GetComponentsInChildren<Rigidbody>()){
 
 			_rb.velocity = Vector3.ClampMagnitude(rb.velocity*Random.Range(0.9f, 1.1f), 20f);
 			_rb.useGravity = rb.useGravity;
@@ -1261,27 +1232,21 @@ public class Player_Controller : Player {
 
 
 
-        this.transform.position = Vector3.up * 10000f;
-        this.gameObject.SetActive (false);
+		if(isLocalPlayer){
+			ragdollGO.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>().enabled = true;
+			virtualCam.enabled = false;
+		}
 
-		if(!isLocalPlayer){
-			_ragdollGO.GetComponentInChildren<Camera>().gameObject.SetActive(false);
-		}
-		else{
-			Invoke(nameof(CoDie), 4f);
-		}
+		Invoke(nameof(CoDie), 4f);
+        this.gameObject.SetActive (false);
+		
 	}
 	public override void CoDie(){
-		
-		Game_Controller.Instance.sceneCam.gameObject.SetActive(true);
-		
 		if (isLocalPlayer) {
-			UI_Manager._instance.SetReticleVisibility(false);
+			ragdollGO.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>().enabled = false;
 
-			if (!SceneManager.GetSceneByName("SpawnScene").isLoaded)
-			{
-				SceneManager.LoadScene("SpawnScene", LoadSceneMode.Additive);
-			}
+			UI_Manager.Instance.SetReticleVisibility(false);
+			UI_Manager.Instance.m_SpawnUI.SetActive(true);
 		}
 	}
 
@@ -1300,11 +1265,11 @@ public class Player_Controller : Player {
 
 
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
-		while(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f){
+		while(Vector3.Distance(virtualCam.transform.localPosition, originalCamPosition) > 3f){
 			yield return new WaitForSeconds(0.5f);
 		}
 
-		Vector3 _aimDirection = mainCam.transform.forward;
+		Vector3 _aimDirection = virtualCam.transform.forward;
 		float _originalLookTime = anim.GetFloat("Look Speed");
 		Vector3 _originalForward = transform.forward;
 		float _counter = 0;
@@ -1344,7 +1309,7 @@ public class Player_Controller : Player {
 		float _counter = 0f;
 
 		//Avoid orbiting around the player while the camera is outside the player body (in spawing)
-		while(Vector3.Distance(mainCam.transform.localPosition, originalCamPosition) > 3f){
+		while(Vector3.Distance(virtualCam.transform.localPosition, originalCamPosition) > 3f){
 			yield return new WaitForSeconds(0.5f);
 		}
 
@@ -1354,8 +1319,8 @@ public class Player_Controller : Player {
 		}else{
 			newForwardVector = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
 		}
-		Vector3 _originalForward = mainCam.transform.forward;
-		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,mainCam.transform.forward, transform.right)/250f);
+		Vector3 _originalForward = virtualCam.transform.forward;
+		float _aimDirection = Mathf.Clamp01(0.5f-Vector3.SignedAngle( newForwardVector,virtualCam.transform.forward, transform.right)/250f);
 		
 		while (_counter < 1f)
 		{
@@ -1384,7 +1349,7 @@ public class Player_Controller : Player {
 		yield return StartCoroutine(base.Co_SwitchWeapons(_primary));
 
 		if(isLocalPlayer){
-			UI_Manager._instance.ChangeWeapon (primarySelected);
+			UI_Manager.Instance.ChangeWeapon (primarySelected);
 		}	
 		
 	}
@@ -1455,23 +1420,21 @@ public class Player_Controller : Player {
 		primaryWeaponPrefab = Game_Controller.Instance.weaponsCatalog.guns[primaryWeaponNum];//(GameObject)Resources.Load ("Weapons/" + settings [0]);
 		secondaryWeaponPrefab = Game_Controller.Instance.weaponsCatalog.guns[secondaryWeaponNum];//(GameObject)Resources.Load ("Weapons/" + settings [1]);
 
-		primaryLocalPosition = Loadout_Controller.gunLocalPositions [primaryWeaponPrefab.name];
-		secondaryLocalPosition = Loadout_Controller.gunLocalPositions [secondaryWeaponPrefab.name];
-
-		primaryLocalRotation = Loadout_Controller.gunLocalRotations [primaryWeaponPrefab.name];
-		secondaryLocalRotation = Loadout_Controller.gunLocalRotations [secondaryWeaponPrefab.name];
+		
 		//add the primary weapon to the finger
 		primaryWeapon = (GameObject)Instantiate (primaryWeaponPrefab, finger);
-		primaryWeapon.transform.localPosition = primaryLocalPosition;
-		primaryWeapon.transform.localRotation = Quaternion.Euler (primaryLocalRotation);
+		primaryWeapon.transform.localPosition = Vector3.zero;
+		primaryWeapon.transform.localRotation = Quaternion.identity;
 		primaryWeapon.GetComponent<Fire> ().OnReloadEvent = new Fire.ReloadEvent(Reload);
+		
 
 		secondaryWeapon = (GameObject)Instantiate (secondaryWeaponPrefab, finger);
-		secondaryWeapon.transform.localPosition = secondaryLocalPosition;
-		secondaryWeapon.transform.localRotation = Quaternion.Euler (secondaryLocalRotation);
+		secondaryWeapon.transform.localPosition = Vector3.zero;
+		secondaryWeapon.transform.localRotation = Quaternion.identity;
 		secondaryWeapon.SetActive (false);
 		secondaryWeapon.GetComponent<Fire> ().OnReloadEvent = new Fire.ReloadEvent(Reload);
-
+		
+		
 		//scopes now
 		if(primaryScopeNum >= 0){
 			GameObject primaryScope = Game_Controller.Instance.weaponsCatalog.scopes[primaryScopeNum];
@@ -1481,6 +1444,7 @@ public class Player_Controller : Player {
 			GameObject secondaryScope = Game_Controller.Instance.weaponsCatalog.scopes[secondaryScopeNum];
 			Instantiate (secondaryScope, secondaryWeapon.GetComponent<Fire> ().scopePosition);
 		}
+
 
 		//CHECK The latency on this switch may be too much to bear, it may be better to do it locally
 		SwitchWeapons(true, true);
@@ -1562,10 +1526,10 @@ public class Player_Controller : Player {
 			return;
 		}
 		if (fireScript != null) {
-			UI_Manager._instance.UpdateAmmo(fireScript.magAmmo, fireScript.magSize, fireScript.totalAmmo);
+			UI_Manager.Instance.UpdateAmmo(fireScript.magAmmo, fireScript.magSize, fireScript.totalAmmo);
 		}
-		UI_Manager._instance.fuelBar.localScale = new Vector2(1f, jetpackFuel / 2f);
-		blackoutShader.ChangeBlood (Mathf.Clamp01(1-damageScript.currentHealth/100f));
+		UI_Manager.Instance.fuelBar.localScale = new Vector2(1f, jetpackFuel / 2f);
+		blackoutShader?.ChangeBlood (Mathf.Clamp01(1-damageScript.currentHealth/100f));
 
 
 	}

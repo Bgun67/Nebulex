@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="UnityEngine.UIElements"
+    xsi:noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd"
+    xsi:schemaLocation="UnityEngine.UIElements ../UIElementsSchema/UnityEngine.UIElements.xsd">
+
+    <VisualElement class="root">
+        <Style src="styles/MenuStyle.uss" />
+        <Box class="sideBar">
+            <Label text="Paused" name="txt_Paused" style="color:white"/>
+            <VisualElement>
+                <Button name="btn_Resume" text="Resume" />
+                <Button name="btn_Options" text="Options" />
+                <Button name="btn_Loadout" text="Loadout" />
+                <Button name="btn_Recall" text="Recall" />
+                <Button name="btn_Desert" text="Desert" />
+            </VisualElement>
+        </Box>
+        <Box name="menu_Settings" class="body">
+            <VisualElement class="topBar">
+                <Button name="btn_Graphics" text="Graphics" />
+                <Button name="btn_Gameplay" text="Gameplay" />
+                <Button name="btn_Audio" text="Audio" />
+            </VisualElement>
+            <VisualElement class="settingsMenu" name="menu_Graphics">
+                <VisualElement class="labelPair">
+                    <Label text="Field of View" />
+                    <Slider name="sldr_FOV" show-input-field="true" low-value="10" high-value="120.0" value="90.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="MSAA Samples" />
+                    <SliderInt name="sldr_MSAASamples" show-input-field="true" low-value="0" high-value="8" value="1"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="VSync per Frame" />
+                    <SliderInt name="sldr_VSyncPerFrame" show-input-field="true" low-value="0" high-value="4" value="1"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Motion Blur" />
+                    <Slider name="sldr_MotionBlur" show-input-field="true" low-value="0" high-value="1.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Quality" />
+                    <DropdownField name="cbo_Quality"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Fullscreen Mode" />
+                    <DropdownField name="cbo_FullScreenMode"/>
+                </VisualElement>
+            </VisualElement>
+            <VisualElement class="settingsMenu" name="menu_Gameplay" style="display:none">
+                <VisualElement class="labelPair">
+                    <Label text="Mouse Sensitivity" />
+                    <Slider name="sldr_MouseSensitivity" show-input-field="true" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Hold to Ground Lock" />
+                    <Toggle name="chk_GroundLock" value="true"/>
+                </VisualElement>
+            </VisualElement>
+            <VisualElement class="settingsMenu" name="menu_Audio" style="display:none">
+                <VisualElement class="labelPair">
+                    <Label text="Master Volume" />
+                    <Slider name="sldr_MasterVolume" show-input-field="true" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Music Volume" />
+                    <Slider name="sldr_MusicVolume" show-input-field="true" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="SFX Volume" />
+                    <Slider name="sldr_SFXVolume" show-input-field="true" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+                <VisualElement class="labelPair">
+                    <Label text="Voice Prompt Volume" />
+                    <Slider name="sldr_VoicePromptVolume" show-input-field="true" low-value="0.0" high-value="2.0" value="1.0"/>
+                </VisualElement>
+            </VisualElement>
+        </Box>
+    </VisualElement>
+</UXML>

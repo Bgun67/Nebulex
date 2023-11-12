@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Runtime.InteropServices;
 using System.Text;
-//using UniExtensions;
 
-public class WindowsVoice : MonoBehaviour {
+public class WindowsVoice : MonoBehaviour
+{
+#if !UNITY_SERVER
   [DllImport("WindowsVoice")]
   public static extern void initSpeech();
   [DllImport("WindowsVoice")]
@@ -15,36 +16,49 @@ public class WindowsVoice : MonoBehaviour {
   public static extern void clearSpeechQueue();
   [DllImport("WindowsVoice")]
   public static extern void statusMessage(StringBuilder str, int length);
-  public static WindowsVoice theVoice = null;
-	// Use this for initialization
-	void OnEnable () {
-    if (theVoice == null)
+#endif
+
+    public static WindowsVoice theVoice = null;
+    // Use this for initialization
+    void OnEnable()
     {
-      theVoice = this;
-      Debug.Log("Initializing speech");
+        if (theVoice == null)
+        {
+            theVoice = this;
+            Debug.Log("Initializing speech");
+#if !UNITY_SERVER
       initSpeech();
+#endif
+        }
     }
-	}
-  public static void Speak(string msg, float delay = 0f) {
-    int volume = (int)(Game_Settings.currAudioSettings.voicePromptVolume * 100.0f);
-    print(volume.ToString());
-    if ( delay == 0f )
-      addToSpeechQueue("<volume level=\"" + volume.ToString() + "\"><voice required=\"Gender=Female;Age!=Child\"><rate speed=\"2\">" + msg + "</rate></voice></volume>");
-    else{}
-      //theVoice.ExecuteLater(delay, () => speak(msg));
-  }
-  void OnDestroy()
-  {
-    if (theVoice == this)
+    public static void Speak(string msg, float delay = 0f)
     {
-      destroySpeech();
-      theVoice = null;
+#if !UNITY_SERVER
+      int volume = (int)(Game_Settings.currAudioSettings.Get("voice_prompt_volume", 0.5f) * 100.0f);
+      if ( delay == 0f )
+        addToSpeechQueue("<volume level=\"" + volume.ToString() + "\"><voice required=\"Gender=Female;Age!=Child\"><rate speed=\"2\">" + msg + "</rate></voice></volume>");
+      else{}
+        //theVoice.ExecuteLater(delay, () => speak(msg));
+#endif
     }
-  }
-  public static string GetStatusMessage()
-  {
+    void OnDestroy()
+    {
+        if (theVoice == this)
+        {
+#if !UNITY_SERVER
+      destroySpeech();
+#endif
+            theVoice = null;
+        }
+    }
+    public static string GetStatusMessage()
+    {
+#if !UNITY_SERVER
     StringBuilder sb = new StringBuilder(40);
     statusMessage(sb, 40);
     return sb.ToString();
-  }
+#else
+        return "";
+#endif
+    }
 }

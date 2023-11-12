@@ -9,6 +9,7 @@ using System.Net;
 using System.Collections.Specialized;
 using System;
 using Mirror;
+using DOMJson;
 
 
 public class Match_Scene_Manager : MonoBehaviour
@@ -71,6 +72,7 @@ public class Match_Scene_Manager : MonoBehaviour
     void Awake()
     {
         manager = FindObjectOfType<CustomNetworkManager>();
+
         foreach (Button hostButton in hostButtons)
         {
             hostButton.gameObject.SetActive(false);
@@ -83,7 +85,30 @@ public class Match_Scene_Manager : MonoBehaviour
         StartCoroutine(GetMatches());
     }
     void Start(){
-        networkDiscovery.StartDiscovery();
+        if (CustomNetworkManager.m_IsDedicatedServer){
+            int mapNum = 0;
+            string gameName = "Dedicated Server";
+            int port = 7;
+
+            try{
+                string configJson = System.IO.File.ReadAllText(Application.persistentDataPath + "/server_config.json");
+                JsonObject serverConfig = JsonObject.FromJson(configJson);
+                port = serverConfig.Get("port", 7777);
+            }
+            catch{
+                Debug.LogWarning("Could not read server config file, using defaults");
+            }
+            connection.comment = maps[mapNum].sceneName;
+            networkDiscovery.comment = maps[mapNum].sceneName;
+            connection.gameName = gameName;
+            networkDiscovery.gameName = gameName;
+            manager.GetComponent<kcp2k.KcpTransport>().Port = (ushort)7777;
+
+			manager.StartServer();
+            manager.onStartServer += OnMetServerInitialized;
+		}else{
+            networkDiscovery.StartDiscovery();
+        }
     }
 
     void Update(){
