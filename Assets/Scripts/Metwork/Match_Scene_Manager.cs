@@ -398,6 +398,22 @@ public class Match_Scene_Manager : MonoBehaviour
     public void OnUseLanChanged(bool _useLan)
     {
         manager.useLan = _useLan;
+
+        // TODO: Move to common function
+        //Hide the buttons from the old match type
+        for (int i = 0; i < hostButtons.Length; i++)
+        {
+            hostButtons[i].gameObject.SetActive(false);
+        }
+        if (manager.useLan)
+        {
+            matchInfoText.text = "SEARCHING FOR LAN MATCHES...";
+        }
+        else
+        {
+            matchInfoText.text = "SEARCHING FOR ONLINE MATCHES...";
+        }
+        connection.QueryPHPMasterServer();
     }
 
     public void StartServer()

@@ -3,15 +3,15 @@
     <ui:VisualElement name="BackgroundImage" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Textures/Skybox/starry-background-high-res.jpg?fileID=2800000&amp;guid=b27c48243f42d6f45bb501ac4de9024e&amp;type=3#starry-background-high-res&apos;);">
         <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgba(103, 103, 103, 0.62); flex-direction: row; background-image: none; -unity-text-outline-color: rgba(108, 108, 108, 0);">
             <ui:VisualElement name="LeftSplitter" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-basis: 50%;">
-                <ui:Label tabindex="-1" text="Scene Name" display-tooltip-when-elided="true" name="lbl_Scene" />
+                <ui:Label tabindex="-1" text="LHX Ultima Base" display-tooltip-when-elided="true" name="lbl_Scene" />
                 <ui:ScrollView horizontal-scroller-visibility="Hidden" style="flex-grow: 1;">
-                    <ui:Label tabindex="-1" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." display-tooltip-when-elided="true" style="white-space: normal;" />
+                    <ui:Label tabindex="-1" text="Built during the heyday of early space mining, the LHX corporation&apos;s Ultima Mining Station stands as a testament to humanity&apos;s indomitable spirit in the pursuit of celestial resources. Originally conceived as an Osmium mine, this cutting-edge facility emerged as a vanguard in the field of precious metal extraction. However, its success was cut short when it was struck by debris; damaging the outpost&apos;s main communication array and severing its ties with Earth. Abandoned by its crew, the station was left to the elements, surrounded by the asteroids it once captured." display-tooltip-when-elided="true" style="white-space: normal;" />
                 </ui:ScrollView>
             </ui:VisualElement>
             <ui:VisualElement name="RightSplitter" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-basis: 50%;">
                 <ui:Label tabindex="-1" text="Game Mode" display-tooltip-when-elided="true" name="lbl_GameMode" style="-unity-text-align: upper-right;" />
                 <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-basis: 80%; background-image: url(&apos;project://database/Assets/Textures/Map%20Images/LHX-Ultima-Base.JPG?fileID=2800000&amp;guid=3bac2246d927eea4a943707437fe01cd&amp;type=3#LHX-Ultima-Base&apos;); -unity-background-scale-mode: scale-and-crop;" />
-                <ui:VisualElement name="HLayout" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-basis: auto; height: 0; justify-content: flex-end; max-height: 20px;">
+                <ui:VisualElement name="HLayout" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-basis: auto; height: 0; justify-content: flex-end; max-height: 30px;">
                     <ui:Label tabindex="-1" text="0:30" display-tooltip-when-elided="true" name="lbl_TimeRemaining" enable-rich-text="false" style="-unity-text-align: middle-left;" />
                     <ui:Button text="Deploy" name="btn_Deploy" />
                 </ui:VisualElement>
