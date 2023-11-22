@@ -134,34 +134,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc2220db84957642b7291d69569069b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponProperties: {fileID: 11400000, guid: 075e89e45f2a8ec46b32b60e00d7c944, type: 2}
   shotSpawn: {fileID: 1900441787854054584}
   rhTarget: {fileID: 1758535682669763058}
-  rhOffset: {x: 0, y: 0, z: 0}
   lhTarget: {fileID: 3845917871080800381}
   lhHint: {fileID: 0}
-  leftGripSize: 1
-  reloadTime: 1
-  fireRate: 300
-  magSize: 22
-  magAmmo: 0
-  maxAmmo: 220
   totalAmmo: 220
-  bulletPrefab: {fileID: 1235886279165106, guid: 863d85dea78005742b365e53583a6a6a,
-    type: 3}
-  damagePower: 32
-  bulletVelocity: 500
-  fireType: 0
-  skillLevel: 0
-  unavailableScopes: []
+  magAmmo: 0
+  damageFactor: 1
   source: {fileID: 0}
-  triggerClick: {fileID: 8300000, guid: f71519fc0ecf8d8498600a1181ae50f4, type: 3}
-  cockSound: {fileID: 8300000, guid: 088940cda1af1c9499ced22b55580323, type: 3}
-  shootSound: {fileID: 8300000, guid: 0846601c78386494bb98bf1529862725, type: 3}
+  scope: {fileID: 0}
   weaponAnim: {fileID: 0}
-  recoilAmount: 0.5
-  bulk: 0.5
   scopePosition: {fileID: 4054646267191171793}
-  ignoreParentVelocity: 0
   muzzleFlash: {fileID: 5421955012799322474}
   bulletCasings: {fileID: 6076010110574536266}
   playerID: 0
@@ -319,7 +303,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4581665352221075555}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.13, z: 0.131}
+  m_LocalPosition: {x: 0, y: 0.1167, z: 0.1214}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

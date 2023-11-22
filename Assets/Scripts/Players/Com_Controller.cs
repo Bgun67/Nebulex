@@ -89,8 +89,8 @@ public class Com_Controller : Player {
 		lastPosition = this.transform.position;
 
 		fireScript.totalAmmo = (int)10000;
-		fireScript.damagePower = (int)(difficultySetting.DamageFactor*fireScript.damagePower);
-		fireScript.GetComponent<Fire> ().OnReloadEvent = new Fire.ReloadEvent(Reload);
+		fireScript.damageFactor = difficultySetting.DamageFactor;
+		fireScript.OnReloadEvent = new Fire.ReloadEvent(Reload);
 
 
 		anim.SetFloat("Look Speed", 0.5f);
@@ -155,7 +155,7 @@ public class Com_Controller : Player {
 			CheckState();
 		}
 
-		player_IK.rhOffset = fireScript.rhOffset;
+		player_IK.rhOffset = fireScript.weaponProperties.RhOffset;
 		player_IK.gunPosition = rightHandPosition;
 		player_IK.gripPosition = fireScript.lhTarget;
 		fireScript.playerID = playerID;

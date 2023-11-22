@@ -5257,7 +5257,6 @@ GameObject:
   - component: {fileID: 4096632021951756}
   - component: {fileID: 114433205365915618}
   - component: {fileID: 82018286723155346}
-  - component: {fileID: 114590177341100166}
   m_Layer: 0
   m_Name: Ratpak
   m_TagString: Untagged
@@ -5298,34 +5297,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc2220db84957642b7291d69569069b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponProperties: {fileID: 11400000, guid: 70847205692928649a7c72bea3e90fd1, type: 2}
   shotSpawn: {fileID: 4300407192444788}
   rhTarget: {fileID: 0}
-  rhOffset: {x: 0, y: 0, z: 0}
   lhTarget: {fileID: 6298468253675441857}
   lhHint: {fileID: 0}
-  leftGripSize: 1
-  reloadTime: 2
-  fireRate: 900
-  magSize: 21
-  magAmmo: 21
-  maxAmmo: 300
   totalAmmo: 300
-  bulletPrefab: {fileID: 1235886279165106, guid: 863d85dea78005742b365e53583a6a6a,
-    type: 3}
-  damagePower: 20
-  bulletVelocity: 360
-  fireType: 1
-  skillLevel: 0
-  unavailableScopes: []
+  magAmmo: 21
+  damageFactor: 1
   source: {fileID: 0}
-  triggerClick: {fileID: 8300000, guid: f71519fc0ecf8d8498600a1181ae50f4, type: 3}
-  cockSound: {fileID: 8300000, guid: 088940cda1af1c9499ced22b55580323, type: 3}
-  shootSound: {fileID: 8300000, guid: 1e6e6f1527fef5e4897868d085b3fa92, type: 3}
+  scope: {fileID: 0}
   weaponAnim: {fileID: 0}
-  recoilAmount: 0.3
-  bulk: 0.5
   scopePosition: {fileID: 4269809002719206}
-  ignoreParentVelocity: 0
   muzzleFlash: {fileID: 198350016030373902}
   bulletCasings: {fileID: 0}
   playerID: 0
@@ -5428,19 +5411,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114590177341100166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753736548575916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewID: -1
 --- !u!1 &749800560272253325
 GameObject:
   m_ObjectHideFlags: 0

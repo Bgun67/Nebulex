@@ -1,67 +1,37 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Fire : MonoBehaviour
 {
-    public enum FireTypes
-    {
-        SemiAuto,
-        FullAuto,
-        Burst,
-    }
-    #region GunInfo
     [Header("Gun Info")]
     public WeaponProperties weaponProperties;
     float fireDelay;
     public Transform shotSpawn;
     //This is rarely used and many need to be removed
     public Transform rhTarget;
-    [Tooltip("An offset to be applied to the position of the right hand to accomodate longer/shorter guns")]
-    public Vector3 rhOffset;
     public Transform lhTarget;
     public Transform lhHint;
-    public float leftGripSize = 1f;
-    public float reloadTime;
-    [Tooltip("Rounds Per Minute")]
-    public float fireRate;
-    public int magSize;
-    [HideInInspector]
-    public int magAmmo;
-    public int maxAmmo;
-    public int totalAmmo;
-    public int damagePower;
-    public float bulletVelocity;
-    public FireTypes fireType;
-    public int skillLevel;
-    #endregion
-    public List<string> unavailableScopes = new List<string>();
-    [Space()]
-    [Header("Sound")]
+    [HideInInspector] public int totalAmmo;
+    [HideInInspector] public int magAmmo;
+    [HideInInspector] public float damageFactor =1;
+    [Header("Sound")] [HideInInspector]
     public AudioSource source;
-    public AudioClip triggerClick;
-    public AudioClip cockSound;
-    public AudioClip shootSound;
+
+    [HideInInspector] public Scope scope;
 
     [Space()]
     public WaitForSeconds reloadWait;
     public Animator weaponAnim;
-    [Tooltip("0-1 bitches!")]
-    public float recoilAmount = 0.5f;
-    [Tooltip("0-1 How much the weapon drifts")]
-    [Range(0, 1)]
-    public float bulk = 0.5f;
 
     public Transform scopePosition;
     int fired = 0;
-    [Tooltip("DO fired bullets start with the parents velocity?")]
-    public bool ignoreParentVelocity;
     Rigidbody rootRB;
     public ParticleSystem muzzleFlash;
     public ParticleSystem bulletCasings;
-    public int playerID;
-    public bool reloading;
+    [HideInInspector] public int playerID;
+   [HideInInspector]   public bool reloading;
     public delegate void ReloadEvent();
     public ReloadEvent OnReloadEvent;
     public GameObject magGO;
@@ -77,20 +47,19 @@ public class Fire : MonoBehaviour
     }
     void Setup()
     {
-        reloadWait = new WaitForSeconds(reloadTime);
-        source = this.GetComponent<AudioSource>();
+        reloadWait = new WaitForSeconds(weaponProperties.ReloadTime);
+        source = this.GetComponentInChildren<AudioSource>();
 
         weaponAnim = this.GetComponent<Animator>();
-        fireRate = 1f / (fireRate / 60f);
 
-        if (!ignoreParentVelocity)
+        if (!weaponProperties.IgnoreParentVelocity)
         {
             rootRB = transform.root.GetComponent<Rigidbody>();
         }
 
 
-        magAmmo = magSize;
-        totalAmmo = maxAmmo;
+        magAmmo = weaponProperties.MagSize;
+        totalAmmo = weaponProperties.MaxAmmo;
 
     }
 
@@ -138,7 +107,7 @@ public class Fire : MonoBehaviour
         if (!reloading)
         {
 
-            if (fireType == FireTypes.SemiAuto)
+            if (weaponProperties.FireType == FireTypes.SemiAuto)
             {
 
                 if (fired > 0)
@@ -146,7 +115,7 @@ public class Fire : MonoBehaviour
                     return false;
                 }
             }
-            else if (fireType == FireTypes.Burst)
+            else if (weaponProperties.FireType == FireTypes.Burst)
             {
 
                 if (fired > 2)
@@ -159,14 +128,14 @@ public class Fire : MonoBehaviour
 
                 if (magAmmo > 0)
                 {
-                    fireDelay = Time.time + fireRate;
+                    fireDelay = Time.time + 1/(weaponProperties.FireRate/60);
 
                     if (Physics.Raycast(shotSpawnPosition, shotSpawnForward, out RaycastHit hit, 200f))
                     {
                         Damage damage = hit.transform.GetComponentInParent<Damage>();
                         if (damage)
                         {
-                            damage.TakeDamage(damagePower, playerID, -shotSpawnForward);
+                             damage.TakeDamage(weaponProperties.DamagePower*damageFactor, playerID, -shotSpawnForward);
                         }
                     }
 
@@ -185,7 +154,7 @@ public class Fire : MonoBehaviour
 
 
 
-                    if (source) source.PlayOneShot(shootSound, 1f);
+                    if (source) source.PlayOneShot(weaponProperties.ShootSound, 1f);
 
                     if (muzzleFlash) muzzleFlash.Play();
 
@@ -203,9 +172,9 @@ public class Fire : MonoBehaviour
                 }
                 if (magAmmo <= 0)
                 {
-                    if (triggerClick != null)
+                    if (weaponProperties.TriggerClick != null)
                     {
-                        source.PlayOneShot(triggerClick, 0.3f);
+                        source.PlayOneShot(weaponProperties.TriggerClick, 0.3f);
                     }
                     StartCoroutine(Reload());
 
@@ -265,7 +234,7 @@ public class Fire : MonoBehaviour
         if (reloading == false)
         {
             reloading = true;
-            if (magAmmo < magSize)
+            if (magAmmo < weaponProperties.MagSize)
             {
                 if (totalAmmo > 0)
                 {
@@ -275,12 +244,12 @@ public class Fire : MonoBehaviour
                     {
                         OnReloadEvent();
                     }
-                    yield return new WaitForSeconds(reloadTime);
+                    yield return new WaitForSeconds(weaponProperties.ReloadTime);
 
-                    if (totalAmmo > (magSize - magAmmo))
+                    if (totalAmmo > (weaponProperties.MagSize - magAmmo))
                     {
-                        totalAmmo -= (magSize - magAmmo);
-                        magAmmo = magSize;
+                        totalAmmo -= (weaponProperties.MagSize - magAmmo);
+                        magAmmo = weaponProperties.MagSize;
                     }
                     else
                     {
@@ -298,8 +267,8 @@ public class Fire : MonoBehaviour
     }
     public void RestockAmmo()
     {
-        magAmmo = magSize;
-        totalAmmo = maxAmmo;
+        magAmmo = weaponProperties.MagSize;
+        totalAmmo = weaponProperties.MaxAmmo;
     }
     void OnEnable()
     {
@@ -310,9 +279,9 @@ public class Fire : MonoBehaviour
             reloading = false;
             StartCoroutine(Reload());
         }
-        if (cockSound != null && transform.parent != null)
+        if (weaponProperties.CockSound != null && transform.parent != null)
         {
-            source.PlayOneShot(cockSound, 0.3f);
+            source.PlayOneShot(weaponProperties.CockSound, 0.3f);
         }
 
         //transform.root.SendMessage("UpdateUI");

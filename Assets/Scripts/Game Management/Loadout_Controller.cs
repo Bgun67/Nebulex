@@ -4,46 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using TMPro;
+using System.Diagnostics.Tracing;
+using UnityEngine.EventSystems;
+using System;
 
 public class Loadout_Controller : MonoBehaviour {
-	
+	public enum WeaponType{
+		Primary,
+		Secondary,
+		Tertiary,
+	}
+	public LoadoutProperties loadoutProperties;
 
-	[Header("Primary")]
+	public Button confirmButton;
+	public Button backButton;
 
-	public GameObject[] primaryGunObjs;
-	public Transform primaryParent;
-	public GameObject primaryButton;
+	public GameObject quickSelectScreen;
+	public Button primaryButton;
+	public Button secondaryButton;
+	public Button tertiaryButton;
 
+	public GameObject weaponScreen;
+	public Transform weaponListParent;
+	public Transform attachmentsListParent;
+	public GameObject weaponButtonPrefab;
 
-	[Header("Secondary")]
-	public GameObject[] secondaryGunObjs;
-	public Transform secondaryParent;
-	public GameObject secondaryButton;
-
-	[Header("Scopes")]
-
-	public GameObject[] primaryScopesObjs;
-	public Transform primaryScopesParent;
-	public GameObject scopesButton;
-
-	public GameObject[] secondaryScopesObjs;
-	public Transform secondaryScopesParent;
-
-	[Header("Other")]
-	public GameObject[] otherObjs;
-	public Transform otherParent;
-	public GameObject otherButton;
-
-	public int selectedGun = 0;
-	public Vector2 initialPosition;
-	public Vector2 previousPosition;
-	public GameObject buttonPrefab;
+	public WeaponType selectedWeaponType = 0;
 	public string[] loadoutData;
 	public int skillLevel;
-	public Transform finger;
-	GameObject weapon;
 	public string[] originalData;
-	public Text weaponDataText;
+	public TextMeshProUGUI weaponDataText;
+	WeaponProperties selectedWeapon;
 
 	// Use this for initialization
 	void Start () {
@@ -54,18 +46,34 @@ public class Loadout_Controller : MonoBehaviour {
 		catch{ Debug.Log("Encountered error in"+this.name);
 			skillLevel = int.Parse(Profile.RestoreDataFile ()[1]);
 		}
-		previousPosition = initialPosition;
-		InstantiateButtons(primaryGunObjs, Gun_Button_Controller.ButtonTypes.Primary, primaryParent);
-		InstantiateButtons(secondaryGunObjs, Gun_Button_Controller.ButtonTypes.Secondary, secondaryParent);
-		InstantiateButtons(primaryScopesObjs, Gun_Button_Controller.ButtonTypes.Scope, primaryScopesParent);
-		InstantiateButtons(secondaryScopesObjs, Gun_Button_Controller.ButtonTypes.Scope, secondaryScopesParent);
-		SceneManager.SetActiveScene (SceneManager.GetSceneByName ("Loadout Scene"));
-		//BackClicked ();
 
+		primaryButton.onClick.AddListener(()=>{PrimaryButtonClicked();});
+		secondaryButton.onClick.AddListener(()=>{SecondaryButtonClicked();});
+		tertiaryButton.onClick.AddListener(()=>{TertiaryButtonClicked();});
+
+		backButton.onClick.AddListener(()=>{BackClicked();});
+
+		WeaponProperties primary = loadoutProperties.PrimaryWeapons.Find((a)=>{return a.name==loadoutData[0];});
+		WeaponProperties secondary = loadoutProperties.SecondaryWeapons.Find((a)=>{return a.name==loadoutData[1];});
+		//WeaponProperties tertiary = loadoutProperties.TertiaryWeapons.Find((a)=>{return a.name==loadoutData[4];});
+		if (primary.PreviewImage)
+		{
+			primaryButton.transform.Find("Image").GetComponent<Image>().sprite = primary.PreviewImage;
+		}
+		primaryButton.GetComponentInChildren<TextMeshProUGUI>().text = primary.FriendlyName!=""?primary.FriendlyName:primary.name;
+		if (secondary.PreviewImage)
+		{
+			secondaryButton.transform.Find("Image").GetComponent<Image>().sprite = secondary.PreviewImage;
+		}
+		secondaryButton.GetComponentInChildren<TextMeshProUGUI>().text = secondary.FriendlyName!=""?secondary.FriendlyName:secondary.name;
+		/*if (tertiary.PreviewImage)
+		{
+			tertiaryButton.transform.Find("Image").GetComponent<Image>().sprite = tertiary.PreviewImage;
+		}
+		tertiaryButton.GetComponentInChildren<TextMeshProUGUI>().text = tertiary.FriendlyName!=""?tertiary.FriendlyName:tertiary.name;
+		*/
 	}
-	void Update(){
-		transform.Rotate (0f, 1f, 0f);
-	}
+	
 	void LoadData(){
 		try{
 		loadoutData = Util.LushWatermelon(System.IO.File.ReadAllLines ( Application.persistentDataPath+"/Loadout Settings.txt"));
@@ -79,199 +87,184 @@ public class Loadout_Controller : MonoBehaviour {
 			originalData [i] = line;
 		}
 	}
-	public void ShowWeapon(){
-        //	
-        if (weapon != null)
-        {
-            Destroy(weapon);
-            weapon = null;
-        }
-        GameObject weaponPrefab = null;
-        GameObject scopePrefab = null;
-        try
-        {
-            if (selectedGun == 0)
-            {
 
-                weaponPrefab = (GameObject)Resources.Load("Weapons/" + loadoutData[0]);
-                scopePrefab = (GameObject)Resources.Load("Weapons/Scopes/" + loadoutData[2]);
-
-
-            }
-            else
-            {
-                weaponPrefab = (GameObject)Resources.Load("Weapons/" + loadoutData[1]);
-                scopePrefab = (GameObject)Resources.Load("Weapons/Scopes/" + loadoutData[3]);
-            }
-        }
-        catch (System.Exception e)
-        {
-            print("Sorry. Braden.exe has encountered an error" + e);
-            loadoutData = Profile.RestoreLoadoutFile();
-        }
-
-        //add the primary weapon to the finger
-        weapon = (GameObject)Instantiate(weaponPrefab, finger);
-        weapon.transform.localPosition = Vector3.zero;
-        weapon.transform.localRotation = Quaternion.identity;
-        Instantiate(scopePrefab, weapon.GetComponent<Fire>().scopePosition);
-
-        DisplayGunInfo();
-		
+	void PrimaryButtonClicked(){
+		quickSelectScreen.SetActive(false);
+		weaponScreen.SetActive(true);
+		selectedWeaponType = WeaponType.Primary;
+		PopulateWeapons(loadoutProperties.PrimaryWeapons);
 	}
-	void DisplayGunInfo(){
-		Fire tmpFire = weapon.GetComponent<Fire> ();
+
+	void SecondaryButtonClicked(){
+		quickSelectScreen.SetActive(false);
+		weaponScreen.SetActive(true);
+		selectedWeaponType = WeaponType.Secondary;
+		PopulateWeapons(loadoutProperties.SecondaryWeapons);
+
+	}
+
+	void TertiaryButtonClicked(){
+		quickSelectScreen.SetActive(false);
+		weaponScreen.SetActive(true);
+		selectedWeaponType = WeaponType.Tertiary;
+		PopulateWeapons(loadoutProperties.TertiaryWeapons);
+	}
+
+
+	void DisplayGunInfo(WeaponProperties weaponProperties){
+		if(!weaponProperties){
+			return;
+		}
 		weaponDataText.text =
-			("<b><size=16>" + weapon.name.Replace("(Clone)", "") + "</size></b>\n" +
-		"Fire Rate: " + tmpFire.fireRate + "\n" +
-		"Reload Time: " + tmpFire.reloadTime + "\n" +
-		"Damage: " + tmpFire.damagePower + "\n" +
-		"Bullet Velocity: " + tmpFire.bulletVelocity + "\n" +
-		"Fire Type: " + tmpFire.fireType.ToString() + "\n" +
-		"Mag Size: " + tmpFire.magSize + "\n");
-		if (skillLevel < tmpFire.skillLevel)
+		"<b><size=16>" + weaponProperties.name.Replace("(Clone)", "") + "</size></b>\n" +
+		"Fire Rate: " + weaponProperties.FireRate + "\n" +
+		"Reload Time: " + weaponProperties.ReloadTime + "\n" +
+		"Damage: " + weaponProperties.DamagePower + "\n" +
+		"Bullet Velocity: " + weaponProperties.BulletVelocity + "\n" +
+		"Fire Type: " + weaponProperties.FireType.ToString() + "\n" +
+		"Mag Size: " + weaponProperties.MagSize + "\n";
+		if (skillLevel < weaponProperties.SkillLevel)
 		{
-			weaponDataText.text+="<color=red>SKill Level: " +tmpFire.skillLevel+"</color>\n";
+			weaponDataText.text += "<color=red>Skill Level: " + weaponProperties.SkillLevel + "</color>\n";
 		}
 		else
 		{
-					weaponDataText.text+="SKill Level: " +tmpFire.skillLevel+"\n";
+			weaponDataText.text += "Skill Level: " + weaponProperties.SkillLevel + "\n";
 
 		}
 
 
 
 	}
-	public void MouseOver(string text, Gun_Button_Controller.ButtonTypes type ){
+	public void MouseOver(WeaponProperties weapon){
 		
-		if (type == Gun_Button_Controller.ButtonTypes.Primary) {
-			loadoutData [0] = text;
-		} else if (type == Gun_Button_Controller.ButtonTypes.Secondary) {
-			loadoutData [1] = text;
-		}
-		else if (type == Gun_Button_Controller.ButtonTypes.Scope) {
-			if (selectedGun == 0) {
-				loadoutData [2] = text;
-			} else {
-				loadoutData [3] = text;
-			}
-		}
-		ShowWeapon ();
+		
+		DisplayGunInfo (weapon);
 
 	}
 	public void MouseLeave(){
-		for(int i = 0; i<loadoutData.Length; i++) {
-			string line = originalData [i];
-			loadoutData [i] = line;
-		}
-		ShowWeapon ();
+		
+		DisplayGunInfo (selectedWeapon);
 	}
 	// Update is called once per frame
-	public void PrimaryButtonClicked (string buttonText) {
-		loadoutData [0] = buttonText;
-		SaveData ();
-		ShowAttachmentButtons ();
-	}
-	public void SecondaryButtonClicked (string buttonText) {
-		loadoutData [1] = buttonText;
-		SaveData ();
-		ShowAttachmentButtons ();
-	}
-	public void ScopesButtonClicked (string buttonText) {
-		if (selectedGun == 0) {
-			loadoutData [2] = buttonText;
-		} else {
-			loadoutData [3] = buttonText;
-		}
-		SaveData ();
-		ShowWeapon ();
-	}
-	public void PrimaryClicked(){
-		LoadData ();
-		selectedGun = 0;
-		HideAllButtons ();
-		primaryParent.gameObject.SetActive (true);
-		ShowWeapon ();
-	}
-	public void SecondaryClicked(){
-		LoadData ();
-		selectedGun = 1;
-		HideAllButtons ();
-		secondaryParent.gameObject.SetActive (true);
-		ShowWeapon ();
-
-	}
-	public void ScopesClicked(){
-		LoadData ();
-
-		HideAllButtons ();
-		foreach (Gun_Button_Controller button in primaryScopesParent.GetComponentsInChildren<Gun_Button_Controller>()) {
-			button.GetComponent<Button> ().interactable = true;
-			if (weapon.GetComponent<Fire> ().unavailableScopes.Contains (button.buttonText.text)) {
-				button.GetComponent<Button> ().interactable = false;
-			}
-		}
-		primaryScopesParent.gameObject.SetActive (true);
-		ShowWeapon ();
-		
-	}
-	public void BackClicked(){
-		if (primaryButton.gameObject.activeInHierarchy) {
-			if (SceneManager.sceneCount > 1) {
-				SceneManager.UnloadSceneAsync ("Loadout Scene");
-			} else {
-				SceneManager.LoadScene ("Start Scene");
-			}
-		}
-		HideAllButtons ();
-
-		primaryButton.SetActive (true);
-		secondaryButton.SetActive (true);
-		ShowWeapon ();
-
-
-	}
-	public void ShowAttachmentButtons(){
-		HideAllButtons ();
-		scopesButton.SetActive (true);
-		otherButton.SetActive (true);
-	}
-	public void HideAllButtons(){
-		primaryButton.SetActive (false);
-		secondaryButton.SetActive (false);
-		scopesButton.SetActive (false);
-		otherButton.SetActive (false);
-
-		primaryParent.gameObject.SetActive (false);
-		secondaryParent.gameObject.SetActive (false);
-		primaryScopesParent.gameObject.SetActive (false);
-		secondaryScopesParent.gameObject.SetActive (false);
-	}
-	public void InstantiateButtons(GameObject[] objectList, Gun_Button_Controller.ButtonTypes type, Transform parent){
-		previousPosition = initialPosition;
-		for (int i = 0; i < objectList.Length; i++) {
-			
-			GameObject button = (GameObject)Instantiate (buttonPrefab, parent);
-			button.GetComponent<RectTransform>().anchoredPosition = previousPosition;
-			previousPosition = previousPosition+Vector2.down*30f;
-			button.GetComponentInChildren<Text> ().text = objectList [i].name;
-			button.GetComponent<Gun_Button_Controller> ().buttonType = type;
-			if (type == Gun_Button_Controller.ButtonTypes.Primary || type == Gun_Button_Controller.ButtonTypes.Secondary) {
-				if (objectList [i].GetComponent<Fire> ().skillLevel > skillLevel) {
-					button.GetComponent<Button> ().interactable = (false);
+	public void SelectWeapon (WeaponProperties weapon, WeaponType type) {
+		switch (type){
+			case WeaponType.Primary:
+				loadoutData [0] = weapon.name;
+				if (weapon.PreviewImage)
+				{
+					primaryButton.transform.Find("Image").GetComponent<Image>().sprite = weapon.PreviewImage;
 				}
+				primaryButton.GetComponentInChildren<TextMeshProUGUI>().text = weapon.FriendlyName!=""?weapon.FriendlyName:weapon.name;
+				break;
+			case WeaponType.Secondary:
+				loadoutData [1] = weapon.name;
+				if (weapon.PreviewImage)
+				{
+					secondaryButton.transform.Find("Image").GetComponent<Image>().sprite = weapon.PreviewImage;
+				}
+				secondaryButton.GetComponentInChildren<TextMeshProUGUI>().text = weapon.FriendlyName!=""?weapon.FriendlyName:weapon.name;
+				break;
+			case WeaponType.Tertiary:
+				loadoutData [4] = weapon.name;
+				if (weapon.PreviewImage)
+				{
+					tertiaryButton.transform.Find("Image").GetComponent<Image>().sprite = weapon.PreviewImage;
+				}
+				tertiaryButton.GetComponentInChildren<TextMeshProUGUI>().text = weapon.FriendlyName!=""?weapon.FriendlyName:weapon.name;
+				break;
+		}
+		selectedWeapon = weapon;
+		SaveData ();
+		DisplayGunInfo (weapon);
+	}
+
+	private void SelectScope(string scope, WeaponType type)
+    {
+        switch (type){
+			case WeaponType.Primary:
+				loadoutData [2] = scope;
+				break;
+			case WeaponType.Secondary:
+				loadoutData [3] = scope;
+				break;
+		}
+
+		SaveData ();
+		DisplayGunInfo (selectedWeapon);
+    }
+	
+	public void ConfirmClicked(){
+		this.gameObject.SetActive(false);
+	}
+
+	public void BackClicked(){
+		quickSelectScreen.SetActive(true);
+		weaponScreen.SetActive(false);
+	}
+	
+
+	public void PopulateWeapons(List<WeaponProperties> weaponList){
+		
+		for(int i = 0; i<weaponListParent.childCount; i++){
+			Destroy(weaponListParent.GetChild(i).gameObject);
+		}
+		foreach (WeaponProperties weapon in weaponList) {
+			
+			GameObject buttonGO = (GameObject)Instantiate (weaponButtonPrefab, weaponListParent);
+			Button button = buttonGO.GetComponent<Button>();
+			Gun_Button_Controller trigger = buttonGO.GetComponent<Gun_Button_Controller>();
+			button.GetComponentInChildren<TextMeshProUGUI>().text = weapon.FriendlyName!=""?weapon.FriendlyName:weapon.name;
+			
+
+			button.onClick.AddListener(() =>
+			{
+				List<string> availableScopes = loadoutProperties.Scopes;
+				foreach (string unavailableScope in weapon.UnavailableScopes)
+				{
+					availableScopes.Remove(unavailableScope);
+				}
+				SelectWeapon(weapon, selectedWeaponType);
+				PopulateAttachments(availableScopes);
+			});
+			if (weapon.PreviewImage)
+			{
+				trigger.image.sprite = weapon.PreviewImage;
 			}
-			else if (type == Gun_Button_Controller.ButtonTypes.Scope) {
-				
-			}
+			trigger.onPointerEnter += () => { MouseOver(weapon); };
+			trigger.onPointerExit += () => { MouseLeave(); };
+
 		}
 	}
-	public void SaveData(){
+
+	public void PopulateAttachments(List<string> scopesList){
+		attachmentsListParent.gameObject.SetActive(true);
+		for(int i = 0; i<attachmentsListParent.childCount; i++){
+			Destroy(attachmentsListParent.GetChild(i).gameObject);
+		}
+		foreach (string scope in scopesList) {
+			print(scope);
+			GameObject buttonGO = (GameObject)Instantiate (weaponButtonPrefab, attachmentsListParent);
+			Button button = buttonGO.GetComponent<Button>();
+			button.GetComponentInChildren<TextMeshProUGUI>().text = scope;
+			button.onClick.AddListener(()=>{SelectScope(scope, selectedWeaponType);});
+			Gun_Button_Controller trigger = buttonGO.GetComponent<Gun_Button_Controller>();
+			
+			trigger.image.enabled = false;
+			//TODO Add Full mouse over capability
+			//trigger.onPointerEnter += () => { MouseOver(weapon); };
+			//trigger.onPointerExit += () => { MouseLeave(); };
+
+		}
+	}
+
+    
+
+    public void SaveData(){
 		for(int i = 0; i<loadoutData.Length; i++) {
 			string line = loadoutData [i];
 			originalData [i] = line;
 		}
 		System.IO.File.WriteAllLines (Application.persistentDataPath+"/Loadout Settings.txt", Util.ThiccWatermelon(loadoutData));
-		ShowWeapon ();
 	}
 }

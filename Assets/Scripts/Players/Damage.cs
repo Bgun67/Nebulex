@@ -20,7 +20,7 @@ public class Damage : NetworkBehaviour{
 	public Transform initialPosition;
 	[Tooltip ("Make Longer than the carcass destroy time")]
 	public float resetTime;
-	int[] assistArray;
+	float[] assistArray;
 	public Game_Controller gameController;
 
 	public bool regen;
@@ -50,7 +50,7 @@ public class Damage : NetworkBehaviour{
 
 	//public Metwork_Object netObj;
 	void Awake(){
-		assistArray = new int[Game_Controller.Instance.maxPlayers];
+		assistArray = new float[Game_Controller.Instance.maxPlayers];
 	}
 
 	// Use this for initialization
@@ -95,7 +95,7 @@ public class Damage : NetworkBehaviour{
 	}
 		
 
-	public void TakeDamage(int damageAmount, int fromID, Vector3 _hitDirection, bool overrideTeam = false)
+	public void TakeDamage(float damageAmount, int fromID, Vector3 _hitDirection, bool overrideTeam = false)
 	{
 		
 		if(isLocalPlayer && this.tag == "Player"){
@@ -176,7 +176,7 @@ public class Damage : NetworkBehaviour{
 					{
 						continue;
 					}
-					int assistScore = assistArray[i];
+					float assistScore = assistArray[i];
 					assistScore = (int)Mathf.Clamp((assistScore / originalHealth) * 100, 0, 100);
 					if (assistScore >= 85)
 					{
@@ -205,19 +205,7 @@ public class Damage : NetworkBehaviour{
 			{
 				Destroy(this.gameObject);
 			}
-			int j = 0;
-			//TODO: Implement child gameobject damage
-			/*foreach (Damage damageScript in this.GetComponentsInChildren<Damage>())
-			{
-				if (j > 9)
-				{
-					break;
-				}
-				damageScript.TakeDamage(damageScript.originalHealth + 1, fromID, _hitDirection);
-				j++;
-			}*/
-
-
+			
 
 
 		}

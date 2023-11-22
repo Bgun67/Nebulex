@@ -26,14 +26,12 @@ public class StartGameUI : MonoBehaviour
     }
     
     public void UpdateTime(double time){
-        print("Update Time"+time);
         TimeSpan timeSpan = TimeSpan.FromSeconds(time);
         m_LblTimeRemaining.text = timeSpan.ToString("mm':'ss");
 
     }
     public void MatchReady(){
         print("Match Ready");
-    Debug.Log(m_BtnDeploy);
         m_BtnDeploy.SetEnabled(true);
     }
 

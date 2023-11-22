@@ -27,21 +27,7 @@ public class Gun_Creator : ScriptableWizard {
 	void Awake(){
 		scopeNames.Clear ();
 		 rootObjects = SceneManager.GetSceneByName ("Loadout Scene").GetRootGameObjects ();
-		 sceneLoadout = new Loadout_Controller ();
-		foreach (GameObject GO in rootObjects) {
-			if (GO.GetComponent<Loadout_Controller> () != null) {
-				sceneLoadout = GO.GetComponent<Loadout_Controller> ();
-			}
-		}
-		isScopeActive = new bool[sceneLoadout.primaryScopesObjs.Length];
-		
-		//bool scopesEnabled = EditorGUILayout.BeginToggleGroup ("Scopes", true);
-		for (int i = 0; i < sceneLoadout.primaryScopesObjs.Length; i++) {
-			GameObject scope = sceneLoadout.primaryScopesObjs [i];
-			//isScopeActive [i] = EditorGUILayout.Toggle (scope.name, isScopeActive [i]);
-			scopeNames.Add (scope.name);
-
-		}
+		 
 		//EditorGUILayout.EndToggleGroup ();
 
 
@@ -54,16 +40,6 @@ public class Gun_Creator : ScriptableWizard {
 		gunPrefab = Instantiate (gunModel);
 		gunPrefab.name = name;
 		Fire fireScript = gunPrefab.AddComponent<Fire> ();
-
-
-
-		fireScript.unavailableScopes.Clear ();
-		for (int i = 0; i < isScopeActive.Length; i++) {
-			if (isScopeActive[i]) {
-			} else {
-				fireScript.unavailableScopes.Add (scopeNames[i]);
-			}
-		}
 
 
 		GameObject scopePosition = new GameObject ();

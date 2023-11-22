@@ -473,8 +473,8 @@ public class Player : NetworkBehaviour {
 		{
 			//Spread of the gun
 			fireScript.shotSpawn.transform.forward = this.virtualCam.transform.forward 
-													+ muzzleClimb * fireScript.recoilAmount * virtualCam.transform.up * 0.3f
-													+ fireScript.recoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
+													+ muzzleClimb * fireScript.weaponProperties.RecoilAmount * virtualCam.transform.up * 0.3f
+													+ fireScript.weaponProperties.RecoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
 													;
 			if(muzzleClimb < 0.6f){
 				muzzleClimb += 0.05f;
@@ -482,7 +482,7 @@ public class Player : NetworkBehaviour {
 			bool fired = fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 			Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
 
-			if (fired) { player_IK.Recoil(fireScript.recoilAmount); };
+			if (fired) { player_IK.Recoil(fireScript.weaponProperties.RecoilAmount); };
 		}
 		//TODO:
 		//UpdateUI ();
@@ -554,7 +554,7 @@ public class Player : NetworkBehaviour {
 		
 		fireScript.playerID = playerID;
 		//We want to move the right hand target back and forth depending how long the gun is
-		player_IK.rhOffset = fireScript.rhOffset;
+		player_IK.rhOffset = fireScript.weaponProperties.RhOffset;
 		player_IK.gunPosition = rightHandPosition;
 		player_IK.gripPosition = fireScript.lhTarget;
 		if (fireScript.lhHint)
@@ -566,8 +566,8 @@ public class Player : NetworkBehaviour {
 		anim.SetBool ("Switch Weapons", false);
 		fireScript.playerID = playerID;
 
-		anim.SetFloat ("Drift", fireScript.bulk);
-		anim.SetFloat ("Left Hand Grip", fireScript.leftGripSize);
+		anim.SetFloat ("Drift", fireScript.weaponProperties.Bulk);
+		anim.SetFloat ("Left Hand Grip", fireScript.weaponProperties.LeftGripSize);
 
 		
 	}
@@ -578,7 +578,7 @@ public class Player : NetworkBehaviour {
 				return i;
 			}
 		}
-		return -1;
+		throw new System.Exception("Missing weapon "+_name +" from weapons catalog");
 	}
 	public int ScopeNameToInt(string _name){
 		for (int i = 0; i < Game_Controller.Instance.weaponsCatalog.scopes.Length; i++){
@@ -586,7 +586,7 @@ public class Player : NetworkBehaviour {
 				return i;
 			}
 		}
-		return -1;
+		throw new System.Exception("Missing scope "+_name +" from weapons catalog");
 	}
 	
 	///<summary>

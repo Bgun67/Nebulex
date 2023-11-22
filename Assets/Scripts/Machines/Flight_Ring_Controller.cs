@@ -15,7 +15,7 @@ public class Flight_Ring_Controller : MonoBehaviour {
 			print ("Changing COlor");
 			this.GetComponent<MeshRenderer> ().material.color = new Color(0f,1f,0f);
 			//TODO other.transform.root.GetComponent<Ship_Controller> ().thrustToMassRatio += 0.3f;
-			other.transform.root.GetComponentInChildren<Fire> ().damagePower += 10;
+			other.transform.root.GetComponentInChildren<Fire> ().damageFactor += 0.1f;
 			Invoke ("ResetColor", 5f);
 
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
@@ -32,7 +32,7 @@ public class Flight_Ring_Controller : MonoBehaviour {
 		if (other.transform.root.GetComponent<Ship_Controller> ()) {
 			this.GetComponent<MeshRenderer> ().material.color = new Color(1f,0f,0f);
 			//TODO other.transform.root.GetComponent<Ship_Controller> ().thrustToMassRatio = 1f;
-			other.transform.root.GetComponentInChildren<Fire> ().damagePower = 20;
+			other.transform.root.GetComponentInChildren<Fire> ().damageFactor = 1;
 			if (Metwork.peerType != MetworkPeerType.Disconnected) {
 				netView.RPC ("RPC_ChangeColorRed", MRPCMode.Others, new object[]{});
 			}

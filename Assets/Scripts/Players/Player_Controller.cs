@@ -133,7 +133,6 @@ public class Player_Controller : Player {
 
 		}
 		if (isLocalPlayer) {
-			SetupWeapons ();
 			damageScript = this.GetComponent<Damage> ();
 			damageScript.healthShown = true;
 			InvokeRepeating (nameof(UpdateUI), 1f, 1f);
@@ -621,6 +620,10 @@ public class Player_Controller : Player {
 	}
 	[ClientRpc]
 	public void Rpc_ActivatePlayer(){
+		if (isLocalPlayer)
+		{
+			SetupWeapons();
+		}
 		this.gameObject.SetActive(true);
 		switchWeapons = false;
 		//Reload the players ammo
@@ -642,8 +645,16 @@ public class Player_Controller : Player {
 			return;
 		}
 		if (MInput.GetButton ("Left Trigger")&&!player_IK.IsSprinting()&&!fireScript.reloading &&!switchWeapons && !throwingGrenade) {
-			Transform _scopeTransform = fireScript.scopePosition;
-			Vector3 _scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
+			Transform _scopeTransform = null;
+			Vector3 _scopePosition = Vector3.zero;
+			if(fireScript.scope){
+				_scopeTransform = fireScript.scope.centre;
+				_scopePosition = _scopeTransform.position;
+			} 
+			else{
+				_scopeTransform = fireScript.scopePosition;
+				_scopePosition = _scopeTransform.position - _scopeTransform.forward * 0.22f + _scopeTransform.up * 0.033f;
+			}
 
 			float _distance = Vector3.Distance(virtualCam.transform.position, _scopePosition);
 			virtualCam.transform.position = Vector3.SmoothDamp(virtualCam.transform.position, _scopePosition, ref currentCamVelocity, 0.07f);
@@ -1168,24 +1179,27 @@ public class Player_Controller : Player {
 	}
 
 	public override void Attack(){
-		if (!grappleActive)
-		{
-			//Spread of the gun
-			fireScript.shotSpawn.transform.forward = this.virtualCam.transform.forward 
-													+ muzzleClimb * fireScript.recoilAmount * virtualCam.transform.up * 0.3f
-													+ fireScript.recoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool ("Scope") ? 0.1f : 0.3f)
-													;
-			if(muzzleClimb < 0.6f){
-				muzzleClimb += 0.05f;
-			}
-			bool fired = fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
-			Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
-
-			if (fired) { 
-				player_IK.Recoil(fireScript.recoilAmount);
-				
-				};
+		if(!fireScript){
+			return;
 		}
+		//Spread of the gun
+		fireScript.shotSpawn.transform.forward = this.virtualCam.transform.forward
+												+ muzzleClimb * fireScript.weaponProperties.RecoilAmount * virtualCam.transform.up * 0.3f
+												+ fireScript.weaponProperties.RecoilAmount * (0.1f + muzzleClimb) * (Vector3)(Random.insideUnitCircle) * (anim.GetBool("Scope") ? 0.1f : 0.3f)
+												;
+		if (muzzleClimb < 0.6f)
+		{
+			muzzleClimb += 0.05f;
+		}
+		bool fired = fireScript.FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+		Cmd_FireWeapon(fireScript.shotSpawn.transform.position, fireScript.shotSpawn.transform.forward);
+
+		if (fired)
+		{
+			player_IK.Recoil(fireScript.weaponProperties.RecoilAmount);
+
+		};
+
 		UpdateUI ();
 	}
 	
@@ -1368,16 +1382,12 @@ public class Player_Controller : Player {
 			int _primaryScope = ScopeNameToInt(splitString[2]);
 			int _secondaryScope = ScopeNameToInt(splitString[3]);
 
-			if(_primary < 0 || _secondary < 0 || _primaryScope < 0 || _secondaryScope < 0){
-				throw new System.Exception();
-			}
-
 			Cmd_LoadWeaponData(_primary,_secondary,_primaryScope,_secondaryScope);
 
-		} catch{
+		} catch(System.Exception e){
 
 
-			print ("Failed to read loadout file, restoring default settings");
+			Debug.LogWarning ("Failed to read loadout file, restoring default settings"+e.Message);
 			loadoutSettings = Profile.RestoreLoadoutFile ();
 			string loadoutSettingsString = "";
 			foreach(string line in loadoutSettings){
@@ -1437,12 +1447,15 @@ public class Player_Controller : Player {
 		
 		//scopes now
 		if(primaryScopeNum >= 0){
-			GameObject primaryScope = Game_Controller.Instance.weaponsCatalog.scopes[primaryScopeNum];
-			Instantiate (primaryScope, primaryWeapon.GetComponent<Fire> ().scopePosition);
+			GameObject primaryScopePrefab = Game_Controller.Instance.weaponsCatalog.scopes[primaryScopeNum];
+			GameObject primaryScope = Instantiate (primaryScopePrefab, primaryWeapon.GetComponent<Fire> ().scopePosition);
+			primaryWeapon.GetComponent<Fire> ().scope = primaryScope.GetComponent<Scope>();
 		}
 		if(secondaryScopeNum >= 0){
-			GameObject secondaryScope = Game_Controller.Instance.weaponsCatalog.scopes[secondaryScopeNum];
-			Instantiate (secondaryScope, secondaryWeapon.GetComponent<Fire> ().scopePosition);
+			GameObject secondaryScopePrefab = Game_Controller.Instance.weaponsCatalog.scopes[secondaryScopeNum];
+			GameObject secondaryScope = Instantiate (secondaryScopePrefab, secondaryWeapon.GetComponent<Fire> ().scopePosition);
+			secondaryWeapon.GetComponent<Fire> ().scope = secondaryScope.GetComponent<Scope>();
+
 		}
 
 
@@ -1526,7 +1539,7 @@ public class Player_Controller : Player {
 			return;
 		}
 		if (fireScript != null) {
-			UI_Manager.Instance.UpdateAmmo(fireScript.magAmmo, fireScript.magSize, fireScript.totalAmmo);
+			UI_Manager.Instance.UpdateAmmo(fireScript.magAmmo, fireScript.weaponProperties.MagSize, fireScript.totalAmmo);
 		}
 		UI_Manager.Instance.fuelBar.localScale = new Vector2(1f, jetpackFuel / 2f);
 		blackoutShader?.ChangeBlood (Mathf.Clamp01(1-damageScript.currentHealth/100f));
@@ -1553,10 +1566,11 @@ public class Player_Controller : Player {
 	}
 	
 	//Admin only
-	public void RegisterModerator(){
+	//TODO reenable admins
+	/*public void RegisterModerator(){
 		damageScript.originalHealth = 300;
 		damageScript.currentHealth = damageScript.originalHealth;
-		primaryWeapon.GetComponent<Fire> ().magSize = 50;
+		primaryWeapon.GetComponent<Fire> ().weaponProperties.MagSize = 50;
 		secondaryWeapon.GetComponent<Fire> ().damagePower = 40;
 		secondaryWeapon.GetComponent<Fire> ().fireType = Fire.FireTypes.FullAuto;
 
@@ -1571,6 +1585,6 @@ public class Player_Controller : Player {
 		this.transform.localScale = new Vector3( 3f, 3f, 3f);
 
 
-	}
+	}*/
 	#endregion
 }

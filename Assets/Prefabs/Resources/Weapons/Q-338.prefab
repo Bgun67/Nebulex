@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1590331310096996}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.074, z: -0.041}
+  m_LocalPosition: {x: 0, y: 0.118, z: 0.0029999986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4932,7 +4932,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1716051742592726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.053, z: 0.3}
+  m_LocalPosition: {x: 0, y: 0.096999995, z: 0.181}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4952,7 +4952,6 @@ GameObject:
   - component: {fileID: 95092007408176068}
   - component: {fileID: 114784678633848084}
   - component: {fileID: 82572897535402078}
-  - component: {fileID: 114581980487250934}
   m_Layer: 14
   m_Name: Q-338
   m_TagString: Untagged
@@ -5012,34 +5011,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc2220db84957642b7291d69569069b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponProperties: {fileID: 11400000, guid: bbacfdc94253491478b965dea20d510e, type: 2}
   shotSpawn: {fileID: 4103943160926132}
   rhTarget: {fileID: 0}
-  rhOffset: {x: 0, y: 0, z: 0}
   lhTarget: {fileID: 4089655902860713987}
   lhHint: {fileID: 0}
-  leftGripSize: 1
-  reloadTime: 2
-  fireRate: 700
-  magSize: 18
-  magAmmo: 18
-  maxAmmo: 100
   totalAmmo: 100
-  bulletPrefab: {fileID: 1235886279165106, guid: 863d85dea78005742b365e53583a6a6a,
-    type: 3}
-  damagePower: 30
-  bulletVelocity: 150
-  fireType: 0
-  skillLevel: 0
-  unavailableScopes: []
+  magAmmo: 18
+  damageFactor: 1
   source: {fileID: 0}
-  triggerClick: {fileID: 8300000, guid: f71519fc0ecf8d8498600a1181ae50f4, type: 3}
-  cockSound: {fileID: 8300000, guid: 088940cda1af1c9499ced22b55580323, type: 3}
-  shootSound: {fileID: 8300000, guid: 144ab293e076edf408cd2773991eec7f, type: 3}
+  scope: {fileID: 0}
   weaponAnim: {fileID: 0}
-  recoilAmount: 0.42
-  bulk: 0.5
   scopePosition: {fileID: 4939578880925552}
-  ignoreParentVelocity: 0
   muzzleFlash: {fileID: 0}
   bulletCasings: {fileID: 0}
   playerID: 0
@@ -5142,19 +5125,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114581980487250934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759351381420148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33025f8f4cd63c54daa432631e061e01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewID: -1
 --- !u!1 &6852330584208543332
 GameObject:
   m_ObjectHideFlags: 0
@@ -5178,14 +5148,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6852330584208543332}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000002533197}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.2500857, y: 0.23239511, z: 0.6384966, w: 0.68976223}
+  m_LocalPosition: {x: -0.099, y: 0.01, z: -0.103}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4606637360446104}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 180.00002, z: 0}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 2.765, y: 39.844, z: 86.582}
 --- !u!1001 &6468742719193214864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5212,11 +5182,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 0383d6f855a1c884a8ebe79663f80479, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.044
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 0383d6f855a1c884a8ebe79663f80479, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.044
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 0383d6f855a1c884a8ebe79663f80479, type: 3}
       propertyPath: m_LocalRotation.w

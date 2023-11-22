@@ -221,7 +221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1329022414722224}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00000005239561, y: 0.098, z: 0.038}
+  m_LocalPosition: {x: -0.00000005239561, y: 0.0908, z: 0.1036}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -387,35 +387,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc2220db84957642b7291d69569069b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponProperties: {fileID: 11400000, guid: 17f192336a28d6e4c9c042ed106822cb, type: 2}
   shotSpawn: {fileID: 4978755956037028}
   rhTarget: {fileID: 0}
-  rhOffset: {x: 0, y: 0, z: 0}
   lhTarget: {fileID: 2792211267823714174}
   lhHint: {fileID: 0}
-  leftGripSize: 1
-  reloadTime: 5
-  fireRate: 90
-  magSize: 6
-  magAmmo: 20
-  maxAmmo: 90
   totalAmmo: 90
-  bulletPrefab: {fileID: 1235886279165106, guid: 863d85dea78005742b365e53583a6a6a,
-    type: 3}
-  damagePower: 60
-  bulletVelocity: 700
-  fireType: 0
-  skillLevel: 0
-  unavailableScopes:
-  - Acog
+  magAmmo: 20
+  damageFactor: 1
   source: {fileID: 0}
-  triggerClick: {fileID: 8300000, guid: f71519fc0ecf8d8498600a1181ae50f4, type: 3}
-  cockSound: {fileID: 8300000, guid: 088940cda1af1c9499ced22b55580323, type: 3}
-  shootSound: {fileID: 8300000, guid: 8602b7d5cd15c1943a50aa53f171c8cf, type: 3}
+  scope: {fileID: 0}
   weaponAnim: {fileID: 0}
-  recoilAmount: 0.1
-  bulk: 1
   scopePosition: {fileID: 4529063519476114}
-  ignoreParentVelocity: 0
   muzzleFlash: {fileID: 0}
   bulletCasings: {fileID: 0}
   playerID: 0
@@ -790,11 +773,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563725216504019201}
-  m_LocalRotation: {x: -0.72842586, y: 0.16392083, z: -0.6586113, w: -0.0935783}
-  m_LocalPosition: {x: -0.003, y: -0.037, z: 0.34}
+  m_LocalRotation: {x: -0.6027229, y: -0.09949371, z: -0.7892356, w: 0.06271672}
+  m_LocalPosition: {x: -0.1015, y: -0.0224, z: 0.2197}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4245868749338784}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: -200.625, y: 277.055, z: -352.90802}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: -166.547, y: 254.882, z: -361.234}

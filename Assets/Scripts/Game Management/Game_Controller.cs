@@ -14,7 +14,7 @@ public class Game_Controller : NetworkBehaviour {
 		public int kills = 0;
 		public int deaths = 0;
 		public int assists = 0;
-		public int score = 0;
+		public float score = 0;
 		public int team = -1;
 		public bool isBot = true;
 		public bool isFilled = false;
@@ -499,7 +499,7 @@ public class Game_Controller : NetworkBehaviour {
 		return null;//GameObject.CreatePrimitive(PrimitiveType.Sphere);
 	}
 
-	public void AddAssist(int playerNum, int assistAmount){
+	public void AddAssist(int playerNum, float assistAmount){
 		/*TODO This can be done through a synced hash list
 		if (Metwork.peerType != MetworkPeerType.Disconnected) {
 			netView.RPC ("RPC_AddAssist", MRPCMode.AllBuffered, new object[] {
